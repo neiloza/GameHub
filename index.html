@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GameHub — a collection of original games by Neil Oza. Play them all in one place.">
+  <title>GameHub — Play All My Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <a href="#" class="brand">
+        <span class="brand-icon">🎮</span>
+        <span class="brand-name">Game<span class="accent">Hub</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#games">Games</a></li>
+        <li><a href="#featured">Featured</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <p class="hero-kicker">One hub. Every game.</p>
+        <h1 class="hero-title">All my games,<br>in one place.</h1>
+        <p class="hero-sub">
+          A growing collection of original games — built from scratch, playable right
+          in your browser. No downloads, no installs. Just hit play.
+        </p>
+        <div class="hero-actions">
+          <a href="#games" class="btn btn-primary">Browse the Games</a>
+          <a href="#featured" class="btn btn-ghost">See What's Featured</a>
+        </div>
+        <div class="hero-stats" id="hero-stats">
+          <div class="stat"><span class="stat-num" id="stat-count">0</span><span class="stat-label">Games</span></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Free to Play</span></div>
+          <div class="stat"><span class="stat-num">0s</span><span class="stat-label">Install Time</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured game -->
+    <section id="featured" class="featured container">
+      <div class="section-head">
+        <h2>Featured Game</h2>
+        <p>The pick of the collection right now.</p>
+      </div>
+      <div id="featured-slot"><!-- populated by js/hub.js --></div>
+    </section>
+
+    <!-- Game library -->
+    <section id="games" class="library container">
+      <div class="section-head">
+        <h2>Game Library</h2>
+        <p>Every game in the hub. Click any card to play.</p>
+      </div>
+      <div class="game-grid" id="game-grid"><!-- populated by js/hub.js --></div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about container">
+      <div class="about-card">
+        <h2>About GameHub</h2>
+        <p>
+          GameHub is my personal arcade — a single home for every game I build.
+          Each game started as its own project, and this site brings them together
+          so you can jump between them without ever leaving.
+        </p>
+        <p>
+          New games land here as they're finished, and existing ones keep getting
+          updates. Check back often.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 Neil Oza · GameHub</span>
+      <a href="#" class="back-to-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="js/games.js"></script>
+  <script src="js/hub.js"></script>
+</body>
+</html>

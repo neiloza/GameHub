@@ -7,10 +7,11 @@
  *   - Cherry Blossom : a rarer bloom that shares the 1-hour slot.
  *   - World Tree     : the legendary 24-hour tree.
  *
- * Every tree is drawn from simple, soft shapes so the whole forest feels calm
- * and consistent. renderTreeSVG() returns a self-contained <svg> string; the
- * app animates growth by revealing the tree from the ground up (see the
- * .fx-grow rect + setTreeGrowth() helper).
+ * The art aims for lush, saturated, storybook trees — full canopies, chunky
+ * trunks, and a colourful spread (spring limes, autumn maple, golden aspen,
+ * pink cherry, emerald oak, teal pines) so every tree feels worth planting.
+ * renderTreeSVG() returns a self-contained <svg> string; growth animates by
+ * revealing the tree from the ground up (see .fx-grow + setTreeGrowth()).
  */
 
 const FOREST_TREES = [
@@ -19,43 +20,43 @@ const FOREST_TREES = [
   { id: "bamboo",   name: "Bamboo",         minutes: 25,   form: "bamboo",    tone: "jade",   blurb: "One quiet pomodoro, standing tall." },
   { id: "willow",   name: "Willow",         minutes: 30,   form: "willow",    tone: "soft",   blurb: "Half an hour of gentle drift." },
   { id: "birch",    name: "Birch",          minutes: 45,   form: "birch",     tone: "pale",   blurb: "Slender, bright, patient." },
-  { id: "maple",    name: "Maple",          minutes: 60,   form: "round",     tone: "warm",   blurb: "A full hour, rounded and calm." },
+  { id: "maple",    name: "Maple",          minutes: 60,   form: "round",     tone: "warm",   blurb: "A full hour, ablaze with autumn." },
   { id: "cherry",   name: "Cherry Blossom", minutes: 60,   form: "blossom",   tone: "bloom",  blurb: "A rare bloom for a steady hour.", special: true },
-  { id: "aspen",    name: "Aspen",          minutes: 90,   form: "column",    tone: "gold",   blurb: "Ninety minutes, shimmering." },
+  { id: "aspen",    name: "Aspen",          minutes: 90,   form: "column",    tone: "gold",   blurb: "Ninety minutes of shimmering gold." },
   { id: "oak",      name: "Oak",            minutes: 120,  form: "oak",       tone: "deep",   blurb: "Two hours. Solid and sure." },
   { id: "cedar",    name: "Cedar",          minutes: 120,  form: "conifer",   tone: "pine",   blurb: "Two hours of evergreen quiet." },
-  { id: "pine",     name: "Pine",           minutes: 180,  form: "pine",      tone: "pine",   blurb: "Three hours reaching upward." },
-  { id: "cypress",  name: "Cypress",        minutes: 240,  form: "cypress",   tone: "pine",   blurb: "Four hours, tall and composed." },
+  { id: "pine",     name: "Pine",           minutes: 180,  form: "pine",      tone: "fir",    blurb: "Three hours reaching upward." },
+  { id: "cypress",  name: "Cypress",        minutes: 240,  form: "cypress",   tone: "fir",    blurb: "Four hours, tall and composed." },
   { id: "baobab",   name: "Baobab",         minutes: 360,  form: "baobab",    tone: "earth",  blurb: "Six hours. Ancient and grounded." },
   { id: "sequoia",  name: "Sequoia",        minutes: 480,  form: "sequoia",   tone: "pine",   blurb: "Eight hours of towering stillness." },
   { id: "redwood",  name: "Redwood",        minutes: 720,  form: "redwood",   tone: "rust",   blurb: "Twelve hours in the tall dark." },
   { id: "world",    name: "World Tree",     minutes: 1440, form: "legendary", tone: "gold",   blurb: "A full day. The legend of the grove.", special: true },
 ];
 
-/* Soft, muted palettes keyed by tone. Everything stays low-saturation so the
- * forest reads as calm rather than cartoonish. */
+/* Rich, saturated palettes keyed by tone. Each has a base leaf colour, a bright
+ * highlight, a deeper shadow, and a trunk colour. */
 const TONES = {
-  fresh: { leaf: "#9CCC74", leafHi: "#B7DD93", leafLo: "#7CB35B", trunk: "#B08968" },
-  jade:  { leaf: "#7FB77E", leafHi: "#A3CD88", leafLo: "#5E9E6B", trunk: "#A8886B" },
-  soft:  { leaf: "#A7C98B", leafHi: "#C2DCA6", leafLo: "#89AE70", trunk: "#9C7B5E" },
-  pale:  { leaf: "#AFD08A", leafHi: "#C9E1AC", leafLo: "#94B96F", trunk: "#E7E3DA" },
-  warm:  { leaf: "#8FBE6B", leafHi: "#AED486", leafLo: "#6FA152", trunk: "#9A6F53" },
-  bloom: { leaf: "#F2B8CB", leafHi: "#FBD3E0", leafLo: "#E79BB4", trunk: "#8D6E63" },
-  gold:  { leaf: "#CBD98A", leafHi: "#E3ECB2", leafLo: "#AEC06B", trunk: "#9C8154" },
-  deep:  { leaf: "#7DA75C", leafHi: "#98BE79", leafLo: "#5E8845", trunk: "#7C5A41" },
-  pine:  { leaf: "#5E9169", leafHi: "#78A981", leafLo: "#456F53", trunk: "#7A5A44" },
-  earth: { leaf: "#96AF6A", leafHi: "#B0C489", leafLo: "#7B9553", trunk: "#B98A5E" },
-  rust:  { leaf: "#6F9A5C", leafHi: "#8AB277", leafLo: "#537C45", trunk: "#9B5B44" },
+  fresh: { leaf: "#79c53f", leafHi: "#a3e05f", leafLo: "#559b2c", trunk: "#b0824f" }, // spring lime
+  jade:  { leaf: "#3fae62", leafHi: "#6dd189", leafLo: "#2b8a49", trunk: "#a3764c" }, // bamboo green
+  soft:  { leaf: "#8fce4e", leafHi: "#b4e576", leafLo: "#6ba832", trunk: "#966d4a" }, // willow yellow-green
+  pale:  { leaf: "#8ed44b", leafHi: "#b6e879", leafLo: "#6cb032", trunk: "#ece7dc" }, // birch, white trunk
+  warm:  { leaf: "#f2913a", leafHi: "#fabf63", leafLo: "#dd6a24", trunk: "#875538" }, // maple autumn
+  bloom: { leaf: "#f574a3", leafHi: "#ffa6c6", leafLo: "#e85589", trunk: "#8a5540" }, // cherry pink
+  gold:  { leaf: "#e6c234", leafHi: "#f6dd63", leafLo: "#c69c1f", trunk: "#997640" }, // aspen / world gold
+  deep:  { leaf: "#3ba054", leafHi: "#5ec173", leafLo: "#287c3d", trunk: "#744f30" }, // oak emerald
+  pine:  { leaf: "#279162", leafHi: "#48b283", leafLo: "#186b47", trunk: "#684427" }, // cedar/sequoia teal
+  fir:   { leaf: "#2f9c55", leafHi: "#54bd77", leafLo: "#1e7440", trunk: "#65422a" }, // pine/cypress green
+  earth: { leaf: "#8ebc41", leafHi: "#b2d46e", leafLo: "#6c942c", trunk: "#b16e3a" }, // baobab savanna
+  rust:  { leaf: "#369a56", leafHi: "#5abd7a", leafLo: "#227038", trunk: "#a2482a" }, // redwood, red trunk
 };
 
 /* --- small drawing helpers ------------------------------------------------ */
 
 function trunk(x, wTop, wBot, top, bot, color, dark) {
-  // tapered trunk as a filled path
   const l1 = x - wBot / 2, r1 = x + wBot / 2;
   const l2 = x - wTop / 2, r2 = x + wTop / 2;
   return `<path d="M${l1} ${bot} L${l2} ${top} L${r2} ${top} L${r1} ${bot} Z" fill="${color}"/>` +
-         `<path d="M${x} ${bot} L${x} ${top}" stroke="${dark}" stroke-width="0.6" opacity="0.25" fill="none"/>`;
+         `<path d="M${x - wBot / 5} ${bot} C${x - wTop / 5} ${(top + bot) / 2} ${x - wTop / 5} ${(top + bot) / 2} ${x - wTop / 6} ${top}" stroke="${dark}" stroke-width="1.1" opacity="0.22" fill="none"/>`;
 }
 
 function blob(cx, cy, r, fill) {
@@ -63,164 +64,170 @@ function blob(cx, cy, r, fill) {
 }
 
 /* --- per-form renderers --------------------------------------------------- */
-/* All draw within a 120x120 viewBox with the ground at y=108, growing upward. */
+/* All draw within a 120x120 viewBox with the ground at y=108, growing upward.
+ * Canopies are drawn back-to-front: deep shadow, base leaf, bright highlight. */
 
 function formSprout(c) {
-  return trunk(60, 1.4, 1.8, 90, 108, c.trunk, c.leafLo) +
-    `<path d="M60 96 q-13 -3 -16 -15 q14 -1 16 12 Z" fill="${c.leaf}"/>` +
-    `<path d="M60 92 q13 -4 17 -16 q-15 0 -17 13 Z" fill="${c.leafHi}"/>`;
+  return trunk(60, 2.6, 3.2, 84, 108, c.trunk, c.leafLo) +
+    `<path d="M60 94 q-20 -2 -24 -20 q21 -2 24 17 Z" fill="${c.leafLo}"/>` +
+    `<path d="M60 92 q-16 -3 -19 -17 q17 0 19 14 Z" fill="${c.leaf}"/>` +
+    `<path d="M60 90 q20 -4 25 -21 q-22 0 -25 17 Z" fill="${c.leaf}"/>` +
+    `<path d="M60 88 q15 -4 19 -16 q-16 0 -19 12 Z" fill="${c.leafHi}"/>`;
 }
 
 function formSapling(c) {
-  return trunk(60, 1.6, 2.4, 74, 108, c.trunk, c.leafLo) +
-    blob(60, 66, 15, c.leafLo) + blob(53, 62, 12, c.leaf) +
-    blob(67, 63, 12, c.leaf) + blob(60, 56, 12, c.leafHi);
+  return trunk(60, 3, 4.6, 66, 108, c.trunk, c.leafLo) +
+    blob(60, 58, 22, c.leafLo) +
+    blob(50, 55, 16, c.leaf) + blob(70, 55, 16, c.leaf) + blob(60, 46, 17, c.leaf) +
+    blob(54, 48, 12, c.leafHi) + blob(66, 50, 11, c.leafHi);
 }
 
 function formBamboo(c) {
   let s = "";
-  const xs = [50, 60, 70], tops = [30, 20, 36];
+  const xs = [48, 60, 72], tops = [26, 16, 32], w = 6;
   xs.forEach((x, i) => {
     const top = tops[i];
-    s += `<rect x="${x - 2}" y="${top}" width="4" height="${108 - top}" rx="2" fill="${i === 1 ? c.leaf : c.leafLo}"/>`;
-    for (let y = top + 12; y < 108; y += 16)
-      s += `<line x1="${x - 2}" y1="${y}" x2="${x + 2}" y2="${y}" stroke="${c.trunk}" stroke-width="0.8" opacity="0.5"/>`;
-    // a few leaves
-    s += `<path d="M${x} ${top + 4} q10 -6 16 -1 q-9 6 -16 1 Z" fill="${c.leafHi}"/>`;
-    s += `<path d="M${x} ${top + 14} q-11 -5 -17 1 q10 5 17 -1 Z" fill="${c.leaf}"/>`;
+    s += `<rect x="${x - w / 2}" y="${top}" width="${w}" height="${108 - top}" rx="3" fill="${i === 1 ? c.leaf : c.leafLo}"/>`;
+    s += `<rect x="${x - w / 2}" y="${top}" width="${w / 2.4}" height="${108 - top}" rx="2" fill="${c.leafHi}" opacity="0.5"/>`;
+    for (let y = top + 14; y < 106; y += 18)
+      s += `<rect x="${x - w / 2 - 0.6}" y="${y}" width="${w + 1.2}" height="2.2" rx="1.1" fill="${c.trunk}" opacity="0.55"/>`;
+    s += `<path d="M${x} ${top + 5} q14 -8 22 -1 q-13 8 -22 1 Z" fill="${c.leafHi}"/>`;
+    s += `<path d="M${x} ${top + 16} q-15 -7 -23 1 q14 7 23 -1 Z" fill="${c.leaf}"/>`;
   });
   return s;
 }
 
 function formWillow(c) {
-  let s = trunk(60, 3, 5, 44, 108, c.trunk, c.leafLo);
-  s += blob(60, 44, 20, c.leafLo) + blob(48, 46, 14, c.leaf) + blob(72, 46, 14, c.leaf) + blob(60, 36, 15, c.leafHi);
-  // drooping strands
-  for (let i = -3; i <= 3; i++) {
-    const x = 60 + i * 8;
-    const sway = i * 1.5;
-    s += `<path d="M${x} 44 q${sway} 18 ${sway * 0.6} 40" stroke="${c.leaf}" stroke-width="1.6" fill="none" opacity="0.85" stroke-linecap="round"/>`;
+  let s = trunk(60, 4.5, 7, 40, 108, c.trunk, c.leafLo);
+  s += blob(60, 42, 26, c.leafLo);
+  s += blob(44, 44, 17, c.leaf) + blob(76, 44, 17, c.leaf) + blob(60, 32, 19, c.leaf);
+  s += blob(52, 36, 12, c.leafHi) + blob(70, 38, 12, c.leafHi);
+  for (let i = -4; i <= 4; i++) {
+    const x = 60 + i * 7;
+    const sway = i * 1.4;
+    s += `<path d="M${x} 46 q${sway} 22 ${sway * 0.6} 46" stroke="${i % 2 ? c.leaf : c.leafLo}" stroke-width="2.6" fill="none" opacity="0.9" stroke-linecap="round"/>`;
   }
   return s;
 }
 
 function formBirch(c) {
-  let s = trunk(60, 2.4, 3.2, 40, 108, c.trunk, "#cfcabf");
-  // bark marks
-  s += `<g fill="#5b544a" opacity="0.6">` +
-    `<rect x="58.5" y="58" width="3" height="1.4" rx="0.7"/>` +
-    `<rect x="58.5" y="74" width="3" height="1.4" rx="0.7"/>` +
-    `<rect x="58.5" y="90" width="3" height="1.4" rx="0.7"/></g>`;
-  s += blob(60, 40, 17, c.leafLo) + blob(50, 42, 12, c.leaf) + blob(70, 42, 12, c.leaf) +
-       blob(60, 30, 14, c.leafHi) + blob(60, 44, 12, c.leaf);
+  let s = trunk(60, 3.4, 4.6, 40, 108, c.trunk, "#cfcabf");
+  s += `<g fill="#4f473c" opacity="0.55">` +
+    `<rect x="58" y="60" width="4" height="1.8" rx="0.9"/>` +
+    `<rect x="58" y="76" width="4" height="1.8" rx="0.9"/>` +
+    `<rect x="58" y="92" width="4" height="1.8" rx="0.9"/></g>`;
+  s += blob(60, 40, 24, c.leafLo);
+  s += blob(46, 42, 16, c.leaf) + blob(74, 42, 16, c.leaf) + blob(60, 28, 18, c.leaf) + blob(60, 46, 15, c.leaf);
+  s += blob(52, 32, 12, c.leafHi) + blob(68, 34, 11, c.leafHi);
   return s;
 }
 
 function formRound(c) {
-  let s = trunk(60, 3, 5, 62, 108, c.trunk, c.leafLo);
-  s += blob(60, 50, 24, c.leafLo);
-  s += blob(46, 52, 15, c.leaf) + blob(74, 52, 15, c.leaf) + blob(60, 40, 17, c.leaf);
-  s += blob(54, 44, 12, c.leafHi) + blob(68, 46, 11, c.leafHi);
+  let s = trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
+  s += blob(60, 46, 32, c.leafLo);
+  s += blob(42, 50, 20, c.leaf) + blob(78, 50, 20, c.leaf) + blob(60, 34, 23, c.leaf);
+  s += blob(50, 40, 15, c.leafHi) + blob(70, 42, 14, c.leafHi) + blob(60, 50, 16, c.leaf);
+  // a few warm accent leaves to read as "autumn"
+  s += blob(80, 40, 6, "#f6d24a") + blob(40, 62, 5, "#e8551f") + blob(74, 66, 5, "#f6d24a");
   return s;
 }
 
 function formBlossom(c) {
-  let s = trunk(60, 3, 4.6, 58, 108, c.trunk, "#6d4c41");
-  s += blob(60, 48, 23, c.leafLo) + blob(46, 50, 14, c.leaf) + blob(74, 50, 14, c.leaf) + blob(60, 38, 16, c.leafHi);
-  // scattered petals
-  const pet = [[48,40],[70,42],[60,30],[54,52],[68,54],[60,46]];
-  pet.forEach(([x, y]) => { s += `<circle cx="${x}" cy="${y}" r="2.1" fill="#fff" opacity="0.75"/>`; });
-  // falling petals
-  s += `<g fill="${c.leafLo}" opacity="0.8">` +
-    `<circle cx="40" cy="70" r="1.6"/><circle cx="80" cy="66" r="1.6"/><circle cx="46" cy="86" r="1.4"/></g>`;
+  let s = trunk(60, 4.6, 7, 56, 108, c.trunk, "#6d4c41");
+  s += blob(60, 44, 30, c.leafLo);
+  s += blob(43, 48, 18, c.leaf) + blob(77, 48, 18, c.leaf) + blob(60, 32, 21, c.leaf);
+  s += blob(50, 38, 14, c.leafHi) + blob(70, 40, 13, c.leafHi) + blob(60, 48, 15, c.leafHi);
+  const pet = [[46, 36], [72, 40], [60, 26], [52, 54], [70, 54], [60, 44], [40, 48], [80, 44]];
+  pet.forEach(([x, y]) => { s += `<circle cx="${x}" cy="${y}" r="2.4" fill="#fff" opacity="0.85"/>`; });
+  s += `<g fill="${c.leafLo}" opacity="0.85">` +
+    `<circle cx="36" cy="72" r="2"/><circle cx="84" cy="66" r="2"/><circle cx="44" cy="88" r="1.8"/><circle cx="76" cy="86" r="1.6"/></g>`;
   return s;
 }
 
-function formColumn(c) { // aspen — tall narrow
-  let s = trunk(60, 2, 2.8, 30, 108, c.trunk, c.leafLo);
-  s += blob(60, 40, 12, c.leafLo) + blob(60, 30, 12, c.leaf) + blob(60, 22, 11, c.leafHi) +
-       blob(53, 34, 9, c.leaf) + blob(67, 34, 9, c.leaf) + blob(60, 48, 10, c.leaf);
+function formColumn(c) { // aspen — tall, but full and golden
+  let s = trunk(60, 3.4, 4.8, 30, 108, c.trunk, c.leafLo);
+  s += blob(60, 42, 17, c.leafLo) + blob(60, 30, 16, c.leafLo) + blob(60, 20, 13, c.leafLo);
+  s += blob(52, 38, 12, c.leaf) + blob(68, 38, 12, c.leaf) + blob(60, 26, 13, c.leaf) + blob(60, 48, 13, c.leaf);
+  s += blob(56, 32, 9, c.leafHi) + blob(64, 24, 8, c.leafHi) + blob(58, 44, 8, c.leafHi);
   return s;
 }
 
 function formOak(c) {
-  let s = trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
-  // broad, layered canopy
-  s += blob(60, 48, 27, c.leafLo);
-  s += blob(42, 50, 16, c.leaf) + blob(78, 50, 16, c.leaf) + blob(60, 36, 19, c.leaf) +
-       blob(50, 40, 13, c.leafHi) + blob(70, 40, 13, c.leafHi) + blob(60, 52, 14, c.leaf);
+  let s = trunk(60, 8, 13, 58, 108, c.trunk, c.leafLo);
+  // sturdy branch hints
+  s += `<path d="M60 78 q-14 -4 -20 -14 M60 74 q14 -4 20 -14" stroke="${c.trunk}" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>`;
+  s += blob(60, 44, 34, c.leafLo);
+  s += blob(38, 48, 20, c.leaf) + blob(82, 48, 20, c.leaf) + blob(60, 30, 24, c.leaf) +
+       blob(48, 38, 17, c.leaf) + blob(72, 38, 17, c.leaf) + blob(60, 50, 18, c.leaf);
+  s += blob(46, 36, 13, c.leafHi) + blob(72, 36, 12, c.leafHi) + blob(60, 30, 14, c.leafHi);
   return s;
 }
 
-function conifer(c, baseW, top, tiers) {
-  let s = trunk(60, 2.4, 4, top + 6, 108, c.trunk, "#5d4433");
-  const bottom = 100, span = bottom - top;
+function conifer(c, baseW, top, tiers, trunkW) {
+  let s = trunk(60, trunkW * 0.6, trunkW, top + 8, 108, c.trunk, "#4a3320");
+  const bottom = 102, span = bottom - top;
   for (let i = 0; i < tiers; i++) {
     const t = i / (tiers - 1 || 1);
     const cy = bottom - t * span;
-    const w = baseW * (1 - t * 0.62);
-    const h = span / tiers * 1.7;
+    const w = baseW * (1 - t * 0.58);
+    const h = span / tiers * 1.9;
     const shade = i % 2 === 0 ? c.leaf : c.leafLo;
-    s += `<path d="M60 ${cy - h} L${60 - w / 2} ${cy} L${60 + w / 2} ${cy} Z" fill="${shade}"/>`;
-    s += `<path d="M60 ${cy - h} L60 ${cy} L${60 + w / 2} ${cy} Z" fill="${c.leafLo}" opacity="0.35"/>`;
+    s += `<path d="M60 ${cy - h} L${60 - w / 2} ${cy + 2} Q60 ${cy - h * 0.3} ${60 + w / 2} ${cy + 2} Z" fill="${shade}"/>`;
+    s += `<path d="M60 ${cy - h} L${60 - w / 2} ${cy + 2} Q60 ${cy - h * 0.3} 60 ${cy + 2} Z" fill="${c.leafHi}" opacity="0.28"/>`;
   }
-  s += `<path d="M60 ${top - 3} L60 ${top + 4}" stroke="${c.leafHi}" stroke-width="0" />`;
   return s;
 }
 
-function formConifer(c) { return conifer(c, 40, 30, 4); }         // cedar
-function formPine(c)    { return conifer(c, 36, 20, 5); }         // pine, taller
-function formCypress(c) {                                          // very tall, narrow flame
-  let s = trunk(60, 2, 3, 24, 108, c.trunk, "#5d4433");
-  s += `<path d="M60 14 C48 40 50 72 52 98 L68 98 C70 72 72 40 60 14 Z" fill="${c.leafLo}"/>`;
-  s += `<path d="M60 18 C53 42 54 70 56 96 L60 96 Z" fill="${c.leaf}" opacity="0.8"/>`;
-  s += `<path d="M60 22 C56 44 57 68 59 94" stroke="${c.leafHi}" stroke-width="1.2" fill="none" opacity="0.5"/>`;
+function formConifer(c) { return conifer(c, 50, 28, 4, 7); }   // cedar
+function formPine(c)    { return conifer(c, 46, 18, 5, 6.5); } // pine, taller
+
+function formCypress(c) { // tall, but with real body
+  let s = trunk(60, 2.6, 4, 22, 108, c.trunk, "#4a3320");
+  s += `<path d="M60 12 C42 40 44 74 48 100 L72 100 C76 74 78 40 60 12 Z" fill="${c.leafLo}"/>`;
+  s += `<path d="M60 16 C47 42 49 72 53 98 L67 98 C71 72 73 42 60 16 Z" fill="${c.leaf}"/>`;
+  s += `<path d="M60 22 C53 44 54 70 57 96 L60 96 Z" fill="${c.leafHi}" opacity="0.55"/>`;
   return s;
 }
 
 function formBaobab(c) {
-  let s = trunk(60, 10, 16, 54, 108, c.trunk, "#6d4c41");
-  // stubby branches + small canopy up top
-  s += `<path d="M60 58 q-16 -6 -24 -14" stroke="${c.trunk}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-  s += `<path d="M60 58 q16 -6 24 -14" stroke="${c.trunk}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-  s += `<path d="M60 58 q0 -10 0 -18" stroke="${c.trunk}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-  s += blob(60, 40, 12, c.leafLo) + blob(40, 44, 9, c.leaf) + blob(80, 44, 9, c.leaf) + blob(60, 34, 9, c.leafHi);
+  let s = trunk(60, 13, 20, 52, 108, c.trunk, "#6d4c41");
+  s += `<path d="M60 56 q-20 -6 -30 -16 M60 56 q20 -6 30 -16 M60 56 q0 -12 0 -22" stroke="${c.trunk}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+  s += blob(60, 36, 16, c.leafLo) + blob(36, 42, 12, c.leafLo) + blob(84, 42, 12, c.leafLo);
+  s += blob(60, 34, 12, c.leaf) + blob(38, 40, 9, c.leaf) + blob(82, 40, 9, c.leaf) + blob(60, 28, 10, c.leafHi);
   return s;
 }
 
 function formSequoia(c) {
-  let s = trunk(60, 6, 11, 34, 108, c.trunk, "#6b3f2a");
-  // tall conical crown
-  s += `<path d="M60 16 L44 60 L76 60 Z" fill="${c.leafLo}"/>`;
-  s += `<path d="M60 26 L46 72 L74 72 Z" fill="${c.leaf}"/>`;
-  s += `<path d="M60 38 L48 86 L72 86 Z" fill="${c.leafLo}"/>`;
-  s += `<path d="M60 16 L60 60 L76 60 Z" fill="${c.leafLo}" opacity="0.3"/>`;
-  s += blob(60, 30, 6, c.leafHi);
+  let s = trunk(60, 8, 14, 32, 108, c.trunk, "#5a3620");
+  s += `<path d="M60 12 L40 58 L80 58 Z" fill="${c.leafLo}"/>`;
+  s += `<path d="M60 22 L43 72 L77 72 Z" fill="${c.leaf}"/>`;
+  s += `<path d="M60 36 L46 90 L74 90 Z" fill="${c.leafLo}"/>`;
+  s += `<path d="M60 12 L60 58 L80 58 Z" fill="${c.leafHi}" opacity="0.22"/>`;
+  s += `<path d="M60 22 L60 72 L77 72 Z" fill="${c.leafHi}" opacity="0.22"/>`;
+  s += blob(60, 24, 7, c.leafHi);
   return s;
 }
 
 function formRedwood(c) {
-  let s = trunk(60, 4.5, 8, 22, 108, c.trunk, "#7a3f2c");
-  // high, layered dark crown
-  s += blob(60, 30, 18, c.leafLo) + blob(48, 36, 12, c.leaf) + blob(72, 36, 12, c.leaf) +
-       blob(60, 22, 14, c.leaf) + blob(54, 46, 10, c.leafLo) + blob(66, 46, 10, c.leafLo) +
-       blob(60, 32, 11, c.leafHi);
+  let s = trunk(60, 6.5, 11, 22, 108, c.trunk, "#7a3f2c");
+  s += blob(60, 30, 22, c.leafLo);
+  s += blob(46, 36, 15, c.leaf) + blob(74, 36, 15, c.leaf) + blob(60, 20, 17, c.leaf) +
+       blob(52, 48, 13, c.leafLo) + blob(68, 48, 13, c.leafLo) + blob(60, 34, 14, c.leaf);
+  s += blob(52, 24, 11, c.leafHi) + blob(66, 26, 10, c.leafHi);
   return s;
 }
 
 function formLegendary(c) {
   let s = "";
-  // soft golden halo
-  s += `<circle cx="60" cy="46" r="34" fill="#f6e6a8" opacity="0.28"/>`;
-  s += trunk(60, 5, 9, 56, 108, "#a98a52", "#7d6238");
-  // spreading golden canopy
-  s += blob(60, 44, 28, c.leafLo) + blob(40, 46, 16, c.leaf) + blob(80, 46, 16, c.leaf) +
-       blob(60, 30, 19, c.leaf) + blob(50, 36, 13, c.leafHi) + blob(70, 36, 13, c.leafHi) +
-       blob(60, 48, 14, c.leafHi);
-  // little sparkles
-  const sp = [[42,34],[78,34],[60,20],[48,52],[74,52]];
+  s += `<circle cx="60" cy="42" r="40" fill="#ffe89a" opacity="0.32"/>`;
+  s += trunk(60, 7, 12, 56, 108, "#b08a45", "#7d6238");
+  s += blob(60, 40, 36, c.leafLo);
+  s += blob(36, 44, 20, c.leaf) + blob(84, 44, 20, c.leaf) + blob(60, 24, 24, c.leaf) +
+       blob(48, 34, 16, c.leaf) + blob(72, 34, 16, c.leaf) + blob(60, 46, 18, c.leaf);
+  s += blob(48, 32, 14, c.leafHi) + blob(72, 32, 13, c.leafHi) + blob(60, 26, 15, c.leafHi);
+  const sp = [[38, 30], [82, 30], [60, 14], [46, 52], [76, 52], [60, 40]];
   sp.forEach(([x, y]) => {
-    s += `<path d="M${x} ${y - 2.4} L${x + 0.9} ${y - 0.9} L${x + 2.4} ${y} L${x + 0.9} ${y + 0.9} L${x} ${y + 2.4} L${x - 0.9} ${y + 0.9} L${x - 2.4} ${y} L${x - 0.9} ${y - 0.9} Z" fill="#fff6d8"/>`;
+    s += `<path d="M${x} ${y - 3.2} L${x + 1.2} ${y - 1.2} L${x + 3.2} ${y} L${x + 1.2} ${y + 1.2} L${x} ${y + 3.2} L${x - 1.2} ${y + 1.2} L${x - 3.2} ${y} L${x - 1.2} ${y - 1.2} Z" fill="#fff7d6"/>`;
   });
   return s;
 }
@@ -246,21 +253,20 @@ function renderTreeSVG(tree, opts = {}) {
   const uid = "g" + (_svgSeq++);
   const body = (FORM_RENDERERS[tree.form] || formSapling)(c);
 
-  // reveal from the ground (y=108) upward
   const g = Math.max(0, Math.min(1, growth));
   const revealY = 108 - g * 120;
   const revealH = g * 120;
 
   const groundEl = ground
-    ? `<ellipse cx="60" cy="109" rx="30" ry="5" fill="#000" opacity="0.05"/>` +
-      `<path d="M30 108 Q60 102 90 108 L90 112 L30 112 Z" fill="#bcd39a"/>` +
-      `<path d="M30 108 Q60 105 90 108" stroke="#a7c383" stroke-width="1" fill="none"/>`
+    ? `<ellipse cx="60" cy="109" rx="32" ry="5.5" fill="#000" opacity="0.06"/>` +
+      `<path d="M28 108 Q60 101 92 108 L92 113 L28 113 Z" fill="#8ecb5c"/>` +
+      `<path d="M28 108 Q60 104 92 108" stroke="#7bbb48" stroke-width="1.4" fill="none"/>`
     : "";
 
-  const seed = `<ellipse cx="60" cy="106" rx="2.4" ry="1.8" fill="#8d6e63"/>`;
+  const seed = `<ellipse cx="60" cy="106" rx="2.8" ry="2" fill="#8d6e63"/>`;
 
   const witherFilter = withered
-    ? ` style="filter:grayscale(0.7) sepia(0.35) brightness(0.82)" transform="rotate(4 60 108)"`
+    ? ` style="filter:grayscale(0.72) sepia(0.4) brightness(0.8)" transform="rotate(4 60 108)"`
     : "";
 
   return (

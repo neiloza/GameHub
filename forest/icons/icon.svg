@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#54a267"/>
+      <stop offset="1" stop-color="#2d6a3d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.34" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe6c6"/>
+      <stop offset="1" stop-color="#8fce9c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+
+  <!-- soft ground shadow -->
+  <ellipse cx="256" cy="404" rx="118" ry="20" fill="#1f4e2c" opacity="0.28"/>
+
+  <!-- trunk -->
+  <rect x="240" y="372" width="32" height="42" rx="9" fill="#795a41"/>
+
+  <!-- coniferous (Christmas-tree) canopy: layered tiers, tonal greens -->
+  <g>
+    <!-- tier 1 (bottom, widest) -->
+    <path d="M256 240 L136 372 L376 372 Z" fill="url(#leaf)"/>
+    <path d="M256 240 L136 372 L256 372 Z" fill="#7bc089" opacity="0.35"/>
+    <!-- tier 2 -->
+    <path d="M256 170 L152 300 L360 300 Z" fill="url(#leaf)"/>
+    <path d="M256 170 L152 300 L256 300 Z" fill="#7bc089" opacity="0.35"/>
+    <!-- tier 3 -->
+    <path d="M256 108 L168 232 L344 232 Z" fill="url(#leaf)"/>
+    <path d="M256 108 L168 232 L256 232 Z" fill="#7bc089" opacity="0.35"/>
+    <!-- tier 4 (top) -->
+    <path d="M256 62 L188 172 L324 172 Z" fill="#cdeed4"/>
+    <path d="M256 62 L188 172 L256 172 Z" fill="#8fce9c" opacity="0.4"/>
+  </g>
+
+  <!-- little star / bud at the top -->
+  <circle cx="256" cy="66" r="9" fill="#f4f9e9"/>
+</svg>

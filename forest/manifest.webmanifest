@@ -1,0 +1,19 @@
+{
+  "name": "Forest — Grow focus, not screen time",
+  "short_name": "Forest",
+  "description": "Grow a tree by staying focused. Leave the app and it withers. Plant a whole forest, one calm session at a time.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#dff0e2",
+  "theme_color": "#2f6b3f",
+  "categories": ["productivity", "lifestyle", "health"],
+  "icons": [
+    { "src": "icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "icons/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "icons/icon-192-maskable.png", "type": "image/png", "sizes": "192x192", "purpose": "maskable" },
+    { "src": "icons/icon-512-maskable.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
+    { "src": "icons/favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+  ]
+}

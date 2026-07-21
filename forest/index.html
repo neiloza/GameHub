@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="description" content="Forest — grow a tree by staying focused. Leave the app and it withers. Plant a whole forest, one calm session at a time.">
+  <meta name="theme-color" content="#dff0e2">
+
+  <title>Forest — Grow focus, not screen time</title>
+
+  <!-- PWA / home-screen -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Forest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app">
+    <!-- top bar -->
+    <header class="topbar">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.5 6 7 8.5 7 11a5 5 0 0 0 4 4.9V21a1 1 0 0 0 2 0v-5.1A5 5 0 0 0 17 11c0-2.5-1.5-5-5-9Z" fill="#4e8154"/></svg>
+        <span>Forest</span>
+      </div>
+      <button class="icon-btn" id="help-btn" aria-label="How it works">?</button>
+    </header>
+
+    <!-- ===== FOCUS view ===== -->
+    <section class="view active" id="view-focus">
+      <div class="stage">
+        <div class="tree-hero pulse" id="hero-tree"></div>
+        <h1 class="pick-name" id="pick-name">Sprout</h1>
+        <p class="pick-dur" id="pick-dur">10 minutes</p>
+        <p class="pick-blurb" id="pick-blurb"></p>
+
+        <div class="picker">
+          <div class="slider-wrap">
+            <input type="range" class="seed-slider" id="seed-slider" min="0" max="15" value="0" step="1" aria-label="Choose focus length">
+          </div>
+          <div class="slider-ends"><span>10 min</span><span>24 hours</span></div>
+        </div>
+
+        <button class="btn-plant" id="plant-btn">Plant this tree</button>
+      </div>
+    </section>
+
+    <!-- ===== FOREST view ===== -->
+    <section class="view" id="view-forest">
+      <div class="forest-head">
+        <h2>Your Forest</h2>
+        <div class="forest-stats">
+          <div><div class="s-num" id="stat-trees">0</div><div class="s-lab">Trees</div></div>
+          <div><div class="s-num" id="stat-hours">0h</div><div class="s-lab">Focused</div></div>
+          <div><div class="s-num" id="stat-streak">0</div><div class="s-lab">Day streak</div></div>
+        </div>
+      </div>
+      <div id="grove"></div>
+    </section>
+  </div>
+
+  <!-- ===== bottom nav ===== -->
+  <nav class="tabbar">
+    <div class="tabbar-inner">
+      <button class="tab active" data-view="focus">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.5 6 7 8.5 7 11a5 5 0 0 0 4 4.9V21a1 1 0 0 0 2 0v-5.1A5 5 0 0 0 17 11c0-2.5-1.5-5-5-9Z" fill="currentColor"/></svg>
+        Focus
+      </button>
+      <button class="tab" data-view="forest">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3C5 6 4 8 4 10a3 3 0 0 0 2 2.8V16a1 1 0 0 0 2 0v-3.2A3 3 0 0 0 10 10c0-2-1-4-3-7Zm10 2c-2 3-3 5-3 7a3 3 0 0 0 2 2.8V19a1 1 0 0 0 2 0v-4.2A3 3 0 0 0 20 12c0-2-1-4-3-7Z" fill="currentColor"/></svg>
+        Forest
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== focus session (fullscreen) ===== -->
+  <div class="session" id="session">
+    <div class="tree-hero" id="session-tree"></div>
+    <div class="session-tree-name" id="session-name">Oak</div>
+    <div class="time-left" id="time-left">00:00</div>
+    <div class="session-hint">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#8aa588" stroke-width="2"/><path d="M12 7.5V12l3 1.8" fill="none" stroke="#8aa588" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="session-hint-text">Keep Forest open. Leaving now lets your tree wither.</span>
+    </div>
+    <div class="session-actions">
+      <button class="btn-give" id="give-btn">Give up</button>
+    </div>
+  </div>
+
+  <!-- ===== overlay (tutorial + results) ===== -->
+  <div class="overlay" id="overlay">
+    <div class="sheet" id="sheet"></div>
+  </div>
+
+  <script src="trees.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js"));
+    }
+  </script>
+</body>
+</html>

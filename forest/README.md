@@ -1,102 +1,105 @@
 # 🌲 Forest
 
-A calm focus / anti-screen-time web app. Plant a tree, then leave your phone
-alone: as long as **Forest** stays open in the foreground, the tree grows. Leave
-the app and the tree withers and is lost. Finished trees join your forest, and
-longer focus sessions grow rarer, more impressive trees — all the way up to a
-24-hour **World Tree**.
+A calm focus app crossed with a farming game. **Grow trees by staying focused**,
+then **plant and arrange them on your farm** alongside flowers, ponds, paths and
+crops. Share your farm with a link and **visit your friends' farms** to see the
+groves they've grown. No accounts, no feed, no server — just your grove and the
+links you choose to share.
 
 Lives at **https://forest.thewizardofoza.com**.
 
 ## How it works
 
-- Pick a focus length with the slider (16 stops, from **10 minutes** to
-  **24 hours**). Each stop is a different tree.
-- Tap **Plant this tree** and set the phone down. The tree grows as the timer
-  runs and a screen **Wake Lock** keeps the phone from locking itself.
-- Switch to another app (the page becomes hidden) and the tree withers — that
-  session is lost. Your attention is what keeps it alive.
-- Every finished tree is saved to the **Forest** tab, along with total focused
-  time and a day-streak counter.
+**Grow (Focus tab).** Pick a focus length, plant a tree, and set the phone
+down. While Forest stays in the foreground the tree grows and a screen Wake Lock
+keeps the phone from locking. Leave the app and the tree withers — that session
+is lost. Every finished tree drops into your barn.
 
-### The sixteen trees
+**Build (Farm tab).** Your farm is a grid. Tap a tree or decoration in the tray,
+then tap tiles to place it; the eraser removes things (trees return to your
+barn). Trees are finite — you can only place the ones you've actually grown —
+while decorations are unlimited, so focus buys you the centrepieces and you
+decorate freely around them.
+
+**Share & visit.** *Share* turns your whole farm layout into a link. *Visit*
+opens a friend's link read-only, with the welcome note they left. The layout
+travels inside the link itself, so it works on plain static hosting with no
+backend.
+
+### The trees
+
+Focus length grows a bigger, rarer tree — from a ten-minute **Bonsai** up to the
+legendary 24-hour **World Tree**:
 
 | Tree | Focus | | Tree | Focus |
 |------|-------|-|------|-------|
-| Sprout | 10 min | | Oak | 2 hours |
-| Sapling | 15 min | | Cedar | 2 hours |
-| Bamboo | 25 min | | Pine | 3 hours |
-| Willow | 30 min | | Cypress | 4 hours |
-| Birch | 45 min | | Baobab | 6 hours |
+| Bonsai | 10 min | | Pine | 4 hours |
+| Cherry Blossom ✦ | 30 min | | Cypress | 5 hours |
 | Maple | 1 hour | | Sequoia | 8 hours |
-| Cherry Blossom ✦ | 1 hour | | Redwood | 12 hours |
-| Aspen | 1.5 hours | | World Tree ✦ | 24 hours |
+| Oak | 2 hours | | Redwood | 12 hours |
+| Aspen | 3 hours | | World Tree ✦ | 24 hours |
 
-A few lengths repeat on purpose (two 1-hour trees, two 2-hour trees) so several
-trees share a duration but look completely different. **Cherry Blossom** and the
-legendary **World Tree** are the two *special* trees.
+**Cherry Blossom** and **World Tree** are the two *special* trees. Trees grown in
+an earlier version (Sprout, Willow, Birch, Bamboo, Cedar, Baobab…) still live in
+your barn and render fine on the farm.
 
-> **Deciduous vs. coniferous** — *deciduous* trees (oak, maple, birch, cherry)
-> are broadleaf and drop their leaves each year; *coniferous* trees (pine, cedar,
-> cypress, sequoia) are evergreen needle-trees with the classic pointed
-> "Christmas-tree" shape. Forest has both. The home-screen icon is a coniferous
-> one.
+> **Deciduous vs. coniferous** — *deciduous* trees (oak, maple, cherry) are
+> broadleaf and drop their leaves each year; *coniferous* trees (pine, cypress,
+> sequoia) are evergreen needle-trees with the pointed "Christmas-tree" shape.
+> The home-screen icon is a coniferous one.
 
 ## Design
 
 Vanilla HTML/CSS/JS — no build step, no frameworks, no external requests except
-the Nunito web font. Every tree is drawn from simple, soft SVG shapes
-(`trees.js`) so the whole forest reads as one calm, minimalist system. The UI is
-deliberately tiny: one slider, one button, two tabs, and a short first-run
-tutorial. That's the whole app.
+the Nunito web font. Every tree and decoration is drawn from simple, soft SVG
+shapes so the whole farm reads as one consistent, storybook world.
 
 ```
 forest/
-├── index.html            # app shell (Focus + Forest views)
+├── index.html            # app shell (Focus + Farm views)
 ├── styles.css            # all styling, mobile-first
-├── trees.js              # the 16 trees + procedural SVG renderer
-├── app.js                # timer, wither logic, storage, tutorial
+├── trees.js              # the tree ladder + procedural tree SVGs
+├── decor.js              # placeable decorations + their SVGs
+├── app.js                # focus timer, barn, farm grid, share/visit
 ├── manifest.webmanifest  # PWA / add-to-home-screen
 ├── sw.js                 # offline + auto-update service worker
 └── icons/                # home-screen + favicon (green coniferous tree)
 ```
 
-Progress is stored locally in the browser (`localStorage`), so there is no
-account and no server — nothing about your focus leaves the device.
+Everything is stored locally in the browser (`localStorage`). There is no
+account and no server; nothing about your focus or your farm leaves the device
+until you hand someone a share link.
+
+## Home-screen icon (opaque, full-bleed)
+
+iOS composites any transparent pixels in a home-screen icon onto **white**, so a
+PNG with a partly-unpainted alpha channel shows a white strip. The icons here
+are therefore shipped **fully opaque** (PNG color-type 2 / RGB, *no* alpha
+channel) and filled edge-to-edge with real colour — iOS applies its own
+rounded-corner mask, so we don't round it ourselves. They're **pixel-verified**
+at the byte level (color type + corner/edge pixels), not just by eye, at 1024,
+512, 192 and 180 px.
+
+> iOS caches home-screen icons aggressively. After a new deploy, **delete the
+> app from the home screen and re-add it** — a refresh alone keeps the old icon.
 
 ## Running locally
 
-Any static server works (a server is needed so the service worker and manifest
-load):
-
 ```bash
 cd forest
-python3 -m http.server 8000
+python3 -m http.server 8000   # a server is needed for the SW + manifest
 # open http://localhost:8000
 ```
 
 ## Deploying (Cloudflare Pages + custom domain)
 
-The app is fully static and uses only **relative paths**, so it can be served
-from a domain root or a sub-path.
+Fully static, relative paths only.
 
 1. **Cloudflare Pages** → *Create project* → connect the GitHub repo.
-2. Build settings: **no build command**. Set the **root / output directory** to
+2. Build settings: **no build command**; set the **root / output directory** to
    `forest` so the folder is served as the site root.
-3. After the first deploy, add the custom domain **`forest.thewizardofoza.com`**
-   under *Custom domains* and let Cloudflare create the DNS record.
+3. Add the custom domain **`forest.thewizardofoza.com`** under *Custom domains*.
 
-### Auto-update from GitHub
-
-Cloudflare Pages redeploys automatically on every push to the connected branch.
-The service worker (`sw.js`) is **network-first**: when the device is online it
-always fetches the newest files and refreshes its cache, falling back to the
-cached copy only when offline. A new deploy therefore reaches users on their
-next visit without any manual cache-busting. (Offline visitors get the last
-cached version and update the next time they're online.)
-
-## Add to home screen
-
-On mobile, use the browser's **Add to Home Screen** option. The app installs
-with the green coniferous-tree icon and opens full-screen (`display: standalone`)
-so it feels like a native focus app.
+**Auto-update:** Cloudflare redeploys on every push. The service worker is
+network-first, so online visitors always get the newest files and offline
+visitors get the last cached version, updating next time they're online.

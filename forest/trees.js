@@ -15,22 +15,28 @@
  */
 
 const FOREST_TREES = [
-  { id: "sprout",   name: "Sprout",         minutes: 10,   form: "sprout",    tone: "fresh",  blurb: "The very first breath of green." },
-  { id: "sapling",  name: "Sapling",        minutes: 15,   form: "sapling",   tone: "fresh",  blurb: "Small, but it means business." },
-  { id: "bamboo",   name: "Bamboo",         minutes: 25,   form: "bamboo",    tone: "jade",   blurb: "One quiet pomodoro, standing tall." },
-  { id: "willow",   name: "Willow",         minutes: 30,   form: "willow",    tone: "soft",   blurb: "Half an hour of gentle drift." },
-  { id: "birch",    name: "Birch",          minutes: 45,   form: "birch",     tone: "pale",   blurb: "Slender, bright, patient." },
+  { id: "bonsai",   name: "Bonsai",         minutes: 10,   form: "bonsai",    tone: "jade",   blurb: "Ten mindful minutes, small and deliberate." },
+  { id: "cherry",   name: "Cherry Blossom", minutes: 30,   form: "blossom",   tone: "bloom",  blurb: "Half an hour, in full bloom.", special: true },
   { id: "maple",    name: "Maple",          minutes: 60,   form: "round",     tone: "warm",   blurb: "A full hour, ablaze with autumn." },
-  { id: "cherry",   name: "Cherry Blossom", minutes: 60,   form: "blossom",   tone: "bloom",  blurb: "A rare bloom for a steady hour.", special: true },
-  { id: "aspen",    name: "Aspen",          minutes: 90,   form: "column",    tone: "gold",   blurb: "Ninety minutes of shimmering gold." },
   { id: "oak",      name: "Oak",            minutes: 120,  form: "oak",       tone: "deep",   blurb: "Two hours. Solid and sure." },
-  { id: "cedar",    name: "Cedar",          minutes: 120,  form: "conifer",   tone: "pine",   blurb: "Two hours of evergreen quiet." },
-  { id: "pine",     name: "Pine",           minutes: 180,  form: "pine",      tone: "fir",    blurb: "Three hours reaching upward." },
-  { id: "cypress",  name: "Cypress",        minutes: 240,  form: "cypress",   tone: "fir",    blurb: "Four hours, tall and composed." },
-  { id: "baobab",   name: "Baobab",         minutes: 360,  form: "baobab",    tone: "earth",  blurb: "Six hours. Ancient and grounded." },
+  { id: "aspen",    name: "Aspen",          minutes: 180,  form: "column",    tone: "gold",   blurb: "Three hours of shimmering gold." },
+  { id: "pine",     name: "Pine",           minutes: 240,  form: "pine",      tone: "fir",    blurb: "Four hours reaching upward." },
+  { id: "cypress",  name: "Cypress",        minutes: 300,  form: "cypress",   tone: "fir",    blurb: "Five hours, tall and composed." },
   { id: "sequoia",  name: "Sequoia",        minutes: 480,  form: "sequoia",   tone: "pine",   blurb: "Eight hours of towering stillness." },
   { id: "redwood",  name: "Redwood",        minutes: 720,  form: "redwood",   tone: "rust",   blurb: "Twelve hours in the tall dark." },
   { id: "world",    name: "World Tree",     minutes: 1440, form: "legendary", tone: "gold",   blurb: "A full day. The legend of the grove.", special: true },
+];
+
+/* Species that are no longer in the growable ladder but may still exist in a
+ * player's barn/farm from an earlier version — kept so they still render. */
+const LEGACY_TREES = [
+  { id: "sprout",  name: "Sprout",  form: "sprout",   tone: "fresh" },
+  { id: "sapling", name: "Sapling", form: "sapling",  tone: "fresh" },
+  { id: "bamboo",  name: "Bamboo",  form: "bamboo",   tone: "jade"  },
+  { id: "willow",  name: "Willow",  form: "willow",   tone: "soft"  },
+  { id: "birch",   name: "Birch",   form: "birch",    tone: "pale"  },
+  { id: "baobab",  name: "Baobab",  form: "baobab",   tone: "earth" },
+  { id: "cedar",   name: "Cedar",   form: "conifer",  tone: "pine"  },
 ];
 
 /* Rich, saturated palettes keyed by tone. Each has a base leaf colour, a bright
@@ -232,12 +238,40 @@ function formLegendary(c) {
   return s;
 }
 
+function formBonsai(c) {
+  let s = "";
+  // shallow pot
+  s += `<path d="M45 108 L48 97 L72 97 L75 108 Z" fill="#a9663f"/>`;
+  s += `<path d="M45 108 L48 97 L60 97 L58 108 Z" fill="#bb774d"/>`;
+  s += `<rect x="43" y="93" width="34" height="6" rx="2.5" fill="#c47d52"/>`;
+  s += `<ellipse cx="60" cy="95" rx="15" ry="2.6" fill="#6e4327" opacity="0.5"/>`;
+  // gnarled trunk
+  s += `<path d="M60 93 C55 84 67 82 62 72 C57 63 69 60 64 50" stroke="${c.trunk}" stroke-width="5.4" fill="none" stroke-linecap="round"/>`;
+  // pruned foliage pads
+  s += `<ellipse cx="49" cy="66" rx="15" ry="9.5" fill="${c.leafLo}"/>`;
+  s += `<ellipse cx="75" cy="59" rx="16" ry="10" fill="${c.leafLo}"/>`;
+  s += `<ellipse cx="61" cy="46" rx="17" ry="10.5" fill="${c.leafLo}"/>`;
+  s += `<ellipse cx="49" cy="64" rx="11.5" ry="7" fill="${c.leaf}"/>`;
+  s += `<ellipse cx="75" cy="57" rx="12.5" ry="7.5" fill="${c.leaf}"/>`;
+  s += `<ellipse cx="61" cy="44" rx="13.5" ry="7.5" fill="${c.leaf}"/>`;
+  s += `<ellipse cx="56" cy="42" rx="7" ry="4.4" fill="${c.leafHi}"/>`;
+  s += `<ellipse cx="71" cy="55" rx="6" ry="3.8" fill="${c.leafHi}"/>`;
+  s += `<ellipse cx="46" cy="62" rx="5.5" ry="3.4" fill="${c.leafHi}"/>`;
+  return s;
+}
+
 const FORM_RENDERERS = {
+  bonsai: formBonsai,
   sprout: formSprout, sapling: formSapling, bamboo: formBamboo, willow: formWillow,
   birch: formBirch, round: formRound, blossom: formBlossom, column: formColumn,
   oak: formOak, conifer: formConifer, pine: formPine, cypress: formCypress,
   baobab: formBaobab, sequoia: formSequoia, redwood: formRedwood, legendary: formLegendary,
 };
+
+/* id -> tree definition, spanning current + legacy species (for rendering). */
+const TREE_INDEX = {};
+FOREST_TREES.concat(typeof LEGACY_TREES !== "undefined" ? LEGACY_TREES : []).forEach(function (t) { TREE_INDEX[t.id] = t; });
+function treeDef(id) { return TREE_INDEX[id] || FOREST_TREES[0]; }
 
 let _svgSeq = 0;
 

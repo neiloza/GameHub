@@ -1,51 +1,68 @@
 /*
- * Forest — focus app logic.
+ * Forest — focus + farm logic.
  *
- * Core loop: pick a tree (by focus length) → plant it → keep the app open.
- * While Forest stays in the foreground the tree grows; leave the app and it
- * withers and is lost. Completed trees are saved to your forest.
- *
- * A web page can only tell whether it is the foreground tab (Page Visibility
- * API), so "staying focused" means keeping Forest open. A screen Wake Lock is
- * requested during a session so the phone doesn't lock itself and end things
- * by accident.
+ * Grow trees by focusing (keep the app open; leaving withers the tree). Every
+ * tree you finish goes into your barn, and from there you plant and arrange it
+ * on a grid farm alongside free decorations. Farms can be shared as a link and
+ * visited read-only — no accounts, no server, nothing leaves the device except
+ * the farm you choose to share.
  */
 
 (function () {
   "use strict";
 
-  var STORE_KEY = "forest.v1";
-  var GRACE_MS = 2000; // brief tolerance for accidental flickers away
+  var STORE = "forest.v2";
+  var OLD = "forest.v1";
+  var GRACE_MS = 2000;
 
-  /* ---------------- persistence ---------------- */
+  /* ---------------- state ---------------- */
+
+  function defaultState() {
+    return {
+      version: 2, streak: 0, lastDay: null, focusedMinutes: 0,
+      seenTutorial: false, active: null,
+      barn: {},
+      farm: { name: "My Farm", sign: "", cols: 8, rows: 8, tiles: {} },
+    };
+  }
+
+  function migrateFromV1() {
+    try {
+      var old = JSON.parse(localStorage.getItem(OLD));
+      if (!old) return null;
+      var s = defaultState();
+      s.streak = old.streak || 0;
+      s.lastDay = old.lastDay || null;
+      s.seenTutorial = !!old.seenTutorial;
+      if (Array.isArray(old.forest)) {
+        old.forest.forEach(function (e) {
+          if (e && e.id) { s.barn[e.id] = (s.barn[e.id] || 0) + 1; s.focusedMinutes += (e.minutes || 0); }
+        });
+      }
+      return s;
+    } catch (e) { return null; }
+  }
 
   function load() {
     try {
-      var d = JSON.parse(localStorage.getItem(STORE_KEY)) || {};
-      return {
-        forest: Array.isArray(d.forest) ? d.forest : [],
-        streak: d.streak || 0,
-        lastDay: d.lastDay || null,
-        seenTutorial: !!d.seenTutorial,
-        active: d.active || null, // an in-progress session, if any
-      };
-    } catch (e) {
-      return { forest: [], streak: 0, lastDay: null, seenTutorial: false, active: null };
-    }
-  }
-
-  function save() {
-    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      var d = JSON.parse(localStorage.getItem(STORE));
+      if (d && d.version === 2) {
+        d.barn = d.barn || {};
+        d.farm = d.farm || defaultState().farm;
+        d.farm.tiles = d.farm.tiles || {};
+        return d;
+      }
+    } catch (e) {}
+    return migrateFromV1() || defaultState();
   }
 
   var state = load();
+  function save() { localStorage.setItem(STORE, JSON.stringify(state)); }
+  save();
+
+  function $(id) { return document.getElementById(id); }
 
   /* ---------------- helpers ---------------- */
-
-  function treeById(id) {
-    for (var i = 0; i < FOREST_TREES.length; i++) if (FOREST_TREES[i].id === id) return FOREST_TREES[i];
-    return FOREST_TREES[0];
-  }
 
   function formatLength(min) {
     if (min < 60) return min + " minutes";
@@ -54,51 +71,52 @@
     if (m === 30) return h + ".5 hours";
     return h + "h " + m + "m";
   }
-
   function formatClock(sec) {
     sec = Math.max(0, Math.round(sec));
     var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
     function pad(n) { return (n < 10 ? "0" : "") + n; }
     return h > 0 ? h + ":" + pad(m) + ":" + pad(s) : pad(m) + ":" + pad(s);
   }
-
-  function todayStr() {
-    var d = new Date();
-    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-  }
-  function yesterdayStr() {
-    var d = new Date(Date.now() - 86400000);
+  function dayStr(offset) {
+    var d = new Date(Date.now() - (offset || 0) * 86400000);
     return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
   }
 
-  function $(id) { return document.getElementById(id); }
+  // item on a tile is either a tree id ("oak") or a decor id prefixed "d:"
+  function isDecor(item) { return typeof item === "string" && item.slice(0, 2) === "d:"; }
+  function renderItem(item, small) {
+    if (isDecor(item)) return renderDecorSVG(item.slice(2));
+    return renderTreeSVG(treeDef(item), { growth: 1 });
+  }
+  function placedCount(treeId) {
+    var n = 0, t = state.farm.tiles;
+    for (var k in t) if (t[k] === treeId) n++;
+    return n;
+  }
+  function available(treeId) { return (state.barn[treeId] || 0) - placedCount(treeId); }
+  function totalGrown() { var n = 0; for (var k in state.barn) n += state.barn[k]; return n; }
 
-  /* ---------------- picker (home) ---------------- */
+  /* ---------------- picker (focus home) ---------------- */
 
   var slider = $("seed-slider");
-  var heroTree = $("hero-tree");
-  var pickName = $("pick-name");
-  var pickDur = $("pick-dur");
-  var pickBlurb = $("pick-blurb");
+  slider.max = String(FOREST_TREES.length - 1);
   var selected = 0;
 
   function renderPick() {
     var t = FOREST_TREES[selected];
-    heroTree.innerHTML = renderTreeSVG(t, { growth: 1 });
-    pickName.innerHTML = t.name + (t.special ? ' <span class="badge">Special</span>' : "");
-    pickDur.textContent = formatLength(t.minutes);
-    pickBlurb.textContent = t.blurb;
+    $("hero-tree").innerHTML = renderTreeSVG(t, { growth: 1 });
+    $("pick-name").innerHTML = t.name + (t.special ? ' <span class="badge">Special</span>' : "");
+    $("pick-dur").textContent = formatLength(t.minutes);
+    $("pick-blurb").textContent = t.blurb;
   }
-
   slider.addEventListener("input", function () {
     var v = parseInt(slider.value, 10);
-    if (v !== selected) {
-      selected = v;
-      renderPick();
-    }
+    if (v !== selected) { selected = v; renderPick(); }
   });
 
   /* ---------------- views / tabs ---------------- */
+
+  var viewingFarm = null; // when set, farm view shows this shared farm read-only
 
   function showView(name) {
     document.querySelectorAll(".view").forEach(function (v) { v.classList.remove("active"); });
@@ -106,217 +124,382 @@
     document.querySelectorAll(".tab").forEach(function (t) {
       t.classList.toggle("active", t.getAttribute("data-view") === name);
     });
-    if (name === "forest") renderForest();
+    var visiting = name === "farm" && viewingFarm;
+    $("visit-banner").classList.toggle("show", !!visiting);
+    $("tray").style.display = (name === "farm" && !viewingFarm) ? "" : "none";
+    $("farm-stats").style.display = visiting ? "none" : "";
+    var pencil = document.querySelector(".farm-name .pencil");
+    if (pencil) pencil.style.display = viewingFarm ? "none" : "";
+    document.querySelector(".farm-actions").style.visibility = (name === "farm" && !viewingFarm) ? "visible" : "hidden";
+    if (name === "farm") renderFarm();
   }
-
   document.querySelectorAll(".tab").forEach(function (t) {
     t.addEventListener("click", function () { showView(t.getAttribute("data-view")); });
   });
 
-  /* ---------------- forest / grove ---------------- */
+  /* ---------------- farm: grid + tray ---------------- */
 
-  function renderForest() {
-    $("stat-trees").textContent = state.forest.length;
-    var totalMin = state.forest.reduce(function (a, e) { return a + (e.minutes || 0); }, 0);
-    var hrs = totalMin / 60;
-    $("stat-hours").textContent = hrs >= 10 ? Math.round(hrs) + "h" : (Math.round(hrs * 10) / 10) + "h";
-    $("stat-streak").textContent = state.streak;
+  var grid = $("grid");
+  var trayItemsEl = $("tray-items");
+  var currentTool = null; // {kind:'tree'|'decor', id} | {kind:'eraser'} | null
+  var trayTab = "trees";
 
-    var grove = $("grove");
-    if (!state.forest.length) {
-      grove.className = "";
-      grove.innerHTML =
-        '<div class="empty-grove">' +
-        renderTreeSVG(treeById("sprout"), { growth: 0.35, ground: false }) +
-        "<div>Your forest is empty. Plant your first tree to begin.</div></div>";
+  function currentFarm() { return viewingFarm || state.farm; }
+
+  function renderFarm() {
+    var f = currentFarm();
+    // stats
+    var hrs = state.focusedMinutes / 60;
+    $("farm-stats").innerHTML =
+      '<span>🌳 <b>' + totalGrown() + '</b> grown</span>' +
+      '<span>⏳ <b>' + (hrs >= 10 ? Math.round(hrs) : Math.round(hrs * 10) / 10) + 'h</b> focused</span>' +
+      '<span>🔥 <b>' + state.streak + '</b> day streak</span>';
+    $("farm-name-text").textContent = viewingFarm ? viewingFarm.name : state.farm.name;
+
+    renderGrid();
+    if (!viewingFarm) renderTray();
+  }
+
+  function renderGrid() {
+    var f = currentFarm();
+    grid.style.gridTemplateColumns = "repeat(" + f.cols + ", 1fr)";
+    var html = "";
+    for (var r = 0; r < f.rows; r++) {
+      for (var c = 0; c < f.cols; c++) {
+        var key = r + "," + c;
+        var item = f.tiles[key];
+        html += '<div class="tile' + ((r + c) % 2 ? " alt" : "") + '" data-k="' + key + '">' +
+          (item ? renderItem(item) : "") + "</div>";
+      }
+    }
+    grid.innerHTML = html;
+  }
+
+  function updateTile(key) {
+    var el = grid.querySelector('.tile[data-k="' + key + '"]');
+    if (!el) return;
+    var item = state.farm.tiles[key];
+    el.innerHTML = item ? renderItem(item) : "";
+  }
+
+  function renderTray() {
+    var html = "";
+    if (trayTab === "trees") {
+      // grown trees, current ladder first then any legacy in barn
+      var ids = FOREST_TREES.map(function (t) { return t.id; });
+      for (var k in state.barn) if (ids.indexOf(k) < 0) ids.push(k);
+      var any = false;
+      ids.forEach(function (id) {
+        var grown = state.barn[id] || 0;
+        if (grown <= 0) return;
+        any = true;
+        var avail = available(id);
+        var sel = currentTool && currentTool.kind === "tree" && currentTool.id === id;
+        html += '<button class="tray-item' + (sel ? " sel" : "") + (avail <= 0 ? " out" : "") +
+          '" data-kind="tree" data-id="' + id + '">' +
+          renderTreeSVG(treeDef(id), { growth: 1, ground: false }) +
+          '<span class="count">' + avail + '</span></button>';
+      });
+      if (!any) html = '<div class="tray-empty">Grow a tree in the Focus tab and it will appear here to plant.</div>';
+    } else {
+      DECOR.forEach(function (d) {
+        var sel = currentTool && currentTool.kind === "decor" && currentTool.id === d.id;
+        html += '<button class="tray-item' + (sel ? " sel" : "") + '" data-kind="decor" data-id="' + d.id + '">' +
+          renderDecorSVG(d.id, { ground: false }) + '<span class="lbl">' + d.name + '</span></button>';
+      });
+    }
+    trayItemsEl.innerHTML = html;
+  }
+
+  // tray tab switching
+  document.querySelectorAll(".tray-tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      trayTab = t.getAttribute("data-tray");
+      document.querySelectorAll(".tray-tab").forEach(function (x) { x.classList.toggle("active", x === t); });
+      renderTray();
+    });
+  });
+
+  // eraser
+  $("eraser-btn").addEventListener("click", function () {
+    if (currentTool && currentTool.kind === "eraser") currentTool = null;
+    else currentTool = { kind: "eraser" };
+    $("eraser-btn").classList.toggle("active", !!(currentTool && currentTool.kind === "eraser"));
+    renderTray();
+  });
+
+  // tray item selection
+  trayItemsEl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".tray-item");
+    if (!btn) return;
+    var kind = btn.getAttribute("data-kind"), id = btn.getAttribute("data-id");
+    if (currentTool && currentTool.kind === kind && currentTool.id === id) currentTool = null;
+    else currentTool = { kind: kind, id: id };
+    $("eraser-btn").classList.remove("active");
+    renderTray();
+  });
+
+  // placing / erasing on the grid
+  grid.addEventListener("click", function (e) {
+    if (viewingFarm) return;
+    var tile = e.target.closest(".tile");
+    if (!tile || !currentTool) return;
+    var key = tile.getAttribute("data-k");
+    var tiles = state.farm.tiles;
+
+    if (currentTool.kind === "eraser") {
+      if (tiles[key]) { delete tiles[key]; save(); updateTile(key); renderTray(); }
       return;
     }
-    grove.className = "grove";
-    // newest first
-    var items = state.forest.slice().reverse();
-    grove.innerHTML = items.map(function (e) {
-      var t = treeById(e.id);
-      return '<div class="grove-cell' + (t.special ? " special" : "") + '">' +
-        renderTreeSVG(t, { growth: 1 }) +
-        '<span class="cell-name">' + t.name + "</span></div>";
-    }).join("");
+    if (currentTool.kind === "decor") {
+      tiles[key] = "d:" + currentTool.id; save(); updateTile(key); return;
+    }
+    if (currentTool.kind === "tree") {
+      var id = currentTool.id;
+      if (tiles[key] === id) return;           // already there
+      if (available(id) <= 0) { flashOut(); return; }
+      tiles[key] = id; save(); updateTile(key); renderTray();
+    }
+  });
+
+  function flashOut() {
+    // subtle nudge: briefly deselect nothing, just re-render (count already 0)
+    var sel = trayItemsEl.querySelector(".tray-item.sel");
+    if (sel) { sel.classList.add("shake"); setTimeout(function () { sel.classList.remove("shake"); }, 300); }
+  }
+
+  /* ---------------- edit farm name + note ---------------- */
+
+  $("farm-name").addEventListener("click", function () {
+    if (viewingFarm) return;
+    openSheet(
+      "<h3>Your farm</h3>" +
+      '<label class="fld">Name<input id="fn-name" maxlength="24" value="' + escapeAttr(state.farm.name) + '"></label>' +
+      '<label class="fld">A note for visitors<textarea id="fn-sign" maxlength="120" rows="3" placeholder="Say hi to friends who visit…">' + escapeHtml(state.farm.sign) + '</textarea></label>' +
+      '<button class="btn-plant" id="fn-save">Save</button>' +
+      '<button class="btn-text" id="fn-cancel">Cancel</button>'
+    );
+    $("fn-save").addEventListener("click", function () {
+      state.farm.name = ($("fn-name").value || "My Farm").trim().slice(0, 24) || "My Farm";
+      state.farm.sign = ($("fn-sign").value || "").trim().slice(0, 120);
+      save(); closeSheet(); renderFarm();
+    });
+    $("fn-cancel").addEventListener("click", closeSheet);
+  });
+
+  /* ---------------- share + visit ---------------- */
+
+  function b64urlEncode(str) {
+    var b64 = btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (_, p) { return String.fromCharCode(parseInt(p, 16)); }));
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function b64urlDecode(str) {
+    str = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (str.length % 4) str += "=";
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
+      return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(""));
+  }
+  function encodeFarm(f) {
+    return b64urlEncode(JSON.stringify({ n: f.name, s: f.sign, c: f.cols, r: f.rows, t: f.tiles }));
+  }
+  function decodeFarm(code) {
+    var p = JSON.parse(b64urlDecode(code));
+    return { name: (p.n || "A farm").slice(0, 40), sign: (p.s || "").slice(0, 160), cols: p.c || 8, rows: p.r || 8, tiles: p.t || {} };
+  }
+  function shareLink() {
+    return location.origin + location.pathname + "#f=" + encodeFarm(state.farm);
+  }
+
+  $("share-btn").addEventListener("click", function () {
+    var link = shareLink();
+    var canShare = !!navigator.share;
+    openSheet(
+      '<div class="result-emoji">🌱</div>' +
+      "<h3>Share your farm</h3>" +
+      "<p>Anyone with this link can visit your farm and see how you built it. It carries your whole layout — no account needed.</p>" +
+      '<input class="share-link" id="share-input" readonly value="' + escapeAttr(link) + '">' +
+      (canShare ? '<button class="btn-plant" id="share-native">Share…</button>' : "") +
+      '<button class="' + (canShare ? "btn-text" : "btn-plant") + '" id="share-copy">Copy link</button>' +
+      '<button class="btn-text" id="share-close">Done</button>'
+    );
+    $("share-input").addEventListener("focus", function () { this.select(); });
+    if (canShare) $("share-native").addEventListener("click", function () {
+      navigator.share({ title: "My Forest farm", text: "Come visit my farm 🌳", url: link }).catch(function () {});
+    });
+    $("share-copy").addEventListener("click", function () {
+      var inp = $("share-input"); inp.select();
+      if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function () {});
+      else document.execCommand("copy");
+      $("share-copy").textContent = "Copied ✓";
+    });
+    $("share-close").addEventListener("click", closeSheet);
+  });
+
+  $("visit-btn").addEventListener("click", function () {
+    openSheet(
+      '<div class="result-emoji">🧭</div>' +
+      "<h3>Visit a farm</h3>" +
+      "<p>Paste a farm link a friend shared with you.</p>" +
+      '<label class="fld"><textarea id="visit-input" rows="3" placeholder="Paste link here…"></textarea></label>' +
+      '<button class="btn-plant" id="visit-go">Visit farm</button>' +
+      '<button class="btn-text" id="visit-cancel">Cancel</button>'
+    );
+    $("visit-go").addEventListener("click", function () {
+      var v = ($("visit-input").value || "").trim();
+      var m = v.match(/#f=([A-Za-z0-9\-_]+)/);
+      var code = m ? m[1] : v.replace(/^#?f=/, "");
+      try { var farm = decodeFarm(code); closeSheet(); openVisit(farm); }
+      catch (err) { $("visit-input").value = ""; $("visit-input").setAttribute("placeholder", "That link didn't work — try copying it again."); }
+    });
+    $("visit-cancel").addEventListener("click", closeSheet);
+  });
+
+  function openVisit(farm) {
+    viewingFarm = farm;
+    $("vb-name").textContent = "Visiting " + farm.name;
+    $("vb-sign").textContent = farm.sign || "";
+    showView("farm");
+  }
+  $("vb-back").addEventListener("click", function () {
+    viewingFarm = null;
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    showView("farm");
+  });
+
+  function checkHashForVisit() {
+    var m = location.hash.match(/#f=([A-Za-z0-9\-_]+)/);
+    if (m) { try { openVisit(decodeFarm(m[1])); return true; } catch (e) {} }
+    return false;
   }
 
   /* ---------------- overlay / sheet ---------------- */
 
-  var overlay = $("overlay");
-  var sheet = $("sheet");
-
+  var overlay = $("overlay"), sheet = $("sheet");
   function openSheet(html) { sheet.innerHTML = html; overlay.classList.add("active"); }
   function closeSheet() { overlay.classList.remove("active"); }
+  function escapeHtml(s) { return (s || "").replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, "&quot;"); }
 
   /* ---------------- tutorial ---------------- */
 
   var tutorialSteps = [
-    {
-      tree: "sapling", growth: 0.7,
-      title: "Plant a tree",
-      body: "Choose how long you want to focus, plant a tree, then set your phone down. As long as Forest stays open, your tree keeps growing.",
-    },
-    {
-      tree: "willow", growth: 0.9, withered: true,
-      title: "Don't leave",
-      body: "Switch to another app and your tree withers — that session is lost. Your attention is what keeps it alive.",
-    },
-    {
-      tree: "world", growth: 1,
-      title: "Grow a forest",
-      body: "Longer focus grows rarer trees, from a 10-minute Sprout up to the 24-hour World Tree. Every tree you finish joins your forest.",
-    },
+    { tree: "bonsai", growth: 0.75, title: "Grow by focusing",
+      body: "Pick how long you want to focus, plant a tree, and set your phone down. While Forest stays open, the tree grows." },
+    { tree: "maple", growth: 0.9, withered: true, title: "Don't leave",
+      body: "Switch to another app and your tree withers — that session is lost. Your attention is what keeps it alive." },
+    { tree: "oak", growth: 1, title: "Build your farm",
+      body: "Every tree you finish lands in your farm. Plant and arrange your trees with flowers, ponds, paths and more." },
+    { tree: "world", growth: 1, title: "Share & visit",
+      body: "Share your farm with a link, and visit your friends' farms to see the groves they've grown." },
   ];
-
   function showTutorial(step) {
     step = step || 0;
-    var s = tutorialSteps[step];
-    var dots = tutorialSteps.map(function (_, i) {
-      return '<i class="' + (i === step ? "on" : "") + '"></i>';
-    }).join("");
-    var last = step === tutorialSteps.length - 1;
+    var s = tutorialSteps[step], last = step === tutorialSteps.length - 1;
+    var dots = tutorialSteps.map(function (_, i) { return '<i class="' + (i === step ? "on" : "") + '"></i>'; }).join("");
     openSheet(
-      '<div class="sheet-art">' + renderTreeSVG(treeById(s.tree), { growth: s.growth, withered: !!s.withered }) + "</div>" +
+      '<div class="sheet-art">' + renderTreeSVG(treeDef(s.tree), { growth: s.growth, withered: !!s.withered }) + "</div>" +
       "<h3>" + s.title + "</h3><p>" + s.body + "</p>" +
       '<div class="dots">' + dots + "</div>" +
       '<button class="btn-plant" id="tut-next">' + (last ? "Start growing" : "Next") + "</button>" +
       (last ? "" : '<button class="btn-text" id="tut-skip">Skip</button>')
     );
     $("tut-next").addEventListener("click", function () {
-      if (last) { state.seenTutorial = true; save(); closeSheet(); }
-      else showTutorial(step + 1);
+      if (last) { state.seenTutorial = true; save(); closeSheet(); } else showTutorial(step + 1);
     });
-    if (!last) $("tut-skip").addEventListener("click", function () {
-      state.seenTutorial = true; save(); closeSheet();
-    });
+    if (!last) $("tut-skip").addEventListener("click", function () { state.seenTutorial = true; save(); closeSheet(); });
   }
-
   $("help-btn").addEventListener("click", function () { showTutorial(0); });
 
-  /* ---------------- session (the focus timer) ---------------- */
+  /* ---------------- focus session ---------------- */
 
-  var session = null;      // { tree, startAt, endAt, durMs }
-  var tickTimer = null;
-  var sessionTreeSvg = null;
-  var wakeLock = null;
-
+  var session = null, tickTimer = null, sessionTreeSvg = null, wakeLock = null;
   var sessionEl = $("session");
-  var sessionTreeEl = $("session-tree");
-  var sessionNameEl = $("session-name");
-  var timeLeftEl = $("time-left");
 
-  async function requestWakeLock() {
-    try {
-      if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
-    } catch (e) { /* not critical */ }
+  function requestWakeLock() {
+    try { if ("wakeLock" in navigator) navigator.wakeLock.request("screen").then(function (w) { wakeLock = w; }).catch(function () {}); } catch (e) {}
   }
-  function releaseWakeLock() {
-    try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {}
-  }
+  function releaseWakeLock() { try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {} }
 
   function startSession(tree) {
     var now = Date.now();
     session = { id: tree.id, startAt: now, endAt: now + tree.minutes * 60000, durMs: tree.minutes * 60000 };
-    state.active = session;
-    save();
-
-    sessionNameEl.textContent = tree.name + (tree.special ? " ✦" : "");
-    sessionTreeEl.innerHTML = renderTreeSVG(tree, { growth: 0.04 });
-    sessionTreeSvg = sessionTreeEl.querySelector("svg");
+    state.active = session; save();
+    $("session-name").textContent = tree.name + (tree.special ? " ✦" : "");
+    $("session-tree").innerHTML = renderTreeSVG(tree, { growth: 0.04 });
+    sessionTreeSvg = $("session-tree").querySelector("svg");
     sessionEl.classList.add("active");
     requestWakeLock();
     tick();
     tickTimer = setInterval(tick, 250);
   }
-
   function tick() {
     if (!session) return;
-    var now = Date.now();
-    var remaining = session.endAt - now;
-    var progress = 1 - remaining / session.durMs;
-    if (progress < 0.04) progress = 0.04;
-    timeLeftEl.textContent = formatClock(remaining / 1000);
+    var remaining = session.endAt - Date.now();
+    var progress = Math.max(0.04, 1 - remaining / session.durMs);
+    $("time-left").textContent = formatClock(remaining / 1000);
     if (sessionTreeSvg) setTreeGrowth(sessionTreeSvg, Math.min(1, progress));
     if (remaining <= 0) completeSession();
   }
-
   function endSessionCleanup() {
-    clearInterval(tickTimer); tickTimer = null;
-    releaseWakeLock();
+    clearInterval(tickTimer); tickTimer = null; releaseWakeLock();
     sessionEl.classList.remove("active");
-    session = null;
-    state.active = null;
-    save();
+    session = null; state.active = null; save();
   }
-
   function completeSession() {
-    var tree = treeById(session.id);
-    // record it
-    state.forest.push({ id: tree.id, minutes: tree.minutes, at: Date.now() });
-    // streak
-    var today = todayStr();
-    if (state.lastDay === today) { /* already counted today */ }
-    else if (state.lastDay === yesterdayStr()) state.streak += 1;
-    else state.streak = 1;
+    var tree = treeDef(session.id);
+    state.barn[tree.id] = (state.barn[tree.id] || 0) + 1;
+    state.focusedMinutes += tree.minutes;
+    var today = dayStr(0);
+    if (state.lastDay === today) {} else if (state.lastDay === dayStr(1)) state.streak += 1; else state.streak = 1;
     state.lastDay = today;
-
     endSessionCleanup();
     showResult(tree, true);
   }
-
   function witherSession(reason) {
-    var tree = session ? treeById(session.id) : null;
+    var tree = session ? treeDef(session.id) : null;
     endSessionCleanup();
     if (tree) showResult(tree, false, reason);
   }
-
   function showResult(tree, success, reason) {
     if (success) {
       openSheet(
         '<div class="sheet-art">' + renderTreeSVG(tree, { growth: 1 }) + "</div>" +
         '<div class="result-emoji">🌳</div>' +
         "<h3>Your " + tree.name + " has grown</h3>" +
-        "<p>" + formatLength(tree.minutes) + " of focus, planted in your forest. Well done.</p>" +
-        '<button class="btn-plant" id="res-again">Plant another</button>' +
-        '<button class="btn-text" id="res-forest">See my forest</button>'
+        "<p>" + formatLength(tree.minutes) + " of focus — it's waiting in your barn. Plant it on your farm.</p>" +
+        '<button class="btn-plant" id="res-plant">Plant it on my farm</button>' +
+        '<button class="btn-text" id="res-again">Keep focusing</button>'
       );
+      $("res-plant").addEventListener("click", function () {
+        closeSheet(); trayTab = "trees"; currentTool = { kind: "tree", id: tree.id };
+        document.querySelectorAll(".tray-tab").forEach(function (x) { x.classList.toggle("active", x.getAttribute("data-tray") === "trees"); });
+        showView("farm");
+      });
       $("res-again").addEventListener("click", closeSheet);
-      $("res-forest").addEventListener("click", function () { closeSheet(); showView("forest"); });
     } else {
       openSheet(
         '<div class="sheet-art">' + renderTreeSVG(tree, { growth: 0.85, withered: true }) + "</div>" +
         '<div class="result-emoji">🥀</div>' +
         "<h3>Your tree withered</h3>" +
-        "<p>" + (reason || "You left before the focus was done, so this " + tree.name + " didn't make it.") +
-        " Nothing is lost — plant another whenever you're ready.</p>" +
+        "<p>" + (reason || "You left before the focus was done.") + " Nothing is lost — plant another whenever you're ready.</p>" +
         '<button class="btn-plant" id="res-again">Try again</button>'
       );
       $("res-again").addEventListener("click", closeSheet);
     }
   }
 
-  /* plant button */
-  $("plant-btn").addEventListener("click", function () {
-    startSession(FOREST_TREES[selected]);
-  });
-
-  /* give up */
+  $("plant-btn").addEventListener("click", function () { startSession(FOREST_TREES[selected]); });
   $("give-btn").addEventListener("click", function () {
     if (!session) return;
-    var tree = treeById(session.id);
+    var tree = treeDef(session.id);
     openSheet(
-      "<h3>Let it wither?</h3>" +
-      "<p>Your " + tree.name + " won't be planted if you stop now.</p>" +
+      "<h3>Let it wither?</h3><p>Your " + tree.name + " won't be planted if you stop now.</p>" +
       '<button class="btn-plant" id="give-keep">Keep growing</button>' +
       '<button class="btn-text" id="give-stop">Let it wither</button>'
     );
     $("give-keep").addEventListener("click", closeSheet);
-    $("give-stop").addEventListener("click", function () {
-      closeSheet();
-      witherSession("You stopped early, so this " + tree.name + " didn't make it.");
-    });
+    $("give-stop").addEventListener("click", function () { closeSheet(); witherSession("You stopped early, so this " + tree.name + " didn't make it."); });
   });
 
   /* ---------------- leaving the app = wither ---------------- */
@@ -324,35 +507,27 @@
   var awayAt = 0;
   document.addEventListener("visibilitychange", function () {
     if (!session) return;
-    if (document.hidden) {
-      awayAt = Date.now();
-    } else {
-      // returned — did they leave long enough to kill the tree?
-      if (awayAt && Date.now() - awayAt > GRACE_MS) {
-        witherSession("You left Forest, so your tree withered while you were away.");
-      } else {
-        requestWakeLock(); // wake lock drops when hidden; re-acquire
-      }
+    if (document.hidden) { awayAt = Date.now(); }
+    else {
+      if (awayAt && Date.now() - awayAt > GRACE_MS) witherSession("You left Forest, so your tree withered while you were away.");
+      else requestWakeLock();
       awayAt = 0;
     }
   });
 
-  // If the page was closed/killed mid-session, the tree is lost. Recover on load.
   function recoverAbandonedSession() {
     if (state.active) {
-      var tree = treeById(state.active.id);
-      state.active = null;
-      save();
-      // show a gentle notice rather than silently dropping it
-      setTimeout(function () {
-        showResult(tree, false, "Forest was closed during your last session, so that " + tree.name + " withered.");
-      }, 400);
+      var tree = treeDef(state.active.id);
+      state.active = null; save();
+      setTimeout(function () { showResult(tree, false, "Forest was closed during your last session, so that " + tree.name + " withered."); }, 400);
     }
   }
 
   /* ---------------- boot ---------------- */
 
   renderPick();
+  var visiting = checkHashForVisit();
+  if (visiting) showView("farm");
   recoverAbandonedSession();
-  if (!state.seenTutorial && !state.active) showTutorial(0);
+  if (!state.seenTutorial && !state.active && !visiting) showTutorial(0);
 })();

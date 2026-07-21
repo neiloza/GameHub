@@ -9,12 +9,13 @@
  * old caches and activates the new worker immediately.
  */
 
-var CACHE = "forest-v1";
+var CACHE = "forest-v2";
 var SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./trees.js",
+  "./decor.js",
   "./app.js",
   "./manifest.webmanifest",
   "./icons/favicon.svg",

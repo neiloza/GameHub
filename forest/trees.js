@@ -36,6 +36,8 @@ const SPECIAL_TREES = [
     req: "A 1-hour focus in the middle of the day — start it between 8am and 4pm." },
   { id: "candy",   name: "Candy Tree",   form: "candy",   tone: "candy",   special: true, minutes: 120,
     req: "A 2-hour focus on a weekend — any Saturday or Sunday." },
+  { id: "study",   name: "Study Tree",   form: "study",   tone: "study",   special: true, minutes: 240,
+    req: "A 4-hour focus on a weekday (Monday–Friday) — grows in place of the Pine." },
   { id: "sunrise", name: "Sunrise Tree", form: "sunrise", tone: "sunrise", special: true, minutes: 480,
     req: "An 8-hour focus started at sunrise — begin it between 8 and 9am." },
   { id: "moonlit", name: "Moonlit Tree", form: "moonlit", tone: "moon",    special: true, minutes: 480,
@@ -79,6 +81,7 @@ const TONES = {
   banyan:{ leaf: "#3f9558", leafHi: "#63b878", leafLo: "#2c6f40", trunk: "#6e4a30" }, // banyan
   sunrise:{leaf: "#7fbf5a", leafHi: "#ecd77e", leafLo: "#5d9e46", trunk: "#7a5533" }, // sunrise (sunlit green)
   candy: { leaf: "#f490b6", leafHi: "#ffcbe2", leafLo: "#e06aa0", trunk: "#e8557f" }, // candy
+  study: { leaf: "#46a06a", leafHi: "#67bd86", leafLo: "#2f7d4b", trunk: "#7a5533" }, // study (scholarly green)
 };
 
 /* --- small drawing helpers ------------------------------------------------ */
@@ -392,6 +395,31 @@ function formCandy(c) {
   return s;
 }
 
+function formStudy(c) {
+  var s = trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
+  // scholarly canopy
+  s += blob(60, 44, 29, c.leafLo);
+  s += blob(43, 48, 17, c.leaf) + blob(77, 48, 17, c.leaf) + blob(60, 30, 20, c.leaf);
+  s += blob(51, 40, 12, c.leafHi) + blob(69, 42, 11, c.leafHi);
+  // little books nestled in the canopy
+  function book(x, y, rot, col) {
+    return `<g transform="translate(${x} ${y}) rotate(${rot})">` +
+      `<rect x="-6.5" y="-5" width="13" height="10" rx="1.5" fill="${col}"/>` +
+      `<rect x="-6.5" y="-5" width="3.4" height="10" rx="1.3" fill="#ffffff" opacity="0.6"/>` +
+      `<line x1="1" y1="-5" x2="1" y2="5" stroke="#ffffff" stroke-width="0.8" opacity="0.6"/></g>`;
+  }
+  s += book(45, 50, -12, "#e2574c") + book(75, 49, 11, "#4f8fd0") + book(60, 60, -3, "#f2b23a");
+  // a wise little owl perched on the trunk
+  s += `<g transform="translate(60 82)">` +
+    `<path d="M-8 -9 L-5 -14 L-2.5 -8 Z" fill="#8a6b4f"/><path d="M8 -9 L5 -14 L2.5 -8 Z" fill="#8a6b4f"/>` +
+    `<ellipse cx="0" cy="0" rx="8.5" ry="10.5" fill="#8a6b4f"/>` +
+    `<ellipse cx="0" cy="2" rx="5.6" ry="7.2" fill="#c3a482"/>` +
+    `<circle cx="-3.6" cy="-3.2" r="3.5" fill="#fff"/><circle cx="3.6" cy="-3.2" r="3.5" fill="#fff"/>` +
+    `<circle cx="-3.6" cy="-3.2" r="1.7" fill="#3a3a3a"/><circle cx="3.6" cy="-3.2" r="1.7" fill="#3a3a3a"/>` +
+    `<path d="M0 -1.4 L-2 1.4 L2 1.4 Z" fill="#f2a43a"/></g>`;
+  return s;
+}
+
 const FORM_RENDERERS = {
   bonsai: formBonsai,
   sprout: formSprout, sapling: formSapling, bamboo: formBamboo, willow: formWillow,
@@ -399,7 +427,7 @@ const FORM_RENDERERS = {
   oak: formOak, conifer: formConifer, pine: formPine, cypress: formCypress,
   baobab: formBaobab, sequoia: formSequoia, redwood: formRedwood, legendary: formLegendary,
   cactus: formCactus, moonlit: formMoonlit, phoenix: formPhoenix, banyan: formBanyan,
-  sunrise: formSunrise, candy: formCandy,
+  sunrise: formSunrise, candy: formCandy, study: formStudy,
 };
 
 /* id -> tree definition, spanning current + special + legacy species (render). */

@@ -87,13 +87,16 @@
   var VARIANT_TAG = {
     cactus:  { tag: "☀ Midday",  cls: "sun" },
     candy:   { tag: "🍬 Weekend", cls: "candy" },
+    study:   { tag: "📚 Weekday", cls: "study" },
     sunrise: { tag: "🌅 Sunrise", cls: "sun" },
     moonlit: { tag: "🌙 Night",   cls: "moon" },
   };
   function resolveVariant(tree) {
     var now = new Date(), h = now.getHours(), day = now.getDay(); // day: 0 Sun … 6 Sat
+    var weekend = day === 0 || day === 6;
     if (tree.id === "maple" && h >= 8 && h < 16) return treeDef("cactus");        // 1h, midday 8am–4pm
-    if (tree.id === "oak" && (day === 0 || day === 6)) return treeDef("candy");   // 2h, weekend
+    if (tree.id === "oak" && weekend) return treeDef("candy");                    // 2h, weekend
+    if (tree.id === "pine" && !weekend) return treeDef("study");                  // 4h, weekday
     if (tree.id === "sequoia") {
       if (h === 8) return treeDef("sunrise");                                     // 8h, started 8–9am
       if (h >= 20 || h < 5) return treeDef("moonlit");                            // 8h, night

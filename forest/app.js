@@ -90,6 +90,7 @@
     candy:   { tag: "🍬 Weekend", cls: "candy" },
     study:   { tag: "📚 Weekday", cls: "study" },
     sunrise: { tag: "🌅 Sunrise", cls: "sun" },
+    money:   { tag: "💰 Weekday", cls: "money" },
     moonlit: { tag: "🌙 Night",   cls: "moon" },
   };
   function resolveVariant(tree) {
@@ -98,10 +99,13 @@
     if (tree.id === "cherry" && h === 12) return treeDef("lunch");                // 30m, noon–1pm
     if (tree.id === "maple" && h >= 8 && h < 16) return treeDef("cactus");        // 1h, midday 8am–4pm
     if (tree.id === "oak" && weekend) return treeDef("candy");                    // 2h, weekend
-    if (tree.id === "pine" && !weekend) return treeDef("study");                  // 4h, weekday
-    if (tree.id === "sequoia") {
-      if (h >= 6 && h < 10) return treeDef("sunrise");                            // 8h, started 6–10am
-      if (h >= 20 || h < 5) return treeDef("moonlit");                            // 8h, night
+    if (tree.id === "pine") {                                                     // 4h slot
+      if (h >= 6 && h < 8) return treeDef("sunrise");                             //   started 6–8am (wins)
+      if (!weekend) return treeDef("study");                                      //   weekday
+    }
+    if (tree.id === "sequoia") {                                                  // 8h slot
+      if (h >= 20 || h < 5) return treeDef("moonlit");                            //   night (wins)
+      if (!weekend) return treeDef("money");                                      //   weekday
     }
     return tree;
   }

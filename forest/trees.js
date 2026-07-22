@@ -40,8 +40,10 @@ const SPECIAL_TREES = [
     req: "A 2-hour focus on a weekend — any Saturday or Sunday." },
   { id: "study",   name: "Study Tree",   form: "study",   tone: "study",   special: true, minutes: 240,
     req: "A 4-hour focus on a weekday (Monday–Friday) — grows in place of the Pine." },
-  { id: "sunrise", name: "Sunrise Tree", form: "sunrise", tone: "sunrise", special: true, minutes: 480,
-    req: "An 8-hour focus started at sunrise — begin it between 6 and 10am." },
+  { id: "sunrise", name: "Sunrise Tree", form: "sunrise", tone: "sunrise", special: true, minutes: 240,
+    req: "A 4-hour focus started at sunrise — begin it between 6 and 8am." },
+  { id: "money",   name: "Money Tree",   form: "money",   tone: "money",   special: true, minutes: 480,
+    req: "An 8-hour focus on a weekday — a full work day earns a Money Tree." },
   { id: "moonlit", name: "Moonlit Tree", form: "moonlit", tone: "moon",    special: true, minutes: 480,
     req: "An 8-hour focus at night — start it between 8pm and 5am." },
   { id: "phoenix", name: "Phoenix Tree", form: "phoenix", tone: "ember",   special: true,
@@ -85,6 +87,7 @@ const TONES = {
   candy: { leaf: "#f490b6", leafHi: "#ffcbe2", leafLo: "#e06aa0", trunk: "#e8557f" }, // candy
   study: { leaf: "#46a06a", leafHi: "#67bd86", leafLo: "#2f7d4b", trunk: "#7a5533" }, // study (scholarly green)
   lunch: { leaf: "#e2b06a", leafHi: "#f3dfa8", leafLo: "#c98f42", trunk: "#8a5a3c" }, // lunch (PB&J bread)
+  money: { leaf: "#3fa05a", leafHi: "#63bd79", leafLo: "#2c7d42", trunk: "#7a5533" }, // money (green + coins)
 };
 
 /* --- small drawing helpers ------------------------------------------------ */
@@ -412,6 +415,23 @@ function formLunch(c) {
   return s;
 }
 
+function formMoney(c) {
+  var s = trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
+  // lush canopy
+  s += blob(60, 44, 29, c.leafLo);
+  s += blob(43, 48, 17, c.leaf) + blob(77, 48, 17, c.leaf) + blob(60, 30, 20, c.leaf);
+  s += blob(51, 40, 12, c.leafHi) + blob(69, 42, 11, c.leafHi);
+  // gold coins hanging like fruit
+  function coin(x, y, r) {
+    return `<circle cx="${x}" cy="${y}" r="${r}" fill="#d9a017"/>` +
+      `<circle cx="${x}" cy="${y}" r="${r - 1.3}" fill="#f6d24a"/>` +
+      `<circle cx="${x - r * 0.35}" cy="${y - r * 0.35}" r="${r * 0.35}" fill="#fff3bf" opacity="0.8"/>` +
+      `<text x="${x}" y="${y + r * 0.62}" font-size="${(r * 1.5).toFixed(1)}" text-anchor="middle" fill="#a9791a" font-weight="bold" font-family="Nunito, sans-serif">$</text>`;
+  }
+  s += coin(46, 40, 6) + coin(72, 38, 6.5) + coin(60, 27, 6) + coin(52, 55, 5.5) + coin(71, 54, 5.5) + coin(85, 66, 4.6);
+  return s;
+}
+
 function formStudy(c) {
   var s = trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
   // scholarly canopy
@@ -444,7 +464,7 @@ const FORM_RENDERERS = {
   oak: formOak, conifer: formConifer, pine: formPine, cypress: formCypress,
   baobab: formBaobab, sequoia: formSequoia, redwood: formRedwood, legendary: formLegendary,
   cactus: formCactus, moonlit: formMoonlit, phoenix: formPhoenix, banyan: formBanyan,
-  sunrise: formSunrise, candy: formCandy, study: formStudy, lunch: formLunch,
+  sunrise: formSunrise, candy: formCandy, study: formStudy, lunch: formLunch, money: formMoney,
 };
 
 /* id -> tree definition, spanning current + special + legacy species (render). */

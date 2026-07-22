@@ -51,14 +51,16 @@ when** you focus (see the *✦ Special trees* panel in the app):
 | **Lunch Break** | A 30-minute focus over lunch (12–1pm) — a PB&J-themed tree that grows in place of the Cherry Blossom. |
 | **Cactus** | A 1-hour focus started in the middle of the day (8am–4pm) — grows in place of the Maple. |
 | **Candy Tree** | A 2-hour focus on a weekend (Saturday or Sunday) — grows in place of the Oak. |
+| **Sunrise Tree** | A 4-hour focus started at sunrise (between 6 and 8am) — grows in place of the Pine/Study. |
 | **Study Tree** | A 4-hour focus on a weekday (Monday–Friday) — grows in place of the Pine. |
-| **Sunrise Tree** | An 8-hour focus started at sunrise (between 6 and 10am) — the dawn version of the 8-hour slot. |
+| **Money Tree** | An 8-hour focus on a weekday (Monday–Friday) — a full work day earns a coin-laden Money Tree. |
 | **Moonlit Tree** | An 8-hour focus started at night (8pm–5am) — the night version of the 8-hour slot. |
 | **Phoenix Tree** | Focus **12 hours total in one day**, built up across as many sessions as you like — you can always return to it. Awarded once per day when you cross 12 hours. |
 | **Banyan Tree** | Reach a **30-day focus streak** (and again at every 30-day milestone). |
 
-The 8-hour slot resolves to **Sunrise** (8–9am start), **Moonlit** (night), or
-the plain **Sequoia** otherwise.
+The 4-hour slot resolves to **Sunrise** (6–8am start), **Study** (weekday), or
+the plain **Pine** otherwise. The 8-hour slot resolves to **Moonlit** (night),
+**Money** (weekday), or the plain **Sequoia** otherwise.
 
 When a session start meets a time-of-day condition, the Focus screen previews
 the special tree (with a ☀ Midday / 🌙 Night tag) so you know what you're

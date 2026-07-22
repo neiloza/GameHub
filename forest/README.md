@@ -48,6 +48,7 @@ when** you focus (see the *✦ Special trees* panel in the app):
 
 | Tree | How you earn it |
 |------|-----------------|
+| **Lunch Break** | A 30-minute focus over lunch (12–1pm) — a PB&J-themed tree that grows in place of the Cherry Blossom. |
 | **Cactus** | A 1-hour focus started in the middle of the day (8am–4pm) — grows in place of the Maple. |
 | **Candy Tree** | A 2-hour focus on a weekend (Saturday or Sunday) — grows in place of the Oak. |
 | **Study Tree** | A 4-hour focus on a weekday (Monday–Friday) — grows in place of the Pine. |

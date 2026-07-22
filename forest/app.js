@@ -85,6 +85,7 @@
 
   // conditions that turn a picked slot into a special variant tree
   var VARIANT_TAG = {
+    lunch:   { tag: "🥪 Lunch",   cls: "lunch" },
     cactus:  { tag: "☀ Midday",  cls: "sun" },
     candy:   { tag: "🍬 Weekend", cls: "candy" },
     study:   { tag: "📚 Weekday", cls: "study" },
@@ -94,6 +95,7 @@
   function resolveVariant(tree) {
     var now = new Date(), h = now.getHours(), day = now.getDay(); // day: 0 Sun … 6 Sat
     var weekend = day === 0 || day === 6;
+    if (tree.id === "cherry" && h === 12) return treeDef("lunch");                // 30m, noon–1pm
     if (tree.id === "maple" && h >= 8 && h < 16) return treeDef("cactus");        // 1h, midday 8am–4pm
     if (tree.id === "oak" && weekend) return treeDef("candy");                    // 2h, weekend
     if (tree.id === "pine" && !weekend) return treeDef("study");                  // 4h, weekday

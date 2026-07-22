@@ -32,6 +32,8 @@ const FOREST_TREES = [
  * carries a `req` describing how it's earned. `minutes` (where present) ties a
  * time-of-day variant to a matching slot on the main ladder. */
 const SPECIAL_TREES = [
+  { id: "lunch",   name: "Lunch Break",  form: "lunch",   tone: "lunch",   special: true, minutes: 30,
+    req: "A 30-minute focus over lunch — start it between 12 and 1pm." },
   { id: "cactus",  name: "Cactus",       form: "cactus",  tone: "cactus",  special: true, minutes: 60,
     req: "A 1-hour focus in the middle of the day — start it between 8am and 4pm." },
   { id: "candy",   name: "Candy Tree",   form: "candy",   tone: "candy",   special: true, minutes: 120,
@@ -82,6 +84,7 @@ const TONES = {
   sunrise:{leaf: "#7fbf5a", leafHi: "#ecd77e", leafLo: "#5d9e46", trunk: "#7a5533" }, // sunrise (sunlit green)
   candy: { leaf: "#f490b6", leafHi: "#ffcbe2", leafLo: "#e06aa0", trunk: "#e8557f" }, // candy
   study: { leaf: "#46a06a", leafHi: "#67bd86", leafLo: "#2f7d4b", trunk: "#7a5533" }, // study (scholarly green)
+  lunch: { leaf: "#e2b06a", leafHi: "#f3dfa8", leafLo: "#c98f42", trunk: "#8a5a3c" }, // lunch (PB&J bread)
 };
 
 /* --- small drawing helpers ------------------------------------------------ */
@@ -395,6 +398,20 @@ function formCandy(c) {
   return s;
 }
 
+function formLunch(c) {
+  var crust = "#d99f52", bread = "#f3dfa8", pb = "#b07a3e", jam = "#b83b63";
+  var s = trunk(60, 4.5, 7, 72, 108, c.trunk, "#6d4c41");
+  // a diagonally-cut PB&J half-sandwich as the canopy
+  s += `<path d="M60 22 L30 76 L90 76 Z" fill="${crust}"/>`;              // crust
+  s += `<path d="M60 29 L36 73 L84 73 Z" fill="${bread}"/>`;             // crumb
+  // filling: peanut butter over jelly, dripping at the cut
+  s += `<path d="M43 55 H77 L82 64 Q71 62 60 64 T38 64 Z" fill="${pb}"/>`;
+  s += `<path d="M38 64 Q49 62 60 64 T82 64 L84 69 Q79 74 74 69 Q68 75 62 70 Q56 75 50 70 Q45 73 41 69 Z" fill="${jam}"/>`;
+  // crumb speckles
+  s += `<g fill="#e8cf8f"><circle cx="52" cy="46" r="1.4"/><circle cx="66" cy="43" r="1.2"/><circle cx="60" cy="51" r="1.3"/><circle cx="70" cy="50" r="1.1"/></g>`;
+  return s;
+}
+
 function formStudy(c) {
   var s = trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
   // scholarly canopy
@@ -427,7 +444,7 @@ const FORM_RENDERERS = {
   oak: formOak, conifer: formConifer, pine: formPine, cypress: formCypress,
   baobab: formBaobab, sequoia: formSequoia, redwood: formRedwood, legendary: formLegendary,
   cactus: formCactus, moonlit: formMoonlit, phoenix: formPhoenix, banyan: formBanyan,
-  sunrise: formSunrise, candy: formCandy, study: formStudy,
+  sunrise: formSunrise, candy: formCandy, study: formStudy, lunch: formLunch,
 };
 
 /* id -> tree definition, spanning current + special + legacy species (render). */

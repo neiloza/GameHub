@@ -83,12 +83,21 @@
     return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
   }
 
-  // time-of-day conditions for special variant trees
-  function isMidday() { var h = new Date().getHours(); return h >= 8 && h < 16; }   // 8am–4pm
-  function isNight() { var h = new Date().getHours(); return h >= 20 || h < 5; }    // 8pm–5am
+  // conditions that turn a picked slot into a special variant tree
+  var VARIANT_TAG = {
+    cactus:  { tag: "☀ Midday",  cls: "sun" },
+    candy:   { tag: "🍬 Weekend", cls: "candy" },
+    sunrise: { tag: "🌅 Sunrise", cls: "sun" },
+    moonlit: { tag: "🌙 Night",   cls: "moon" },
+  };
   function resolveVariant(tree) {
-    if (tree.id === "maple" && isMidday()) return treeDef("cactus");     // 1h midday → Cactus
-    if (tree.id === "sequoia" && isNight()) return treeDef("moonlit");   // 8h night → Moonlit
+    var now = new Date(), h = now.getHours(), day = now.getDay(); // day: 0 Sun … 6 Sat
+    if (tree.id === "maple" && h >= 8 && h < 16) return treeDef("cactus");        // 1h, midday 8am–4pm
+    if (tree.id === "oak" && (day === 0 || day === 6)) return treeDef("candy");   // 2h, weekend
+    if (tree.id === "sequoia") {
+      if (h === 8) return treeDef("sunrise");                                     // 8h, started 8–9am
+      if (h >= 20 || h < 5) return treeDef("moonlit");                            // 8h, night
+    }
     return tree;
   }
 
@@ -117,8 +126,9 @@
     var t = resolveVariant(base);
     var variant = t !== base;
     $("hero-tree").innerHTML = renderTreeSVG(t, { growth: 1 });
-    var tag = variant
-      ? (t.id === "cactus" ? ' <span class="badge sun">☀ Midday</span>' : ' <span class="badge moon">🌙 Night</span>')
+    var v = VARIANT_TAG[t.id];
+    var tag = variant && v
+      ? ' <span class="badge ' + v.cls + '">' + v.tag + "</span>"
       : (t.special ? ' <span class="badge">Special</span>' : "");
     $("pick-name").innerHTML = t.name + tag;
     $("pick-dur").textContent = formatLength(base.minutes);
@@ -474,10 +484,10 @@
     state.lastDay = today;
 
     var extras = [];
-    // Phoenix — 2 hours of focus accumulated in one day (across sessions)
+    // Phoenix — 12 hours of focus accumulated in one day (across sessions)
     if (!state.dayFocus || state.dayFocus.date !== today) state.dayFocus = { date: today, minutes: 0 };
     state.dayFocus.minutes += mins;
-    if (state.dayFocus.minutes >= 120 && state.phoenixDay !== today) {
+    if (state.dayFocus.minutes >= 720 && state.phoenixDay !== today) {
       state.phoenixDay = today; grant("phoenix"); extras.push(treeDef("phoenix"));
     }
     // Banyan — every 30-day streak milestone

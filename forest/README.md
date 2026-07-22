@@ -43,15 +43,20 @@ legendary 24-hour **World Tree**:
 
 ### Earned trees
 
-Four more trees can't be picked from the slider — you earn them by **how and
+Six more trees can't be picked from the slider — you earn them by **how and
 when** you focus (see the *✦ Special trees* panel in the app):
 
 | Tree | How you earn it |
 |------|-----------------|
-| **Cactus** | A 1-hour focus started in the middle of the day (8am–4pm). Replaces the Maple you'd normally get from a 1-hour focus, so a daytime hour grows a Cactus. |
-| **Moonlit Tree** | An 8-hour focus started at night (8pm–5am). The night-time version of the 8-hour Sequoia. |
-| **Phoenix Tree** | Focus **2 hours total in one day**, built up across as many sessions as you like — you can always return to it. Awarded once per day when you cross 2 hours. |
+| **Cactus** | A 1-hour focus started in the middle of the day (8am–4pm) — grows in place of the Maple. |
+| **Candy Tree** | A 2-hour focus on a weekend (Saturday or Sunday) — grows in place of the Oak. |
+| **Sunrise Tree** | An 8-hour focus started at sunrise (between 8 and 9am) — the dawn version of the 8-hour slot. |
+| **Moonlit Tree** | An 8-hour focus started at night (8pm–5am) — the night version of the 8-hour slot. |
+| **Phoenix Tree** | Focus **12 hours total in one day**, built up across as many sessions as you like — you can always return to it. Awarded once per day when you cross 12 hours. |
 | **Banyan Tree** | Reach a **30-day focus streak** (and again at every 30-day milestone). |
+
+The 8-hour slot resolves to **Sunrise** (8–9am start), **Moonlit** (night), or
+the plain **Sequoia** otherwise.
 
 When a session start meets a time-of-day condition, the Focus screen previews
 the special tree (with a ☀ Midday / 🌙 Night tag) so you know what you're

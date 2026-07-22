@@ -376,6 +376,7 @@ input[type="range"].seed-slider {
 .link-special:active { color: var(--leaf-deep); }
 .pick-name .badge.sun { color: #b5762a; background: #fdeecb; }
 .pick-name .badge.moon { color: #4a4f86; background: #e6e8fb; }
+.pick-name .badge.candy { color: #c14d80; background: #fde3ee; }
 .extra-earned {
   margin: 14px auto 0; padding: 10px 14px; border-radius: 14px;
   background: linear-gradient(180deg, #fff6df, #fdeec9); color: #8a6a2a;

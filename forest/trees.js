@@ -32,13 +32,17 @@ const FOREST_TREES = [
  * carries a `req` describing how it's earned. `minutes` (where present) ties a
  * time-of-day variant to a matching slot on the main ladder. */
 const SPECIAL_TREES = [
-  { id: "cactus",  name: "Cactus",       form: "cactus",  tone: "cactus", special: true, minutes: 60,
-    req: "A 1-hour focus during the middle of the day — start it between 8am and 4pm." },
-  { id: "moonlit", name: "Moonlit Tree", form: "moonlit", tone: "moon",   special: true, minutes: 480,
+  { id: "cactus",  name: "Cactus",       form: "cactus",  tone: "cactus",  special: true, minutes: 60,
+    req: "A 1-hour focus in the middle of the day — start it between 8am and 4pm." },
+  { id: "candy",   name: "Candy Tree",   form: "candy",   tone: "candy",   special: true, minutes: 120,
+    req: "A 2-hour focus on a weekend — any Saturday or Sunday." },
+  { id: "sunrise", name: "Sunrise Tree", form: "sunrise", tone: "sunrise", special: true, minutes: 480,
+    req: "An 8-hour focus started at sunrise — begin it between 8 and 9am." },
+  { id: "moonlit", name: "Moonlit Tree", form: "moonlit", tone: "moon",    special: true, minutes: 480,
     req: "An 8-hour focus at night — start it between 8pm and 5am." },
-  { id: "phoenix", name: "Phoenix Tree", form: "phoenix", tone: "ember",  special: true,
-    req: "Focus 2 hours total in one day. Build it up across sessions — you can always return to it." },
-  { id: "banyan",  name: "Banyan Tree",  form: "banyan",  tone: "banyan", special: true,
+  { id: "phoenix", name: "Phoenix Tree", form: "phoenix", tone: "ember",   special: true,
+    req: "Focus 12 hours total in one day. Build it up across sessions — you can always return to it." },
+  { id: "banyan",  name: "Banyan Tree",  form: "banyan",  tone: "banyan",  special: true,
     req: "Reach a 30-day focus streak." },
 ];
 
@@ -73,6 +77,8 @@ const TONES = {
   moon:  { leaf: "#7f99bf", leafHi: "#aec4e0", leafLo: "#5d7398", trunk: "#4a4358" }, // moonlit
   ember: { leaf: "#f2913a", leafHi: "#ffce5e", leafLo: "#e2542a", trunk: "#7a4a2e" }, // phoenix
   banyan:{ leaf: "#3f9558", leafHi: "#63b878", leafLo: "#2c6f40", trunk: "#6e4a30" }, // banyan
+  sunrise:{leaf: "#7fbf5a", leafHi: "#ecd77e", leafLo: "#5d9e46", trunk: "#7a5533" }, // sunrise (sunlit green)
+  candy: { leaf: "#f490b6", leafHi: "#ffcbe2", leafLo: "#e06aa0", trunk: "#e8557f" }, // candy
 };
 
 /* --- small drawing helpers ------------------------------------------------ */
@@ -346,6 +352,46 @@ function formBanyan(c) {
   return s;
 }
 
+function formSunrise(c) {
+  var s = "";
+  // dawn glow
+  s += `<circle cx="60" cy="48" r="40" fill="#ffd9a8" opacity="0.32"/>`;
+  // sun + rays, low and to the side
+  s += `<g stroke="#ffce62" stroke-width="2.6" stroke-linecap="round">` +
+    `<line x1="94" y1="8" x2="94" y2="1"/><line x1="80" y1="13" x2="75" y2="8"/>` +
+    `<line x1="108" y1="13" x2="113" y2="8"/><line x1="76" y1="26" x2="70" y2="26"/>` +
+    `<line x1="112" y1="26" x2="118" y2="26"/></g>`;
+  s += `<circle cx="94" cy="22" r="11" fill="#ffcf5e"/><circle cx="94" cy="22" r="7" fill="#ffe391"/>`;
+  s += trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
+  s += blob(60, 48, 27, c.leafLo);
+  s += blob(44, 52, 16, c.leaf) + blob(76, 52, 16, c.leaf) + blob(60, 34, 19, c.leaf);
+  s += blob(52, 42, 12, c.leafHi) + blob(68, 44, 11, c.leafHi) + blob(58, 38, 9, "#fff0c0");
+  return s;
+}
+
+function formCandy(c) {
+  var s = "";
+  // candy-cane striped trunk
+  s += `<rect x="56.2" y="58" width="7.6" height="50" rx="3.8" fill="#ffffff"/>`;
+  s += `<g fill="${c.trunk}">` +
+    `<rect x="56.2" y="62" width="7.6" height="5.5"/><rect x="56.2" y="74" width="7.6" height="5.5"/>` +
+    `<rect x="56.2" y="86" width="7.6" height="5.5"/><rect x="56.2" y="98" width="7.6" height="5.5"/></g>`;
+  // round candy canopy
+  s += blob(60, 44, 28, c.leafLo);
+  s += blob(44, 48, 17, c.leaf) + blob(76, 48, 17, c.leaf) + blob(60, 30, 20, c.leaf);
+  s += blob(52, 40, 12, c.leafHi) + blob(68, 42, 11, c.leafHi);
+  // gumdrops
+  var dots = [[46, 38, "#7ec7e8"], [74, 36, "#ffd24a"], [60, 26, "#8bd17c"], [50, 54, "#ff8fb3"], [70, 54, "#b58cf0"], [60, 46, "#ffffff"]];
+  dots.forEach(function (d) {
+    s += `<circle cx="${d[0]}" cy="${d[1]}" r="4.4" fill="${d[2]}"/>` +
+      `<circle cx="${d[0] - 1.3}" cy="${d[1] - 1.3}" r="1.3" fill="#fff" opacity="0.7"/>`;
+  });
+  // lollipop swirl on top
+  s += `<circle cx="60" cy="17" r="6.2" fill="#ff8fb3"/>` +
+    `<path d="M60 17 m0 -4.2 a4.2 4.2 0 1 1 -4.2 4.2" fill="none" stroke="#fff" stroke-width="1.6"/>`;
+  return s;
+}
+
 const FORM_RENDERERS = {
   bonsai: formBonsai,
   sprout: formSprout, sapling: formSapling, bamboo: formBamboo, willow: formWillow,
@@ -353,6 +399,7 @@ const FORM_RENDERERS = {
   oak: formOak, conifer: formConifer, pine: formPine, cypress: formCypress,
   baobab: formBaobab, sequoia: formSequoia, redwood: formRedwood, legendary: formLegendary,
   cactus: formCactus, moonlit: formMoonlit, phoenix: formPhoenix, banyan: formBanyan,
+  sunrise: formSunrise, candy: formCandy,
 };
 
 /* id -> tree definition, spanning current + special + legacy species (render). */

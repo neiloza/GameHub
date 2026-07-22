@@ -52,7 +52,7 @@ when** you focus (see the *✦ Special trees* panel in the app):
 | **Cactus** | A 1-hour focus started in the middle of the day (8am–4pm) — grows in place of the Maple. |
 | **Candy Tree** | A 2-hour focus on a weekend (Saturday or Sunday) — grows in place of the Oak. |
 | **Study Tree** | A 4-hour focus on a weekday (Monday–Friday) — grows in place of the Pine. |
-| **Sunrise Tree** | An 8-hour focus started at sunrise (between 8 and 9am) — the dawn version of the 8-hour slot. |
+| **Sunrise Tree** | An 8-hour focus started at sunrise (between 6 and 10am) — the dawn version of the 8-hour slot. |
 | **Moonlit Tree** | An 8-hour focus started at night (8pm–5am) — the night version of the 8-hour slot. |
 | **Phoenix Tree** | Focus **12 hours total in one day**, built up across as many sessions as you like — you can always return to it. Awarded once per day when you cross 12 hours. |
 | **Banyan Tree** | Reach a **30-day focus streak** (and again at every 30-day milestone). |

@@ -41,7 +41,7 @@ const SPECIAL_TREES = [
   { id: "study",   name: "Study Tree",   form: "study",   tone: "study",   special: true, minutes: 240,
     req: "A 4-hour focus on a weekday (Monday–Friday) — grows in place of the Pine." },
   { id: "sunrise", name: "Sunrise Tree", form: "sunrise", tone: "sunrise", special: true, minutes: 480,
-    req: "An 8-hour focus started at sunrise — begin it between 8 and 9am." },
+    req: "An 8-hour focus started at sunrise — begin it between 6 and 10am." },
   { id: "moonlit", name: "Moonlit Tree", form: "moonlit", tone: "moon",    special: true, minutes: 480,
     req: "An 8-hour focus at night — start it between 8pm and 5am." },
   { id: "phoenix", name: "Phoenix Tree", form: "phoenix", tone: "ember",   special: true,

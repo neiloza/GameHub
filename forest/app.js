@@ -100,7 +100,7 @@
     if (tree.id === "oak" && weekend) return treeDef("candy");                    // 2h, weekend
     if (tree.id === "pine" && !weekend) return treeDef("study");                  // 4h, weekday
     if (tree.id === "sequoia") {
-      if (h === 8) return treeDef("sunrise");                                     // 8h, started 8–9am
+      if (h >= 6 && h < 10) return treeDef("sunrise");                            // 8h, started 6–10am
       if (h >= 20 || h < 5) return treeDef("moonlit");                            // 8h, night
     }
     return tree;

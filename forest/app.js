@@ -21,6 +21,7 @@
     return {
       version: 2, streak: 0, lastDay: null, focusedMinutes: 0,
       seenTutorial: false, active: null,
+      dayFocus: null, phoenixDay: null, lastBanyanStreak: 0,
       barn: {},
       farm: { name: "My Farm", sign: "", cols: 8, rows: 8, tiles: {} },
     };
@@ -82,6 +83,15 @@
     return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
   }
 
+  // time-of-day conditions for special variant trees
+  function isMidday() { var h = new Date().getHours(); return h >= 8 && h < 16; }   // 8am–4pm
+  function isNight() { var h = new Date().getHours(); return h >= 20 || h < 5; }    // 8pm–5am
+  function resolveVariant(tree) {
+    if (tree.id === "maple" && isMidday()) return treeDef("cactus");     // 1h midday → Cactus
+    if (tree.id === "sequoia" && isNight()) return treeDef("moonlit");   // 8h night → Moonlit
+    return tree;
+  }
+
   // item on a tile is either a tree id ("oak") or a decor id prefixed "d:"
   function isDecor(item) { return typeof item === "string" && item.slice(0, 2) === "d:"; }
   function renderItem(item, small) {
@@ -103,11 +113,16 @@
   var selected = 0;
 
   function renderPick() {
-    var t = FOREST_TREES[selected];
+    var base = FOREST_TREES[selected];
+    var t = resolveVariant(base);
+    var variant = t !== base;
     $("hero-tree").innerHTML = renderTreeSVG(t, { growth: 1 });
-    $("pick-name").innerHTML = t.name + (t.special ? ' <span class="badge">Special</span>' : "");
-    $("pick-dur").textContent = formatLength(t.minutes);
-    $("pick-blurb").textContent = t.blurb;
+    var tag = variant
+      ? (t.id === "cactus" ? ' <span class="badge sun">☀ Midday</span>' : ' <span class="badge moon">🌙 Night</span>')
+      : (t.special ? ' <span class="badge">Special</span>' : "");
+    $("pick-name").innerHTML = t.name + tag;
+    $("pick-dur").textContent = formatLength(base.minutes);
+    $("pick-blurb").textContent = variant ? t.req : base.blurb;
   }
   slider.addEventListener("input", function () {
     var v = parseInt(slider.value, 10);
@@ -446,28 +461,50 @@
     sessionEl.classList.remove("active");
     session = null; state.active = null; save();
   }
+  function grant(id) { state.barn[id] = (state.barn[id] || 0) + 1; }
+
   function completeSession() {
     var tree = treeDef(session.id);
-    state.barn[tree.id] = (state.barn[tree.id] || 0) + 1;
-    state.focusedMinutes += tree.minutes;
+    var mins = tree.minutes;
+    grant(tree.id);
+    state.focusedMinutes += mins;
+
     var today = dayStr(0);
     if (state.lastDay === today) {} else if (state.lastDay === dayStr(1)) state.streak += 1; else state.streak = 1;
     state.lastDay = today;
+
+    var extras = [];
+    // Phoenix — 2 hours of focus accumulated in one day (across sessions)
+    if (!state.dayFocus || state.dayFocus.date !== today) state.dayFocus = { date: today, minutes: 0 };
+    state.dayFocus.minutes += mins;
+    if (state.dayFocus.minutes >= 120 && state.phoenixDay !== today) {
+      state.phoenixDay = today; grant("phoenix"); extras.push(treeDef("phoenix"));
+    }
+    // Banyan — every 30-day streak milestone
+    if (state.streak > 0 && state.streak % 30 === 0 && state.lastBanyanStreak !== state.streak) {
+      state.lastBanyanStreak = state.streak; grant("banyan"); extras.push(treeDef("banyan"));
+    }
+
     endSessionCleanup();
-    showResult(tree, true);
+    showResult(tree, true, null, extras);
   }
   function witherSession(reason) {
     var tree = session ? treeDef(session.id) : null;
     endSessionCleanup();
     if (tree) showResult(tree, false, reason);
   }
-  function showResult(tree, success, reason) {
+  function showResult(tree, success, reason, extras) {
     if (success) {
+      var extraHtml = (extras && extras.length)
+        ? '<div class="extra-earned">✦ You also earned the <b>' +
+          extras.map(function (e) { return e.name; }).join("</b> &amp; <b>") + "</b>!</div>"
+        : "";
       openSheet(
         '<div class="sheet-art">' + renderTreeSVG(tree, { growth: 1 }) + "</div>" +
         '<div class="result-emoji">🌳</div>' +
         "<h3>Your " + tree.name + " has grown</h3>" +
         "<p>" + formatLength(tree.minutes) + " of focus — it's waiting in your barn. Plant it on your farm.</p>" +
+        extraHtml +
         '<button class="btn-plant" id="res-plant">Plant it on my farm</button>' +
         '<button class="btn-text" id="res-again">Keep focusing</button>'
       );
@@ -489,7 +526,21 @@
     }
   }
 
-  $("plant-btn").addEventListener("click", function () { startSession(FOREST_TREES[selected]); });
+  $("plant-btn").addEventListener("click", function () { startSession(resolveVariant(FOREST_TREES[selected])); });
+
+  // "Special trees" info
+  $("special-btn").addEventListener("click", function () {
+    var rows = SPECIAL_TREES.map(function (t) {
+      return '<div class="spec-row">' + renderTreeSVG(t, { growth: 1, ground: false }) +
+        "<div><b>" + t.name + "</b><span>" + t.req + "</span></div></div>";
+    }).join("");
+    openSheet(
+      "<h3>Special trees</h3>" +
+      '<p class="spec-intro">Some trees can’t be picked — you earn them by how and when you focus.</p>' +
+      rows + '<button class="btn-text" id="spec-close">Close</button>'
+    );
+    $("spec-close").addEventListener("click", closeSheet);
+  });
   $("give-btn").addEventListener("click", function () {
     if (!session) return;
     var tree = treeDef(session.id);

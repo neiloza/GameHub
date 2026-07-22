@@ -27,6 +27,21 @@ const FOREST_TREES = [
   { id: "world",    name: "World Tree",     minutes: 1440, form: "legendary", tone: "gold",   blurb: "A full day. The legend of the grove.", special: true },
 ];
 
+/* Special trees. These are not chosen from the slider — they are earned when a
+ * focus session meets a condition (time of day, a daily total, a streak). Each
+ * carries a `req` describing how it's earned. `minutes` (where present) ties a
+ * time-of-day variant to a matching slot on the main ladder. */
+const SPECIAL_TREES = [
+  { id: "cactus",  name: "Cactus",       form: "cactus",  tone: "cactus", special: true, minutes: 60,
+    req: "A 1-hour focus during the middle of the day — start it between 8am and 4pm." },
+  { id: "moonlit", name: "Moonlit Tree", form: "moonlit", tone: "moon",   special: true, minutes: 480,
+    req: "An 8-hour focus at night — start it between 8pm and 5am." },
+  { id: "phoenix", name: "Phoenix Tree", form: "phoenix", tone: "ember",  special: true,
+    req: "Focus 2 hours total in one day. Build it up across sessions — you can always return to it." },
+  { id: "banyan",  name: "Banyan Tree",  form: "banyan",  tone: "banyan", special: true,
+    req: "Reach a 30-day focus streak." },
+];
+
 /* Species that are no longer in the growable ladder but may still exist in a
  * player's barn/farm from an earlier version — kept so they still render. */
 const LEGACY_TREES = [
@@ -54,6 +69,10 @@ const TONES = {
   fir:   { leaf: "#2f9c55", leafHi: "#54bd77", leafLo: "#1e7440", trunk: "#65422a" }, // pine/cypress green
   earth: { leaf: "#8ebc41", leafHi: "#b2d46e", leafLo: "#6c942c", trunk: "#b16e3a" }, // baobab savanna
   rust:  { leaf: "#369a56", leafHi: "#5abd7a", leafLo: "#227038", trunk: "#a2482a" }, // redwood, red trunk
+  cactus:{ leaf: "#57a866", leafHi: "#7cc489", leafLo: "#3c8049", trunk: "#3c8049" }, // cactus
+  moon:  { leaf: "#7f99bf", leafHi: "#aec4e0", leafLo: "#5d7398", trunk: "#4a4358" }, // moonlit
+  ember: { leaf: "#f2913a", leafHi: "#ffce5e", leafLo: "#e2542a", trunk: "#7a4a2e" }, // phoenix
+  banyan:{ leaf: "#3f9558", leafHi: "#63b878", leafLo: "#2c6f40", trunk: "#6e4a30" }, // banyan
 };
 
 /* --- small drawing helpers ------------------------------------------------ */
@@ -260,17 +279,88 @@ function formBonsai(c) {
   return s;
 }
 
+function formCactus(c) {
+  var w = 16, aw = 11;
+  var s = "";
+  // soft midday sun
+  s += `<circle cx="97" cy="20" r="10" fill="#ffe08a" opacity="0.85"/>`;
+  s += `<circle cx="97" cy="20" r="6.5" fill="#ffd24a" opacity="0.9"/>`;
+  // arms (outer then inner for a rim)
+  s += `<path d="M60 86 H47 V66" fill="none" stroke="${c.leafLo}" stroke-width="${aw}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s += `<path d="M60 78 H73 V60" fill="none" stroke="${c.leafLo}" stroke-width="${aw}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s += `<path d="M60 86 H47 V66" fill="none" stroke="${c.leaf}" stroke-width="${aw - 3}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s += `<path d="M60 78 H73 V60" fill="none" stroke="${c.leaf}" stroke-width="${aw - 3}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // body
+  s += `<path d="M60 105 V46" fill="none" stroke="${c.leafLo}" stroke-width="${w}" stroke-linecap="round"/>`;
+  s += `<path d="M60 105 V46" fill="none" stroke="${c.leaf}" stroke-width="${w - 3}" stroke-linecap="round"/>`;
+  s += `<path d="M56 100 V52" fill="none" stroke="${c.leafHi}" stroke-width="2.4" stroke-linecap="round" opacity="0.5"/>`;
+  s += `<path d="M64 98 V56" fill="none" stroke="${c.leafLo}" stroke-width="1.4" opacity="0.4"/>`;
+  // blossoms
+  s += `<circle cx="60" cy="44" r="4.6" fill="#f582a6"/><circle cx="60" cy="44" r="2" fill="#ffd24a"/>`;
+  s += `<circle cx="47" cy="64" r="3.4" fill="#f6b93b"/><circle cx="73" cy="58" r="3.4" fill="#ef7fa0"/>`;
+  return s;
+}
+
+function formMoonlit(c) {
+  var s = "";
+  // crescent moon + stars
+  s += `<path d="M96 12 A12 12 0 1 0 96 36 A9 9 0 1 1 96 12 Z" fill="#eef2ff"/>`;
+  s += `<g fill="#eef2ff"><circle cx="28" cy="24" r="1.7"/><circle cx="44" cy="15" r="1.2"/><circle cx="68" cy="18" r="1.3"/><circle cx="22" cy="46" r="1.2"/><circle cx="80" cy="40" r="1.1"/></g>`;
+  s += trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
+  s += blob(60, 48, 28, c.leafLo);
+  s += blob(44, 52, 17, c.leaf) + blob(76, 52, 17, c.leaf) + blob(60, 34, 20, c.leaf);
+  s += blob(52, 42, 12, c.leafHi) + blob(68, 44, 11, c.leafHi);
+  // moonlight glint
+  s += blob(54, 40, 6, "#dfe9fb");
+  return s;
+}
+
+function formPhoenix(c) {
+  var s = "";
+  s += `<circle cx="60" cy="44" r="36" fill="#ff8a3a" opacity="0.16"/>`;
+  s += trunk(60, 5, 8, 60, 108, c.trunk, c.leafLo);
+  s += blob(60, 48, 28, c.leafLo);
+  s += blob(44, 52, 16, c.leaf) + blob(76, 52, 16, c.leaf) + blob(60, 34, 20, c.leaf);
+  s += blob(52, 42, 12, c.leafHi) + blob(68, 44, 12, c.leafHi) + blob(60, 32, 13, "#ffe07a");
+  // flame tips licking upward
+  s += `<path d="M60 22 q7 -12 0 -20 q-7 8 0 20 Z" fill="#ff6a2a"/>`;
+  s += `<path d="M46 30 q5 -10 -1 -16 q-6 7 1 16 Z" fill="#ff8a3a"/>`;
+  s += `<path d="M74 30 q5 -10 -1 -16 q-6 7 1 16 Z" fill="#ff8a3a"/>`;
+  // rising embers
+  s += `<g fill="#ffd24a"><circle cx="40" cy="60" r="1.8"/><circle cx="82" cy="56" r="1.6"/><circle cx="60" cy="18" r="1.7"/><circle cx="50" cy="26" r="1.2"/></g>`;
+  return s;
+}
+
+function formBanyan(c) {
+  var s = "";
+  // aerial prop roots hanging from the canopy
+  [-30, -18, -8, 8, 18, 30].forEach(function (dx) {
+    s += `<path d="M${60 + dx} 58 V104" stroke="${c.trunk}" stroke-width="${Math.abs(dx) > 20 ? 4.2 : 2.6}" stroke-linecap="round" opacity="0.9"/>`;
+  });
+  s += trunk(60, 8, 13, 56, 108, c.trunk, c.leafLo);
+  // very broad canopy
+  s += blob(60, 44, 38, c.leafLo);
+  s += blob(32, 48, 20, c.leaf) + blob(88, 48, 20, c.leaf) + blob(60, 30, 24, c.leaf) +
+       blob(46, 38, 15, c.leaf) + blob(74, 38, 15, c.leaf);
+  s += blob(48, 38, 13, c.leafHi) + blob(72, 38, 12, c.leafHi) + blob(60, 32, 14, c.leafHi);
+  return s;
+}
+
 const FORM_RENDERERS = {
   bonsai: formBonsai,
   sprout: formSprout, sapling: formSapling, bamboo: formBamboo, willow: formWillow,
   birch: formBirch, round: formRound, blossom: formBlossom, column: formColumn,
   oak: formOak, conifer: formConifer, pine: formPine, cypress: formCypress,
   baobab: formBaobab, sequoia: formSequoia, redwood: formRedwood, legendary: formLegendary,
+  cactus: formCactus, moonlit: formMoonlit, phoenix: formPhoenix, banyan: formBanyan,
 };
 
-/* id -> tree definition, spanning current + legacy species (for rendering). */
+/* id -> tree definition, spanning current + special + legacy species (render). */
 const TREE_INDEX = {};
-FOREST_TREES.concat(typeof LEGACY_TREES !== "undefined" ? LEGACY_TREES : []).forEach(function (t) { TREE_INDEX[t.id] = t; });
+FOREST_TREES
+  .concat(typeof SPECIAL_TREES !== "undefined" ? SPECIAL_TREES : [])
+  .concat(typeof LEGACY_TREES !== "undefined" ? LEGACY_TREES : [])
+  .forEach(function (t) { TREE_INDEX[t.id] = t; });
 function treeDef(id) { return TREE_INDEX[id] || FOREST_TREES[0]; }
 
 let _svgSeq = 0;

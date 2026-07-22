@@ -366,3 +366,27 @@ input[type="range"].seed-slider {
   font-size: .95rem; font-family: inherit; font-weight: 700; resize: none;
 }
 .fld input:focus, .fld textarea:focus { outline: none; border-color: var(--leaf); }
+
+/* ---------- special trees ---------- */
+.link-special {
+  margin-top: 14px; align-self: center;
+  color: var(--ink-faint); font-weight: 800; font-size: .82rem;
+  padding: 6px 10px; border-radius: 10px;
+}
+.link-special:active { color: var(--leaf-deep); }
+.pick-name .badge.sun { color: #b5762a; background: #fdeecb; }
+.pick-name .badge.moon { color: #4a4f86; background: #e6e8fb; }
+.extra-earned {
+  margin: 14px auto 0; padding: 10px 14px; border-radius: 14px;
+  background: linear-gradient(180deg, #fff6df, #fdeec9); color: #8a6a2a;
+  font-weight: 800; font-size: .9rem; max-width: 30ch; line-height: 1.4;
+}
+.spec-intro { margin-bottom: 6px; }
+.spec-row {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  padding: 10px 4px; border-top: 1px solid var(--line);
+}
+.spec-row:first-of-type { border-top: none; }
+.spec-row .tree-svg { width: 46px; height: 46px; flex: none; }
+.spec-row b { display: block; font-size: .98rem; color: var(--ink); }
+.spec-row span { display: block; font-size: .82rem; color: var(--ink-soft); line-height: 1.4; margin-top: 2px; }

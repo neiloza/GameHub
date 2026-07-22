@@ -39,9 +39,24 @@ legendary 24-hour **World Tree**:
 | Oak | 2 hours | | Redwood | 12 hours |
 | Aspen | 3 hours | | World Tree ✦ | 24 hours |
 
-**Cherry Blossom** and **World Tree** are the two *special* trees. Trees grown in
-an earlier version (Sprout, Willow, Birch, Bamboo, Cedar, Baobab…) still live in
-your barn and render fine on the farm.
+**Cherry Blossom** and **World Tree** are the two *special* trees on the ladder.
+
+### Earned trees
+
+Four more trees can't be picked from the slider — you earn them by **how and
+when** you focus (see the *✦ Special trees* panel in the app):
+
+| Tree | How you earn it |
+|------|-----------------|
+| **Cactus** | A 1-hour focus started in the middle of the day (8am–4pm). Replaces the Maple you'd normally get from a 1-hour focus, so a daytime hour grows a Cactus. |
+| **Moonlit Tree** | An 8-hour focus started at night (8pm–5am). The night-time version of the 8-hour Sequoia. |
+| **Phoenix Tree** | Focus **2 hours total in one day**, built up across as many sessions as you like — you can always return to it. Awarded once per day when you cross 2 hours. |
+| **Banyan Tree** | Reach a **30-day focus streak** (and again at every 30-day milestone). |
+
+When a session start meets a time-of-day condition, the Focus screen previews
+the special tree (with a ☀ Midday / 🌙 Night tag) so you know what you're
+growing. Trees grown in an earlier version (Sprout, Willow, Birch, Bamboo,
+Cedar, Baobab…) still live in your barn and render fine on the farm.
 
 > **Deciduous vs. coniferous** — *deciduous* trees (oak, maple, cherry) are
 > broadleaf and drop their leaves each year; *coniferous* trees (pine, cypress,

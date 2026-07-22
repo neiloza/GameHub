@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Traffic Rush — juggle a busy intersection without crashing.">
+<title>Traffic Rush — GameHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚦</text></svg>">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/game.css">
+<style>
+  .intersection {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .road-h, .road-v {
+    position: absolute;
+    background: #20263f;
+  }
+  .road-h { top: 40%; left: 0; width: 100%; height: 20%; }
+  .road-v { left: 40%; top: 0; height: 100%; width: 20%; }
+  .hub { position: absolute; left: 40%; top: 40%; width: 20%; height: 20%; background: #2a3155; border: 2px solid var(--border); }
+
+  .approach {
+    position: absolute;
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .approach.north { top: 0; left: 40%; width: 20%; height: 40%; flex-direction: column-reverse; align-items: center; padding-bottom: 6px; }
+  .approach.south { bottom: 0; left: 40%; width: 20%; height: 40%; flex-direction: column; align-items: center; padding-top: 6px; }
+  .approach.west  { top: 40%; left: 0; height: 20%; width: 40%; flex-direction: row-reverse; justify-content: flex-start; align-items: center; padding-right: 6px; }
+  .approach.east  { top: 40%; right: 0; height: 20%; width: 40%; flex-direction: row; align-items: center; padding-left: 6px; }
+
+  .signal-dot {
+    position: absolute;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #c0392b;
+    border: 2px solid #0b0e17;
+    z-index: 5;
+  }
+  .approach.north .signal-dot { bottom: 4px; left: calc(50% - 8px); }
+  .approach.south .signal-dot { top: 4px; left: calc(50% - 8px); }
+  .approach.west .signal-dot { right: 4px; top: calc(50% - 8px); }
+  .approach.east .signal-dot { left: 4px; top: calc(50% - 8px); }
+  .approach.go .signal-dot { background: #1fa855; }
+
+  .car {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    background: var(--accent-2);
+    flex-shrink: 0;
+  }
+  .approach.north .car, .approach.south .car { width: 20px; height: 16px; }
+  .approach.west .car, .approach.east .car { width: 16px; height: 20px; }
+  .car.stale { background: #ffb547; }
+  .car.critical { background: #e74c3c; }
+
+  .timer-bar-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--bg-raised);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .timer-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+  <div class="game-shell">
+    <div class="game-topbar">
+      <a href="../../index.html" class="game-back">&larr; Back to Hub</a>
+      <div class="game-title">🚦 Traffic Rush</div>
+    </div>
+    <p class="game-tagline">Cars queue up from all four directions. Tap an approach to turn its light green and let its cars through — but only one direction moves at a time. Let a queue overflow and it's game over.</p>
+
+    <div class="panel" id="setupPanel">
+      <div class="field-label">Directions Active</div>
+      <div class="difficulty-select" id="diffSelect"></div>
+      <div class="btn-row">
+        <button class="btn-action" id="startBtn">Start (60s)</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="gamePanel">
+      <div class="stat-row">
+        <div class="stat-block"><span class="big-stat" id="stat-time">60</span><span class="stat-label">Seconds Left</span></div>
+        <div class="stat-block"><span class="big-stat" id="stat-passed">0</span><span class="stat-label">Cars Passed</span></div>
+        <div class="stat-block"><span class="big-stat" id="stat-lives">3</span><span class="stat-label">Lives</span></div>
+      </div>
+      <div class="timer-bar-track"><div class="timer-bar-fill" id="timerFill"></div></div>
+      <div class="intersection" id="intersection">
+        <div class="road-h"></div>
+        <div class="road-v"></div>
+        <div class="hub"></div>
+        <div class="approach north" data-dir="north"><div class="signal-dot"></div></div>
+        <div class="approach south" data-dir="south"><div class="signal-dot"></div></div>
+        <div class="approach west" data-dir="west"><div class="signal-dot"></div></div>
+        <div class="approach east" data-dir="east"><div class="signal-dot"></div></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="overPanel">
+      <h3 style="margin-bottom:0.5rem;" id="overTitle">Run Complete</h3>
+      <p class="game-message" id="overMessage"></p>
+      <div class="btn-row">
+        <button class="btn-action" id="againBtn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const diffSelect = document.getElementById("diffSelect");
+  const setupPanel = document.getElementById("setupPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const overPanel = document.getElementById("overPanel");
+  const startBtn = document.getElementById("startBtn");
+  const againBtn = document.getElementById("againBtn");
+  const statTime = document.getElementById("stat-time");
+  const statPassed = document.getElementById("stat-passed");
+  const statLives = document.getElementById("stat-lives");
+  const timerFill = document.getElementById("timerFill");
+  const overTitle = document.getElementById("overTitle");
+  const overMessage = document.getElementById("overMessage");
+
+  const ALL_DIRS = ["north", "south", "east", "west"];
+  const DIFFICULTIES = [
+    { label: "2 Directions", dirs: 2, spawnMs: 1500, drainMs: 700 },
+    { label: "3 Directions", dirs: 3, spawnMs: 1300, drainMs: 700 },
+    { label: "4 Directions", dirs: 4, spawnMs: 1100, drainMs: 650 },
+  ];
+  let diffIdx = 0;
+
+  const MAX_QUEUE = 5;
+  const GAME_MS = 60000;
+
+  let activeDirs = [];
+  let queues = {};
+  let activeGreen = null;
+  let passed = 0;
+  let lives = 3;
+  let secondsLeft = 60;
+  let spawnTimer = null;
+  let drainTimer = null;
+  let clockTimer = null;
+  let running = false;
+
+  DIFFICULTIES.forEach((d, i) => {
+    const btn = document.createElement("button");
+    btn.className = "diff-btn" + (i === diffIdx ? " active" : "");
+    btn.textContent = d.label;
+    btn.addEventListener("click", () => {
+      diffIdx = i;
+      [...diffSelect.children].forEach((c) => c.classList.remove("active"));
+      btn.classList.add("active");
+    });
+    diffSelect.appendChild(btn);
+  });
+
+  function beginGame() {
+    const config = DIFFICULTIES[diffIdx];
+    activeDirs = ALL_DIRS.slice(0, config.dirs);
+    queues = {};
+    activeDirs.forEach((d) => (queues[d] = []));
+    activeGreen = null;
+    passed = 0;
+    lives = 3;
+    secondsLeft = 60;
+    running = true;
+
+    setupPanel.classList.add("hidden");
+    overPanel.classList.add("hidden");
+    gamePanel.classList.remove("hidden");
+    statPassed.textContent = "0";
+    statLives.textContent = "3";
+    statTime.textContent = "60";
+    timerFill.style.width = "100%";
+
+    ALL_DIRS.forEach((d) => {
+      const el = document.querySelector(`.approach.${d}`);
+      el.style.display = activeDirs.includes(d) ? "flex" : "none";
+      el.classList.remove("go");
+    });
+
+    render();
+
+    clockTimer = setInterval(() => {
+      secondsLeft--;
+      statTime.textContent = Math.max(secondsLeft, 0);
+      timerFill.style.width = `${(secondsLeft / 60) * 100}%`;
+      if (secondsLeft <= 0) endGame(true);
+    }, 1000);
+
+    spawnTimer = setInterval(spawnCar, config.spawnMs);
+    drainTimer = setInterval(drainGreen, config.drainMs);
+  }
+
+  function spawnCar() {
+    if (!running) return;
+    const dir = activeDirs[Math.floor(Math.random() * activeDirs.length)];
+    const q = queues[dir];
+    q.push({ age: 0 });
+    if (q.length > MAX_QUEUE) {
+      loseLife(`A queue overflowed at ${dir}!`);
+    }
+    render();
+  }
+
+  function drainGreen() {
+    if (!running || !activeGreen) return;
+    const q = queues[activeGreen];
+    if (q.length > 0) {
+      q.shift();
+      passed++;
+      statPassed.textContent = passed;
+    }
+    render();
+  }
+
+  function loseLife(reason) {
+    lives--;
+    statLives.textContent = Math.max(lives, 0);
+    activeDirs.forEach((d) => (queues[d] = []));
+    if (lives <= 0) {
+      endGame(false, reason);
+    }
+    render();
+  }
+
+  function setGreen(dir) {
+    if (!running) return;
+    activeGreen = dir === activeGreen ? null : dir;
+    activeDirs.forEach((d) => {
+      document.querySelector(`.approach.${d}`).classList.toggle("go", d === activeGreen);
+    });
+  }
+
+  function render() {
+    activeDirs.forEach((dir) => {
+      const el = document.querySelector(`.approach.${dir}`);
+      const dot = el.querySelector(".signal-dot");
+      el.querySelectorAll(".car").forEach((c) => c.remove());
+      const q = queues[dir];
+      q.forEach((car, i) => {
+        const carEl = document.createElement("div");
+        carEl.className = "car";
+        if (i >= MAX_QUEUE - 1) carEl.classList.add("critical");
+        else if (i >= MAX_QUEUE - 2) carEl.classList.add("stale");
+        if (dir === "north" || dir === "south") {
+          el.insertBefore(carEl, dot);
+        } else {
+          el.insertBefore(carEl, dot);
+        }
+      });
+    });
+  }
+
+  function endGame(completedFullTime, reason) {
+    running = false;
+    clearInterval(spawnTimer);
+    clearInterval(drainTimer);
+    clearInterval(clockTimer);
+    gamePanel.classList.add("hidden");
+    overPanel.classList.remove("hidden");
+    if (completedFullTime) {
+      overTitle.textContent = "Time's Up!";
+      overMessage.textContent = `You kept traffic flowing and passed ${passed} cars safely with ${lives} life/lives to spare.`;
+    } else {
+      overTitle.textContent = "Gridlock!";
+      overMessage.textContent = `${reason || "A queue overflowed."} You passed ${passed} cars before the intersection jammed.`;
+    }
+  }
+
+  function resetToSetup() {
+    overPanel.classList.add("hidden");
+    setupPanel.classList.remove("hidden");
+  }
+
+  document.querySelectorAll(".approach").forEach((el) => {
+    el.addEventListener("click", () => setGreen(el.dataset.dir));
+  });
+  startBtn.addEventListener("click", beginGame);
+  againBtn.addEventListener("click", resetToSetup);
+})();
+</script>
+</body>
+</html>

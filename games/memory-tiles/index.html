@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Memory Tiles — remember which tiles lit up.">
+<title>Memory Tiles — GameHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/game.css">
+<style>
+  .board {
+    display: grid;
+    gap: 0.5rem;
+    aspect-ratio: 1 / 1;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  .tile {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .tile:hover { transform: scale(1.03); }
+  .tile.lit { background: linear-gradient(135deg, var(--accent-2), var(--accent)); border-color: var(--accent-2); }
+  .tile.picked { background: rgba(124, 92, 255, 0.35); border-color: var(--accent); }
+  .tile.correct { background: #1fa855; border-color: #1fa855; }
+  .tile.wrong { background: #c0392b; border-color: #c0392b; }
+  .tile.missed { background: rgba(255, 181, 71, 0.35); border-color: #ffb547; }
+</style>
+</head>
+<body>
+  <div class="game-shell">
+    <div class="game-topbar">
+      <a href="../../index.html" class="game-back">&larr; Back to Hub</a>
+      <div class="game-title">🧩 Memory Tiles</div>
+    </div>
+    <p class="game-tagline">Half the grid lights up for a moment. Memorize it, then click every tile that lit — no more, no less. Miss three rounds and it's game over.</p>
+
+    <div class="panel" id="setupPanel">
+      <div class="field-label">Grid Size</div>
+      <div class="difficulty-select" id="diffSelect"></div>
+      <div class="btn-row">
+        <button class="btn-action" id="startBtn">Start</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="gamePanel">
+      <div class="stat-row">
+        <div class="stat-block"><span class="big-stat" id="stat-round">1</span><span class="stat-label">Round</span></div>
+        <div class="stat-block"><span class="big-stat" id="stat-lives">3</span><span class="stat-label">Lives</span></div>
+        <div class="stat-block"><span class="big-stat" id="stat-score">0</span><span class="stat-label">Score</span></div>
+      </div>
+      <p class="game-message" id="gameMessage">Memorize the lit tiles...</p>
+      <div class="board" id="board"></div>
+    </div>
+
+    <div class="panel hidden" id="overPanel">
+      <h3 style="margin-bottom:0.5rem;">Game Over</h3>
+      <p class="game-message" id="overMessage"></p>
+      <div class="btn-row">
+        <button class="btn-action" id="againBtn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const diffSelect = document.getElementById("diffSelect");
+  const setupPanel = document.getElementById("setupPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const overPanel = document.getElementById("overPanel");
+  const startBtn = document.getElementById("startBtn");
+  const againBtn = document.getElementById("againBtn");
+  const board = document.getElementById("board");
+  const gameMessage = document.getElementById("gameMessage");
+  const statRound = document.getElementById("stat-round");
+  const statLives = document.getElementById("stat-lives");
+  const statScore = document.getElementById("stat-score");
+  const overMessage = document.getElementById("overMessage");
+
+  const SIZES = [3, 4, 5, 6, 7];
+  let gridSize = 3;
+  let round = 1;
+  let lives = 3;
+  let score = 0;
+  let litSet = new Set();
+  let pickedSet = new Set();
+  let phase = "idle"; // memorize | recall | reveal
+
+  SIZES.forEach((n) => {
+    const btn = document.createElement("button");
+    btn.className = "diff-btn" + (n === gridSize ? " active" : "");
+    btn.textContent = `${n} x ${n}`;
+    btn.addEventListener("click", () => {
+      gridSize = n;
+      [...diffSelect.children].forEach((c) => c.classList.remove("active"));
+      btn.classList.add("active");
+    });
+    diffSelect.appendChild(btn);
+  });
+
+  function beginGame() {
+    round = 1;
+    lives = 3;
+    score = 0;
+    setupPanel.classList.add("hidden");
+    overPanel.classList.add("hidden");
+    gamePanel.classList.remove("hidden");
+    updateStats();
+    playRound();
+  }
+
+  function updateStats() {
+    statRound.textContent = round;
+    statLives.textContent = lives;
+    statScore.textContent = score;
+  }
+
+  function buildBoard() {
+    board.innerHTML = "";
+    board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    for (let i = 0; i < gridSize * gridSize; i++) {
+      const t = document.createElement("div");
+      t.className = "tile";
+      t.dataset.idx = i;
+      t.addEventListener("click", () => handlePick(i));
+      board.appendChild(t);
+    }
+  }
+
+  function playRound() {
+    phase = "memorize";
+    pickedSet = new Set();
+    buildBoard();
+    const total = gridSize * gridSize;
+    const litCount = Math.round(total / 2);
+    const indices = [...Array(total).keys()];
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    litSet = new Set(indices.slice(0, litCount));
+
+    gameMessage.textContent = "Memorize the lit tiles...";
+    const tiles = board.children;
+    litSet.forEach((idx) => tiles[idx].classList.add("lit"));
+
+    const memorizeTime = Math.max(900, 2200 - gridSize * 150);
+    setTimeout(() => {
+      [...tiles].forEach((t) => t.classList.remove("lit"));
+      phase = "recall";
+      gameMessage.textContent = `Pick the ${litCount} tiles that lit up.`;
+    }, memorizeTime);
+  }
+
+  function handlePick(idx) {
+    if (phase !== "recall") return;
+    const tile = board.children[idx];
+    if (pickedSet.has(idx)) return;
+    pickedSet.add(idx);
+    tile.classList.add("picked");
+
+    if (pickedSet.size === litSet.size) {
+      revealResult();
+    }
+  }
+
+  function revealResult() {
+    phase = "reveal";
+    const tiles = board.children;
+    let correct = true;
+    litSet.forEach((idx) => {
+      if (pickedSet.has(idx)) {
+        tiles[idx].classList.remove("picked");
+        tiles[idx].classList.add("correct");
+      } else {
+        tiles[idx].classList.add("missed");
+        correct = false;
+      }
+    });
+    pickedSet.forEach((idx) => {
+      if (!litSet.has(idx)) {
+        tiles[idx].classList.remove("picked");
+        tiles[idx].classList.add("wrong");
+        correct = false;
+      }
+    });
+
+    if (correct) {
+      score += gridSize * 10;
+      gameMessage.textContent = "Correct! Next round...";
+    } else {
+      lives--;
+      gameMessage.textContent = lives > 0 ? "Not quite. Next round..." : "Out of lives!";
+    }
+    updateStats();
+
+    setTimeout(() => {
+      if (lives <= 0) {
+        endGame();
+      } else {
+        round++;
+        updateStats();
+        playRound();
+      }
+    }, 1200);
+  }
+
+  function endGame() {
+    gamePanel.classList.add("hidden");
+    overPanel.classList.remove("hidden");
+    overMessage.textContent = `You cleared ${round - 1} round(s) on a ${gridSize}x${gridSize} grid, for a score of ${score}.`;
+  }
+
+  function resetToSetup() {
+    overPanel.classList.add("hidden");
+    setupPanel.classList.remove("hidden");
+  }
+
+  startBtn.addEventListener("click", beginGame);
+  againBtn.addEventListener("click", resetToSetup);
+})();
+</script>
+</body>
+</html>

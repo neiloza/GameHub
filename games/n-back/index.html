@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="N-Back — track shapes and colors against your working memory.">
+<title>N-Back — GameHub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/game.css">
+<style>
+  .stimulus-box {
+    height: 260px;
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+  svg.shape { width: 130px; height: 130px; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.4)); }
+
+  .match-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .match-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-raised);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .match-btn:hover { border-color: var(--accent); }
+  .match-btn.flash-correct { background: #1fa855; border-color: #1fa855; }
+  .match-btn.flash-wrong { background: #c0392b; border-color: #c0392b; }
+
+  .timer-bar-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--bg-raised);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .timer-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    width: 100%;
+    transition: width 1s linear;
+  }
+</style>
+</head>
+<body>
+  <div class="game-shell">
+    <div class="game-topbar">
+      <a href="../../index.html" class="game-back">&larr; Back to Hub</a>
+      <div class="game-title">🧠 N-Back</div>
+    </div>
+    <p class="game-tagline">A shape and color flash by every couple seconds. Tap Shape Match or Color Match whenever the current one matches what appeared N steps ago. 60 seconds on the clock.</p>
+
+    <div class="panel" id="setupPanel">
+      <div class="field-label">N-Back Level</div>
+      <div class="difficulty-select" id="diffSelect"></div>
+      <div class="btn-row">
+        <button class="btn-action" id="startBtn">Start (60s)</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="gamePanel">
+      <div class="stat-row">
+        <div class="stat-block"><span class="big-stat" id="stat-time">60</span><span class="stat-label">Seconds Left</span></div>
+        <div class="stat-block"><span class="big-stat" id="stat-score">0</span><span class="stat-label">Score</span></div>
+        <div class="stat-block"><span class="big-stat" id="stat-streak">0</span><span class="stat-label">Round</span></div>
+      </div>
+      <div class="timer-bar-track"><div class="timer-bar-fill" id="timerFill"></div></div>
+      <div class="stimulus-box" id="stimulusBox"></div>
+      <div class="match-row">
+        <button class="match-btn" id="shapeBtn">Shape Match</button>
+        <button class="match-btn" id="colorBtn">Color Match</button>
+      </div>
+    </div>
+
+    <div class="panel hidden" id="overPanel">
+      <h3 style="margin-bottom:0.5rem;">Time's Up</h3>
+      <p class="game-message" id="overMessage"></p>
+      <div class="btn-row">
+        <button class="btn-action" id="againBtn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const diffSelect = document.getElementById("diffSelect");
+  const setupPanel = document.getElementById("setupPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const overPanel = document.getElementById("overPanel");
+  const startBtn = document.getElementById("startBtn");
+  const againBtn = document.getElementById("againBtn");
+  const stimulusBox = document.getElementById("stimulusBox");
+  const shapeBtn = document.getElementById("shapeBtn");
+  const colorBtn = document.getElementById("colorBtn");
+  const statTime = document.getElementById("stat-time");
+  const statScore = document.getElementById("stat-score");
+  const statStreak = document.getElementById("stat-streak");
+  const timerFill = document.getElementById("timerFill");
+  const overMessage = document.getElementById("overMessage");
+
+  const LEVELS = [1, 2, 3];
+  let nLevel = 2;
+  const SHAPES = ["circle", "square", "triangle", "diamond", "star"];
+  const COLORS = [
+    { name: "red", hex: "#e74c3c" },
+    { name: "blue", hex: "#3498db" },
+    { name: "green", hex: "#1fa855" },
+    { name: "yellow", hex: "#f1c40f" },
+    { name: "purple", hex: "#9b59b6" },
+  ];
+
+  const ROUND_MS = 2200;
+  const GAME_MS = 60000;
+
+  let history = [];
+  let score = 0;
+  let round = 0;
+  let secondsLeft = 60;
+  let roundTimer = null;
+  let clockTimer = null;
+  let respondedShape = false;
+  let respondedColor = false;
+
+  LEVELS.forEach((n) => {
+    const btn = document.createElement("button");
+    btn.className = "diff-btn" + (n === nLevel ? " active" : "");
+    btn.textContent = `${n}-back`;
+    btn.addEventListener("click", () => {
+      nLevel = n;
+      [...diffSelect.children].forEach((c) => c.classList.remove("active"));
+      btn.classList.add("active");
+    });
+    diffSelect.appendChild(btn);
+  });
+
+  function shapeSvg(shapeName, hex) {
+    const c = hex;
+    switch (shapeName) {
+      case "circle":
+        return `<circle cx="65" cy="65" r="55" fill="${c}" />`;
+      case "square":
+        return `<rect x="12" y="12" width="106" height="106" rx="12" fill="${c}" />`;
+      case "triangle":
+        return `<polygon points="65,8 122,120 8,120" fill="${c}" />`;
+      case "diamond":
+        return `<polygon points="65,5 125,65 65,125 5,65" fill="${c}" />`;
+      case "star": {
+        const pts = [];
+        for (let i = 0; i < 10; i++) {
+          const r = i % 2 === 0 ? 58 : 26;
+          const a = (Math.PI / 5) * i - Math.PI / 2;
+          pts.push(`${65 + r * Math.cos(a)},${65 + r * Math.sin(a)}`);
+        }
+        return `<polygon points="${pts.join(" ")}" fill="${c}" />`;
+      }
+    }
+  }
+
+  function renderStimulus(stim) {
+    stimulusBox.innerHTML = `<svg class="shape" viewBox="0 0 130 130">${shapeSvg(stim.shape, stim.color.hex)}</svg>`;
+  }
+
+  function beginGame() {
+    history = [];
+    score = 0;
+    round = 0;
+    secondsLeft = 60;
+    respondedShape = false;
+    respondedColor = false;
+    setupPanel.classList.add("hidden");
+    overPanel.classList.add("hidden");
+    gamePanel.classList.remove("hidden");
+    statScore.textContent = "0";
+    statTime.textContent = "60";
+    statStreak.textContent = "0";
+    timerFill.style.width = "100%";
+
+    clockTimer = setInterval(() => {
+      secondsLeft--;
+      statTime.textContent = Math.max(secondsLeft, 0);
+      if (secondsLeft <= 0) endGame();
+    }, 1000);
+
+    nextRound();
+    roundTimer = setInterval(nextRound, ROUND_MS);
+  }
+
+  function nextRound() {
+    if (secondsLeft <= 0) return;
+    // Score misses from the previous round before advancing
+    if (round > 0) scoreMissedResponses();
+
+    round++;
+    statStreak.textContent = round;
+    respondedShape = false;
+    respondedColor = false;
+    shapeBtn.classList.remove("flash-correct", "flash-wrong");
+    colorBtn.classList.remove("flash-correct", "flash-wrong");
+
+    let stim;
+    // Bias roughly 40% of rounds toward a deliberate shape or color match so the game is playable
+    if (history.length >= nLevel && Math.random() < 0.4) {
+      const ref = history[history.length - nLevel];
+      const matchShape = Math.random() < 0.5;
+      stim = {
+        shape: matchShape ? ref.shape : randomOther(SHAPES, ref.shape),
+        color: matchShape ? randomOtherColor(ref.color.name) : ref.color,
+      };
+    } else {
+      stim = { shape: randomItem(SHAPES), color: randomItem(COLORS) };
+    }
+
+    history.push(stim);
+    renderStimulus(stim);
+  }
+
+  function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function randomOther(arr, exclude) {
+    const options = arr.filter((x) => x !== exclude);
+    return randomItem(options);
+  }
+  function randomOtherColor(excludeName) {
+    const options = COLORS.filter((c) => c.name !== excludeName);
+    return randomItem(options);
+  }
+
+  function currentTargets() {
+    if (history.length <= nLevel) return null;
+    return history[history.length - 1 - nLevel];
+  }
+
+  function scoreMissedResponses() {
+    const idx = history.length - 1 - nLevel;
+    if (idx < 0) return;
+    const current = history[history.length - 1];
+    const ref = history[idx];
+    const shapeMatch = current.shape === ref.shape;
+    const colorMatch = current.color.name === ref.color.name;
+    if (shapeMatch && !respondedShape) score -= 1;
+    if (colorMatch && !respondedColor) score -= 1;
+    statScore.textContent = score;
+  }
+
+  function handleMatch(kind) {
+    if (round <= nLevel) return;
+    const current = history[history.length - 1];
+    const ref = history[history.length - 1 - nLevel];
+    const btn = kind === "shape" ? shapeBtn : colorBtn;
+    const already = kind === "shape" ? respondedShape : respondedColor;
+    if (already) return;
+    if (kind === "shape") respondedShape = true;
+    else respondedColor = true;
+
+    const isMatch = kind === "shape" ? current.shape === ref.shape : current.color.name === ref.color.name;
+    if (isMatch) {
+      score += 2;
+      btn.classList.add("flash-correct");
+    } else {
+      score -= 1;
+      btn.classList.add("flash-wrong");
+    }
+    statScore.textContent = score;
+    setTimeout(() => btn.classList.remove("flash-correct", "flash-wrong"), 400);
+  }
+
+  function endGame() {
+    clearInterval(clockTimer);
+    clearInterval(roundTimer);
+    gamePanel.classList.add("hidden");
+    overPanel.classList.remove("hidden");
+    overMessage.textContent = `Final score: ${score} at ${nLevel}-back level across ${round} rounds.`;
+  }
+
+  function resetToSetup() {
+    overPanel.classList.add("hidden");
+    setupPanel.classList.remove("hidden");
+  }
+
+  shapeBtn.addEventListener("click", () => handleMatch("shape"));
+  colorBtn.addEventListener("click", () => handleMatch("color"));
+  startBtn.addEventListener("click", beginGame);
+  againBtn.addEventListener("click", resetToSetup);
+})();
+</script>
+</body>
+</html>

@@ -20,15 +20,54 @@
 
 const GAMES = [
   {
-    slug: "your-first-game",
-    title: "Your Games Go Here",
+    slug: "reaction-speed",
+    title: "Reaction Speed",
     description:
-      "This is a placeholder card. Each game you import or build will appear " +
-      "here as its own playable card.",
-    emoji: "🕹️",
-    tags: ["Placeholder"],
-    path: "#",
+      "Wait for the pad to turn green, then tap as fast as you can. Five " +
+      "rounds test your raw reflexes — false-start and you'll pay for it.",
+    emoji: "⚡",
+    tags: ["Reaction", "Brain"],
+    path: "games/reaction-speed/",
     featured: true,
-    comingSoon: true,
+  },
+  {
+    slug: "memory-tiles",
+    title: "Memory Tiles",
+    description:
+      "A grid of tiles lights up for a moment — memorize which ones, then " +
+      "click them all back. Grid size scales from 3x3 up to 7x7.",
+    emoji: "🧩",
+    tags: ["Memory", "Brain"],
+    path: "games/memory-tiles/",
+  },
+  {
+    slug: "number-recall",
+    title: "Number Recall",
+    description:
+      "Watch a sequence of digits flash by, then type them back in order. " +
+      "Choose a sequence length from 5 up to 25 digits.",
+    emoji: "🔢",
+    tags: ["Memory", "Brain"],
+    path: "games/number-recall/",
+  },
+  {
+    slug: "n-back",
+    title: "N-Back",
+    description:
+      "Shapes and colors flash by every couple seconds — tap Shape Match or " +
+      "Color Match whenever the current one matches N steps back. 60 seconds on the clock.",
+    emoji: "🧠",
+    tags: ["Working Memory", "Brain"],
+    path: "games/n-back/",
+  },
+  {
+    slug: "traffic-rush",
+    title: "Traffic Rush",
+    description:
+      "Cars queue from every direction — juggle the lights to keep traffic " +
+      "flowing without letting any queue overflow. A pure multitasking workout.",
+    emoji: "🚦",
+    tags: ["Multitasking", "Brain"],
+    path: "games/traffic-rush/",
   },
 ];

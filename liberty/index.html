@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Liberty — track upcoming local, state, and federal bills, sign petitions, and send your support or opposition straight to your representatives.">
+  <meta name="description" content="Liberty — enter your ZIP, browse the bills up for a vote in your town, county, state, and Congress, and make your voice heard to your representatives.">
   <meta name="theme-color" content="#1b2a4a">
 
   <title>Liberty — Track bills. Make your voice count.</title>
@@ -18,6 +18,23 @@
 </head>
 <body>
 
+  <!-- ===== ONBOARDING (ZIP entry) ===== -->
+  <div class="onboarding" id="onboarding">
+    <div class="onboarding-card">
+      <svg class="brand-mark big" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2 3 6v2h18V6zM5 9v9H4v2h16v-2h-1V9h-2v9h-3V9h-2v9H9V9z" fill="currentColor"/>
+      </svg>
+      <h1>Find what's up for a vote near you</h1>
+      <p>Enter your ZIP code and Liberty will pull up the bills in your town, county, state, and Congress.</p>
+      <form id="zip-form">
+        <input type="text" id="zip-input" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. 94103" aria-label="ZIP code" autocomplete="postal-code">
+        <button type="submit" class="btn btn-navy" id="zip-submit-btn">Find my area</button>
+      </form>
+      <p class="onboarding-error" id="onboarding-error"></p>
+      <p class="onboarding-hint">Your ZIP is only used to look up your city/state and is stored on this device.</p>
+    </div>
+  </div>
+
   <div id="app">
     <header class="topbar">
       <div class="brand">
@@ -26,99 +43,100 @@
         </svg>
         <span>Liberty</span>
       </div>
+      <button class="region-chip" id="region-chip" title="Change your region">📍 <span id="region-chip-text">—</span></button>
       <nav class="top-nav">
-        <button class="top-nav-btn active" data-view="browse">Bills</button>
-        <button class="top-nav-btn" data-view="voice">My Voice</button>
-        <button class="top-nav-btn" data-view="reps">Representatives</button>
+        <button class="top-nav-btn active" data-view="discover">Discover</button>
+        <button class="top-nav-btn" data-view="saved">Saved</button>
+        <button class="top-nav-btn" data-view="reps">Reps</button>
+        <button class="top-nav-btn" data-view="events">Events &amp; Candidates</button>
         <button class="top-nav-btn" data-view="about">About</button>
       </nav>
     </header>
 
-    <!-- ===== BROWSE view ===== -->
-    <section class="view active" id="view-browse">
-      <div class="hero">
-        <h1>What's up for a vote near you?</h1>
-        <p>Browse upcoming local, state, and federal bills. Read the plain-language summary, then sign or start a petition to tell your representatives where you stand.</p>
-      </div>
-
-      <div class="filters">
-        <div class="pill-group" id="level-filters">
-          <button class="pill active" data-level="all">All levels</button>
-          <button class="pill" data-level="local">🏙️ Local</button>
-          <button class="pill" data-level="state">🏛️ State</button>
-          <button class="pill" data-level="federal">🇺🇸 Federal</button>
-        </div>
-        <input class="search-input" id="search-input" type="search" placeholder="Search bills, topics, sponsors…" aria-label="Search bills">
-        <select class="topic-select" id="topic-select" aria-label="Filter by topic">
-          <option value="all">All topics</option>
-        </select>
-      </div>
-
-      <div class="bill-list" id="bill-list"></div>
-    </section>
-
-    <!-- ===== BILL DETAIL view ===== -->
-    <section class="view" id="view-bill">
-      <button class="back-btn" id="bill-back-btn">← Back to bills</button>
-      <div id="bill-detail"></div>
-    </section>
-
-    <!-- ===== MY VOICE view ===== -->
-    <section class="view" id="view-voice">
-      <div class="hero hero-compact">
-        <h1>My Voice</h1>
-        <p>Petitions you've started or signed. Your voice stays saved on this device.</p>
-      </div>
-      <div id="voice-content"></div>
-    </section>
-
-    <!-- ===== REPRESENTATIVES view ===== -->
-    <section class="view" id="view-reps">
-      <div class="hero hero-compact">
-        <h1>Your Representatives</h1>
-        <p>Everyone with a vote on the bills above — from your mayor to your U.S. Senators.</p>
-      </div>
-      <div class="pill-group" id="rep-level-filters">
-        <button class="pill active" data-level="all">All levels</button>
-        <button class="pill" data-level="local">🏙️ Local</button>
+    <!-- ===== DISCOVER (swipe deck) ===== -->
+    <section class="view active" id="view-discover">
+      <div class="pill-group" id="level-tabs">
+        <button class="pill active" data-level="town">🏘️ Town</button>
+        <button class="pill" data-level="county">🏞️ County</button>
         <button class="pill" data-level="state">🏛️ State</button>
         <button class="pill" data-level="federal">🇺🇸 Federal</button>
       </div>
-      <div class="rep-list" id="rep-list"></div>
+
+      <div class="coverage-note" id="coverage-note"></div>
+
+      <div class="deck" id="deck"></div>
+
+      <div class="deck-controls" id="deck-controls">
+        <button class="btn btn-oppose" id="skip-btn">✕ Not interested</button>
+        <button class="btn btn-support" id="interested-btn">★ Interested</button>
+      </div>
     </section>
 
-    <!-- ===== ABOUT view ===== -->
+    <!-- ===== SAVED ===== -->
+    <section class="view" id="view-saved">
+      <div class="hero hero-compact">
+        <h1>Saved</h1>
+        <p>Bills you marked interested in. Read up, then make your voice heard.</p>
+      </div>
+      <div id="saved-content"></div>
+    </section>
+
+    <!-- ===== REPRESENTATIVES ===== -->
+    <section class="view" id="view-reps">
+      <div class="hero hero-compact">
+        <h1>Your Representatives</h1>
+        <p>Everyone with a vote on the bills above, for your area.</p>
+      </div>
+      <div id="reps-content"></div>
+    </section>
+
+    <!-- ===== EVENTS & CANDIDATES ===== -->
+    <section class="view" id="view-events">
+      <div class="hero hero-compact">
+        <h1>Events &amp; Candidates</h1>
+        <p>Conventions, marches, petition drives, and races to get involved in.</p>
+      </div>
+      <div id="events-content"></div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
     <section class="view" id="view-about">
       <div class="about-card">
         <h1>About Liberty</h1>
-        <p>Liberty is a resource for people who want to stay engaged with local, state, and federal government but don't have time to track every committee hearing and floor vote. Browse what's up for a vote, read a plain-language summary, and make your position — support or oppose — visible to the people who represent you.</p>
+        <p>Liberty is a resource for people who want to stay engaged with local, state, and federal government but don't have time to track every committee hearing and floor vote. Enter your ZIP, swipe through what's up for a vote, and make your position — support or oppose — visible to the people who represent you.</p>
         <h2>How it works</h2>
         <ol>
-          <li><strong>Browse bills</strong> by level of government, topic, or keyword.</li>
-          <li><strong>Sign or start a petition</strong> stating your support or opposition, with an optional comment.</li>
-          <li><strong>Send your voice</strong> — Liberty drafts a message to the relevant representatives that you can send by email in one click.</li>
+          <li><strong>Enter your ZIP.</strong> Liberty resolves it to your city and state.</li>
+          <li><strong>Browse by level</strong> — Town, County, State, Federal — one bill at a time. Mark each <em>Interested</em> (save it) or <em>Not interested</em> (skip it) and keep cycling through the pile.</li>
+          <li><strong>Read up</strong> on anything you saved, then hit <strong>Make My Voice Heard</strong> to record your support or opposition and, optionally, email your representatives directly.</li>
+          <li><strong>Get involved beyond bills</strong> — see local conventions, marches, and candidate races on the Events &amp; Candidates tab.</li>
         </ol>
         <h2>About this data</h2>
-        <p>This build ships with a curated set of sample bills and representatives so the app is fully explorable offline. Petitions and signatures you create are saved locally in your browser (<code>localStorage</code>) — nothing is sent to a server. To go live with real legislation, wire <code>data/bills.js</code> up to:</p>
+        <p id="about-updated"></p>
+        <p>This is a real, manually-researched snapshot — not a live feed. Every bill, event, and candidate entry links to its source. There's no backend, so:</p>
+        <ul>
+          <li>Your saved bills and recorded votes live in this browser's <code>localStorage</code> — nothing is sent to a server.</li>
+          <li>Coverage is currently seeded for <strong>federal</strong> legislation, <strong>California</strong> state legislation, and <strong>San Francisco, CA</strong> local legislation. Entering a ZIP outside that will still show federal (and state, if we've covered your state) — anything else gets logged locally as a requested region for the next research pass.</li>
+        </ul>
+        <p>To go live with continuously updating data, wire <code>data/repository.js</code> up to:</p>
         <ul>
           <li><a href="https://api.congress.gov/" target="_blank" rel="noopener">Congress.gov API</a> for federal bills</li>
           <li><a href="https://v3.openstates.org/" target="_blank" rel="noopener">Open States API</a> for state legislation</li>
           <li>Your city or county's legislative system (Legistar, Municode, CivicPlus, etc.) for local ordinances</li>
-          <li><a href="https://developers.google.com/civic-information" target="_blank" rel="noopener">Google Civic Information API</a> to look up a user's actual representatives by address</li>
+          <li><a href="https://developers.google.com/civic-information" target="_blank" rel="noopener">Google Civic Information API</a> for precise representative lookups by address</li>
         </ul>
       </div>
     </section>
   </div>
 
-  <!-- ===== petition modal ===== -->
+  <!-- ===== bill reader / voice modal ===== -->
   <div class="overlay" id="overlay">
     <div class="sheet" id="sheet"></div>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <script src="data/bills.js"></script>
-  <script src="data/representatives.js"></script>
+  <script src="data/repository.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,116 +1,126 @@
 /* Liberty — client-side app. No build step, no backend.
- * Petitions/signatures persist in localStorage under LS_KEY.
+ * Region, saved decisions, and recorded votes persist in localStorage.
  */
 
-const LS_KEY = "liberty.petitions.v1";
+const LS_REGION = "liberty.region.v1";
+const LS_DECISIONS = "liberty.decisions.v1"; // { billId: 'interested' | 'skipped' }
+const LS_VOICE = "liberty.voice.v1"; // { billId: { stance, comment, name, timestamp } }
+const LS_REQUESTED = "liberty.requestedRegions.v1"; // [zip, ...]
 
 const state = {
-  view: "browse",
-  level: "all",
-  topic: "all",
-  search: "",
-  repLevel: "all",
-  currentBillId: null,
+  view: "discover",
+  level: "town",
+  region: null, // { zip, city, state, stateName }
+  deckIndex: 0,
 };
 
 // ---------- persistence ----------
 
-function loadPetitions() {
+function readJson(key, fallback) {
   try {
-    return JSON.parse(localStorage.getItem(LS_KEY)) || {};
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
   } catch {
-    return {};
+    return fallback;
   }
 }
-
-function savePetitions(data) {
-  localStorage.setItem(LS_KEY, JSON.stringify(data));
+function writeJson(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-function getPetitionsForBill(billId) {
-  const all = loadPetitions();
-  return all[billId] || [];
+function getRegion() {
+  return readJson(LS_REGION, null);
+}
+function setRegion(region) {
+  writeJson(LS_REGION, region);
+  state.region = region;
 }
 
-function createPetition(billId, { stance, title, message, authorName }) {
-  const all = loadPetitions();
-  if (!all[billId]) all[billId] = [];
-  const petition = {
-    id: `p_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-    billId,
-    stance,
-    title,
-    message,
-    createdAt: new Date().toISOString(),
-    signatures: [
-      { name: authorName || "Anonymous", comment: "", stance, timestamp: new Date().toISOString() },
-    ],
-  };
-  all[billId].unshift(petition);
-  savePetitions(all);
-  return petition;
+function getDecisions() {
+  return readJson(LS_DECISIONS, {});
+}
+function setDecision(billId, decision) {
+  const all = getDecisions();
+  all[billId] = decision;
+  writeJson(LS_DECISIONS, all);
 }
 
-function signPetition(billId, petitionId, { name, comment, stance }) {
-  const all = loadPetitions();
-  const list = all[billId] || [];
-  const petition = list.find((p) => p.id === petitionId);
-  if (!petition) return null;
-  petition.signatures.push({
-    name: name || "Anonymous",
-    comment: comment || "",
-    stance,
-    timestamp: new Date().toISOString(),
-  });
-  savePetitions(all);
-  return petition;
+function getVoices() {
+  return readJson(LS_VOICE, {});
+}
+function recordVoice(billId, entry) {
+  const all = getVoices();
+  all[billId] = { ...entry, timestamp: new Date().toISOString() };
+  writeJson(LS_VOICE, all);
 }
 
-function tally(petition) {
-  const support = petition.signatures.filter((s) => s.stance === "support").length;
-  const oppose = petition.signatures.filter((s) => s.stance === "oppose").length;
-  return { support, oppose, total: support + oppose };
-}
-
-function billTally(billId) {
-  const petitions = getPetitionsForBill(billId);
-  return petitions.reduce(
-    (acc, p) => {
-      const t = tally(p);
-      acc.support += t.support;
-      acc.oppose += t.oppose;
-      return acc;
-    },
-    { support: 0, oppose: 0 }
-  );
-}
-
-function allSignedBillIds() {
-  const all = loadPetitions();
-  return Object.keys(all);
+function logRequestedRegion(zip) {
+  const list = readJson(LS_REQUESTED, []);
+  if (!list.includes(zip)) {
+    list.push(zip);
+    writeJson(LS_REQUESTED, list);
+  }
 }
 
 // ---------- helpers ----------
 
-function billById(id) {
-  return LIBERTY_BILLS.find((b) => b.id === id);
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
-function repsForBill(bill) {
-  return LIBERTY_REPS.filter((r) => r.level === bill.level);
+function regionKey(region) {
+  return `${region.state}:${slugify(region.city)}`;
+}
+
+function getLocalData() {
+  if (!state.region) return null;
+  return LIBERTY_REPOSITORY.locals[regionKey(state.region)] || null;
+}
+function getStateData() {
+  if (!state.region) return null;
+  return LIBERTY_REPOSITORY.states[state.region.state] || null;
+}
+function getFederalData() {
+  return LIBERTY_REPOSITORY.federal;
+}
+
+function billsForLevel(level) {
+  if (level === "town" || level === "county") {
+    const local = getLocalData();
+    if (!local) return [];
+    return local.bills.filter((b) => b.scope === level);
+  }
+  if (level === "state") {
+    const st = getStateData();
+    return st ? st.bills : [];
+  }
+  return getFederalData().bills; // federal
+}
+
+function allBills() {
+  const local = getLocalData();
+  const st = getStateData();
+  return [...(local ? local.bills : []), ...(st ? st.bills : []), ...getFederalData().bills];
+}
+
+function billById(id) {
+  return allBills().find((b) => b.id === id);
 }
 
 function levelLabel(level) {
-  return { local: "Local", state: "State", federal: "Federal" }[level] || level;
+  return { town: "Town", county: "County", state: "State", federal: "Federal" }[level] || level;
 }
-
-function levelEmoji(level) {
-  return { local: "🏙️", state: "🏛️", federal: "🇺🇸" }[level] || "";
+function levelBadgeClass(level) {
+  return { town: "badge-local", county: "badge-local", state: "badge-state", federal: "badge-federal" }[level] || "";
 }
 
 function escapeHtml(str) {
   const div = document.createElement("div");
-  div.textContent = str;
+  div.textContent = str == null ? "" : String(str);
   return div.innerHTML;
 }
 
@@ -130,6 +140,46 @@ function closeSheet() {
   document.getElementById("overlay").classList.remove("open");
 }
 
+// ---------- ZIP resolution ----------
+
+async function resolveZip(zip) {
+  const res = await fetch(`https://api.zippopotam.us/us/${encodeURIComponent(zip)}`);
+  if (!res.ok) throw new Error("ZIP not found");
+  const data = await res.json();
+  const place = data.places && data.places[0];
+  if (!place) throw new Error("ZIP not found");
+  return {
+    zip,
+    city: place["place name"],
+    state: place["state abbreviation"],
+    stateName: place["state"],
+  };
+}
+
+async function submitZip(zip) {
+  const errorEl = document.getElementById("onboarding-error");
+  const btn = document.getElementById("zip-submit-btn");
+  errorEl.textContent = "";
+  if (!/^\d{5}$/.test(zip)) {
+    errorEl.textContent = "Enter a 5-digit ZIP code.";
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = "Looking up…";
+  try {
+    const region = await resolveZip(zip);
+    setRegion(region);
+    if (!getLocalData()) logRequestedRegion(zip);
+    document.getElementById("onboarding").classList.remove("open");
+    startApp();
+  } catch (e) {
+    errorEl.textContent = "Couldn't find that ZIP code. Double-check it and try again.";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Find my area";
+  }
+}
+
 // ---------- routing ----------
 
 function setView(view) {
@@ -139,270 +189,173 @@ function setView(view) {
   document.querySelectorAll(".top-nav-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.view === view);
   });
-  if (view === "voice") renderVoice();
+  if (view === "saved") renderSaved();
   if (view === "reps") renderReps();
-  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  if (view === "events") renderEvents();
+  window.scrollTo({ top: 0 });
 }
 
-function openBill(billId) {
-  state.currentBillId = billId;
-  renderBillDetail(billId);
-  setView("bill");
+// ---------- Discover: swipe deck ----------
+
+function currentDeck() {
+  const decisions = getDecisions();
+  return billsForLevel(state.level).filter((b) => !decisions[b.id]);
 }
 
-// ---------- render: browse ----------
+function renderCoverageNote() {
+  const note = document.getElementById("coverage-note");
+  const local = getLocalData();
+  const st = getStateData();
 
-function populateTopicOptions() {
-  const topics = new Set();
-  LIBERTY_BILLS.forEach((b) => b.topics.forEach((t) => topics.add(t)));
-  const select = document.getElementById("topic-select");
-  [...topics].sort().forEach((t) => {
-    const opt = document.createElement("option");
-    opt.value = t;
-    opt.textContent = t;
-    select.appendChild(opt);
-  });
-}
-
-function filteredBills() {
-  return LIBERTY_BILLS.filter((b) => {
-    if (state.level !== "all" && b.level !== state.level) return false;
-    if (state.topic !== "all" && !b.topics.includes(state.topic)) return false;
-    if (state.search) {
-      const q = state.search.toLowerCase();
-      const hay = `${b.title} ${b.number} ${b.summary} ${b.sponsor} ${b.topics.join(" ")}`.toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  }).sort((a, b) => new Date(a.voteDate) - new Date(b.voteDate));
-}
-
-function renderBillList() {
-  const list = document.getElementById("bill-list");
-  const bills = filteredBills();
-  if (bills.length === 0) {
-    list.innerHTML = `<div class="empty-state">No bills match your filters. Try a different search or level.</div>`;
+  if ((state.level === "town" || state.level === "county") && !local) {
+    note.innerHTML = `We haven't researched ${escapeHtml(state.region.city)}, ${escapeHtml(state.region.state)} yet. We've logged your ZIP so it's next in line — meanwhile browse State and Federal.`;
+    note.classList.add("show");
     return;
   }
-  list.innerHTML = bills
-    .map((b) => {
-      const t = billTally(b.id);
-      const showTally = t.support + t.oppose > 0;
+  if (state.level === "state" && !st) {
+    note.innerHTML = `We haven't researched ${escapeHtml(state.region.stateName)} yet. We've logged your ZIP — meanwhile browse Federal.`;
+    note.classList.add("show");
+    return;
+  }
+  note.classList.remove("show");
+  note.innerHTML = "";
+}
+
+function renderDeck() {
+  renderCoverageNote();
+  const deck = document.getElementById("deck");
+  const controls = document.getElementById("deck-controls");
+  const bills = currentDeck();
+
+  if (bills.length === 0) {
+    deck.innerHTML = `<div class="empty-state">You're all caught up on ${levelLabel(state.level).toLowerCase()} bills. Switch levels above, or check Saved for what you've already flagged.</div>`;
+    controls.style.display = "none";
+    return;
+  }
+
+  controls.style.display = "flex";
+  const bill = bills[0];
+  deck.innerHTML = `
+    <div class="swipe-card" data-bill-id="${bill.id}">
+      <div class="swipe-card-top">
+        <span class="badge ${levelBadgeClass(state.level)}">${levelLabel(state.level)}</span>
+        <span class="bill-number">${escapeHtml(bill.number)}</span>
+      </div>
+      <h2>${escapeHtml(bill.title)}</h2>
+      <p class="tagline">${escapeHtml(bill.tagline)}</p>
+      <p class="summary">${escapeHtml(bill.summary)}</p>
+      <div class="detail-grid">
+        <div><span class="label">Status</span><span class="value">${escapeHtml(bill.status)}</span></div>
+        <div><span class="label">Sponsor</span><span class="value">${escapeHtml(bill.sponsor)}</span></div>
+      </div>
+      <div class="topic-tags">${bill.topics.map((t) => `<span class="topic-tag">${escapeHtml(t)}</span>`).join("")}</div>
+      <a class="source-link" href="${escapeHtml(bill.sourceUrl)}" target="_blank" rel="noopener">View official source ↗</a>
+      <div class="deck-stack-count">${bills.length} left in this pile</div>
+    </div>
+  `;
+}
+
+function decideCurrentCard(decision) {
+  const card = document.querySelector(".swipe-card");
+  if (!card) return;
+  const billId = card.dataset.billId;
+  setDecision(billId, decision);
+  if (decision === "interested") showToast("Saved — find it under Saved.");
+  renderDeck();
+}
+
+// ---------- Saved ----------
+
+function renderSaved() {
+  const container = document.getElementById("saved-content");
+  const decisions = getDecisions();
+  const voices = getVoices();
+  const savedIds = Object.keys(decisions).filter((id) => decisions[id] === "interested");
+  const savedBills = savedIds.map(billById).filter(Boolean);
+
+  if (savedBills.length === 0) {
+    container.innerHTML = `<div class="empty-state">Nothing saved yet. Head to Discover and mark bills "Interested" as you read through them.</div>`;
+    return;
+  }
+
+  container.innerHTML = savedBills
+    .map((bill) => {
+      const voice = voices[bill.id];
       return `
-        <div class="bill-card" data-bill-id="${b.id}">
+        <div class="saved-card">
           <div class="bill-card-top">
-            <span class="badge badge-${b.level}">${levelEmoji(b.level)} ${levelLabel(b.level)}</span>
-            <span class="bill-number">${escapeHtml(b.number)}</span>
+            <span class="badge ${levelBadgeClass(bill.level === "local" ? bill.scope : bill.level)}">${escapeHtml(bill.number)}</span>
+            ${voice ? `<span class="petition-stance ${voice.stance}">${voice.stance === "support" ? "You support" : "You oppose"}</span>` : ""}
           </div>
-          <h3>${escapeHtml(b.title)}</h3>
-          <p class="summary">${escapeHtml(b.summary)}</p>
+          <h3>${escapeHtml(bill.title)}</h3>
+          <p class="summary">${escapeHtml(bill.summary)}</p>
           <div class="bill-meta">
-            <span class="status-chip">${escapeHtml(b.status)}</span>
-            <span>Vote: ${formatDate(b.voteDate)}</span>
-            <span>${escapeHtml(b.jurisdiction)}</span>
+            <span class="status-chip">${escapeHtml(bill.status)}</span>
+            <a class="source-link" href="${escapeHtml(bill.sourceUrl)}" target="_blank" rel="noopener">Source ↗</a>
           </div>
-          ${
-            showTally
-              ? `<div class="tally-strip"><span class="tally-support">👍 ${t.support} support</span><span class="tally-oppose">👎 ${t.oppose} oppose</span></div>`
-              : ""
-          }
-        </div>`;
+          ${voice && voice.comment ? `<div class="comment-item"><span class="who">Your note:</span>${escapeHtml(voice.comment)}</div>` : ""}
+          <div class="action-row">
+            <button class="btn btn-navy voice-btn" data-bill-id="${bill.id}">${voice ? "Update my voice" : "✉️ Make My Voice Heard"}</button>
+            <button class="btn btn-secondary unsave-btn" data-bill-id="${bill.id}">Remove</button>
+          </div>
+        </div>
+      `;
     })
     .join("");
 
-  list.querySelectorAll(".bill-card").forEach((card) => {
-    card.addEventListener("click", () => openBill(card.dataset.billId));
+  container.querySelectorAll(".voice-btn").forEach((btn) => {
+    btn.addEventListener("click", () => openVoiceSheet(btn.dataset.billId));
   });
-}
-
-function formatDate(iso) {
-  if (!iso) return "TBD";
-  const d = new Date(iso + "T00:00:00");
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-}
-
-// ---------- render: bill detail ----------
-
-function renderBillDetail(billId) {
-  const bill = billById(billId);
-  const container = document.getElementById("bill-detail");
-  if (!bill) {
-    container.innerHTML = `<div class="empty-state">Bill not found.</div>`;
-    return;
-  }
-  const petitions = getPetitionsForBill(billId);
-
-  container.innerHTML = `
-    <div class="detail-card">
-      <span class="badge badge-${bill.level}">${levelEmoji(bill.level)} ${levelLabel(bill.level)}</span>
-      <h1>${escapeHtml(bill.title)}</h1>
-      <div class="bill-number">${escapeHtml(bill.number)} · ${escapeHtml(bill.jurisdiction)}</div>
-      <p class="summary">${escapeHtml(bill.summary)}</p>
-
-      <div class="topic-tags">
-        ${bill.topics.map((t) => `<span class="topic-tag">${escapeHtml(t)}</span>`).join("")}
-      </div>
-
-      <div class="detail-grid">
-        <div><span class="label">Status</span><span class="value">${escapeHtml(bill.status)}</span></div>
-        <div><span class="label">Stage</span><span class="value">${escapeHtml(bill.stage)}</span></div>
-        <div><span class="label">Sponsor</span><span class="value">${escapeHtml(bill.sponsor)}</span></div>
-        <div><span class="label">Introduced</span><span class="value">${formatDate(bill.dateIntroduced)}</span></div>
-        <div><span class="label">Vote date</span><span class="value">${formatDate(bill.voteDate)}</span></div>
-      </div>
-
-      ${bill.sourceUrl ? `<p><a href="${escapeHtml(bill.sourceUrl)}" target="_blank" rel="noopener">View official source ↗</a></p>` : ""}
-
-      <div class="action-row">
-        <button class="btn btn-support" id="start-support-btn">👍 Support this bill</button>
-        <button class="btn btn-oppose" id="start-oppose-btn">👎 Oppose this bill</button>
-        <button class="btn btn-navy" id="send-voice-btn">✉️ Send my voice to reps</button>
-      </div>
-
-      <div class="petition-section">
-        <h2>Petitions on this bill (${petitions.length})</h2>
-        <div id="petition-list">${petitions.length ? petitions.map(renderPetitionCard).join("") : `<p class="empty-state" style="padding:1.5rem 0;">No petitions yet — be the first to start one.</p>`}</div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("start-support-btn").addEventListener("click", () => openPetitionSheet(billId, "support"));
-  document.getElementById("start-oppose-btn").addEventListener("click", () => openPetitionSheet(billId, "oppose"));
-  document.getElementById("send-voice-btn").addEventListener("click", () => openSendVoiceSheet(billId));
-
-  container.querySelectorAll(".petition-sign-btn").forEach((btn) => {
-    btn.addEventListener("click", () => openSignSheet(billId, btn.dataset.petitionId, btn.dataset.stance));
-  });
-}
-
-function renderPetitionCard(p) {
-  const t = tally(p);
-  const pct = t.total ? Math.round((t.support / t.total) * 100) : 50;
-  const comments = p.signatures.filter((s) => s.comment).slice(-3).reverse();
-  return `
-    <div class="petition-card">
-      <div class="petition-card-top">
-        <span class="petition-stance ${p.stance}">${p.stance === "support" ? "Support" : "Oppose"}</span>
-        <span class="petition-count">${t.total} signature${t.total === 1 ? "" : "s"}</span>
-      </div>
-      <h3>${escapeHtml(p.title)}</h3>
-      <p class="petition-msg">${escapeHtml(p.message)}</p>
-      <div class="petition-progress"><div class="petition-progress-bar ${p.stance}" style="width:${pct}%"></div></div>
-      <div class="action-row" style="margin-top:0.5rem;">
-        <button class="btn btn-support petition-sign-btn" data-petition-id="${p.id}" data-stance="support">👍 Sign in support</button>
-        <button class="btn btn-oppose petition-sign-btn" data-petition-id="${p.id}" data-stance="oppose">👎 Sign in opposition</button>
-      </div>
-      ${
-        comments.length
-          ? `<div class="comment-list">${comments
-              .map((c) => `<div class="comment-item"><span class="who">${escapeHtml(c.name)}:</span>${escapeHtml(c.comment)}</div>`)
-              .join("")}</div>`
-          : ""
-      }
-    </div>
-  `;
-}
-
-// ---------- petition sheets ----------
-
-function openPetitionSheet(billId, stance) {
-  const bill = billById(billId);
-  openSheet(`
-    <button class="sheet-close" id="sheet-close-btn">×</button>
-    <h2>Start a petition to ${stance === "support" ? "support" : "oppose"} ${escapeHtml(bill.number)}</h2>
-    <label for="pet-title">Petition title</label>
-    <input type="text" id="pet-title" placeholder="e.g. Pass ${escapeHtml(bill.number)} now" />
-    <label for="pet-message">Why does this matter to you?</label>
-    <textarea id="pet-message" placeholder="Explain your position — this is shown to other signers and can be sent to representatives."></textarea>
-    <label for="pet-name">Your name (optional)</label>
-    <input type="text" id="pet-name" placeholder="Anonymous" />
-    <div class="sheet-actions">
-      <button class="btn btn-secondary" id="pet-cancel-btn">Cancel</button>
-      <button class="btn ${stance === "support" ? "btn-support" : "btn-oppose"}" id="pet-submit-btn">Create petition</button>
-    </div>
-  `);
-  document.getElementById("sheet-close-btn").addEventListener("click", closeSheet);
-  document.getElementById("pet-cancel-btn").addEventListener("click", closeSheet);
-  document.getElementById("pet-submit-btn").addEventListener("click", () => {
-    const title = document.getElementById("pet-title").value.trim();
-    const message = document.getElementById("pet-message").value.trim();
-    const name = document.getElementById("pet-name").value.trim();
-    if (!title || !message) {
-      showToast("Please add a title and a short message.");
-      return;
-    }
-    createPetition(billId, { stance, title, message, authorName: name });
-    closeSheet();
-    renderBillDetail(billId);
-    renderBillList();
-    showToast("Petition created — thanks for speaking up.");
-  });
-}
-
-function openSignSheet(billId, petitionId, stance) {
-  openSheet(`
-    <button class="sheet-close" id="sheet-close-btn">×</button>
-    <h2>Sign this petition</h2>
-    <div class="stance-toggle">
-      <button type="button" class="stance-btn support ${stance === "support" ? "active support" : ""}" data-stance="support">👍 Support</button>
-      <button type="button" class="stance-btn oppose ${stance === "oppose" ? "active oppose" : ""}" data-stance="oppose">👎 Oppose</button>
-    </div>
-    <label for="sign-name">Your name (optional)</label>
-    <input type="text" id="sign-name" placeholder="Anonymous" />
-    <label for="sign-comment">Add a comment (optional)</label>
-    <textarea id="sign-comment" placeholder="Say why, in your own words…"></textarea>
-    <div class="sheet-actions">
-      <button class="btn btn-secondary" id="sign-cancel-btn">Cancel</button>
-      <button class="btn btn-navy" id="sign-submit-btn">Sign petition</button>
-    </div>
-  `);
-  let chosenStance = stance;
-  document.querySelectorAll(".stance-btn").forEach((btn) => {
+  container.querySelectorAll(".unsave-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      chosenStance = btn.dataset.stance;
-      document.querySelectorAll(".stance-btn").forEach((b) => b.classList.remove("active", "support", "oppose"));
-      btn.classList.add("active", chosenStance);
+      const all = getDecisions();
+      delete all[btn.dataset.billId];
+      writeJson(LS_DECISIONS, all);
+      renderSaved();
     });
   });
-  document.getElementById("sheet-close-btn").addEventListener("click", closeSheet);
-  document.getElementById("sign-cancel-btn").addEventListener("click", closeSheet);
-  document.getElementById("sign-submit-btn").addEventListener("click", () => {
-    const name = document.getElementById("sign-name").value.trim();
-    const comment = document.getElementById("sign-comment").value.trim();
-    signPetition(billId, petitionId, { name, comment, stance: chosenStance });
-    closeSheet();
-    renderBillDetail(billId);
-    renderBillList();
-    showToast("Signed. Your voice is on record.");
-  });
 }
 
-function openSendVoiceSheet(billId) {
+function repsForBillLevel(bill) {
+  if (bill.level === "federal") return getFederalData().reps;
+  if (bill.level === "state") return getStateData() ? getStateData().reps : [];
+  const local = getLocalData();
+  return local ? local.reps : [];
+}
+
+function openVoiceSheet(billId) {
   const bill = billById(billId);
-  const reps = repsForBill(bill);
-  const t = billTally(billId);
-  const defaultStance = t.oppose > t.support ? "oppose" : "support";
+  const voices = getVoices();
+  const existing = voices[billId];
+  const reps = repsForBillLevel(bill);
+  const defaultStance = existing ? existing.stance : "support";
 
   openSheet(`
     <button class="sheet-close" id="sheet-close-btn">×</button>
-    <h2>Send your voice on ${escapeHtml(bill.number)}</h2>
-    <p style="color:var(--muted);font-size:0.88rem;">This drafts an email to the ${levelLabel(bill.level).toLowerCase()} representatives who vote on this bill. It opens your email app so you can review and send it yourself.</p>
+    <h2>Make your voice heard on ${escapeHtml(bill.number)}</h2>
+    <p style="color:var(--muted);font-size:0.88rem;">${escapeHtml(bill.title)}</p>
     <div class="stance-toggle">
       <button type="button" class="voice-stance-btn support ${defaultStance === "support" ? "active support" : ""}" data-stance="support">👍 I support this</button>
       <button type="button" class="voice-stance-btn oppose ${defaultStance === "oppose" ? "active oppose" : ""}" data-stance="oppose">👎 I oppose this</button>
     </div>
     <label for="voice-name">Your name</label>
-    <input type="text" id="voice-name" placeholder="Jane Doe" />
-    <label for="voice-message">Personal note (optional)</label>
-    <textarea id="voice-message" placeholder="Add a sentence or two about why this matters to you…"></textarea>
-    <label for="voice-reps">Send to</label>
-    <select id="voice-reps" multiple size="${Math.min(reps.length, 4)}">
-      ${reps.map((r) => `<option value="${r.id}" selected>${escapeHtml(r.name)} — ${escapeHtml(r.role)}</option>`).join("")}
-    </select>
+    <input type="text" id="voice-name" placeholder="Jane Doe" value="${escapeHtml(existing?.name || "")}" />
+    <label for="voice-message">Why? (optional)</label>
+    <textarea id="voice-message" placeholder="Add a sentence or two about why this matters to you…">${escapeHtml(existing?.comment || "")}</textarea>
     <div class="sheet-actions">
       <button class="btn btn-secondary" id="voice-cancel-btn">Cancel</button>
-      <button class="btn btn-navy" id="voice-send-btn">Open email draft ✉️</button>
+      <button class="btn btn-navy" id="voice-save-btn">Record my voice</button>
     </div>
+    ${
+      reps.length
+        ? `<div class="email-reps-row"><label for="voice-reps">Also email it to:</label>
+           <select id="voice-reps" multiple size="${Math.min(reps.length, 4)}">
+             ${reps.map((r) => `<option value="${r.id}" ${r.email ? "selected" : "disabled"}>${escapeHtml(r.name)} — ${escapeHtml(r.role)}${r.email ? "" : " (no email on file)"}</option>`).join("")}
+           </select>
+           <button class="btn btn-secondary" id="voice-email-btn" style="width:100%;margin-top:0.6rem;">✉️ Open email draft</button>
+         </div>`
+        : ""
+    }
   `);
 
   let chosenStance = defaultStance;
@@ -416,129 +369,180 @@ function openSendVoiceSheet(billId) {
 
   document.getElementById("sheet-close-btn").addEventListener("click", closeSheet);
   document.getElementById("voice-cancel-btn").addEventListener("click", closeSheet);
-  document.getElementById("voice-send-btn").addEventListener("click", () => {
-    const name = document.getElementById("voice-name").value.trim() || "A constituent";
-    const note = document.getElementById("voice-message").value.trim();
-    const selected = [...document.getElementById("voice-reps").selectedOptions].map((o) => o.value);
-    const selectedReps = reps.filter((r) => selected.includes(r.id));
-    if (selectedReps.length === 0) {
-      showToast("Pick at least one representative.");
-      return;
-    }
-    const to = selectedReps.map((r) => r.email).join(",");
-    const subject = `${chosenStance === "support" ? "Support" : "Oppose"} ${bill.number}: ${bill.title}`;
-    const body =
-      `Dear Representative,\n\n` +
-      `My name is ${name}, and I am writing as a constituent to state that I ${chosenStance === "support" ? "SUPPORT" : "OPPOSE"} ${bill.number} (${bill.title}).\n\n` +
-      (note ? `${note}\n\n` : "") +
-      `Summary: ${bill.summary}\n\n` +
-      `I urge you to consider my position when this comes up for a vote (expected ${formatDate(bill.voteDate)}).\n\n` +
-      `Thank you for representing me.\n${name}`;
-    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
+  document.getElementById("voice-save-btn").addEventListener("click", () => {
+    const name = document.getElementById("voice-name").value.trim();
+    const comment = document.getElementById("voice-message").value.trim();
+    recordVoice(billId, { stance: chosenStance, name, comment });
     closeSheet();
-    showToast("Email draft opened. Review it and hit send!");
+    renderSaved();
+    showToast("Your voice is on record.");
   });
+
+  const emailBtn = document.getElementById("voice-email-btn");
+  if (emailBtn) {
+    emailBtn.addEventListener("click", () => {
+      const name = document.getElementById("voice-name").value.trim() || "A constituent";
+      const comment = document.getElementById("voice-message").value.trim();
+      const selectEl = document.getElementById("voice-reps");
+      const selected = [...selectEl.selectedOptions].map((o) => o.value).filter(Boolean);
+      const selectedReps = reps.filter((r) => selected.includes(r.id) && r.email);
+      if (selectedReps.length === 0) {
+        showToast("No representative email on file — pick one with an email, or use their website.");
+        return;
+      }
+      const to = selectedReps.map((r) => r.email).join(",");
+      const subject = `${chosenStance === "support" ? "Support" : "Oppose"} ${bill.number}: ${bill.title}`;
+      const body =
+        `Dear Representative,\n\n` +
+        `My name is ${name}, and I am writing as a constituent to state that I ${chosenStance === "support" ? "SUPPORT" : "OPPOSE"} ${bill.number} (${bill.title}).\n\n` +
+        (comment ? `${comment}\n\n` : "") +
+        `Summary: ${bill.summary}\n\n` +
+        `Thank you for representing me.\n${name}`;
+      recordVoice(billId, { stance: chosenStance, name, comment });
+      window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      closeSheet();
+      renderSaved();
+      showToast("Email draft opened, and your voice is on record.");
+    });
+  }
 }
 
-// ---------- render: my voice ----------
+// ---------- Representatives ----------
 
-function renderVoice() {
-  const container = document.getElementById("voice-content");
-  const billIds = allSignedBillIds();
-  if (billIds.length === 0) {
-    container.innerHTML = `<div class="empty-state">You haven't signed or started any petitions yet. Browse bills and make your voice heard.</div>`;
-    return;
-  }
-  container.innerHTML = billIds
-    .map((billId) => {
-      const bill = billById(billId);
-      if (!bill) return "";
-      const petitions = getPetitionsForBill(billId);
+function renderReps() {
+  const container = document.getElementById("reps-content");
+  const local = getLocalData();
+  const st = getStateData();
+  const fed = getFederalData();
+
+  const sections = [
+    { label: `🏘️ ${state.region.city}, ${state.region.state}`, reps: local ? local.reps : [] },
+    { label: `🏛️ ${state.region.stateName}`, reps: st ? st.reps : [] },
+    { label: "🇺🇸 Federal", reps: fed.reps },
+  ];
+
+  container.innerHTML = sections
+    .map((section) => {
+      if (section.reps.length === 0) {
+        return `<div class="voice-section"><h2>${section.label}</h2><p class="empty-state" style="padding:1rem 0;">Not researched yet for your area.</p></div>`;
+      }
       return `
         <div class="voice-section">
-          <h2>${levelEmoji(bill.level)} ${escapeHtml(bill.title)} <span class="bill-number">${escapeHtml(bill.number)}</span></h2>
-          ${petitions.map(renderPetitionCard).join("")}
-          <button class="voice-bill-link" data-bill-id="${bill.id}" style="background:none;border:none;cursor:pointer;">View full bill →</button>
+          <h2>${section.label}</h2>
+          <div class="rep-list">
+            ${section.reps
+              .map(
+                (r) => `
+              <div class="rep-card">
+                <div class="role">${escapeHtml(r.role)}</div>
+                <h3>${escapeHtml(r.name)}${r.party ? ` (${escapeHtml(r.party)})` : ""}</h3>
+                ${r.note ? `<p class="jurisdiction">${escapeHtml(r.note)}</p>` : ""}
+                <div class="rep-contact">
+                  ${r.email ? `<a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a>` : ""}
+                  ${r.website ? `<a href="${escapeHtml(r.website)}" target="_blank" rel="noopener">Website ↗</a>` : ""}
+                </div>
+              </div>`
+              )
+              .join("")}
+          </div>
         </div>
       `;
     })
     .join("");
-
-  container.querySelectorAll(".petition-sign-btn").forEach((btn) => {
-    const petitionId = btn.dataset.petitionId;
-    const billId = billIds.find((id) => getPetitionsForBill(id).some((p) => p.id === petitionId));
-    btn.addEventListener("click", () => openSignSheet(billId, petitionId, btn.dataset.stance));
-  });
-
-  container.querySelectorAll(".voice-bill-link").forEach((btn) => {
-    btn.addEventListener("click", () => openBill(btn.dataset.billId));
-  });
 }
 
-// ---------- render: representatives ----------
+// ---------- Events & Candidates ----------
 
-function renderReps() {
-  const list = document.getElementById("rep-list");
-  const reps = LIBERTY_REPS.filter((r) => state.repLevel === "all" || r.level === state.repLevel);
-  list.innerHTML = reps
-    .map(
-      (r) => `
-      <div class="rep-card">
-        <div class="role">${levelEmoji(r.level)} ${escapeHtml(r.role)}</div>
-        <h3>${escapeHtml(r.name)}${r.party ? ` (${escapeHtml(r.party)})` : ""}</h3>
-        <div class="jurisdiction">${escapeHtml(r.jurisdiction)}</div>
-        <div class="rep-contact">
-          ${r.email ? `<a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a>` : ""}
-          ${r.phone ? `<span>${escapeHtml(r.phone)}</span>` : ""}
-          ${r.website ? `<a href="${escapeHtml(r.website)}" target="_blank" rel="noopener">Website ↗</a>` : ""}
+function renderEvents() {
+  const container = document.getElementById("events-content");
+  const local = getLocalData();
+  const st = getStateData();
+  const fed = getFederalData();
+
+  const items = [
+    ...(local ? (local.events || []).map((e) => ({ ...e, scopeLabel: `${state.region.city}, ${state.region.state}` })) : []),
+    ...(local ? (local.candidates || []).map((c) => ({ ...c, scopeLabel: `${state.region.city}, ${state.region.state}` })) : []),
+    ...(st ? (st.events || []).map((e) => ({ ...e, scopeLabel: state.region.stateName })) : []),
+    ...(st ? (st.candidates || []).map((c) => ({ ...c, scopeLabel: state.region.stateName })) : []),
+    ...(fed.events || []).map((e) => ({ ...e, scopeLabel: "National" })),
+  ];
+
+  if (items.length === 0) {
+    container.innerHTML = `<div class="empty-state">No events or candidate races researched for your area yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = items
+    .map((item) => {
+      const isCandidate = item.type === "candidate";
+      return `
+        <div class="event-card">
+          <div class="bill-card-top">
+            <span class="badge ${isCandidate ? "badge-federal" : "badge-state"}">${isCandidate ? "Candidate race" : "Event"}</span>
+            <span class="bill-number">${escapeHtml(item.scopeLabel)}</span>
+          </div>
+          <h3>${escapeHtml(item.title || item.race)}</h3>
+          <p class="tagline">${escapeHtml(item.tagline)}</p>
+          <p class="summary">${escapeHtml(item.description)}</p>
+          ${isCandidate ? `<div class="topic-tags">${item.candidates.map((c) => `<span class="topic-tag">${escapeHtml(c)}</span>`).join("")}</div>` : ""}
+          <div class="bill-meta">
+            <span class="status-chip">${escapeHtml(item.date)}</span>
+            ${item.location ? `<span>${escapeHtml(item.location)}</span>` : ""}
+          </div>
+          <a class="source-link" href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener">Learn more / source ↗</a>
         </div>
-      </div>`
-    )
+      `;
+    })
     .join("");
 }
 
-// ---------- wire up static UI ----------
+// ---------- app start / init ----------
+
+function startApp() {
+  document.getElementById("region-chip-text").textContent = `${state.region.city}, ${state.region.state} ${state.region.zip}`;
+  document.getElementById("about-updated").textContent = `Data last researched: ${LIBERTY_REPOSITORY.updated}.`;
+  renderDeck();
+}
+
+function openOnboarding() {
+  document.getElementById("onboarding").classList.add("open");
+  document.getElementById("zip-input").focus();
+}
 
 function init() {
-  populateTopicOptions();
-  renderBillList();
-
   document.querySelectorAll(".top-nav-btn").forEach((btn) => {
     btn.addEventListener("click", () => setView(btn.dataset.view));
   });
 
-  document.getElementById("bill-back-btn").addEventListener("click", () => setView("browse"));
-
-  document.getElementById("level-filters").addEventListener("click", (e) => {
+  document.getElementById("level-tabs").addEventListener("click", (e) => {
     const btn = e.target.closest(".pill");
     if (!btn) return;
     state.level = btn.dataset.level;
-    document.querySelectorAll("#level-filters .pill").forEach((p) => p.classList.toggle("active", p === btn));
-    renderBillList();
+    document.querySelectorAll("#level-tabs .pill").forEach((p) => p.classList.toggle("active", p === btn));
+    renderDeck();
   });
 
-  document.getElementById("rep-level-filters").addEventListener("click", (e) => {
-    const btn = e.target.closest(".pill");
-    if (!btn) return;
-    state.repLevel = btn.dataset.level;
-    document.querySelectorAll("#rep-level-filters .pill").forEach((p) => p.classList.toggle("active", p === btn));
-    renderReps();
-  });
+  document.getElementById("skip-btn").addEventListener("click", () => decideCurrentCard("skipped"));
+  document.getElementById("interested-btn").addEventListener("click", () => decideCurrentCard("interested"));
 
-  document.getElementById("search-input").addEventListener("input", (e) => {
-    state.search = e.target.value;
-    renderBillList();
-  });
+  document.getElementById("region-chip").addEventListener("click", openOnboarding);
 
-  document.getElementById("topic-select").addEventListener("change", (e) => {
-    state.topic = e.target.value;
-    renderBillList();
+  document.getElementById("zip-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    submitZip(document.getElementById("zip-input").value.trim());
   });
 
   document.getElementById("overlay").addEventListener("click", (e) => {
     if (e.target.id === "overlay") closeSheet();
   });
+
+  const existing = getRegion();
+  if (existing) {
+    state.region = existing;
+    startApp();
+  } else {
+    openOnboarding();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);

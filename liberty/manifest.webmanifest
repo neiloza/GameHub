@@ -1,0 +1,14 @@
+{
+  "name": "Liberty — Track bills. Make your voice count.",
+  "short_name": "Liberty",
+  "description": "Browse the bills up for a vote in your town, county, state, and Congress, and make your voice heard.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1b2a4a",
+  "theme_color": "#1b2a4a",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

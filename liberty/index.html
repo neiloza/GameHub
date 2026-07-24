@@ -9,6 +9,12 @@
   <title>Liberty — Track bills. Make your voice count.</title>
 
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Liberty">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,7 +122,7 @@
         <p>This is a real, manually-researched snapshot — not a live feed. Every bill, event, and candidate entry links to its source. There's no backend, so:</p>
         <ul>
           <li>Your saved bills and recorded votes live in this browser's <code>localStorage</code> — nothing is sent to a server.</li>
-          <li>Coverage is currently seeded for <strong>federal</strong> legislation, <strong>California</strong> state legislation, and <strong>San Francisco, CA</strong> local legislation. Entering a ZIP outside that will still show federal (and state, if we've covered your state) — anything else gets logged locally as a requested region for the next research pass.</li>
+          <li>Coverage is currently seeded for <strong>federal</strong> legislation; <strong>California, New York, and Texas</strong> state legislation; and <strong>San Francisco, CA</strong> and <strong>Austin, TX</strong> local legislation. Entering a ZIP outside that will still show federal (and state, if we've covered your state) — anything else gets logged locally as a requested region for the next research pass.</li>
         </ul>
         <p>To go live with continuously updating data, wire <code>data/repository.js</code> up to:</p>
         <ul>

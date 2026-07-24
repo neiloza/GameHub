@@ -47,9 +47,10 @@ If a user's ZIP resolves to a region that isn't in `states`/`locals` yet,
 the app still shows what it does have (federal, and state if covered) and
 logs the ZIP to `localStorage` (`liberty.requestedRegions.v1`) so the next
 research pass knows where to expand next. As of this snapshot, coverage is
-seeded for **federal**, **California** (state), and **San Francisco, CA**
-(local) — pulled from Congress.gov, LegiScan/CA YIMBY, Ballotpedia, and
-local reporting (see each entry's `sourceUrl`).
+seeded for **federal**; **California, New York, and Texas** (state); and
+**San Francisco, CA** and **Austin, TX** (local) — pulled from
+Congress.gov, LegiScan/CA YIMBY, NY Senate, Ballotpedia, and local
+reporting (see each entry's `sourceUrl`).
 
 ## Wiring up a live pipeline
 

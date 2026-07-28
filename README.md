@@ -11,6 +11,10 @@ GameHub/
 ├── css/style.css     # All styling
 ├── js/games.js       # Game registry: the single source of truth for the menu
 ├── js/hub.js         # Renders the featured section + game grid from the registry
+├── js/music.js       # Music registry: the single source of truth for the track list
+├── js/player.js      # Renders the music player from the registry
+├── music/            # Background-music library (CC0), playable from the hub
+│   └── CREDITS.md    # License + source for every track
 └── games/            # Each game lives in its own folder
     └── <slug>/
         └── index.html
@@ -47,6 +51,19 @@ cp -r /tmp/game-import/<playable-files> games/<slug>/
 
 If the game needs a build step (e.g. a bundler), build it first and copy the
 built output into `games/<slug>/`.
+
+## Music library
+
+`music/` holds a small CC0 (public-domain) background-music library imported
+from [freepd.com](https://freepd.com) via the
+[SoundSafari/CC0-1.0-Music](https://github.com/SoundSafari/CC0-1.0-Music)
+aggregation — see `music/CREDITS.md` for the full track list and license
+notes. The hub's Music section (`js/music.js` + `js/player.js`) plays them
+directly, and any game under `games/<slug>/` can reference a track by its
+path (e.g. `../../music/heroic-adventure.mp3`).
+
+To add more tracks: drop the audio file in `music/`, add an entry to the
+`MUSIC` array in `js/music.js`, and credit the source in `music/CREDITS.md`.
 
 ## Running locally
 

@@ -305,6 +305,100 @@ a { color: inherit; text-decoration: none; }
   border-color: rgba(255, 181, 71, 0.3);
 }
 
+/* ---------- Music ---------- */
+
+.music-player {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.music-now {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+.music-ctrl {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  width: 2.4rem;
+  height: 2.4rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.music-ctrl:hover { border-color: var(--accent); color: var(--accent-2); }
+
+.music-ctrl-play {
+  background: linear-gradient(135deg, var(--accent), #5a3ce8);
+  border: none;
+  color: #fff;
+}
+
+.music-now-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.5rem;
+  overflow: hidden;
+}
+
+#music-now-title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-now-mood {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+.music-list { max-height: 340px; overflow-y: auto; }
+
+.music-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 1.3rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.music-row:last-child { border-bottom: none; }
+
+.music-row:hover { background: rgba(124, 92, 255, 0.08); }
+
+.music-row.playing { background: rgba(124, 92, 255, 0.14); }
+
+.music-row.playing .music-row-title { color: var(--accent-2); }
+
+.music-row-play {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  width: 1.2rem;
+  text-align: center;
+}
+
+.music-row-title { flex: 1; font-size: 0.95rem; }
+
+.music-credit {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  margin-top: 0.9rem;
+}
+
+.music-credit a { color: var(--accent-2); text-decoration: underline; }
+
 /* ---------- About ---------- */
 
 .about-card {

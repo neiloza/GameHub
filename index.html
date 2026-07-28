@@ -20,6 +20,7 @@
       <ul class="nav-links">
         <li><a href="#games">Games</a></li>
         <li><a href="#featured">Featured</a></li>
+        <li><a href="#music">Music</a></li>
         <li><a href="#about">About</a></li>
       </ul>
     </nav>
@@ -66,6 +67,33 @@
       <div class="game-grid" id="game-grid"><!-- populated by js/hub.js --></div>
     </section>
 
+    <!-- Music library -->
+    <section id="music" class="music container">
+      <div class="section-head">
+        <h2>Music Library</h2>
+        <p>Public-domain background tracks any game in the hub can use. Click a track to play.</p>
+      </div>
+      <div class="music-player">
+        <div class="music-now">
+          <button id="music-prev" class="music-ctrl" aria-label="Previous track">⏮</button>
+          <button id="music-play" class="music-ctrl music-ctrl-play" aria-label="Play/Pause">▶</button>
+          <button id="music-next" class="music-ctrl" aria-label="Next track">⏭</button>
+          <div class="music-now-info">
+            <span id="music-now-title">Nothing playing</span>
+            <span id="music-now-mood" class="music-now-mood"></span>
+          </div>
+        </div>
+        <div class="music-list" id="music-list"><!-- populated by js/player.js --></div>
+      </div>
+      <audio id="music-audio"></audio>
+      <p class="music-credit">
+        All tracks are CC0 (public domain), sourced from
+        <a href="https://freepd.com" target="_blank" rel="noopener">freepd.com</a>
+        via the <a href="https://github.com/SoundSafari/CC0-1.0-Music" target="_blank" rel="noopener">SoundSafari/CC0-1.0-Music</a>
+        aggregation. See <a href="music/CREDITS.md">music/CREDITS.md</a> for details.
+      </p>
+    </section>
+
     <!-- About -->
     <section id="about" class="about container">
       <div class="about-card">
@@ -92,5 +120,7 @@
 
   <script src="js/games.js"></script>
   <script src="js/hub.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/player.js"></script>
 </body>
 </html>

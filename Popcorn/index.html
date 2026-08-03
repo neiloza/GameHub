@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <meta name="description" content="Popcorn — track the movies you love and get new recommendations built from your own taste.">
+  <meta name="description" content="Popcorn — track the movies, games, and shows you love and get new recommendations built from your own taste.">
   <meta name="theme-color" content="#150c0d">
-  <title>Popcorn — Movie Recommender</title>
+  <title>Popcorn — Taste Recommender</title>
 
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
@@ -20,13 +20,21 @@
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="brand">
-      <span class="brand-icon">🍿</span>
-      <span class="brand-name">Popcorn</span>
-    </div>
-    <div class="lib-count" id="lib-count">0 / 100 favorites</div>
-  </header>
+  <div class="header-sticky">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">🍿</span>
+        <span class="brand-name">Popcorn</span>
+      </div>
+      <div class="lib-count" id="lib-count">0 / 100 favorites</div>
+    </header>
+
+    <nav class="category-bar" id="category-bar">
+      <button class="category-btn active" data-category="movies">🎬 <span>Movies</span></button>
+      <button class="category-btn" data-category="games">🎮 <span>Games</span></button>
+      <button class="category-btn" data-category="shows">📺 <span>Shows</span></button>
+    </nav>
+  </div>
 
   <main class="container">
 
@@ -35,15 +43,15 @@
 
       <div id="foryou-locked" class="empty-state hidden">
         <p class="empty-title">Add at least 3 favorites to unlock recommendations.</p>
-        <p class="empty-sub">The more movies you add to your Favorites list — up to 100 — the sharper Popcorn's sense of your taste gets.</p>
-        <button class="btn btn-primary" data-goto="favorites">Go add some movies</button>
+        <p class="empty-sub" id="foryou-locked-sub">The more movies you add to your Favorites list — up to 100 — the sharper Popcorn's sense of your taste gets.</p>
+        <button class="btn btn-primary" data-goto="favorites">Go add some favorites</button>
       </div>
 
       <div id="foryou-ready" class="hidden">
         <div class="panel">
           <div class="panel-head">
             <h2>Pick up to 10 favorites</h2>
-            <p class="panel-sub">Choose the movies you want something <em>similar</em> to. Recommendations also factor in the overall trend across your whole Favorites list.</p>
+            <p class="panel-sub" id="seedpicker-sub">Choose the movies you want something <em>similar</em> to. Recommendations also factor in the overall trend across your whole Favorites list.</p>
           </div>
           <div class="mood-row hidden" id="mood-row"></div>
           <div class="seed-toolbar">
@@ -59,7 +67,7 @@
 
         <div class="panel taste-panel" id="taste-panel">
           <h3>Your tastes, so far</h3>
-          <p class="panel-sub">People like more than one kind of movie — Popcorn groups your Favorites into a few distinct tastes instead of averaging them into mush.</p>
+          <p class="panel-sub" id="taste-sub">People like more than one kind of movie — Popcorn groups your Favorites into a few distinct tastes instead of averaging them into mush.</p>
           <div class="taste-chips" id="taste-chips"></div>
         </div>
 
@@ -79,7 +87,7 @@
       <div class="panel">
         <div class="panel-head">
           <h2>Your Favorites</h2>
-          <p class="panel-sub">Movies you've seen and liked — your highlights reel. Popcorn stores up to 100.</p>
+          <p class="panel-sub" id="favorites-sub">Movies you've seen and liked — your highlights reel. Popcorn stores up to 100.</p>
         </div>
 
         <div class="search-wrap">
@@ -105,7 +113,7 @@
         </div>
         <div class="empty-state" id="favorites-empty">
           <p class="empty-title">No favorites yet</p>
-          <p class="empty-sub">Search above, or head to the Sampler tab to quickly rate well-known movies.</p>
+          <p class="empty-sub" id="favorites-empty-sub">Search above, or head to the Sampler tab to quickly rate well-known movies.</p>
         </div>
         <div class="fav-list" id="fav-list"></div>
       </div>
@@ -114,8 +122,8 @@
     <!-- ===== SAMPLER ===== -->
     <section class="view" id="view-sampler">
       <div class="panel-head">
-        <h2>Movie Sampler</h2>
-        <p class="panel-sub">Well-known movies, quick to rate. Great for building your Favorites list fast.</p>
+        <h2 id="sampler-heading">🎬 Movies Sampler</h2>
+        <p class="panel-sub" id="sampler-sub">Well-known movies, quick to rate. Great for building your Favorites list fast.</p>
         <button class="btn-link" id="sampler-shuffle">🔀 Shuffle a new batch</button>
       </div>
       <div class="card-grid" id="sampler-grid"></div>
@@ -126,7 +134,7 @@
   <nav class="tabbar" id="tabbar">
     <div class="tabbar-inner">
       <button class="tab active" data-view="foryou">
-        <span class="tab-icon">🎬</span>
+        <span class="tab-icon">✨</span>
         <span class="tab-label">For You</span>
       </button>
       <button class="tab" data-view="favorites">
@@ -143,6 +151,9 @@
   <div class="toast" id="toast"></div>
 
   <script src="js/movies.js"></script>
+  <script src="js/videogames.js"></script>
+  <script src="js/tvshows.js"></script>
+  <script src="js/categories.js"></script>
   <script src="js/app.js"></script>
   <script>
     if ("serviceWorker" in navigator) {

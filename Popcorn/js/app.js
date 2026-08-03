@@ -1,5 +1,9 @@
 // ============ Popcorn app logic ============
 // Vanilla JS, no build step, state persisted to localStorage.
+//
+// Popcorn tracks three independent categories (movies, games, shows) — see
+// categories.js for the registry. Almost everything below operates on
+// "whichever category is currently active," via activeCategory() / catState().
 
 const STORAGE_KEY = "popcorn:v1";
 const MAX_FAVORITES = 100;
@@ -7,9 +11,7 @@ const MAX_SEEDS = 10;
 const MIN_SEEDS_FOR_RECS = 3;
 const MIN_FAVORITES_TO_UNLOCK = 3;
 
-const MOVIES_BY_ID = Object.fromEntries(MOVIES.map((m) => [m.id, m]));
-
-function defaultState() {
+function defaultCategoryState() {
   return {
     library: [],       // { id, title, year, g, tg, custom, addedAt } — seen & liked
     disliked: [],       // { id, title, year, g, tg, ratedAt } — explicit "not for me"
@@ -20,16 +22,50 @@ function defaultState() {
   };
 }
 
+function defaultState() {
+  const s = { activeCategory: "movies" };
+  for (const key of CATEGORY_ORDER) s[key] = defaultCategoryState();
+  return s;
+}
+
 let state = loadState();
-let currentRecs = []; // in-memory only; not persisted across reloads
-let currentMoodLabel = null; // label of the taste cluster the last recommend batch matched
+let currentCategory = CATEGORY_ORDER.includes(state.activeCategory) ? state.activeCategory : "movies";
+// Last recommendation batch per category, kept in memory only (not persisted —
+// regenerated on demand) so switching categories and back doesn't lose your view.
+let recsState = { movies: { picks: [], moodLabel: null }, games: { picks: [], moodLabel: null }, shows: { picks: [], moodLabel: null } };
 let toastTimer = null;
 let pendingCustomMovie = null; // { title } while the custom-add form is open
+
+function activeCategory() {
+  return CATEGORIES[currentCategory];
+}
+
+function catState() {
+  return state[currentCategory];
+}
+
+// A legacy (pre-category) save looked like { library: [...], disliked: [...], ... }
+// directly at the top level. Detect and fold it into the movies category so
+// existing Favorites survive the upgrade.
+function isLegacyState(raw) {
+  return !!raw && Array.isArray(raw.library);
+}
 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return Object.assign(defaultState(), JSON.parse(raw));
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (isLegacyState(parsed)) {
+        const migrated = defaultState();
+        migrated.movies = Object.assign(defaultCategoryState(), parsed);
+        return migrated;
+      }
+      const merged = defaultState();
+      merged.activeCategory = CATEGORY_ORDER.includes(parsed.activeCategory) ? parsed.activeCategory : "movies";
+      for (const key of CATEGORY_ORDER) merged[key] = Object.assign(defaultCategoryState(), parsed[key]);
+      return merged;
+    }
   } catch (err) {
     console.warn("Popcorn: couldn't read saved state, starting fresh.", err);
   }
@@ -37,6 +73,7 @@ function loadState() {
 }
 
 function saveState() {
+  state.activeCategory = currentCategory;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
@@ -57,92 +94,98 @@ function toast(message) {
 // ---------- excluded-id helpers ----------
 
 function excludedIdSet() {
+  const cs = catState();
   const s = new Set();
-  for (const m of state.library) s.add(m.id);
-  for (const m of state.disliked) s.add(m.id);
-  for (const id of state.neutralSeen) s.add(id);
+  for (const m of cs.library) s.add(m.id);
+  for (const m of cs.disliked) s.add(m.id);
+  for (const id of cs.neutralSeen) s.add(id);
   return s;
 }
 
 // ---------- library / rating mutations ----------
 
-function toMovieRecord(movie) {
-  return { id: movie.id, title: movie.t || movie.title, year: movie.y || movie.year, g: movie.g, tg: movie.tg };
+function toItemRecord(item) {
+  return { id: item.id, title: item.t || item.title, year: item.y || item.year, g: item.g, tg: item.tg };
 }
 
-function addToLibrary(movie) {
-  const rec = toMovieRecord(movie);
-  if (state.library.some((m) => m.id === rec.id)) {
+function addToLibrary(item) {
+  const cs = catState();
+  const rec = toItemRecord(item);
+  if (cs.library.some((m) => m.id === rec.id)) {
     toast(`"${rec.title}" is already in your Favorites.`);
     return;
   }
-  if (state.library.length >= MAX_FAVORITES) {
+  if (cs.library.length >= MAX_FAVORITES) {
     toast(`Your Favorites list is full (${MAX_FAVORITES}/${MAX_FAVORITES}). Remove one to add another.`);
     return;
   }
-  state.disliked = state.disliked.filter((m) => m.id !== rec.id);
-  state.neutralSeen = state.neutralSeen.filter((id) => id !== rec.id);
-  state.library.push(Object.assign({}, rec, { custom: !!movie.custom, addedAt: Date.now() }));
+  cs.disliked = cs.disliked.filter((m) => m.id !== rec.id);
+  cs.neutralSeen = cs.neutralSeen.filter((id) => id !== rec.id);
+  cs.library.push(Object.assign({}, rec, { custom: !!item.custom, addedAt: Date.now() }));
   invalidateClusterCache();
   saveState();
   renderAll();
   toast(`Added "${rec.title}" to Favorites.`);
 }
 
-function addToDisliked(movie) {
-  const rec = toMovieRecord(movie);
-  if (state.disliked.some((m) => m.id === rec.id)) return;
-  state.library = state.library.filter((m) => m.id !== rec.id);
-  state.neutralSeen = state.neutralSeen.filter((id) => id !== rec.id);
-  state.disliked.push(Object.assign({}, rec, { ratedAt: Date.now() }));
+function addToDisliked(item) {
+  const cs = catState();
+  const rec = toItemRecord(item);
+  if (cs.disliked.some((m) => m.id === rec.id)) return;
+  cs.library = cs.library.filter((m) => m.id !== rec.id);
+  cs.neutralSeen = cs.neutralSeen.filter((id) => id !== rec.id);
+  cs.disliked.push(Object.assign({}, rec, { ratedAt: Date.now() }));
+  invalidateClusterCache();
   saveState();
   renderAll();
   toast(`Got it — won't suggest "${rec.title}" again.`);
 }
 
-function markNeutralSeen(movie) {
-  const rec = toMovieRecord(movie);
+function markNeutralSeen(item) {
+  const rec = toItemRecord(item);
   if (excludedIdSet().has(rec.id)) return;
-  state.neutralSeen.push(rec.id);
+  catState().neutralSeen.push(rec.id);
   saveState();
   renderAll();
-  toast(`Marked "${rec.title}" as seen.`);
+  toast(`Marked "${rec.title}" as ${activeCategory().seenPastTense}.`);
 }
 
 function removeFromLibrary(id) {
-  const movie = state.library.find((m) => m.id === id);
-  state.library = state.library.filter((m) => m.id !== id);
-  state.selectedSeeds = state.selectedSeeds.filter((sid) => sid !== id);
+  const cs = catState();
+  const item = cs.library.find((m) => m.id === id);
+  cs.library = cs.library.filter((m) => m.id !== id);
+  cs.selectedSeeds = cs.selectedSeeds.filter((sid) => sid !== id);
   invalidateClusterCache();
   saveState();
   renderAll();
-  if (movie) toast(`Removed "${movie.title}" from Favorites.`);
+  if (item) toast(`Removed "${item.title}" from Favorites.`);
 }
 
 // ---------- vector math ----------
 //
-// Every movie is a sparse vector over "g:<Genre>" / "t:<tag>" dimensions
+// Every item is a sparse vector over "g:<Genre>" / "t:<tag>" dimensions
 // (genre weight 1, tag weight 0.85 — tags are more specific taste signals
 // than the broader genre buckets, but genres still anchor the match).
 // Taste is modeled as MULTIPLE cluster centroids rather than one blended
 // average, because a single average of e.g. "gritty crime dramas" and
 // "cozy animated comedies" would land on a bland midpoint that resembles
 // neither — the classic failure mode of one-size-fits-all taste profiles.
+// This applies identically to movies, games, and shows.
 
 const GENRE_WEIGHT = 1;
 const TAG_WEIGHT = 0.85;
 const VECTOR_CACHE = new Map();
 
-function movieVector(movie) {
+function itemVector(item) {
   const vec = {};
-  for (const g of movie.g) vec["g:" + g] = GENRE_WEIGHT;
-  for (const t of movie.tg) vec["t:" + t] = TAG_WEIGHT;
+  for (const g of item.g) vec["g:" + g] = GENRE_WEIGHT;
+  for (const t of item.tg) vec["t:" + t] = TAG_WEIGHT;
   return vec;
 }
 
-function cachedVector(movie) {
-  let v = VECTOR_CACHE.get(movie.id);
-  if (!v) { v = movieVector(movie); VECTOR_CACHE.set(movie.id, v); }
+function cachedVector(item) {
+  let v = VECTOR_CACHE.get(item.id);
+  if (!v) { v = itemVector(item); VECTOR_CACHE.set(item.id, v); }
   return v;
 }
 
@@ -183,9 +226,9 @@ function prettyDim(key) {
   return raw;
 }
 
-function topSharedAttributes(movieVec, profileVec, n) {
+function topSharedAttributes(itemVec, profileVec, n) {
   const shared = [];
-  for (const k in movieVec) if (profileVec[k]) shared.push({ key: k, w: profileVec[k] });
+  for (const k in itemVec) if (profileVec[k]) shared.push({ key: k, w: profileVec[k] });
   shared.sort((a, b) => b.w - a.w);
   return shared.slice(0, n || 3).map((s) => prettyDim(s.key));
 }
@@ -199,8 +242,9 @@ function argmax(arr) {
 // ---------- taste clustering (spherical k-means) ----------
 //
 // Groups the Favorites list into a handful of taste clusters so multi-mood
-// viewers (comedy on a Tuesday, prestige drama on Sunday) get profiles that
-// reflect each mood distinctly, instead of one washed-out average.
+// viewers/players (comedy on a Tuesday, prestige drama on Sunday) get
+// profiles that reflect each mood distinctly, instead of one washed-out
+// average.
 
 function chooseClusterCount(n) {
   if (n < 6) return 1;
@@ -242,7 +286,7 @@ function runKMeansOnce(vectors, k, iterations) {
   return { centroids, assignments, inertia };
 }
 
-function clusterMovies(items, k, restarts, iterations) {
+function clusterItems(items, k, restarts, iterations) {
   if (!items.length) return [];
   const vectors = items.map((it) => normalizeVec(cachedVector(it)));
   if (items.length === 1 || k <= 1) {
@@ -266,24 +310,26 @@ function clusterLabel(centroid, maxTerms) {
   return entries.map(([k]) => prettyDim(k)).join(" + ") || "General taste";
 }
 
-let libraryClusterCache = { key: null, clusters: [] };
+let libraryClusterCache = { movies: { key: null, clusters: [] }, games: { key: null, clusters: [] }, shows: { key: null, clusters: [] } };
 
 function invalidateClusterCache() {
-  libraryClusterCache = { key: null, clusters: [] };
+  libraryClusterCache[currentCategory] = { key: null, clusters: [] };
 }
 
 function getLibraryClusters() {
-  const key = state.library.length + ":" + state.library.map((m) => m.id).sort().join(",");
-  if (libraryClusterCache.key === key) return libraryClusterCache.clusters;
-  const clusters = clusterMovies(state.library, chooseClusterCount(state.library.length), 5, 12);
-  libraryClusterCache = { key, clusters };
+  const cs = catState();
+  const cache = libraryClusterCache[currentCategory];
+  const key = cs.library.length + ":" + cs.library.map((m) => m.id).sort().join(",");
+  if (cache.key === key) return cache.clusters;
+  const clusters = clusterItems(cs.library, chooseClusterCount(cs.library.length), 5, 12);
+  libraryClusterCache[currentCategory] = { key, clusters };
   return clusters;
 }
 
 // ---------- recommendation engine ----------
 
 function repetitionMultiplier(id) {
-  const h = state.recHistory[id];
+  const h = catState().recHistory[id];
   if (!h) return 1;
   return Math.max(0.12, 1 - h.count * 0.28);
 }
@@ -314,12 +360,14 @@ function weightedSampleWithoutReplacement(items, weightFn, n) {
 //   - simSeedCentroid: match to the average of just the picked seeds
 //   - simOverall: a light prior from the whole Favorites list
 function generateRecommendations(seedIds, count) {
+  const cat = activeCategory();
+  const cs = catState();
   const excluded = excludedIdSet();
-  const seedMovies = seedIds.map((id) => MOVIES_BY_ID[id]).filter(Boolean);
-  const seedVectors = seedMovies.map((m) => normalizeVec(cachedVector(m)));
+  const seedItems = seedIds.map((id) => cat.catalogById[id]).filter(Boolean);
+  const seedVectors = seedItems.map((m) => normalizeVec(cachedVector(m)));
   const seedCentroid = seedVectors.length ? normalizeVec(averageVector(seedVectors)) : {};
-  const overallVec = state.library.length ? normalizeVec(averageVector(state.library.map(cachedVector))) : {};
-  const dislikeVec = state.disliked.length ? normalizeVec(averageVector(state.disliked.map(cachedVector))) : {};
+  const overallVec = cs.library.length ? normalizeVec(averageVector(cs.library.map(cachedVector))) : {};
+  const dislikeVec = cs.disliked.length ? normalizeVec(averageVector(cs.disliked.map(cachedVector))) : {};
 
   const libraryClusters = getLibraryClusters();
   let moodCluster = null;
@@ -333,7 +381,7 @@ function generateRecommendations(seedIds, count) {
 
   const hasSignal = seedVectors.length > 0 || Object.keys(overallVec).length > 0;
 
-  const scored = MOVIES.filter((m) => !excluded.has(m.id)).map((m) => {
+  const scored = cat.catalog.filter((m) => !excluded.has(m.id)).map((m) => {
     const v = cachedVector(m);
     const seedSims = seedVectors.map((sv) => cosineSim(v, sv));
     const simNearestSeed = seedSims.length ? Math.max(...seedSims) : 0;
@@ -354,7 +402,7 @@ function generateRecommendations(seedIds, count) {
     else if (moodCluster) referenceVec = moodCluster.centroid;
     else referenceVec = overallVec;
 
-    return { movie: m, matched: topSharedAttributes(v, referenceVec, 3), finalScore: score };
+    return { item: m, matched: topSharedAttributes(v, referenceVec, 3), finalScore: score };
   });
 
   scored.sort((a, b) => b.finalScore - a.finalScore);
@@ -362,10 +410,10 @@ function generateRecommendations(seedIds, count) {
   const picked = weightedSampleWithoutReplacement(pool, (c) => c.finalScore, count);
 
   for (const c of picked) {
-    const h = state.recHistory[c.movie.id] || { count: 0 };
+    const h = cs.recHistory[c.item.id] || { count: 0 };
     h.count += 1;
     h.lastShown = Date.now();
-    state.recHistory[c.movie.id] = h;
+    cs.recHistory[c.item.id] = h;
   }
   saveState();
 
@@ -375,6 +423,7 @@ function generateRecommendations(seedIds, count) {
 // ---------- rendering ----------
 
 function renderAll() {
+  applyCategoryChrome();
   renderLibCount();
   renderFavorites();
   renderForYou();
@@ -382,22 +431,47 @@ function renderAll() {
   renderSamplerGrid(false);
 }
 
+// Static copy that depends on which category is active (search placeholder,
+// "movies you've seen and liked" vs "games you've played and liked", etc).
+function applyCategoryChrome() {
+  const cat = activeCategory();
+
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.category === currentCategory);
+  });
+
+  document.getElementById("movie-search").placeholder = `Search a ${cat.noun} to add… (e.g. ${cat.searchExample})`;
+  document.getElementById("foryou-locked-sub").textContent =
+    `The more ${cat.nounPlural} you add to your Favorites list — up to 100 — the sharper Popcorn's sense of your taste gets.`;
+  document.getElementById("seedpicker-sub").innerHTML =
+    `Choose the ${cat.nounPlural} you want something <em>similar</em> to. Recommendations also factor in the overall trend across your whole Favorites list.`;
+  document.getElementById("favorites-sub").textContent =
+    `${cat.nounPluralCap} you've ${cat.seenPastTense} and liked — your highlights reel. Popcorn stores up to 100.`;
+  document.getElementById("favorites-empty-sub").textContent =
+    `Search above, or head to the Sampler tab to quickly rate well-known ${cat.nounPlural}.`;
+  document.getElementById("sampler-heading").textContent = `${cat.icon} ${cat.nounPluralCap} Sampler`;
+  document.getElementById("sampler-sub").textContent =
+    `Well-known ${cat.nounPlural}, quick to rate. Great for building your Favorites list fast.`;
+  document.getElementById("taste-sub").textContent =
+    `People like more than one kind of ${cat.noun} — Popcorn groups your Favorites into a few distinct tastes instead of averaging them into mush.`;
+}
+
 function renderLibCount() {
-  document.getElementById("lib-count").textContent = `${state.library.length} / ${MAX_FAVORITES} favorites`;
+  document.getElementById("lib-count").textContent = `${catState().library.length} / ${MAX_FAVORITES} favorites`;
 }
 
 function chipsHtml(labels, cls) {
   return labels.map((l) => `<span class="chip ${cls || ""}">${escapeHtml(l)}</span>`).join("");
 }
 
-function movieCardHtml(movie, matched, actions) {
-  const genreChips = chipsHtml((movie.g || []).slice(0, 3), "chip-genre");
+function itemCardHtml(item, matched, actions) {
+  const genreChips = chipsHtml((item.g || []).slice(0, 3), "chip-genre");
   const reasonRow = matched && matched.length
     ? `<div class="reason-row">Because you like: ${chipsHtml(matched, "chip-reason")}</div>`
     : "";
   return `
-    <div class="movie-card" data-id="${escapeHtml(movie.id)}">
-      <div class="movie-card-title">${escapeHtml(movie.title || movie.t)}<span class="movie-year">${movie.year || movie.y || ""}</span></div>
+    <div class="movie-card" data-id="${escapeHtml(item.id)}">
+      <div class="movie-card-title">${escapeHtml(item.title || item.t)}<span class="movie-year">${item.year || item.y || ""}</span></div>
       <div class="chip-row">${genreChips}</div>
       ${reasonRow}
       <div class="card-actions">${actions}</div>
@@ -407,7 +481,8 @@ function movieCardHtml(movie, matched, actions) {
 function renderForYou() {
   const locked = document.getElementById("foryou-locked");
   const ready = document.getElementById("foryou-ready");
-  if (state.library.length < MIN_FAVORITES_TO_UNLOCK) {
+  const cs = catState();
+  if (cs.library.length < MIN_FAVORITES_TO_UNLOCK) {
     locked.classList.remove("hidden");
     ready.classList.add("hidden");
     return;
@@ -418,11 +493,11 @@ function renderForYou() {
   renderMoodRow();
 
   const grid = document.getElementById("seed-grid");
-  grid.innerHTML = state.library
+  grid.innerHTML = cs.library
     .slice()
     .sort((a, b) => b.addedAt - a.addedAt)
     .map((m) => {
-      const selected = state.selectedSeeds.includes(m.id);
+      const selected = cs.selectedSeeds.includes(m.id);
       return `<button class="seed-card ${selected ? "selected" : ""}" data-id="${escapeHtml(m.id)}">
         <span class="seed-check">${selected ? "✓" : ""}</span>
         <span class="seed-title">${escapeHtml(m.title)}</span>
@@ -431,8 +506,10 @@ function renderForYou() {
     })
     .join("");
 
-  document.getElementById("seed-count").textContent = `${state.selectedSeeds.length} / ${MAX_SEEDS} selected`;
-  document.getElementById("recommend-btn").disabled = state.selectedSeeds.length < 1;
+  document.getElementById("seed-count").textContent = `${cs.selectedSeeds.length} / ${MAX_SEEDS} selected`;
+  document.getElementById("recommend-btn").disabled = cs.selectedSeeds.length < 1;
+
+  renderRecs();
 }
 
 function renderTastePanel() {
@@ -465,7 +542,7 @@ function renderTastePanel() {
     return `<div class="taste-cluster">
       <div class="taste-cluster-head">
         <span class="taste-cluster-label">${escapeHtml(label)}</span>
-        <span class="taste-cluster-count">${cl.members.length} movie${cl.members.length === 1 ? "" : "s"}</span>
+        <span class="taste-cluster-count">${cl.members.length} item${cl.members.length === 1 ? "" : "s"}</span>
       </div>
       ${bars}
       ${examples.length ? `<div class="taste-cluster-examples">Like ${escapeHtml(examples.join(", "))}</div>` : ""}
@@ -487,39 +564,41 @@ function renderMoodRow() {
   ).join("");
 }
 
-function recCardActions(movie) {
+function recCardActions() {
   return `
     <button class="card-action-btn like" data-action="like">✓ Liked it</button>
     <button class="card-action-btn dislike" data-action="dislike">✗ Not for me</button>
-    <button class="card-action-btn seen" data-action="seen">👁 Seen it</button>`;
+    <button class="card-action-btn seen" data-action="seen">👁 ${escapeHtml(activeCategory().seenLabel)}</button>`;
 }
 
 function renderRecs() {
   const wrap = document.getElementById("recs-wrap");
   const grid = document.getElementById("recs-grid");
   const moodEl = document.getElementById("recs-mood");
-  if (!currentRecs.length) {
+  const slot = recsState[currentCategory];
+  if (!slot.picks.length) {
     wrap.classList.add("hidden");
     return;
   }
   wrap.classList.remove("hidden");
-  if (currentMoodLabel) {
-    moodEl.textContent = `🎭 Matching your "${currentMoodLabel}" mood`;
+  if (slot.moodLabel) {
+    moodEl.textContent = `🎭 Matching your "${slot.moodLabel}" mood`;
     moodEl.classList.remove("hidden");
   } else {
     moodEl.classList.add("hidden");
   }
-  grid.innerHTML = currentRecs.map((c) =>
-    movieCardHtml(toMovieRecord(c.movie), c.matched, recCardActions(c.movie))
+  grid.innerHTML = slot.picks.map((c) =>
+    itemCardHtml(toItemRecord(c.item), c.matched, recCardActions())
   ).join("");
 }
 
 function renderFavorites() {
   const empty = document.getElementById("favorites-empty");
   const list = document.getElementById("fav-list");
+  const cs = catState();
   const filterVal = (document.getElementById("fav-filter").value || "").toLowerCase().trim();
 
-  const items = state.library
+  const items = cs.library
     .slice()
     .sort((a, b) => b.addedAt - a.addedAt)
     .filter((m) => {
@@ -528,7 +607,7 @@ function renderFavorites() {
       return haystack.includes(filterVal);
     });
 
-  empty.classList.toggle("hidden", state.library.length > 0);
+  empty.classList.toggle("hidden", cs.library.length > 0);
   list.innerHTML = items.map((m) => `
     <div class="fav-item" data-id="${escapeHtml(m.id)}">
       <div class="fav-item-main">
@@ -544,23 +623,24 @@ function samplerCardActions() {
   return `
     <button class="card-action-btn like" data-action="like">✓ Loved it</button>
     <button class="card-action-btn dislike" data-action="dislike">✗ Not for me</button>
-    <button class="card-action-btn seen" data-action="skip">Haven't seen it</button>`;
+    <button class="card-action-btn seen" data-action="skip">Haven't ${escapeHtml(activeCategory().seenPastTense)} it</button>`;
 }
 
 // How much of each genre/tag the user has already told us about, so the
 // sampler can go looking for the gaps instead of reinforcing what it
-// already knows. Disliked movies still count (partially) — a "not for me"
+// already knows. Disliked items still count (partially) — a "not for me"
 // is real signal about that corner of taste space too.
 function attributeCoverageCounts() {
+  const cs = catState();
   const counts = {};
-  const bump = (movies, weight) => {
-    for (const m of movies) {
+  const bump = (items, weight) => {
+    for (const m of items) {
       for (const g of m.g) counts["g:" + g] = (counts["g:" + g] || 0) + weight;
       for (const t of m.tg) counts["t:" + t] = (counts["t:" + t] || 0) + weight;
     }
   };
-  bump(state.library, 1);
-  bump(state.disliked, 0.6);
+  bump(cs.library, 1);
+  bump(cs.disliked, 0.6);
   return counts;
 }
 
@@ -570,9 +650,11 @@ function attributeCoverageCounts() {
 // dimensions' coverage before scoring the rest — so a single batch spreads
 // across genres/moods instead of clumping on whatever's already popular.
 function pickSamplerBatch(n) {
+  const cat = activeCategory();
+  const cs = catState();
   const excluded = excludedIdSet();
-  const alreadyShown = new Set(state.samplerBatch);
-  let candidates = MOVIES.filter((m) => !excluded.has(m.id) && !alreadyShown.has(m.id));
+  const alreadyShown = new Set(cs.samplerBatch);
+  let candidates = cat.catalog.filter((m) => !excluded.has(m.id) && !alreadyShown.has(m.id));
   const counts = attributeCoverageCounts();
   const picked = [];
 
@@ -595,28 +677,31 @@ function pickSamplerBatch(n) {
 }
 
 function ensureSamplerBatch() {
+  const cs = catState();
   const excluded = excludedIdSet();
-  state.samplerBatch = state.samplerBatch.filter((id) => !excluded.has(id));
+  cs.samplerBatch = cs.samplerBatch.filter((id) => !excluded.has(id));
   const target = 9;
-  if (state.samplerBatch.length < target) {
-    state.samplerBatch.push(...pickSamplerBatch(target - state.samplerBatch.length));
+  if (cs.samplerBatch.length < target) {
+    cs.samplerBatch.push(...pickSamplerBatch(target - cs.samplerBatch.length));
     saveState();
   }
 }
 
 function renderSamplerGrid(forceNewBatch) {
+  const cs = catState();
   if (forceNewBatch) {
-    state.samplerBatch = [];
+    cs.samplerBatch = [];
   }
   ensureSamplerBatch();
-  const overallVec = state.library.length ? normalizeVec(averageVector(state.library.map(cachedVector))) : {};
+  const overallVec = cs.library.length ? normalizeVec(averageVector(cs.library.map(cachedVector))) : {};
+  const cat = activeCategory();
   const grid = document.getElementById("sampler-grid");
-  grid.innerHTML = state.samplerBatch
-    .map((id) => MOVIES_BY_ID[id])
+  grid.innerHTML = cs.samplerBatch
+    .map((id) => cat.catalogById[id])
     .filter(Boolean)
     .map((m) => {
       const matched = Object.keys(overallVec).length ? topSharedAttributes(cachedVector(m), overallVec, 3) : [];
-      return movieCardHtml(toMovieRecord(m), matched, samplerCardActions());
+      return itemCardHtml(toItemRecord(m), matched, samplerCardActions());
     })
     .join("");
 }
@@ -629,9 +714,25 @@ function switchTab(view) {
   if (view === "sampler") renderSamplerGrid(false);
 }
 
+function switchCategory(key) {
+  if (!CATEGORIES[key] || key === currentCategory) return;
+  currentCategory = key;
+  searchInput.value = "";
+  searchResults.innerHTML = "";
+  searchResults.classList.remove("open");
+  closeCustomForm();
+  saveState();
+  renderAll();
+}
+
 document.getElementById("tabbar").addEventListener("click", (e) => {
   const btn = e.target.closest(".tab");
   if (btn) switchTab(btn.dataset.view);
+});
+
+document.getElementById("category-bar").addEventListener("click", (e) => {
+  const btn = e.target.closest(".category-btn");
+  if (btn) switchCategory(btn.dataset.category);
 });
 
 document.addEventListener("click", (e) => {
@@ -651,8 +752,9 @@ searchInput.addEventListener("input", () => {
     searchResults.classList.remove("open");
     return;
   }
-  const inLibrary = new Set(state.library.map((m) => m.id));
-  const matches = MOVIES.filter((m) => !inLibrary.has(m.id) && m.t.toLowerCase().includes(q)).slice(0, 8);
+  const cat = activeCategory();
+  const inLibrary = new Set(catState().library.map((m) => m.id));
+  const matches = cat.catalog.filter((m) => !inLibrary.has(m.id) && m.t.toLowerCase().includes(q)).slice(0, 8);
 
   let html = matches.map((m) => `
     <div class="search-result-item" data-id="${escapeHtml(m.id)}">
@@ -660,7 +762,7 @@ searchInput.addEventListener("input", () => {
     </div>`).join("");
 
   html += `<div class="search-result-item search-result-custom" data-custom-title="${escapeHtml(searchInput.value.trim())}">
-    ＋ Add "${escapeHtml(searchInput.value.trim())}" as a new movie
+    ＋ Add "${escapeHtml(searchInput.value.trim())}" as a new ${escapeHtml(cat.noun)}
   </div>`;
 
   searchResults.innerHTML = html;
@@ -674,14 +776,14 @@ searchResults.addEventListener("click", (e) => {
     openCustomForm(item.dataset.customTitle);
     return;
   }
-  const movie = MOVIES_BY_ID[item.dataset.id];
+  const movie = activeCategory().catalogById[item.dataset.id];
   if (movie) addToLibrary(movie);
   searchInput.value = "";
   searchResults.innerHTML = "";
   searchResults.classList.remove("open");
 });
 
-// --- custom movie add form ---
+// --- custom item add form ---
 
 const customForm = document.getElementById("custom-add-form");
 const customGenreChips = document.getElementById("custom-genre-chips");
@@ -689,9 +791,10 @@ const customTagChips = document.getElementById("custom-tag-chips");
 
 function openCustomForm(title) {
   pendingCustomMovie = { title, genres: [], tags: [] };
+  const cat = activeCategory();
   document.getElementById("custom-title-echo").textContent = title;
-  customGenreChips.innerHTML = GENRES.map((g) => `<button class="chip chip-toggle" data-kind="g" data-val="${g}">${g}</button>`).join("");
-  customTagChips.innerHTML = TAGS.map((t) => `<button class="chip chip-toggle" data-kind="t" data-val="${t}">${t}</button>`).join("");
+  customGenreChips.innerHTML = cat.genres.map((g) => `<button class="chip chip-toggle" data-kind="g" data-val="${g}">${g}</button>`).join("");
+  customTagChips.innerHTML = cat.tags.map((t) => `<button class="chip chip-toggle" data-kind="t" data-val="${t}">${t}</button>`).join("");
   customForm.classList.remove("hidden");
   searchResults.classList.remove("open");
 }
@@ -712,7 +815,8 @@ customForm.addEventListener("click", (e) => {
       toast("Pick at least one genre so recommendations can use it.");
       return;
     }
-    const id = "custom:" + pendingCustomMovie.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40) + "-" + Math.random().toString(36).slice(2, 7);
+    const slug = pendingCustomMovie.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+    const id = "custom:" + currentCategory + ":" + slug + "-" + Math.random().toString(36).slice(2, 7);
     addToLibrary({ id, t: pendingCustomMovie.title, y: "", g: pendingCustomMovie.genres, tg: pendingCustomMovie.tags, custom: true });
     closeCustomForm();
     searchInput.value = "";
@@ -744,30 +848,32 @@ document.getElementById("fav-list").addEventListener("click", (e) => {
 document.getElementById("seed-grid").addEventListener("click", (e) => {
   const card = e.target.closest(".seed-card");
   if (!card) return;
+  const cs = catState();
   const id = card.dataset.id;
-  const idx = state.selectedSeeds.indexOf(id);
+  const idx = cs.selectedSeeds.indexOf(id);
   if (idx !== -1) {
-    state.selectedSeeds.splice(idx, 1);
+    cs.selectedSeeds.splice(idx, 1);
   } else {
-    if (state.selectedSeeds.length >= MAX_SEEDS) {
-      toast(`You can pick up to ${MAX_SEEDS} movies.`);
+    if (cs.selectedSeeds.length >= MAX_SEEDS) {
+      toast(`You can pick up to ${MAX_SEEDS} ${activeCategory().nounPlural}.`);
       return;
     }
-    state.selectedSeeds.push(id);
+    cs.selectedSeeds.push(id);
   }
   saveState();
   renderForYou();
 });
 
 document.getElementById("seed-random").addEventListener("click", () => {
-  const shuffled = state.library.slice().sort(() => Math.random() - 0.5);
-  state.selectedSeeds = shuffled.slice(0, MAX_SEEDS).map((m) => m.id);
+  const cs = catState();
+  const shuffled = cs.library.slice().sort(() => Math.random() - 0.5);
+  cs.selectedSeeds = shuffled.slice(0, MAX_SEEDS).map((m) => m.id);
   saveState();
   renderForYou();
 });
 
 document.getElementById("seed-clear").addEventListener("click", () => {
-  state.selectedSeeds = [];
+  catState().selectedSeeds = [];
   saveState();
   renderForYou();
 });
@@ -778,7 +884,7 @@ document.getElementById("mood-row").addEventListener("click", (e) => {
   const clusters = getLibraryClusters().slice().sort((a, b) => b.members.length - a.members.length);
   const cl = clusters[Number(btn.dataset.clusterIndex)];
   if (!cl) return;
-  state.selectedSeeds = cl.members
+  catState().selectedSeeds = cl.members
     .map((m) => ({ id: m.id, sim: cosineSim(normalizeVec(cachedVector(m)), cl.centroid) }))
     .sort((a, b) => b.sim - a.sim)
     .slice(0, MAX_SEEDS)
@@ -789,22 +895,20 @@ document.getElementById("mood-row").addEventListener("click", (e) => {
 });
 
 document.getElementById("recommend-btn").addEventListener("click", () => {
-  if (state.selectedSeeds.length < 1) return;
-  if (state.selectedSeeds.length < MIN_SEEDS_FOR_RECS) {
+  const cs = catState();
+  if (cs.selectedSeeds.length < 1) return;
+  if (cs.selectedSeeds.length < MIN_SEEDS_FOR_RECS) {
     toast(`Pick a few more for stronger recommendations — ${MIN_SEEDS_FOR_RECS}+ works best.`);
   }
-  const result = generateRecommendations(state.selectedSeeds, 9);
-  currentRecs = result.picks;
-  currentMoodLabel = result.moodLabel;
+  recsState[currentCategory] = generateRecommendations(cs.selectedSeeds, 9);
   renderRecs();
   document.getElementById("recs-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 document.getElementById("refresh-recs").addEventListener("click", () => {
-  if (!state.selectedSeeds.length) return;
-  const result = generateRecommendations(state.selectedSeeds, 9);
-  currentRecs = result.picks;
-  currentMoodLabel = result.moodLabel;
+  const cs = catState();
+  if (!cs.selectedSeeds.length) return;
+  recsState[currentCategory] = generateRecommendations(cs.selectedSeeds, 9);
   renderRecs();
 });
 
@@ -816,19 +920,21 @@ function handleCardAction(e, source) {
   if (!actionBtn) return;
   const cardEl = e.target.closest(".movie-card");
   const id = cardEl.dataset.id;
-  const movie = MOVIES_BY_ID[id];
-  if (!movie) return;
+  const item = activeCategory().catalogById[id];
+  if (!item) return;
 
   const action = actionBtn.dataset.action;
-  if (action === "like") addToLibrary(movie);
-  else if (action === "dislike") addToDisliked(movie);
-  else if (action === "seen" || action === "skip") markNeutralSeen(movie);
+  if (action === "like") addToLibrary(item);
+  else if (action === "dislike") addToDisliked(item);
+  else if (action === "seen" || action === "skip") markNeutralSeen(item);
 
   if (source === "recs") {
-    currentRecs = currentRecs.filter((c) => c.movie.id !== id);
+    const slot = recsState[currentCategory];
+    slot.picks = slot.picks.filter((c) => c.item.id !== id);
     renderRecs();
   } else {
-    state.samplerBatch = state.samplerBatch.filter((sid) => sid !== id);
+    const cs = catState();
+    cs.samplerBatch = cs.samplerBatch.filter((sid) => sid !== id);
     saveState();
     renderSamplerGrid(false);
   }

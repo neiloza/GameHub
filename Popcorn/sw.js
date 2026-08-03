@@ -8,12 +8,15 @@
  * cached copy. Bumping CACHE on each deploy clears old caches.
  */
 
-var CACHE = "popcorn-v1";
+var CACHE = "popcorn-v2";
 var SHELL = [
   "./",
   "./index.html",
   "./css/styles.css",
   "./js/movies.js",
+  "./js/videogames.js",
+  "./js/tvshows.js",
+  "./js/categories.js",
   "./js/app.js",
   "./manifest.webmanifest",
   "./icons/favicon.svg",

@@ -13,13 +13,13 @@
 //   tg  - style/mood tags (controlled vocabulary, see TAGS below)
 //   p   - rough popularity score 1-100, used as a sampler weight and score tiebreaker
 
-const GENRES = [
+const MOVIE_GENRES = [
   "Action", "Adventure", "Animation", "Comedy", "Crime", "Drama", "Fantasy",
   "Horror", "Mystery", "Romance", "SciFi", "Thriller", "War", "Western",
   "Musical", "Documentary", "Family", "Biography", "Sport", "History",
 ];
 
-const TAGS = [
+const MOVIE_TAGS = [
   "dark", "feelgood", "twist-ending", "based-on-true-story", "ensemble-cast",
   "visually-stunning", "slow-burn", "fast-paced", "cult-classic",
   "award-winning", "coming-of-age", "dystopian", "heist", "courtroom",

@@ -1,7 +1,7 @@
 {
-  "name": "Popcorn — Movie Recommender",
+  "name": "Popcorn — Taste Recommender",
   "short_name": "Popcorn",
-  "description": "Track the movies you've seen and loved, then get new recommendations built from your own taste.",
+  "description": "Track the movies, games, and shows you've loved, then get new recommendations built from your own taste.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

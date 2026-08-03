@@ -46,20 +46,23 @@ button, input {
   padding: 20px 16px calc(100px + env(safe-area-inset-bottom));
 }
 
-/* ---------- top bar ---------- */
+/* ---------- top bar + category switcher ---------- */
 
-.topbar {
+.header-sticky {
   position: sticky;
   top: 0;
   z-index: 20;
+  background: linear-gradient(180deg, rgba(21, 12, 13, 0.98), rgba(21, 12, 13, 0.92));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: calc(12px + env(safe-area-inset-top)) 18px 12px;
-  background: linear-gradient(180deg, rgba(21, 12, 13, 0.98), rgba(21, 12, 13, 0.92));
-  border-bottom: 1px solid var(--panel-border);
-  backdrop-filter: blur(6px);
+  padding: calc(12px + env(safe-area-inset-top)) 18px 10px;
 }
 
 .brand {
@@ -77,6 +80,34 @@ button, input {
   font-size: 0.8rem;
   color: var(--text-dim);
   white-space: nowrap;
+}
+
+.category-bar {
+  display: flex;
+  gap: 6px;
+  padding: 0 14px 10px;
+}
+
+.category-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background: var(--bg-alt);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.category-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ---------- bottom tab bar ---------- */

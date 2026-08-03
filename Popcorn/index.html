@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Popcorn — track the movies you love and get new recommendations built from your own taste.">
+  <meta name="theme-color" content="#1b0f10">
+  <title>Popcorn — Movie Recommender</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍿</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">🍿</span>
+      <span class="brand-name">Popcorn</span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-view="foryou">For You</button>
+      <button class="tab" data-view="favorites">Favorites</button>
+      <button class="tab" data-view="sampler">Sampler</button>
+    </nav>
+    <div class="lib-count" id="lib-count">0 / 100 favorites</div>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== FOR YOU ===== -->
+    <section class="view active" id="view-foryou">
+
+      <div id="foryou-locked" class="empty-state hidden">
+        <p class="empty-title">Add at least 3 favorites to unlock recommendations.</p>
+        <p class="empty-sub">The more movies you add to your Favorites list — up to 100 — the sharper Popcorn's sense of your taste gets.</p>
+        <button class="btn btn-primary" data-goto="favorites">Go add some movies</button>
+      </div>
+
+      <div id="foryou-ready" class="hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Pick up to 10 favorites</h2>
+            <p class="panel-sub">Choose the movies you want something <em>similar</em> to. Recommendations also factor in the overall trend across your whole Favorites list.</p>
+          </div>
+          <div class="seed-toolbar">
+            <span id="seed-count">0 / 10 selected</span>
+            <div class="seed-toolbar-actions">
+              <button class="btn-link" id="seed-random">Pick 10 for me</button>
+              <button class="btn-link" id="seed-clear">Clear</button>
+            </div>
+          </div>
+          <div class="seed-grid" id="seed-grid"></div>
+          <button class="btn btn-primary btn-block" id="recommend-btn">Recommend movies</button>
+        </div>
+
+        <div class="panel taste-panel" id="taste-panel">
+          <h3>Your taste, so far</h3>
+          <div class="taste-chips" id="taste-chips"></div>
+        </div>
+
+        <div id="recs-wrap" class="hidden">
+          <div class="panel-head recs-head">
+            <h2>Recommended for you</h2>
+            <button class="btn-link" id="refresh-recs">🔄 Shuffle new picks</button>
+          </div>
+          <div class="card-grid" id="recs-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAVORITES ===== -->
+    <section class="view" id="view-favorites">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Your Favorites</h2>
+          <p class="panel-sub">Movies you've seen and liked — your highlights reel. Popcorn stores up to 100.</p>
+        </div>
+
+        <div class="search-wrap">
+          <input type="text" id="movie-search" placeholder="Search a movie to add… (e.g. Inception)" autocomplete="off">
+          <div class="search-results" id="search-results"></div>
+        </div>
+
+        <div id="custom-add-form" class="custom-form hidden">
+          <p class="custom-form-title">Add "<span id="custom-title-echo"></span>" — pick what fits, so recommendations can use it:</p>
+          <div class="chip-group" id="custom-genre-chips"></div>
+          <p class="custom-form-sub">Optional style tags:</p>
+          <div class="chip-group" id="custom-tag-chips"></div>
+          <div class="custom-form-actions">
+            <button class="btn btn-primary" id="custom-add-confirm">Add to Favorites</button>
+            <button class="btn-link" id="custom-add-cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="fav-filter-row">
+          <input type="text" id="fav-filter" placeholder="Filter your favorites…" autocomplete="off">
+        </div>
+        <div class="empty-state" id="favorites-empty">
+          <p class="empty-title">No favorites yet</p>
+          <p class="empty-sub">Search above, or head to the Sampler tab to quickly rate well-known movies.</p>
+        </div>
+        <div class="fav-list" id="fav-list"></div>
+      </div>
+    </section>
+
+    <!-- ===== SAMPLER ===== -->
+    <section class="view" id="view-sampler">
+      <div class="panel-head">
+        <h2>Movie Sampler</h2>
+        <p class="panel-sub">Well-known movies, quick to rate. Great for building your Favorites list fast.</p>
+        <button class="btn-link" id="sampler-shuffle">🔀 Shuffle a new batch</button>
+      </div>
+      <div class="card-grid" id="sampler-grid"></div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/movies.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -407,9 +407,76 @@ button, input {
 .seed-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .seed-year { color: var(--text-dim); font-size: 0.78rem; }
 
+/* ---------- mood quick-select ---------- */
+
+.mood-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.mood-row-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-right: 2px;
+}
+
+.mood-chip {
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+  background: rgba(244, 185, 63, 0.08);
+  padding: 8px 13px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.mood-chip:hover { background: rgba(244, 185, 63, 0.16); }
+
+.recs-mood {
+  margin: -6px 0 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
 /* ---------- taste panel ---------- */
 
-.taste-chips { display: flex; flex-direction: column; gap: 8px; }
+.taste-chips { display: flex; flex-direction: column; gap: 16px; }
+
+.taste-cluster {
+  background: var(--bg-alt);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.taste-cluster-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.taste-cluster-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.taste-cluster-count {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.taste-cluster-examples {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
 
 .taste-chip {
   display: flex;
@@ -417,6 +484,8 @@ button, input {
   gap: 10px;
   font-size: 0.82rem;
 }
+
+.taste-chip + .taste-chip { margin-top: 6px; }
 
 .taste-label {
   width: 130px;
@@ -429,7 +498,7 @@ button, input {
   flex: 1;
   height: 8px;
   border-radius: 999px;
-  background: var(--bg-alt);
+  background: var(--bg);
   overflow: hidden;
 }
 

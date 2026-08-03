@@ -244,4 +244,64 @@ const MOVIES = [
   { id: "stepbrothers", t: "Step Brothers", y: 2008, g: ["Comedy"], tg: ["satire", "cult-classic"], p: 79 },
   { id: "theblindside", t: "The Blind Side", y: 2009, g: ["Sport", "Drama", "Biography"], tg: ["based-on-true-story", "feelgood", "underdog"], p: 81 },
   { id: "kungfupanda", t: "Kung Fu Panda", y: 2008, g: ["Animation", "Action", "Comedy", "Family"], tg: ["underdog", "feelgood"], p: 82 },
+
+  // --- documentaries ---
+  { id: "freesolo", t: "Free Solo", y: 2018, g: ["Documentary", "Sport"], tg: ["based-on-true-story", "visually-stunning", "award-winning"], p: 80 },
+  { id: "wontyoubemyneighbor", t: "Won't You Be My Neighbor?", y: 2018, g: ["Documentary", "Biography"], tg: ["feelgood", "based-on-true-story"], p: 74 },
+  { id: "13th", t: "13th", y: 2016, g: ["Documentary", "Crime", "History"], tg: ["based-on-true-story", "dark"], p: 76 },
+  { id: "manonwire", t: "Man on Wire", y: 2008, g: ["Documentary"], tg: ["based-on-true-story", "slow-burn", "award-winning"], p: 72 },
+  { id: "marchofthepenguins", t: "March of the Penguins", y: 2005, g: ["Documentary", "Family"], tg: ["feelgood", "visually-stunning"], p: 73 },
+  { id: "socialdilemma", t: "The Social Dilemma", y: 2020, g: ["Documentary"], tg: ["dystopian", "dark"], p: 75 },
+
+  // --- westerns ---
+  { id: "unforgiven", t: "Unforgiven", y: 1992, g: ["Western", "Drama"], tg: ["dark", "revenge", "award-winning"], p: 82 },
+  { id: "tombstone", t: "Tombstone", y: 1993, g: ["Western", "Action"], tg: ["cult-classic", "revenge"], p: 78 },
+  { id: "310toyuma", t: "3:10 to Yuma", y: 2007, g: ["Western", "Action", "Drama"], tg: ["redemption", "slow-burn"], p: 77 },
+
+  // --- musicals ---
+  { id: "moulinrouge", t: "Moulin Rouge!", y: 2001, g: ["Musical", "Romance", "Drama"], tg: ["musical-numbers", "visually-stunning", "epic"], p: 81 },
+  { id: "soundofmusic", t: "The Sound of Music", y: 1965, g: ["Musical", "Family", "Romance"], tg: ["musical-numbers", "feelgood", "cult-classic"], p: 82 },
+  { id: "mammamia", t: "Mamma Mia!", y: 2008, g: ["Musical", "Comedy", "Romance"], tg: ["musical-numbers", "feelgood"], p: 78 },
+
+  // --- sport ---
+  { id: "hoosiers", t: "Hoosiers", y: 1986, g: ["Sport", "Drama"], tg: ["underdog", "based-on-true-story", "feelgood"], p: 76 },
+  { id: "miracle", t: "Miracle", y: 2004, g: ["Sport", "Drama", "History"], tg: ["underdog", "based-on-true-story", "feelgood"], p: 79 },
+
+  // --- war / history ---
+  { id: "lincoln", t: "Lincoln", y: 2012, g: ["Biography", "Drama", "History"], tg: ["based-on-true-story", "courtroom", "award-winning"], p: 76 },
+  { id: "darkesthour", t: "Darkest Hour", y: 2017, g: ["Biography", "Drama", "War", "History"], tg: ["based-on-true-story", "award-winning"], p: 76 },
+  { id: "lettersfromiwojima", t: "Letters from Iwo Jima", y: 2006, g: ["War", "Drama", "History"], tg: ["based-on-true-story", "dark", "slow-burn"], p: 74 },
+
+  // --- anime beyond Ghibli ---
+  { id: "akira", t: "Akira", y: 1988, g: ["Animation", "SciFi", "Action"], tg: ["cult-classic", "dystopian", "visually-stunning"], p: 82 },
+  { id: "yourname", t: "Your Name", y: 2016, g: ["Animation", "Romance", "Fantasy"], tg: ["visually-stunning", "time-travel", "award-winning"], p: 85 },
+  { id: "perfectblue", t: "Perfect Blue", y: 1997, g: ["Animation", "Thriller", "Horror"], tg: ["psychological", "dark", "mind-bending", "cult-classic"], p: 74 },
+
+  // --- foreign-language prestige ---
+  { id: "amelie", t: "Amélie", y: 2001, g: ["Romance", "Comedy"], tg: ["feelgood", "visually-stunning", "indie", "cult-classic"], p: 83 },
+  { id: "lifeisbeautiful", t: "Life Is Beautiful", y: 1997, g: ["Comedy", "Drama", "War"], tg: ["feelgood", "dark", "award-winning"], p: 81 },
+  { id: "livesofothers", t: "The Lives of Others", y: 2006, g: ["Drama", "Thriller"], tg: ["dystopian", "slow-burn", "award-winning"], p: 76 },
+
+  // --- campy / high-energy guilty pleasures ---
+  { id: "conair", t: "Con Air", y: 1997, g: ["Action", "Crime", "Thriller"], tg: ["fast-paced", "cult-classic", "prison"], p: 76 },
+  { id: "faceoff", t: "Face/Off", y: 1997, g: ["Action", "Crime", "Thriller"], tg: ["fast-paced", "cult-classic", "revenge"], p: 76 },
+
+  // --- holiday / cozy ---
+  { id: "homealone", t: "Home Alone", y: 1990, g: ["Comedy", "Family"], tg: ["feelgood", "cult-classic"], p: 84 },
+  { id: "elf", t: "Elf", y: 2003, g: ["Comedy", "Family", "Fantasy"], tg: ["feelgood", "cult-classic"], p: 80 },
+  { id: "itsawonderfullife", t: "It's a Wonderful Life", y: 1946, g: ["Drama", "Fantasy", "Family"], tg: ["feelgood", "redemption", "cult-classic", "award-winning"], p: 82 },
+
+  // --- slow, cerebral arthouse ---
+  { id: "treeoflife", t: "The Tree of Life", y: 2011, g: ["Drama"], tg: ["slow-burn", "visually-stunning", "indie", "mind-bending"], p: 68 },
+  { id: "undertheskin", t: "Under the Skin", y: 2013, g: ["SciFi", "Horror", "Drama"], tg: ["slow-burn", "dark", "visually-stunning", "indie", "mind-bending"], p: 66 },
+
+  // --- horror-comedy ---
+  { id: "shaunofthedead", t: "Shaun of the Dead", y: 2004, g: ["Comedy", "Horror"], tg: ["satire", "cult-classic", "fast-paced"], p: 80 },
+  { id: "whatwedointheshadows", t: "What We Do in the Shadows", y: 2014, g: ["Comedy", "Horror"], tg: ["satire", "cult-classic", "indie"], p: 78 },
+
+  // --- noir / courtroom / heist ---
+  { id: "laconfidential", t: "L.A. Confidential", y: 1997, g: ["Crime", "Mystery", "Thriller"], tg: ["noir", "twist-ending", "ensemble-cast"], p: 79 },
+  { id: "thefugitive", t: "The Fugitive", y: 1993, g: ["Action", "Thriller", "Mystery"], tg: ["fast-paced", "twist-ending"], p: 80 },
+  { id: "mycousinvinny", t: "My Cousin Vinny", y: 1992, g: ["Comedy", "Crime"], tg: ["courtroom", "satire", "feelgood"], p: 74 },
+  { id: "insideman", t: "Inside Man", y: 2006, g: ["Crime", "Thriller"], tg: ["heist", "twist-ending", "ensemble-cast"], p: 78 },
 ];

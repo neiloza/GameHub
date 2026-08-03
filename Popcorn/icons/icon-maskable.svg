@@ -18,36 +18,39 @@
   <rect x="-8" y="-8" width="528" height="528" fill="url(#bg)"/>
   <rect x="-8" y="-8" width="528" height="528" fill="url(#glow)"/>
 
-  <!-- everything below is scaled down and centered to stay inside the ~80% maskable safe zone -->
-  <g transform="translate(256,256) scale(0.72) translate(-256,-256)">
-    <ellipse cx="256" cy="446" rx="126" ry="16" fill="#7a3d10" opacity="0.22"/>
+  <!-- everything below is scaled down and centered to stay inside the ~80% maskable safe zone,
+       then shifted up 10% of the icon (51.2px) to match the non-maskable icon's position -->
+  <g transform="translate(0,-51.2)">
+    <g transform="translate(256,256) scale(0.72) translate(-256,-256)">
+      <ellipse cx="256" cy="446" rx="126" ry="16" fill="#7a3d10" opacity="0.22"/>
 
-    <polygon points="171,430 341,430 366,300 146,300" fill="url(#bucket)" stroke="#7a2229" stroke-width="4" stroke-linejoin="round"/>
+      <polygon points="171,430 341,430 366,300 146,300" fill="url(#bucket)" stroke="#7a2229" stroke-width="4" stroke-linejoin="round"/>
 
-    <polygon points="146,300 190,300 197,430 171,430" fill="#b3323f"/>
-    <polygon points="234,300 278,300 269,430 227,430" fill="#b3323f"/>
-    <polygon points="322,300 366,300 341,430 305,430" fill="#b3323f"/>
+      <polygon points="146,300 190,300 197,430 171,430" fill="#b3323f"/>
+      <polygon points="234,300 278,300 269,430 227,430" fill="#b3323f"/>
+      <polygon points="322,300 366,300 341,430 305,430" fill="#b3323f"/>
 
-    <ellipse cx="256" cy="300" rx="110" ry="16" fill="#fffaf0" stroke="#7a2229" stroke-width="4"/>
+      <ellipse cx="256" cy="300" rx="110" ry="16" fill="#fffaf0" stroke="#7a2229" stroke-width="4"/>
 
-    <g stroke="#c9973f" stroke-width="2" stroke-linejoin="round">
-      <circle cx="256" cy="214" r="36" fill="#fff3d6"/>
-      <circle cx="204" cy="240" r="40" fill="#fff3d6"/>
-      <circle cx="308" cy="240" r="40" fill="#fff3d6"/>
-      <circle cx="163" cy="276" r="34" fill="#f4d998"/>
-      <circle cx="349" cy="276" r="34" fill="#f4d998"/>
-      <circle cx="228" cy="192" r="30" fill="#f4d998"/>
-      <circle cx="284" cy="192" r="30" fill="#f4d998"/>
-      <circle cx="196" cy="300" r="28" fill="#fff3d6"/>
-      <circle cx="316" cy="300" r="28" fill="#fff3d6"/>
-      <circle cx="256" cy="268" r="32" fill="#fff3d6"/>
-    </g>
+      <g stroke="#c9973f" stroke-width="2" stroke-linejoin="round">
+        <circle cx="256" cy="214" r="36" fill="#fff3d6"/>
+        <circle cx="204" cy="240" r="40" fill="#fff3d6"/>
+        <circle cx="308" cy="240" r="40" fill="#fff3d6"/>
+        <circle cx="163" cy="276" r="34" fill="#f4d998"/>
+        <circle cx="349" cy="276" r="34" fill="#f4d998"/>
+        <circle cx="228" cy="192" r="30" fill="#f4d998"/>
+        <circle cx="284" cy="192" r="30" fill="#f4d998"/>
+        <circle cx="196" cy="300" r="28" fill="#fff3d6"/>
+        <circle cx="316" cy="300" r="28" fill="#fff3d6"/>
+        <circle cx="256" cy="268" r="32" fill="#fff3d6"/>
+      </g>
 
-    <g fill="#ffffff" opacity="0.75">
-      <circle cx="243" cy="203" r="7"/>
-      <circle cx="191" cy="228" r="8"/>
-      <circle cx="295" cy="228" r="8"/>
-      <circle cx="150" cy="266" r="6"/>
+      <g fill="#ffffff" opacity="0.75">
+        <circle cx="243" cy="203" r="7"/>
+        <circle cx="191" cy="228" r="8"/>
+        <circle cx="295" cy="228" r="8"/>
+        <circle cx="150" cy="266" r="6"/>
+      </g>
     </g>
   </g>
 </svg>

@@ -395,7 +395,7 @@ function switchTab(view) {
   if (view === "sampler") renderSamplerGrid(false);
 }
 
-document.getElementById("tabs").addEventListener("click", (e) => {
+document.getElementById("tabbar").addEventListener("click", (e) => {
   const btn = e.target.closest(".tab");
   if (btn) switchTab(btn.dataset.view);
 });

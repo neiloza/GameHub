@@ -1,0 +1,20 @@
+{
+  "name": "Popcorn — Movie Recommender",
+  "short_name": "Popcorn",
+  "description": "Track the movies you've seen and loved, then get new recommendations built from your own taste.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#150c0d",
+  "theme_color": "#150c0d",
+  "categories": ["entertainment", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "icons/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "icons/icon-1024.png", "type": "image/png", "sizes": "1024x1024" },
+    { "src": "icons/icon-192-maskable.png", "type": "image/png", "sizes": "192x192", "purpose": "maskable" },
+    { "src": "icons/icon-512-maskable.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
+    { "src": "icons/favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+  ]
+}

@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
   <meta name="description" content="Popcorn — track the movies you love and get new recommendations built from your own taste.">
-  <meta name="theme-color" content="#1b0f10">
+  <meta name="theme-color" content="#150c0d">
   <title>Popcorn — Movie Recommender</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍿</text></svg>">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Popcorn">
+  <meta name="format-detection" content="telephone=no">
+
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -16,11 +25,6 @@
       <span class="brand-icon">🍿</span>
       <span class="brand-name">Popcorn</span>
     </div>
-    <nav class="tabs" id="tabs">
-      <button class="tab active" data-view="foryou">For You</button>
-      <button class="tab" data-view="favorites">Favorites</button>
-      <button class="tab" data-view="sampler">Sampler</button>
-    </nav>
     <div class="lib-count" id="lib-count">0 / 100 favorites</div>
   </header>
 
@@ -116,9 +120,31 @@
 
   </main>
 
+  <nav class="tabbar" id="tabbar">
+    <div class="tabbar-inner">
+      <button class="tab active" data-view="foryou">
+        <span class="tab-icon">🎬</span>
+        <span class="tab-label">For You</span>
+      </button>
+      <button class="tab" data-view="favorites">
+        <span class="tab-icon">⭐</span>
+        <span class="tab-label">Favorites</span>
+      </button>
+      <button class="tab" data-view="sampler">
+        <span class="tab-icon">🎲</span>
+        <span class="tab-label">Sampler</span>
+      </button>
+    </div>
+  </nav>
+
   <div class="toast" id="toast"></div>
 
   <script src="js/movies.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js"));
+    }
+  </script>
 </body>
 </html>

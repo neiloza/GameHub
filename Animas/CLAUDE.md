@@ -15,6 +15,12 @@ is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
 effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
 types by design; Light, Grass and Water are the bottom three.
 
+**Every type has exactly three free moves, in the same three slots:** the
+standard attack (1), the status move (4), and one of the three tools (6-8). The
+shape is identical in all nine types, so it is learnable once. Three moves were
+rebalanced to survive being free — Resolve to +50% Power, Mend to a 25% heal,
+Curse to 15% a turn.
+
 **The hundred-mana breakpoint is the economy's load-bearing rule.** Every type's
 ninth move — its signature — costs exactly 100. Nothing else costs more than 80.
 A character whose Mana stat reaches 100 can use its type's ultimate; one below

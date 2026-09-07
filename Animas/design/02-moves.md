@@ -6,6 +6,10 @@ Every type follows the same skeleton. Moves 1–3 are the attacks (standard,
 powerful, priority). Move 4 is a status or non-damage ability. Move 5 is the field
 effect. Moves 6–8 are the type's distinctive tools. Move 9 is its signature.
 
+**Three moves in every type are free:** the standard attack, the status move, and
+one of the three tools. A player who runs out of mana always has an attack, a
+status effect, and one real piece of the type's kit still available.
+
 Characters take four moves total, drawn from their own type or types plus the
 neutral pool.
 
@@ -91,7 +95,7 @@ else.*
 1. **Jab** — Standard damage. No cost.
 2. **Haymaker** — Heavy damage. High mana.
 3. **Quick Strike** — Light damage. Always moves first.
-4. **Resolve** — The user's Power is doubled.
+4. **Resolve** — The user's Power increases by 50%.
 5. **Proving Ground** — *FIELD.* Priority is disabled; everything resolves by Speed alone.
 6. **Counter** — Reflects the damage the user takes this turn back at the attacker, doubled.
 7. **Focus Punch** — Resolves last. If the user took no damage this turn, massive damage. If it was hit, the move fails.
@@ -119,7 +123,7 @@ else.*
 1. **Ripshade** — Standard damage. No cost.
 2. **Nightfall** — Heavy damage. High mana.
 3. **Shadow Sneak** — Light damage. Always moves first.
-4. **Curse** — The user sacrifices 25% of its max HP. The target loses 25% of its max HP every turn.
+4. **Curse** — The user sacrifices 25% of its max HP. The target loses 15% of its max HP every turn.
 5. **Snare** — *FIELD.* Every enemy that switches in takes 15% of max HP as damage.
 6. **No Retreat** — Costs 50% of max HP. The user's Power, Speed, and Mana are all doubled, and it can never switch out.
 7. **Death Pact** — Immediately, both the user and the target lose HP equal to whichever of them has less. The one with less faints; the other survives with the difference.
@@ -133,7 +137,7 @@ else.*
 1. **Lumenlash** — Standard damage. No cost.
 2. **Solar Flare** — Heavy damage. High mana.
 3. **Glimmer** — Light damage. Always moves first.
-4. **Mend** — Restore 50% of the user's max HP.
+4. **Mend** — Restore 25% of the user's max HP.
 5. **Sanctuary** — *FIELD.* Every character switching in on your side restores 15% of max HP.
 6. **Gift** — Two turns from now, whoever is active on your side heals to full.
 7. **Lifedraw** — Damage, and the user heals HP equal to the damage dealt.

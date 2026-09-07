@@ -9,8 +9,13 @@ the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.
 
 First pass done: move power and mana cost for all 88 moves (`design/04-costs.md`),
-against a 100-mana bar, 100-power standard attack, and 10 mana regenerated per
-turn.
+against a 100-power standard attack and 10 mana regenerated per turn.
+
+**The hundred-mana breakpoint is the economy's load-bearing rule.** Every type's
+ninth move — its signature — costs exactly 100. Nothing else costs more than 80.
+A character whose Mana stat reaches 100 can use its type's ultimate; one below
+100 cannot, ever. Mana is therefore a yes-or-no stat, not a gradient, and it is
+the single sharpest lever available when setting character stat lines.
 
 Not started: character stat lines, the damage formula, the Power-to-damage
 conversion.

@@ -52,12 +52,13 @@ Flare Blitz costs your health, Meltdown costs your tempo, Eruption costs your li
 6. **Germinate** — Plant an attack. It detonates for heavy damage next turn, and the user still acts normally in the meantime. **Immune to Clear Sight and Tempest.**
 7. **Baton Pass** — Switch out and pass all boosts to the incoming ally. Works even while trapped.
 8. **Sap** — The target cannot switch out. Very high mana.
-9. **Growth** — The user's Power and Mana are doubled.
+9. **Growth** — The user's Power is doubled and its mana is restored to full.
 
 ## ⚡ ELECTRIC — the resource type
 
-*Every move touches the mana economy. Short Circuit and Overload are the same
-equation pointed in opposite directions.*
+*Every move touches the mana economy. Charge is how a character reaches the
+hundred-mana breakpoint; Short Circuit is how it takes that away from someone
+else.*
 
 1. **Spark** — Standard damage. No cost.
 2. **Thunderbolt** — Heavy damage. High mana.
@@ -65,9 +66,9 @@ equation pointed in opposite directions.*
 4. **Charge** — The user's mana is doubled.
 5. **Storm Front** — *FIELD.* Every character's mana is doubled.
 6. **Volt Switch** — Damage, then the user switches out.
-7. **Voltage** — Damage doubles with each consecutive use. Resets if the user switches out or uses anything else.
+7. **Voltage** — Damage doubles with each consecutive use, to a maximum of three. Resets if the user switches out or uses anything else.
 8. **Short Circuit** — Destroys all of the target's mana. Damage scales with the amount destroyed.
-9. **Overload** — Spend all of the user's mana. Damage scales with the amount spent.
+9. **Overload** — Massive damage. Costs the user's entire mana bar.
 
 ## 🌪️ AIR — speed, mobility, and position
 

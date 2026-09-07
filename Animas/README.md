@@ -33,9 +33,10 @@ Ability and the stat line, not the movepool.
 | [`design/02-moves.md`](design/02-moves.md) | All 88 moves |
 | [`design/03-characters.md`](design/03-characters.md) | The roster of 25 |
 | [`design/04-costs.md`](design/04-costs.md) | Damage and mana cost for all 88 moves |
+| [`design/05-stats.md`](design/05-stats.md) | HP, Power, Speed and Mana for all 25 characters |
 
 ## Status
 
 Design. The types, the chart, the field effects, the full move list, and the
-roster are locked. Move power and mana costs have a first pass. Character stat
-lines, the damage formula, and the Power-to-damage conversion are next.
+roster are locked. Damage, mana costs and character stat lines all have a first
+pass. Playtesting and the remaining rules questions are next.

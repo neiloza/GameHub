@@ -57,8 +57,17 @@ Regeneration is a flat 10 per turn, not a percentage, so a high-mana character
 holds a bigger tank but refills it more slowly — which keeps high Mana a
 tradeoff rather than pure upside.
 
-Not started: character stat lines, the damage formula, the Power-to-damage
-conversion.
+Proposed: stat spreads for all 25 characters (`design/05-stats.md`). Every line
+redistributes the same 100/100/100/100 baseline; totals run 380-410 against a
+500 cap. HP is an index — hit points = HP stat x 2.5, so 100 is the 250-hit-point
+baseline. Power is the damage multiplier divided by 100. Stat total is the
+counterweight to Ability strength, so Kelpie (the most oppressive Ability) is
+lowest at 380, and the core nine average 405 against the duals' 393 as
+compensation for mono-typing.
+
+Kelpie at 80 Mana is the most load-bearing number on that page: it puts Drown
+out of reach and dismantles the Bind-and-Drown lock. Do not raise it to 100
+without re-solving that combination.
 
 ## The rules that constrain every change
 

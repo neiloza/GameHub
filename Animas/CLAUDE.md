@@ -15,6 +15,12 @@ is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
 effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
 types by design; Light, Grass and Water are the bottom three.
 
+**Attack costs vary by type and run opposite to damage.** Powerful attacks cost
+25 (Light) to 45 (Electric); priority attacks 14 to 25. Weak types buy their
+damage at a discount, strong types pay a premium — so running dry is trivial for
+Light and catastrophic for Electric, which is precisely why Electric's free
+status move manufactures mana.
+
 **Two moves are free in every type:** the standard attack (slot 1) and the
 status move (slot 4). That is the guarantee. Fire, Fighting and Dark each get a
 third — Flare Blitz, Counter and Memento — because those three already charge a

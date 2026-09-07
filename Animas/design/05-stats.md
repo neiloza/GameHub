@@ -61,7 +61,7 @@ Every Water character is slow — not one reaches 80 Speed. Control does not nee
 | **Kelpie** | 💧 Water | 120 *(300)* | 90 | **30** | **160** | 400 | **Undertow** — the opposing character cannot switch out |
 | **Hydra** | 💧/🌿 | **180** *(450)* | **130** | **30** | **50** | 390 | **Regenerator** — restores half its HP on switching out |
 | **Loch Ness** | 💧/🌑 | **150** *(375)* | 90 | 70 | 100 | 410 | **From the Deep** — untargetable the turn it enters |
-| **Matsya** | 💧/✨ | 100 *(250)* | **30** | 70 | **190** | 390 | **Forewarning** — reveals the opponent's moves and Ability |
+| **Matsya** | 💧/✨ | 90 *(225)* | **30** | 70 | **200** | 390 | **Forewarning** — reveals the opponent's moves and Ability |
 
 ## 🌿 GRASS
 
@@ -106,7 +106,7 @@ The type that pays for everything, and now has one member that can also hit back
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **20** | **200** | 420 | **Pressure** — the opponent's moves cost double mana |
+| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **20** | **190** | 410 | **Pressure** — the opponent's moves cost double mana |
 | **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | 90 | 70 | 340 | **Illusion** — enters disguised; breaks on damage |
 | **Sphinx** | 🔮/🌑 | 80 *(200)* | 90 | **40** | **150** | 360 | **Enigma** — the opponent cannot use the same move twice |
 
@@ -126,7 +126,7 @@ One character, and it cannot hurt anybody.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Unicorn** | ✨ Light | 80 *(200)* | **30** | 50 | **150** | 310 | **Miracle** — at full HP, survives anything at 1 HP |
+| **Unicorn** | ✨ Light | 80 *(200)* | **30** | 90 | **150** | 350 | **Miracle** — at full HP, survives anything at 1 HP |
 ---
 
 ## The extremes
@@ -136,9 +136,9 @@ One character, and it cannot hurt anybody.
 | **HP** | Xiuhcoatl — 20 *(50 hp)* | World Turtle — 250 *(625 hp)* | **12.5×** |
 | **Power** | World Turtle — 20 | Otso, Roc — 150 | **7.5×** |
 | **Speed** | World Turtle — 10 | Raiju — 150 | **15×** |
-| **Mana** | Hydra, Phoenix, Roc — 50 | Baku — 200 | **4.0×** |
+| **Mana** | Hydra, Phoenix, Roc — 50 | Matsya — 200 | **4.0×** |
 
-Totals run 275 to 440, mean 379. **Fourteen of twenty-five clear the
+Totals run 275 to 440, mean 380. **Fourteen of twenty-five clear the
 hundred-mana wall.**
 
 **Power has recovered to a 7.5× spread; Mana is the one that stayed compressed
@@ -192,12 +192,27 @@ is a glass cannon, not a trickster.
 a slow character can use. A nine-tailed fox that gets outrun by a bear is the
 wrong shape.
 
-### Watch — Unicorn at 50 Speed
+### Fixed — Unicorn at 90 Speed
 
-Miracle triggers from full health, so Unicorn wants to arrive clean and act
-before anything touches it. At 50 Speed it now acts after most of the roster,
-which means it usually takes a hit first and is no longer at full health when it
-matters. The 150 Mana is fine; the Speed works against the Ability.
+Miracle triggers only from full health, so Unicorn needs to act before anything
+touches it on the turn it arrives. Ninety clears fourteen of the twenty-five,
+including everything in Water and Grass and most of Dark, which is enough for the
+Ability to actually fire. It is still not fast — Raiju, Xiuhcoatl, Garuda and Sun
+Wukong all go first — but it is no longer working against its own Ability.
+
+### Watch — the highest mana in the game moved to Matsya
+
+At 200 Mana and 30 Power, **Matsya can cast anything the game has and hurt
+nobody.** Resurrection, Renewal, Gift, Sanctuary — the entire Light recovery kit,
+in one match, from a character whose Lumenlash deals fifteen damage.
+
+That is the right shape for Vishnu's fish, and it puts Baku a clean ten points
+behind at 190, which is also correct: Pressure is a tax, not a spellbook. But
+these are the two highest pools in the game by 40 points over anything else, and
+both belong to characters that cannot fight. **The mana ceiling is now entirely
+owned by the two characters least able to use it aggressively**, which is a
+better outcome than it sounds — it means the top of the Mana stat is a support
+stat, not a damage one.
 
 ---
 

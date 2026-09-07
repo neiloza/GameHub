@@ -21,14 +21,14 @@ types by design; Light, Grass and Water are the bottom three.
 (Electric); priority attacks 15 to 25. Running dry is trivial for Light, whose
 attacks were nearly free, and catastrophic for Electric, whose attacks were the
 expensive part — which is precisely why Electric's free status move manufactures
-mana. Fire is the exception to the curve: Fire Blast at 30 makes it tied for the
+mana. Fire is the exception to the curve: Pyre at 30 makes it tied for the
 best value in the game, a deliberate reversal recorded in `04-costs.md`.
 
 **Two moves are free in every type:** the standard attack (slot 1) and the
 status move (slot 4). That is the guarantee. Fighting and Dark each get a third —
-Counter and Memento — the two steepest non-mana prices in the game. Three status moves were
+Riposte and Last Rites — the two steepest non-mana prices in the game. Three status moves were
 rebalanced to survive being free: Resolve to +50% Power, Mend to a 25% heal,
-Curse to 15% a turn.
+Malediction to 15% a turn.
 
 **The hundred-mana breakpoint is the economy's load-bearing rule.** Mana is a
 stat that varies — roughly 70 at the low end, 120 to 150 at the high end. No
@@ -67,7 +67,7 @@ conversion.
 - Traps end when the character that applied them leaves.
 - Stat changes, fields, and hazards are cleared by **Tempest** (Air's
   signature, whole board) or **Clear Sight** (neutral, self only).
-- **Germinate, Future Sight, and Drown** are immune to all clearing.
+- **Germinate, Prophecy, and Drown** are immune to all clearing.
 
 ## Open questions
 
@@ -75,7 +75,7 @@ conversion.
    opposing team? Team-wide fits the myth but deletes hidden information.
 2. **Death Touch has no cost** beyond mana, and Grim Reaper's Ability halves
    that. Mana alone may not be a sufficient brake on an instant KO.
-3. **Taunt may be mandatory** — it shuts off five of seven neutral moves, plus
+3. **Provoke may be mandatory** — it shuts off five of seven neutral moves, plus
    every heal and every setup move in the game.
 4. **Mono-types need compensating stats.** Duals outnumber monos sixteen to
    nine; the core nine give up coverage for nothing unless their raw numbers

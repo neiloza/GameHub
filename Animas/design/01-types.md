@@ -68,16 +68,16 @@ turn.
 **Grass — Overgrowth.** Every character on the field heals ten percent of max HP
 each turn.
 
-**Water — Whirlpool.** No character on either side can switch out.
+**Water — Maelstrom.** No character on either side can switch out.
 
 **Electric — Storm Front.** Every character's mana is doubled.
 
-**Air — Tailwind.** Your team's Speed is doubled.
+**Air — Slipstream.** Your team's Speed is doubled.
 
 **Fighting — Proving Ground.** Priority is disabled. Everything resolves by Speed
 alone.
 
-**Psychic — Trick Room.** Turn order is reversed. The slowest acts first.
+**Psychic — Inversion.** Turn order is reversed. The slowest acts first.
 
 **Dark — Snare.** Every enemy that switches in takes fifteen percent max HP damage.
 

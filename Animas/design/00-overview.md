@@ -38,7 +38,7 @@ signature.
 ## PART SIX-B — SYSTEM RULES
 
 **Status effects end when the affected character switches out.** This is the only
-status removal in the game, which makes trapping far more dangerous: Bind and Sap
+status removal in the game, which makes trapping far more dangerous: Strangle and Sap
 do not merely stop you repositioning, they stop you cleansing.
 
 **Trapping effects end when the character that applied them switches out.** The
@@ -57,7 +57,7 @@ when the character that applied them leaves. A character can clear its own statu
 traps, and stat reductions with Clear Sight. Field effects, hazards, and enemy stat
 boosts are removed only by Air's Tempest.
 
-**Three moves are immune to Tempest and Clear Sight: Germinate, Future Sight, and
+**Three moves are immune to Tempest and Clear Sight: Germinate, Prophecy, and
 Drown.** These are scheduled events rather than states — once set, they resolve. A
 reset button that cancelled them would make all three unplayable and would leave
 Water's entire win condition answerable by a common neutral move. Everything else
@@ -88,21 +88,21 @@ attached to a character or to the field is fair game.
 7. **Nothing prevents healing.** Dark lost Heal Block, and with Renewal and Revival
    Blessing both in Light's kit, there is now no answer anywhere in the game to a
    dedicated healing team. This is the most likely source of unwinnable stalemates.
-8. **One-shot density.** Five moves remove a character outright — Eruption, Drown,
-   Death Touch, Memento, and Death Pact — plus Curse's four-turn clock. In a
+8. **One-shot density.** Five moves remove a character outright — Pyroclasm, Drown,
+   Death Touch, Last Rites, and Death Pact — plus Malediction's four-turn clock. In a
    five-character format that is a lot of ways to simply delete someone.
-9. **Grass's Sap plus Growth plus Baton Pass.** The high mana cost helps. The
-   remaining asymmetry is that Baton Pass escapes traps, so Grass can trap without
-   being trappable. Making Baton Pass respect traps would make the two types
+9. **Grass's Sap plus Bloom plus Graft.** The high mana cost helps. The
+   remaining asymmetry is that Graft escapes traps, so Grass can trap without
+   being trappable. Making Graft respect traps would make the two types
    symmetric.
-10. **Curse** at twenty-five percent per turn kills in four turns, roughly double the
+10. **Malediction** at fifteen percent per turn is now in line with Parasite and Snare — it was twenty-five, roughly double the
     speed of anything else.
 
 **Resolved since the last pass**
 
 - Randomness is gone again. All three forced-switch moves now bring in the next
   character in team order. Metronome is the single deliberate exception.
-- Taunt answers the healing-stalemate problem — Renewal and Revival Blessing are
+- Provoke answers the healing-stalemate problem — Renewal and Resurrection are
   both non-damaging, so a Taunted Light team cannot heal or revive at all.
 - The two proposed rulings in Part Six close the status and trapping holes without
   spending a move slot.

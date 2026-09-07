@@ -63,7 +63,7 @@ only ability that turns its own team off along with the enemy's, so bringing it
 means building around the drought rather than dropping it into any team. Its job
 is to answer Light, which is tied for the largest type in the game and has spent
 this whole design accumulating recovery: Gift, the full-team restore, Sanctuary,
-Revival Blessing, the lifesteal attack. Nothing has been allowed to stop that
+Resurrection, the lifesteal attack. Nothing has been allowed to stop that
 since Heal Block came out of Dark. Now something does.
 
 It also fixes the last structural complaint on the roster. Air was four birds
@@ -81,7 +81,7 @@ flipped.
   Regenerator do nothing.
 - **Draining moves.** Sap and the Light lifesteal attack still deal their full
   damage. The user just gets nothing back.
-- **Revival is not healing.** Revival Blessing and Rebirth both work. A revived
+- **Revival is not healing.** Resurrection and Rebirth both work. A revived
   character returns at whatever HP the effect specifies and cannot then be
   topped up. Miracle also works, because surviving at 1 HP is not a heal.
 - **It stops the instant Gugalanna leaves.** Same as every other in-play effect
@@ -115,11 +115,11 @@ contender for the last slot and it is worth keeping on the shelf, because it is
 the only invertebrate anyone proposed and the roster has none.
 
 Two things to know if it ever comes back in. Grass/Dark is quadruple weak to
-Fire, and Fire is a five-character type holding Eruption — that character gets
+Fire, and Fire is a five-character type holding Pyroclasm — that character gets
 one window per match and no second chances. And a trap-on-hit ability stacks
 with Kelpie's Undertow into a lock that has no counterplay except Cyclone or
 Tempest, so the trap would need to end when the spider leaves, exactly like
-Bind does.
+Strangle does.
 
 Fenrir is the character it would replace. It is the only swap that keeps every
 type at four or five, and Fenrir is the third canine on a roster with no
@@ -136,7 +136,7 @@ arachnid at all.
 2. **Death Touch has no cost.** It defeats a character outright, and Grim
    Reaper's whole ability is making it cheaper. Mana alone may not be enough of
    a brake.
-3. **Taunt may be mandatory.** It shuts off five of the seven neutral moves,
+3. **Provoke may be mandatory.** It shuts off five of the seven neutral moves,
    plus every heal and every setup move in the game. A move that good on a
    roster this size is not a choice.
 4. **Mono-types need compensating stats.** Dual typing is now the default,

@@ -8,10 +8,12 @@ the same scale rather than picked in isolation.
 
 ## The scale
 
-**A full mana bar is 100, and 100 is the ceiling.** Every type's ninth move —
-its signature — costs exactly 100, and nothing else in the game is allowed to
-reach it. This is the most load-bearing rule in the economy; see *The
-hundred-mana breakpoint* below.
+**Mana is a stat, and it varies.** Some characters carry 70 or 80. Some carry
+120 or 150. **No move in the game costs more than 100**, and every type's ninth
+move — its signature — costs exactly that. So a player reading a stat line does
+not have to work anything out: **a Mana number starting with a one means that
+character can use its type's signature move. Anything lower means it cannot,
+ever.** See *The hundred-mana breakpoint* below.
 
 **A standard attack does 70 damage. A powerful attack does 100 to 120. A
 priority attack does about 40.** Each type sits slightly differently inside
@@ -190,6 +192,12 @@ So Overload is not an attack. It is the payoff for a two- or three-turn
 engine, and it turns Charge and Storm Front from filler into combo pieces —
 which is exactly what the resource type's signature should do. If it plays weak
 in practice, the fix is a 1.5× multiplier on the conversion, not a rewrite.
+
+**Overload is also the only move in the game whose damage comes from a stat
+other than Power.** A 150-mana Electric character Overloads for 150 before any
+multiplier; a 105-mana one gets 105. That makes Mana a damage stat for exactly
+one move, and it means an Electric character built to the high end of the range
+is doing something no other build in the game can do.
 
 ## 🌪️ AIR
 
@@ -395,6 +403,12 @@ single line turns Mana from a soft resource into a hard build decision: **a
 character with 100 or more Mana can use its type's ultimate. A character below
 100 cannot, ever, and has to win with the other eight.**
 
+Because 100 is a hard ceiling on cost and nothing else approaches it, the stat
+is self-documenting. A player looks at 85 and knows the character is built out
+of the first eight moves. A player looks at 130 and knows the signature is live,
+with 30 left over for something else afterward. No arithmetic, no chart, no
+tooltip — the first digit answers the question.
+
 | Type | The ultimate | What 100 mana buys |
 |---|---|---|
 | 🔥 Fire | **Eruption** | 280 damage. You faint. |
@@ -413,6 +427,11 @@ than 105 is not shaving a percentage — it decides whether that character has
 access to an entire category of effect. Two characters of the same type with the
 same everything else play completely differently on either side of that line.
 
+Above the line the stat goes back to being a gradient, and a useful one. A
+character at 105 gets its signature once and nothing else that turn cycle. One at
+150 gets the signature and 50 in reserve, or four powerful attacks in a row
+instead of two. One at 200 can fire the signature twice.
+
 **Four things hinge on the breakpoint.**
 
 **Charge is the gate-crasher.** Any Electric character at 50 or more reaches the
@@ -423,9 +442,13 @@ mana on the field, both sides. Thunderbird sets it automatically on entry, which
 makes that character an ultimate-enabler for the entire board including the
 opponent's. A genuine risk before it is a genuine feature.
 
-**Baku turns the ultimates off.** Pressure doubles the opponent's costs, putting
-every ninth move at 200 — beyond any plausible Mana stat. Baku does not tax the
-ultimates. It deletes them.
+**Baku turns the ultimates off for most of the roster.** Pressure doubles the
+opponent's costs, putting every ninth move at 200. That is out of reach for any
+character at the normal end of the range — but not for one built to 200, which
+is where the top of the Mana stat should probably sit precisely so that Pressure
+has an answer. Baku is not an absolute lockout. It is a wall that only the
+highest-mana characters in the game can climb, which is a much better design than
+either extreme.
 
 **Focus is close to mandatory on an ultimate build.** Two Focuses is a full bar
 from empty, for nothing. Any character built to fire its ultimate twice is
@@ -436,12 +459,24 @@ and probably beating both.
 
 ## Regeneration, which these numbers assume
 
-**Every character regains 10 mana at the end of each turn.**
+**Every character regains 10 mana at the end of each turn — a flat 10, not a
+percentage.**
 
 That single number sets the pace of everything above. A powerful attack every
 fourth turn is free-flowing. A field effect is a three-turn investment. An
 ultimate is a ten-turn project unless you build toward it deliberately, and
 Focus is the shortcut — worth five turns of natural regeneration in one action.
+
+**Flat regeneration is what keeps high Mana from being pure upside, and it is a
+decision worth making on purpose.** A 150-mana character holds a bigger tank but
+takes fifteen turns to refill it rather than ten, so it plays as one long
+sustained push rather than a repeatable cycle. An 80-mana character is topped up
+every eight turns and never stops moving. That is a real tradeoff and it makes
+low Mana a legitimate build rather than a deficiency.
+
+The alternative — regenerating 10% of maximum — would make high Mana strictly
+better at everything, since a 150-mana character would gain 15 a turn *and* hold
+more. **Recommend flat.**
 
 It also puts the roster's economy Abilities in perspective. Raiju's Battery
 restores 25 a turn, two and a half times the natural rate; it is the only
@@ -458,24 +493,33 @@ character that reaches its ultimate on a schedule. Leshy's Photosynthesis adds
    now the most urgent unanswered rule in the game.
 2. **Voltage must cap at three uses.** Uncapped it reaches 400 and then 800 for
    zero mana, which is larger than the game's most expensive move.
-3. **Does mana cap at 100?** Charge, Growth, and Storm Front all double it. With
-   no ceiling those three combine into numbers that make every cost here
-   meaningless.
-4. **Does mana regenerate on the bench, and does it persist through a switch?**
+3. **Can Charge and Storm Front push a character above its own maximum?** They
+   have to — Overload's whole design depends on doubling past the stat line, and
+   a 150-mana character charging to 300 is the payoff for building that way. But
+   it means the number on screen is a starting point, not a ceiling, and the
+   interface has to show that clearly.
+4. **What is the actual Mana range?** The design assumes roughly 70 at the low
+   end and 150 at the high end, with 200 reserved for a character built
+   specifically to play through Baku's Pressure. That spread needs fixing before
+   any character's stat line is written, because the breakpoint at 100 only reads
+   cleanly if the range straddles it with room on both sides.
+5. **Does mana regenerate on the bench, and does it persist through a switch?**
    If a character banks 10 a turn while sitting out, teams will rotate to fund
    ultimates for free and every 100-cost move quietly becomes free. It almost
    certainly should not, but it needs saying out loud.
-5. **Is Leech Seed too good at 15%?** A free 150-point swing every turn is the
+6. **Is Leech Seed too good at 15%?** A free 150-point swing every turn is the
    largest recurring number in the game. It is correct for the type's identity
    and it may still be too much.
-6. **Is Jet Stream too good for free?** Permanent plus-one priority beats
+7. **Is Jet Stream too good for free?** Permanent plus-one priority beats
    Tailwind, which costs 30 and expires. Proving Ground is its only hard answer,
    and Jet Stream is now the only slot-four status that is unambiguously
    stronger than its type's slot-five field.
-7. **Does Overload need a multiplier?** At a flat one-to-one conversion it is
+8. **Does Overload need a multiplier?** At a flat one-to-one conversion it is
    weaker than a Thunderbolt unless you have doubled your mana first. That is
    probably the point, but it makes an entire type's signature dependent on a
    setup turn.
-8. **Is Baku's Pressure too much?** It turns nine moves off entirely for as long
-   as it is on the field. Either the best-designed passive on the roster or the
-   most oppressive, and there is no way to know without playing it.
+9. **Where does the top of the Mana range sit?** If any character reaches 200,
+   that character can fire its signature through Baku's Pressure, which is the
+   only counterplay Pressure has. If nothing reaches 200, Pressure is an absolute
+   lockout on nine moves. Both are defensible; the choice decides how oppressive
+   Baku is, and it should be made deliberately rather than fallen into.

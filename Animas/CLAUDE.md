@@ -22,11 +22,14 @@ price steeper than mana (health, being wrong, and dying). Three status moves wer
 rebalanced to survive being free: Resolve to +50% Power, Mend to a 25% heal,
 Curse to 15% a turn.
 
-**The hundred-mana breakpoint is the economy's load-bearing rule.** Every type's
-ninth move — its signature — costs exactly 100. Nothing else costs more than 80.
-A character whose Mana stat reaches 100 can use its type's ultimate; one below
-100 cannot, ever. Mana is therefore a yes-or-no stat, not a gradient, and it is
-the single sharpest lever available when setting character stat lines.
+**The hundred-mana breakpoint is the economy's load-bearing rule.** Mana is a
+stat that varies — roughly 70 at the low end, 120 to 150 at the high end. No
+move in the game costs more than 100, and every type's signature costs exactly
+that. So the stat is self-documenting: a Mana number starting with a one means
+that character can use its signature move; anything lower means it cannot, ever.
+Regeneration is a flat 10 per turn, not a percentage, so a high-mana character
+holds a bigger tank but refills it more slowly — which keeps high Mana a
+tradeoff rather than pure upside.
 
 Not started: character stat lines, the damage formula, the Power-to-damage
 conversion.

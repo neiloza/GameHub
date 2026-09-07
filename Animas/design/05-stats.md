@@ -46,11 +46,11 @@ The widest spread in the game — a 375-hit-point dragon, a 50-hit-point serpent
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 60 | 120 | 420 | **Slow Burn** — after three turns, Power doubles |
-| **Phoenix** | 🔥/🌪️ | **30** *(75)* | 90 | 105 | **50** | 275 | **Rebirth** — first time it faints, returns at half HP |
-| **Xiuhcoatl** | 🔥/⚡ | **20** *(50)* | 80 | **140** | 90 | 330 | **Cometfall** — 50 damage on every switch-in |
-| **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 110 | 120 | 360 | **Metronome** — a random move from anywhere in the game |
-| **Simargl** | 🔥/✨ | 120 *(300)* | 80 | 90 | 80 | 370 | **Hearthfire** — every damaging attack it lands heals it |
+| **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 75 | 120 | 435 | **Slow Burn** — after three turns, Power doubles |
+| **Phoenix** | 🔥/🌪️ | **30** *(75)* | 90 | 125 | **50** | 295 | **Rebirth** — first time it faints, returns at half HP |
+| **Xiuhcoatl** | 🔥/⚡ | **20** *(50)* | 80 | **165** | 90 | 355 | **Cometfall** — 50 damage on every switch-in |
+| **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 120 | 120 | 370 | **Metronome** — a random move from anywhere in the game |
+| **Simargl** | 🔥/✨ | 120 *(300)* | 80 | 100 | 80 | 380 | **Hearthfire** — every damaging attack it lands heals it |
 
 ## 💧 WATER
 
@@ -58,10 +58,10 @@ Every Water character is slow — not one reaches 80 Speed. Control does not nee
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Kelpie** | 💧 Water | 120 *(300)* | 90 | **30** | **160** | 400 | **Undertow** — the opposing character cannot switch out |
-| **Hydra** | 💧/🌿 | **180** *(450)* | **130** | **30** | **50** | 390 | **Regenerator** — restores half its HP on switching out |
-| **Loch Ness** | 💧/🌑 | **150** *(375)* | 90 | 70 | 100 | 410 | **From the Deep** — untargetable the turn it enters |
-| **Matsya** | 💧/✨ | 90 *(225)* | **30** | 70 | **200** | 390 | **Forewarning** — reveals the opponent's moves and Ability |
+| **Kelpie** | 💧 Water | 120 *(300)* | 90 | 50 | **160** | 420 | **Undertow** — the opposing character cannot switch out |
+| **Hydra** | 💧/🌿 | **180** *(450)* | **130** | **40** | **50** | 400 | **Regenerator** — restores half its HP on switching out |
+| **Loch Ness** | 💧/🌑 | **150** *(375)* | 90 | 90 | 100 | 430 | **From the Deep** — untargetable the turn it enters |
+| **Matsya** | 💧/✨ | 90 *(225)* | **30** | 85 | **200** | 405 | **Forewarning** — reveals the opponent's moves and Ability |
 
 ## 🌿 GRASS
 
@@ -69,9 +69,9 @@ Two walls and a wrecking ball, and they are finally distinct.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Leshy** | 🌿 Grass | **150** *(375)* | 80 | **20** | 100 | 350 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
-| **World Turtle** | 🌿/✨ | **250** *(625)* | **20** | **10** | **160** | 440 | **Unaware** — ignores the opponent's stat changes |
-| **Otso** | 🌿/👊 | 120 *(300)* | **150** | 50 | 100 | 420 | **Honey-Gorge** — if it does not attack, Power doubles next turn |
+| **Leshy** | 🌿 Grass | **150** *(375)* | 80 | **15** | 100 | 345 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
+| **World Turtle** | 🌿/✨ | **250** *(625)* | **20** | **5** | **160** | 435 | **Unaware** — ignores the opponent's stat changes |
+| **Otso** | 🌿/👊 | 120 *(300)* | **150** | 70 | 100 | 440 | **Honey-Gorge** — if it does not attack, Power doubles next turn |
 
 ## ⚡ ELECTRIC
 
@@ -79,8 +79,8 @@ Both fast, both frail, and one hoards mana while the other manufactures it for e
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Raiju** | ⚡ Electric | 70 *(175)* | 90 | **150** | 110 | 420 | **Battery** — restores 25% of total mana each turn |
-| **Thunderbird** | ⚡/🌪️ | **50** *(125)* | 110 | 110 | 70 | 340 | **Stormbringer** — sets Storm Front on entry |
+| **Raiju** | ⚡ Electric | 70 *(175)* | 90 | **175** | 110 | 445 | **Battery** — restores 25% of total mana each turn |
+| **Thunderbird** | ⚡/🌪️ | **50** *(125)* | 110 | 115 | 70 | 345 | **Stormbringer** — sets Storm Front on entry |
 
 ## 🌪️ AIR
 
@@ -88,8 +88,8 @@ One buys the board, one buys the hit.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Garuda** | 🌪️ Air | 80 *(200)* | 100 | 120 | 120 | 420 | **First Flight** — its first attack after entering goes first |
-| **Roc** | 🌪️/👊 | 120 *(300)* | **150** | 90 | **50** | 410 | **Intimidate** — the opponent's Power drops on entry |
+| **Garuda** | 🌪️ Air | 80 *(200)* | 100 | **155** | 120 | 455 | **First Flight** — its first attack after entering goes first |
+| **Roc** | 🌪️/👊 | 120 *(300)* | **150** | 110 | **50** | 430 | **Intimidate** — the opponent's Power drops on entry |
 
 ## 👊 FIGHTING
 
@@ -97,7 +97,7 @@ A hundred and twenty points of HP apart and ninety of Speed.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Sun Wukong** | 👊 Fighting | 80 *(200)* | 110 | 120 | 90 | 400 | **Bloodlust** — Power +50% for every character it defeats |
+| **Sun Wukong** | 👊 Fighting | 80 *(200)* | 110 | **145** | 90 | 425 | **Bloodlust** — Power +50% for every character it defeats |
 | **Airavata** | 👊/⚡ | **200** *(500)* | 90 | **30** | 80 | 400 | **First Answer** — each move doubles the first time it is used |
 
 ## 🔮 PSYCHIC
@@ -106,9 +106,9 @@ The type that pays for everything, and now has one member that can also hit back
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **20** | **190** | 410 | **Pressure** — the opponent's moves cost double mana |
-| **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | **130** | 70 | 380 | **Illusion** — enters disguised; breaks on damage |
-| **Sphinx** | 🔮/🌑 | 80 *(200)* | 120 | **40** | **150** | 390 | **Enigma** — the opponent cannot use the same move twice |
+| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **25** | **190** | 415 | **Pressure** — the opponent's moves cost double mana |
+| **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | **135** | 70 | 385 | **Illusion** — enters disguised; breaks on damage |
+| **Sphinx** | 🔮/🌑 | 80 *(200)* | 120 | 60 | **150** | 410 | **Enigma** — the opponent cannot use the same move twice |
 
 ## 🌑 DARK
 
@@ -116,9 +116,9 @@ An executioner, a berserker and a siege engine.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Grim Reaper** | 🌑 Dark | **60** *(150)* | 90 | **30** | 130 | 310 | **Harvest** — Death Touch costs half mana |
-| **Fenrir** | 🌑/👊 | 80 *(200)* | 110 | **130** | **40** | 360 | **Berserk** — below half HP, Power is doubled |
-| **Gugalanna** | 🌑/🌪️ | **170** *(425)* | 120 | 80 | **60** | 430 | **Seven Years of Famine** — nobody on either side can heal |
+| **Grim Reaper** | 🌑 Dark | **60** *(150)* | 90 | **45** | 130 | 325 | **Harvest** — Death Touch costs half mana |
+| **Fenrir** | 🌑/👊 | 80 *(200)* | 110 | 130 | **40** | 360 | **Berserk** — below half HP, Power is doubled |
+| **Gugalanna** | 🌑/🌪️ | **170** *(425)* | 120 | 95 | **60** | 445 | **Seven Years of Famine** — nobody on either side can heal |
 
 ## ✨ LIGHT
 
@@ -126,7 +126,7 @@ One character, and it cannot hurt anybody.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Unicorn** | ✨ Light | 80 *(200)* | **30** | 90 | **150** | 350 | **Miracle** — at full HP, survives anything at 1 HP |
+| **Unicorn** | ✨ Light | 80 *(200)* | **30** | 105 | **150** | 365 | **Miracle** — at full HP, survives anything at 1 HP |
 ---
 
 ## The extremes
@@ -220,14 +220,13 @@ stat, not a damage one.
 
 ### Stat collisions — both real ones are closed
 
-Only three pairs now sit within 50 points of each other, and none of them is a
-problem.
+Only two pairs now sit within 50 points of each other, and neither is a problem.
+The speed respread pushed Garuda and Sun Wukong apart on its own.
 
 | Distance | Pair | Verdict |
 |---|---|---|
-| 30 | Fafnir 150/90/60/120 · Loch Ness 150/90/70/100 | Fine — same body, opposite plans |
-| 40 | Thunderbird 50/110/110/70 · Kitsune 50/130/130/70 | Fine — 20 Power and 20 Speed apart |
-| 40 | Garuda 80/100/120/120 · Sun Wukong 80/110/120/90 | Fine — 30 Mana is the difference between having Tempest and not |
+| 35 | Fafnir 150/90/75/120 · Loch Ness 150/90/90/100 | Fine — same body, opposite plans |
+| 40 | Thunderbird 50/110/115/70 · Kitsune 50/130/135/70 | Fine — 20 Power and 20 Speed apart |
 
 **Simargl and Fenrir separated cleanly.** Fenrir at 80/110/130/40 is now fragile,
 fast and hits hard — it crosses the Berserk threshold in one exchange and swings
@@ -242,21 +241,55 @@ nothing.
 Fafnir and Loch Ness share a body and nothing else — a three-turn escalation
 against a repeatable untouchable entry. Distance alone was never the test.
 
-### Speed ties — the crowd is gone
+### The speed ladder — no ties anywhere
 
-| Speed | Characters |
-|---|---|
-| 130 | Fenrir, Kitsune |
-| 120 | Garuda, Sun Wukong |
-| 110 | Bakeneko, Thunderbird |
-| 90 | Roc, Simargl, Unicorn |
-| 70 | Loch Ness, Matsya |
-| 30 | Airavata, Grim Reaper, Hydra, Kelpie |
-| 20 | Baku, Leshy |
+**Every character has a unique Speed.** Twenty-five distinct values, all multiples
+of five, running 5 to 175 against a possible 0 to 200, and clustered around 100.
+There is no tiebreak rule because there are no ties, which removes a whole
+category of arbitration from a game whose founding rule is that nothing is
+arbitrary.
 
-**The five-way pile-up at 110 is down to two.** Nothing above 100 has more than
-two characters in it now, which is where ties actually matter — the four at 30
-all want to move last anyway, so the tiebreak there is nearly cosmetic.
+| # | Character | Speed | Why it sits here |
+|---|---|---|---|
+| 1 | **Raiju** | **175** | Lightning. Nothing is above it. |
+| 2 | **Xiuhcoatl** | **165** | A fire serpent thrown as a weapon — it arrives like a comet. |
+| 3 | **Garuda** | **155** | Vishnu's mount, said to outfly the wind. |
+| 4 | **Sun Wukong** | **145** | One somersault carries him 108,000 li. |
+| 5 | **Kitsune** | **135** | Never where you last looked. |
+| 6 | **Fenrir** | **130** | A wolf built to run something down. |
+| 7 | **Phoenix** | **125** | A bird made of fire. |
+| 8 | **Bakeneko** | **120** | A cat. |
+| 9 | **Thunderbird** | **115** | Large, but a storm before it is a bird. |
+| 10 | **Roc** | **110** | It flies, but it is the size of a weather system. |
+| 11 | **Unicorn** | **105** | A horse, and a graceful one. |
+| 12 | **Simargl** | **100** | The baseline exactly — the roster's one generalist. |
+| 13 | **Gugalanna** | **95** | It charges, but it weighs as much as a hill. |
+| 14 | **Loch Ness** | **90** | Something enormous moving under water. |
+| 15 | **Matsya** | **85** | A fish the size of a continent. |
+| 16 | **Fafnir** | **75** | A dragon lying on its gold. It gets up slowly. |
+| 17 | **Otso** | **70** | A bear. |
+| 18 | **Sphinx** | **60** | It has sat in one place for three thousand years. |
+| 19 | **Kelpie** | **50** | An ambush predator. It waits at the water's edge. |
+| 20 | **Grim Reaper** | **45** | Death is inexorable, not quick. |
+| 21 | **Hydra** | **40** | Coiled in its swamp, waiting for you to come to it. |
+| 22 | **Airavata** | **30** | A mountain that happens to be an elephant. |
+| 23 | **Baku** | **25** | It eats dreams. It has never been in a hurry. |
+| 24 | **Leshy** | **15** | It is a forest. Forests do not move. |
+| 25 | **World Turtle** | **5** | It is the world. |
+
+**The ladder is dense in the middle and thin at the edges.** Ten characters sit
+between 90 and 135, five points apart, which is where most turn-order decisions
+actually get made — a single point of Speed separates Kitsune from Fenrir and
+Roc from Unicorn. The extremes are lonelier on purpose: Raiju at 175 and World
+Turtle at 5 have nobody near them, and neither is ever in doubt about acting
+first or last.
+
+**Simargl sits at exactly 100.** In a design built on polarization, the one
+character with no extreme anywhere on its line is also the one that defines the
+midpoint of the Speed ladder. That was not planned and it is worth keeping.
+
+The mean is 91, up from 77 before the respread — the roster as a whole is
+slightly quicker now, which is what pulling the baseline toward 100 does.
 
 ### Ability roles
 
@@ -310,17 +343,20 @@ correcting. **Past sixteen the wall stops being a decision.**
 
 ### Where the balance stands
 
-**All four stats are doing real work now.** HP 12.5×, Speed 15×, Power 7.5×, and
-Mana back to 5× — Fenrir dropping to 40 restored the floor that had drifted up to
-50, so there is once again a character that genuinely cannot afford things.
+**All four stats are doing real work.** HP 12.5×, Speed 35×, Power 7.5×, Mana 5×.
+Fenrir dropping to 40 Mana restored a floor that had drifted up to 50, so there is
+once again a character that genuinely cannot afford things.
 
-Totals run 275 to 440 against a 500 ceiling, mean 383. The four lowest — Phoenix
-275, Grim Reaper 310, Xiuhcoatl 330, Fenrir and Kitsune at 360 and 380 — are all
-characters whose Abilities do something a stat line cannot.
+Totals run 295 to 455 against a 500 ceiling, mean 397 — up fourteen from the
+respread, since pulling the Speed baseline toward 100 lifted almost everyone. The
+lowest are still the characters whose Abilities do something a stat line cannot:
+Phoenix at 295, the Grim Reaper at 325, Thunderbird and Leshy at 345, Xiuhcoatl
+at 355.
 
-**Nothing on the stat sheet is open.** The only outstanding design question is the
-three-way Power-doubling overlap, and that is an Ability question, not a numbers
-one.
+**Nothing on the stat sheet is open.** No collisions, no ties, no dominated
+characters. The only outstanding design question is the three-way Power-doubling
+overlap between Fafnir, Fenrir and Otso, and that is an Ability question rather
+than a numbers one.
 
 ## Open items
 

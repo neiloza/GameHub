@@ -75,11 +75,16 @@ is meant to be killing the character before it acts, or bringing the one answer
 to it. Weaknesses are the balancing tool; Power and Mana are the levers, HP and
 Speed follow the creature's aesthetics.
 
-Totals run 275-460, and `design/05-stats.md` is organised by type for
-comparison. Two problems are flagged there: Simargl and Fenrir currently have
-near-identical lines (10 HP apart, identical otherwise) despite wanting opposite
-things from their Abilities, and Leshy is dominated by World Turtle on every stat
-but ten points of Speed. Fourteen of twenty-five reach 100 Mana. All seven of the hardest hitters are locked
+**Every character has a unique Speed** — twenty-five distinct values, all
+multiples of five, from World Turtle at 5 to Raiju at 175, clustered around 100.
+There is no speed tiebreak rule because there are no ties, which suits a game
+whose founding rule is that nothing is arbitrary.
+
+Totals run 295-455, and `design/05-stats.md` is organised by type for
+comparison. No stat collisions, ties or dominated
+characters remain. The one open design question is that Fafnir, Fenrir and Otso
+all read "Power doubles" with different triggers — one Ability with a condition
+slot rather than three characters. Fourteen of twenty-five reach 100 Mana. All seven of the hardest hitters are locked
 out of their own signature, and the four characters with the most mana cannot
 hurt anybody.
 

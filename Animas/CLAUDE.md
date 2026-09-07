@@ -75,7 +75,11 @@ is meant to be killing the character before it acts, or bringing the one answer
 to it. Weaknesses are the balancing tool; Power and Mana are the levers, HP and
 Speed follow the creature's aesthetics.
 
-Totals run 275-460. Fourteen of twenty-five reach 100 Mana. All seven of the hardest hitters are locked
+Totals run 275-460, and `design/05-stats.md` is organised by type for
+comparison. Two problems are flagged there: Simargl and Fenrir currently have
+near-identical lines (10 HP apart, identical otherwise) despite wanting opposite
+things from their Abilities, and Leshy is dominated by World Turtle on every stat
+but ten points of Speed. Fourteen of twenty-five reach 100 Mana. All seven of the hardest hitters are locked
 out of their own signature, and the four characters with the most mana cannot
 hurt anybody.
 

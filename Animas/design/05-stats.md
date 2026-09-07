@@ -43,7 +43,7 @@ a better game, and it is a much better set of characters.
 ## How the four stats read
 
 **HP** is an index. **Hit points = HP stat × 2.5**, so 100 is the 250-hit-point
-baseline the damage formula assumes. World Turtle's 220 is 550 hit points;
+baseline the damage formula assumes. World Turtle's 250 is 625 hit points;
 Raiju's 50 is 125.
 
 **Power** is the damage multiplier ÷ 100. Roc's 170 multiplies every move by 1.7.
@@ -65,7 +65,7 @@ levers**, and they swing hard: Power runs 20 to 170, Mana runs 20 to 200.
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
 | **Grim Reaper** 🌑 | **60** | **50** | **30** | **180** | **320** |
-| **Kelpie** 💧 | 100 | **40** | **30** | **160** | **330** |
+| **Kelpie** 💧 | 90 | **40** | **30** | **160** | 320 |
 
 **The Grim Reaper carries 180 Mana against a Death Touch that Harvest halves to
 50. That is three instant kills.** Three characters, gone, no counterplay but
@@ -82,7 +82,7 @@ spend.**
 cannot leave; Drown cannot be cleared by anything. That is two characters on a
 three-turn timer with no way out, and Maelstrom or Strangle can add more.
 
-The bill: **40 Power and 30 Speed on 250 hit points.** It cannot finish anyone
+The bill: **40 Power and 30 Speed on 225 hit points.** It cannot finish anyone
 itself, it acts last, and it is not remotely bulky enough to sit there
 comfortably. It has to commit to the drowning and absorb whatever comes while the
 clock runs.
@@ -92,9 +92,9 @@ clock runs.
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
 | **Gugalanna** 🌑/🌪️ | **170** | **170** | **30** | **20** | 390 |
-| **Roc** 🌪️/👊 | 150 | **170** | 90 | **20** | 430 |
+| **Roc** 🌪️/👊 | 120 | **170** | 90 | **20** | 400 |
 | **Garuda** 🌪️ | **80** | **160** | **160** | **30** | 430 |
-| **Phoenix** 🔥/🌪️ | **60** | **150** | **150** | **20** | 380 |
+| **Phoenix** 🔥/🌪️ | **30** | **150** | **150** | **20** | 350 |
 | **Otso** 🌿/👊 | 160 | **150** | 50 | 60 | 420 |
 | **Simargl** 🔥/✨ | 130 | 140 | 100 | 40 | 410 |
 
@@ -112,20 +112,20 @@ and Honey-Gorge doubles 150 Power to 300 — a Haymaker for 360, which one-shots
 anything alive. The bill is 50 Speed, so the whole board sees it coming and gets
 a free turn to answer it.
 
-**Phoenix is 150 hit points and 150 Power, twice.** Rebirth means the glass cannon
-gets a second barrel.
+**Phoenix is 75 hit points and 150 Power, twice.** One Cinder ends it — and then
+Rebirth hands the glass cannon a second barrel. 
 
 ## THE ENGINES — they escalate until you stop them
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
 | **Raiju** ⚡ | **50** | **60** | **170** | **120** | 400 |
-| **Fenrir** 🌑/👊 | 130 | 130 | 140 | **30** | 430 |
-| **Sun Wukong** 👊 | 110 | 120 | 150 | **30** | 410 |
+| **Fenrir** 🌑/👊 | 80 | 130 | 140 | **30** | 380 |
+| **Sun Wukong** 👊 | 70 | 120 | 150 | **30** | 370 |
 | **Fafnir** 🔥 | 160 | 120 | **20** | 100 | 400 |
-| **Thunderbird** ⚡/🌪️ | 90 | 130 | 140 | 60 | 420 |
-| **Xiuhcoatl** 🔥/⚡ | **80** | 130 | 150 | 40 | 400 |
-| **Airavata** 👊/⚡ | **180** | 110 | **30** | 100 | 420 |
+| **Thunderbird** ⚡/🌪️ | 70 | 130 | 140 | 60 | 400 |
+| **Xiuhcoatl** 🔥/⚡ | **30** | 130 | 150 | 40 | 350 |
+| **Airavata** 👊/⚡ | **200** | 110 | **30** | 100 | 440 |
 
 **Raiju is the best Voltage carrier in the game and it should stay that way.**
 Battery restores 30 a turn against a 20-mana Voltage that doubles forever, so
@@ -138,8 +138,8 @@ entire engine ends the first time anything touches it, and it cannot defend
 itself in the meantime. Terrifying if unanswered, free if answered.
 
 **Fenrir at 130 Power becomes 260 under Berserk** — a Haymaker for 312, which
-kills anything on the board. It has 325 hit points specifically so it has a real
-window below half health to use them.
+kills anything on the board. At 200 hit points the window below half health is
+only 100 wide, so Berserk is a gamble the wolf takes rather than a plan it makes.
 
 **Fafnir is the slowest attacker in the game at 20 Speed**, and it needs three
 turns before Slow Burn doubles 120 Power to 240. Survive that and it has 100 Mana
@@ -150,7 +150,7 @@ game has. It kills itself doing it. Worth it.
 30 Mana it will never cast Frenzy. Bloodlust is the win condition and the only
 one it gets.
 
-**Airavata is 450 hit points that acts at 30 Speed**, and First Answer doubles
+**Airavata is 500 hit points that acts at 30 Speed**, and First Answer doubles
 each of its four moves the first time it is used. Four Haymakers at 264 each,
 delivered slowly, from something that will not fall over.
 
@@ -158,35 +158,35 @@ delivered slowly, from something that will not fall over.
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **World Turtle** 🌿/✨ | **220** | **40** | **10** | **160** | 430 |
-| **Leshy** 🌿 | **180** | **40** | **20** | 120 | **360** |
-| **Hydra** 💧/🌿 | **170** | 130 | **30** | 50 | 380 |
+| **World Turtle** 🌿/✨ | **250** | **40** | **10** | **160** | 460 |
+| **Leshy** 🌿 | **150** | **40** | **20** | 120 | 330 |
+| **Hydra** 💧/🌿 | **180** | 130 | **30** | 50 | 390 |
 | **Loch Ness** 💧/🌑 | 150 | 90 | 70 | 100 | 410 |
-| **Sphinx** 🔮/🌑 | 140 | 90 | 40 | **150** | 420 |
+| **Sphinx** 🔮/🌑 | 80 | 90 | 40 | **150** | 360 |
 
-**World Turtle is 550 hit points at 10 Speed.** It is the slowest thing in the
+**World Turtle is 625 hit points at 10 Speed.** It is the slowest thing in the
 game by a clear margin and the only character that genuinely cannot be removed by
-ordinary means — six consecutive Nightfalls at full Power. It also has 160 Mana
+ordinary means — seven consecutive Nightfalls at full Power. It also has 160 Mana
 and Unaware, so nothing you set up matters to it.
 
 **And it is the best Inversion partner ever designed**, because a reversed turn
 order puts the single slowest character on the board first, every turn, forever.
 
-**Hydra is 425 hit points and 130 Power at 30 Speed**, leaving at any health and
+**Hydra is 450 hit points and 130 Power at 30 Speed**, leaving at any health and
 returning at half again. You cannot out-damage it; you have to trap it.
 
-**Leshy has the lowest total on this list at 360** because 450 hit points that
-heal 45 a turn is already most of a character. Forty Power means it will never
+**Leshy has the lowest total on this list** because 375 hit points that heal 37
+a turn is already most of a character. Forty Power means it will never
 threaten anything.
 
 ## THE ORACLES — they cannot fight at all
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **Baku** 🔮 | 120 | **20** | **20** | **200** | 360 |
-| **Matsya** 💧/✨ | 140 | **30** | 70 | **190** | 430 |
-| **Unicorn** ✨ | 90 | **30** | 120 | **170** | 410 |
-| **Kitsune** 🔮/✨ | **60** | 110 | **160** | 100 | 430 |
+| **Baku** 🔮 | 130 | **20** | **20** | **200** | 370 |
+| **Matsya** 💧/✨ | 100 | **30** | 70 | **190** | 390 |
+| **Unicorn** ✨ | 80 | **30** | 120 | **170** | 400 |
+| **Kitsune** 🔮/✨ | **50** | 110 | **160** | 100 | 420 |
 | **Bakeneko** 🔥/🔮 | **80** | 110 | **160** | 60 | 410 |
 
 **Baku holds the two lowest offensive stats in the game — 20 Power and 20
@@ -208,13 +208,13 @@ then brings a dead teammate back. It has never threatened anybody.
 
 | | Lowest | Highest | Ratio |
 |---|---|---|---|
-| **HP** | Raiju — 50 *(125 hp)* | World Turtle — 220 *(550 hp)* | **4.4×** |
+| **HP** | Phoenix, Xiuhcoatl — 30 *(75 hp)* | World Turtle — 250 *(625 hp)* | **8.3×** |
 | **Power** | Baku — 20 | Gugalanna, Roc — 170 | **8.5×** |
 | **Speed** | World Turtle — 10 | Raiju — 170 | **17×** |
 | **Mana** | Roc, Phoenix, Gugalanna — 20 | Baku — 200 | **10×** |
 
-Totals run 320 to 430, mean 402. **The average internal spread is 52**, up from
-44 on the previous pass and roughly double the version before that.
+Totals run 320 to 460, mean 389. **The average internal spread is 53**, up from 44 two passes ago and roughly
+double the version before that.
 
 **Six of the seven hardest hitters cannot use their own signature move.**
 Gugalanna, Roc, Garuda, Phoenix, Otso and Sun Wukong all sit at 60 Mana or below.
@@ -237,4 +237,4 @@ philosophy rather than being imposed on it.
 3. **Speed ties.** Several characters share values and the tiebreak cannot be
    random. Cleanest: the defender acts first.
 4. **This roster needs a turn limit more than the safe version did.** World Turtle
-   at 550 hit points against Leshy healing 45 a turn is a match with no ending.
+   at 625 hit points against Leshy healing 45 a turn is a match with no ending.

@@ -126,20 +126,21 @@ worth half a bar. At 1.00 it is the worst rate on the board by a third. **Almost
 certainly meant 15 or 20** — at 50 @ 15 it sits level with Air and reads as a
 deliberate Water tool rather than a trap.
 
-### And one identity that is now gone
+### Air traded priority for mobility, and came out fine
 
-**Air no longer owns priority, and it has nothing else.** Two turns ago Air gave
-up all of its damage — weakest standard, weakest powerful, a signature of 100 —
-in exchange for being the type that acts first. It is now third in priority
-value behind Electric and Light, tied with Electric on priority damage at 50, and
-beaten outright on raw priority damage by both Psychic and Dark at 60.
+Jolt at 5 mana took priority away from Air — it matches Wingbeat's 50 damage at a
+third the cost, and Psychic and Dark both beat Air's priority damage outright at
+60. For a moment Air had the worst attacks in the game and no compensating claim.
 
-So Air currently has the worst attacks in the game and no compensating claim.
-Jet Stream, Slipstream, Skimstrike, Skyfall, and Cyclone are still real tools,
-but the *attack* that was supposed to say "this type goes first" no longer does.
-Fixing Jolt as recommended above restores it by itself. If Jolt stays at 5 mana,
-Air needs something else — the obvious candidate is dropping Wingbeat to 5 or 10
-mana as well, so Air at least ties the cheapest.
+**The Air repricing fixes it in a different place than expected.** Skimstrike at
+60 damage for 5 mana is a rate of 12.00 — the best in the game, ahead of Jolt.
+Skyfall hits for 120, the hardest single blow in the type. Jet Stream is free and
+Slipstream is 30. So Air is no longer the type that goes first; it is **the type
+that is cheapest to move around with**, and its damage comes from position rather
+than from attacking. Nothing else in the game pivots at that price.
+
+Both claims are legible at a glance, which matters more than which one Air holds:
+weakest ordinary attacks in the game, cheapest movement in the game.
 
 ---
 
@@ -327,12 +328,17 @@ is doing something no other build in the game can do.
 | 3 | **Wingbeat** | **50** | **15** | The best priority attack in the game and the cheapest. A rate of 3.33 — better than most types get on their powerful attack. |
 | 4 | **Jet Stream** | — | **0** | The free status. See the note below. |
 | 5 | **Slipstream** | — | 30 | Field. |
-| 6 | **Skimstrike** | 55 | 20 | Priced level with Flicker, the same move in Electric. |
-| 7 | **Skyfall** | 85 | 20 | Costs a turn as well. |
-| 8 | **Cyclone** | 50 | 25 | Damage plus a phaze. |
+| 6 | **Skimstrike** | **60** | **5** | 12.00 damage per mana — the best rate in the game. Air's mobility is the cheapest thing on the board. |
+| 7 | **Skyfall** | **120** | **25** | Air's hardest single hit, and it costs a turn as well — 60 a turn across the two. |
+| 8 | **Cyclone** | **60** | **60** | Bought entirely for the phaze. It hits the character going *out*, so it finishes a weakened one where Riptide hits the fresh arrival. |
 | 9 | **Tempest** | **100** | **100** | Modest damage that erases the entire board state on both sides. Air's signature is a reset button, not a nuke. |
 
 **Free: Draft, Jet Stream.**
+
+**Skyfall at 120 now exceeds Tempest at 100**, worth naming since Tempest was set
+as Air's most powerful attack. Per action it still holds — Skyfall takes two turns
+for its 120, so it averages 60 a turn where Tempest delivers 100 in one. On the
+raw number, though, Air's biggest hit is no longer its signature.
 
 **Jet Stream is the strongest thing the new rule made free**, and it is worth
 watching. Plus-one priority on every move for as long as you stay in is
@@ -352,12 +358,13 @@ The cheapest type on the list, and it should be. Fighting pays by guessing wrong
 | 3 | **Snapkick** | **40** | 20 | Strong and cheap, second only to Wingbeat. |
 | 4 | **Resolve** | — | **0** | The free status. **Reduced to +50% Power** — see the note below. |
 | 5 | **Proving Ground** | — | 30 | Field. |
-| 6 | **Riposte** | twice the damage taken | **0** | **Free.** Does nothing at all if they do not attack. That is the cost. |
-| 7 | **Wind-Up** | **175** | 25 | Fails outright if anything touches you. |
-| 8 | **Flurry** | 65 | 20 | Damage and a Speed increase. |
+| 6 | **Riposte** | twice the damage taken | **20** | No longer free. Still does nothing at all if they do not attack. |
+| 7 | **Wind-Up** | **250** | 25 | 250 for 25 mana — a rate of 10.00. Fails outright if anything touches you first. |
+| 8 | **Flurry** | **60** | **40** | Damage and a Speed increase, priced as setup rather than as an attack. |
 | 9 | **Frenzy** | **150 per turn, three turns** | **100** | 450 total, but you cannot switch and everyone can see it coming. |
 
-**Free: Jab, Resolve, Riposte.**
+**Free: Jab, Resolve.** Riposte now costs 20, so Fighting drops to two free moves
+and Dark is the only type left with a third.
 
 **Resolve had to come down from doubling Power to +50%.** Doubling Power for
 free would make Fighting's slot-four status move strictly better than Bloom,
@@ -477,15 +484,15 @@ what gets a starved character back into the game, so it can never cost anything.
 
 ---
 
-## The twenty free moves
+## The nineteen free moves
 
-Two guaranteed in every type, and a third in two of them.
+Two guaranteed in every type, and a third in one of them.
 
 | Type | Slot 1 — attack | Slot 4 — status | A free tool? |
 |---|---|---|---|
-| 👊 Fighting | Jab | Resolve | **Riposte** |
 | 🌑 Dark | Ripshade | Malediction | **Last Rites** |
 | 🔥 Fire | Cinder | Scorch | — |
+| 👊 Fighting | Jab | Resolve | — |
 | 💧 Water | Surge | Strangle | — |
 | 🌿 Grass | Bramble | Parasite | — |
 | ⚡ Electric | Arc | Amplify | — |
@@ -498,12 +505,12 @@ Fire burns, Water traps, Grass drains, Electric charges, Air gets ahead,
 Fighting builds, Psychic displaces, Dark curses, Light heals. Nine identities,
 all free, all in the same slot.
 
-**Two types keep a free tool: Fighting and Dark.** Riposte costs being wrong
-about what they were going to do. Last Rites costs your life. Those are the two
-steepest non-mana prices in the game, and they are the only two that buy a third
-free move. Fire had a third until Immolation was priced at 20 — it now pays a
-small mana cost on top of the 200 health, which is a coherent place to land for
-a move dealing 150.
+**One type keeps a free tool: Dark.** Last Rites costs your life, which is the
+steepest price anything in the game charges, and it is the only move left that
+buys a third free slot. Fire lost its third when Immolation was priced at 20, and
+Fighting lost its when Riposte went to 20. Both still charge steeply in their own
+currency — 200 health, and being wrong about what the opponent was going to do —
+they just also cost a little mana now.
 
 Three moves still had to change to survive being free, all of them in the
 guaranteed status slot: **Resolve** from doubling Power to +50%, **Mend** from a

@@ -34,10 +34,10 @@ opponent switching does NOT reset it. This is deliberate. If a brake is ever
 needed, escalate the cost alongside the damage rather than capping the count.
 
 **Two moves are free in every type:** the standard attack (slot 1) and the
-status move (slot 4). That is the guarantee. Fighting and Dark each get a third —
-Riposte and Last Rites — the two steepest non-mana prices in the game. Three status moves were
-rebalanced to survive being free: Resolve to +50% Power, Mend to a 25% heal,
-Malediction to 15% a turn.
+status move (slot 4). That is the guarantee. Only Dark gets a third — Last Rites,
+which costs the user's life, the steepest price anything in the game charges.
+Three status moves were rebalanced to survive being free: Resolve to +50% Power,
+Mend to a 25% heal, Malediction to 15% a turn.
 
 **The hundred-mana breakpoint is the economy's load-bearing rule.** Mana is a
 stat that varies — roughly 70 at the low end, 120 to 150 at the high end. No

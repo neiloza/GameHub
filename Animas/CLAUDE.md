@@ -68,7 +68,7 @@ Otso, World Turtle, Roc). And nothing is average at anything — every stat span
 a factor of four or more across the roster, from Baku's 30 Power to Gugalanna's
 150, from World Turtle's 20 Speed to Raiju's 160.
 
-Twelve of twenty-five reach 100 Mana and can use their signature. The six hardest
+Thirteen of twenty-five reach 100 Mana and can use their signature. The six hardest
 hitters — Garuda, Gugalanna, Roc, Sun Wukong, Fenrir, Phoenix — are all locked
 out of theirs. That is the shape of the roster, not an accident.
 

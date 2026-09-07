@@ -34,7 +34,7 @@ themselves are all one-line effects that cannot be partially nerfed.
 
 | Tier | What the Ability does | Average total | Characters |
 |---|---|---|---|
-| **S** | Rewrites a rule of the game | **327** | Kelpie, Grim Reaper, Baku |
+| **S** | Rewrites a rule of the game | **323** | Kelpie, Grim Reaper, Baku |
 | **A** | Wins a matchup on its own | **382** | ten characters |
 | **B** | Strong but conditional | **420** | eight characters |
 | **C** | Situational or break-even | **450** | Matsya, Otso, World Turtle, Roc |
@@ -60,7 +60,7 @@ is doing the work.
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
 | **Kelpie** 💧 | 100 | **40** | **40** | **140** | **320** |
-| **Grim Reaper** 🌑 | **70** | **50** | 70 | **130** | **320** |
+| **Grim Reaper** 🌑 | **60** | 90 | **30** | **130** | **310** |
 | **Baku** 🔮 | 130 | **30** | **30** | **150** | **340** |
 
 **Kelpie** is a drowning, not a fight. Forty Power means its attacks deal
@@ -70,9 +70,13 @@ start the clock, absorb three turns of punishment, and take one character with
 you. It is the only character in the game whose best outcome is a one-for-one
 trade, and at 320 total it is priced for exactly that.
 
-**The Grim Reaper** is 175 hit points and 50 Power — it can barely hurt anything
-and it dies to two ordinary attacks. What it has is 130 Mana against a Death
-Touch that Harvest halves to 50. **Two instant kills, and then it is gone.**
+**The Grim Reaper** has the lowest total in the game at 310, and 30 Speed is the
+reason it is survivable at all. It acts after everything alive except World
+Turtle, so it eats a full turn of damage before it does anything — on 150 hit
+points, which two ordinary attacks will end. What it has is 90 Power, enough to
+actually threaten, and 130 Mana against a Death Touch that Harvest halves to 50.
+**Two instant kills, if it lives long enough to use both.** The Reaper is not a
+character you play; it is a character you spend.
 
 **Baku** has the worst offensive stats in the game by a distance: 30 Power and 30
 Speed, which is 18 damage from a Mindspike, acting last, every turn. It is not a
@@ -85,7 +89,7 @@ afford anything.
 |---|---|---|---|---|---|
 | **Phoenix** 🔥/🌪️ | **50** | **130** | **140** | **40** | 360 |
 | **Sun Wukong** 👊 | **70** | 110 | **150** | **40** | 370 |
-| **Raiju** ⚡ | **50** | 80 | **160** | 90 | 380 |
+| **Raiju** ⚡ | **50** | **70** | **150** | 110 | 380 |
 | **Hydra** 💧/🌿 | **160** | 120 | **40** | 60 | 380 |
 | **Airavata** 👊/⚡ | **170** | 70 | **30** | 110 | 380 |
 | **Unicorn** ✨ | **60** | **40** | 140 | **140** | 380 |
@@ -102,8 +106,16 @@ over, and no mana for anything else.
 condition: 110 Power at 150 Speed, climbing by half again with every knockout,
 on 175 hit points that will not survive a mistake.
 
-**Raiju** is the fastest thing in the game at 160 and the joint-frailest at 125
-hit points. It acts first and it dies first.
+**Raiju** is 125 hit points and 70 Power — joint-frailest on the roster, and one
+of its weakest attackers. What it has is 150 Speed and 110 Mana against a Battery
+that restores 30 a turn, three times the natural rate.
+
+**That combination makes Raiju the best Voltage carrier in the game, and it is
+worth watching.** Voltage costs 20 a use and doubles forever; Battery pays 30 a
+turn. Raiju is the one character that can hold the escalation open indefinitely
+while its own mana *rises*, and at 150 Speed it lands each doubling first. The
+brake is that 125 hit points does not survive a single Nightfall, so the whole
+plan ends the moment anything connects.
 
 **Hydra and Airavata are the two immovable objects.** Hydra is 400 hit points and
 120 Power at 40 Speed, healing half its bar every time it leaves. Airavata is 425
@@ -187,14 +199,14 @@ Intimidates, and swings.
 |---|---|---|
 | **HP** | Phoenix, Raiju — 50 *(125 hit points)* | World Turtle — 200 *(500)* |
 | **Power** | Baku — 30 | Gugalanna, Roc — 150 |
-| **Speed** | World Turtle — 20 | Raiju, Garuda, Kitsune — 160 |
+| **Speed** | World Turtle, Grim Reaper — 20 and 30 | Garuda, Kitsune — 160 |
 | **Mana** | Phoenix, Sun Wukong, Gugalanna, Fenrir — 40 | Matsya — 160 |
 
 Every stat now spans a factor of four or more from bottom to top. A 150-Power
-Gugalanna hits five times as hard as a 30-Power Baku. A 160-Speed Raiju acts
+Gugalanna hits five times as hard as a 30-Power Baku. A 160-Speed Garuda acts
 eight times sooner than a 20-Speed World Turtle in any ordering that matters.
 
-**Twelve of twenty-five can use a signature move.** Note who is *not* on that
+**Thirteen of twenty-five can use a signature move.** Note who is *not* on that
 list: Garuda, Gugalanna, Roc, Sun Wukong, Fenrir and Phoenix — six of the hardest
 hitters in the game, all locked out of their own type's best move. That is not an
 accident. It is the shape of the whole roster: **the characters that hit hardest

@@ -46,7 +46,7 @@ The widest spread in the game — a 375-hit-point dragon, a 50-hit-point serpent
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Fafnir** | 🔥 Fire | 130 *(325)* | 90 | 75 | 120 | 415 | **Slow Burn** — after three turns, Power doubles |
+| **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 75 | 120 | 435 | **Slow Burn** — after three turns, Power doubles |
 | **Phoenix** | 🔥/🌪️ | **40** *(100)* | 90 | 125 | **50** | 305 | **Rebirth** — first time it faints, returns at half HP |
 | **Xiuhcoatl** | 🔥/⚡ | **30** *(75)* | 80 | **165** | 90 | 365 | **Cometfall** — 50 damage on every switch-in |
 | **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 120 | 120 | 370 | **Metronome** — a random move from anywhere in the game |
@@ -60,7 +60,7 @@ Every Water character is slow — not one reaches 80 Speed. Control does not nee
 |---|---|---|---|---|---|---|---|
 | **Kelpie** | 💧 Water | 120 *(300)* | 90 | 50 | **160** | 420 | **Undertow** — the opposing character cannot switch out |
 | **Hydra** | 💧/🌿 | **160** *(400)* | **130** | **40** | **50** | 380 | **Regenerator** — restores half its HP on switching out |
-| **Loch Ness** | 💧/🌑 | 130 *(325)* | 90 | 90 | 100 | 410 | **From the Deep** — untargetable the turn it enters |
+| **Loch Ness** | 💧/🌑 | **150** *(375)* | 90 | 90 | 100 | 430 | **From the Deep** — untargetable the turn it enters |
 | **Matsya** | 💧/✨ | 100 *(250)* | **30** | 85 | **200** | 415 | **Forewarning** — reveals the opponent's moves and Ability |
 
 ## 🌿 GRASS
@@ -69,7 +69,7 @@ Two walls and a wrecking ball, and they are finally distinct.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Leshy** | 🌿 Grass | 130 *(325)* | 80 | **15** | 100 | 325 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
+| **Leshy** | 🌿 Grass | 120 *(300)* | 80 | **15** | 100 | 315 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
 | **World Turtle** | 🌿/✨ | **200** *(500)* | **20** | **5** | **160** | 385 | **Unaware** — ignores the opponent's stat changes |
 | **Otso** | 🌿/👊 | 120 *(300)* | **150** | 70 | 100 | 440 | **Honey-Gorge** — if it does not attack, Power doubles next turn |
 
@@ -106,7 +106,7 @@ The type that pays for everything, and now has one member that can also hit back
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Baku** | 🔮 Psychic | 120 *(300)* | 70 | **25** | **190** | 405 | **Pressure** — the opponent's moves cost double mana |
+| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **25** | **190** | 415 | **Pressure** — the opponent's moves cost double mana |
 | **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | **135** | 70 | 385 | **Illusion** — enters disguised; breaks on damage |
 | **Sphinx** | 🔮/🌑 | 100 *(250)* | 120 | 60 | **150** | 430 | **Enigma** — the opponent cannot use the same move twice |
 

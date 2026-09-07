@@ -8,8 +8,12 @@ Locked: the nine types, the type chart, the nine field effects, all 88 moves,
 the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.
 
-First pass done: move power and mana cost for all 88 moves (`design/04-costs.md`),
-against a 100-power standard attack and 10 mana regenerated per turn.
+First pass done: damage and mana cost for all 88 moves (`design/04-costs.md`).
+Baseline HP is 500; a standard attack does about 70, a powerful attack 100-120,
+a priority attack about 40, and every character regains 10 mana per turn. Power
+is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
+effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
+types by design; Light, Grass and Water are the bottom three.
 
 **The hundred-mana breakpoint is the economy's load-bearing rule.** Every type's
 ninth move — its signature — costs exactly 100. Nothing else costs more than 80.

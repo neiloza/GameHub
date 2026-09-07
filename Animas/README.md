@@ -32,7 +32,7 @@ Ability and the stat line, not the movepool.
 | [`design/01-types.md`](design/01-types.md) | The type chart and the nine field effects |
 | [`design/02-moves.md`](design/02-moves.md) | All 88 moves |
 | [`design/03-characters.md`](design/03-characters.md) | The roster of 25 |
-| [`design/04-costs.md`](design/04-costs.md) | Mana cost and move power for all 88 moves |
+| [`design/04-costs.md`](design/04-costs.md) | Damage and mana cost for all 88 moves |
 
 ## Status
 

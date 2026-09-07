@@ -59,7 +59,7 @@ Every Water character is slow — not one reaches 80 Speed. Control does not nee
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Kelpie** | 💧 Water | 120 *(300)* | 90 | 50 | **160** | 420 | **Undertow** — the opposing character cannot switch out |
-| **Hydra** | 💧/🌿 | **150** *(375)* | **130** | **40** | **50** | 370 | **Regenerator** — restores half its HP on switching out |
+| **Hydra** | 💧/🌿 | **160** *(400)* | **130** | **40** | **50** | 380 | **Regenerator** — restores half its HP on switching out |
 | **Loch Ness** | 💧/🌑 | 130 *(325)* | 90 | 90 | 100 | 410 | **From the Deep** — untargetable the turn it enters |
 | **Matsya** | 💧/✨ | 100 *(250)* | **30** | 85 | **200** | 415 | **Forewarning** — reveals the opponent's moves and Ability |
 
@@ -345,7 +345,7 @@ correcting. **Past sixteen the wall stops being a decision.**
 
 **All four stats are doing real work.** HP 6.7×, Speed 35×, Power 7.5×, Mana 5×.
 HP was compressed from a 12.5× spread — World Turtle down from 625 hit points to
-500 and Hydra from 450 to 375, with everything between pulled in to match.
+500 and Hydra from 450 to 400, with everything between pulled in to match.
 Fenrir dropping to 40 Mana restored a floor that had drifted up to 50, so there is
 once again a character that genuinely cannot afford things.
 

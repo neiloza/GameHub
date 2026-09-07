@@ -153,8 +153,23 @@ is the fifteen above 200, and the other ten have to win before contact.
 
 | Hit points | Characters |
 |---|---|
-| 50–150 | Xiuhcoatl, Phoenix, Thunderbird, Kitsune, Grim Reaper |
-| 175–225 | Raiju, Bakeneko, Garuda, Sun Wukong, Sphinx, Fenrir, Unicorn, Matsya |
-| 300–325 | Simargl, Kelpie, Otso, Roc, Baku |
-| 375–450 | Fafnir, Loch Ness, Leshy, Gugalanna, Hydra |
-| 500–625 | Airavata, World Turtle |
+| 75–175 | Xiuhcoatl 75, Phoenix 100, Kitsune 125, Thunderbird 150, Grim Reaper 150, Raiju 175 |
+| 200–250 | Bakeneko, Garuda 200 · Sun Wukong, Fenrir 225 · Matsya, Sphinx, Unicorn 250 |
+| 275–325 | Simargl, Roc 275 · Kelpie, Otso, Baku 300 · Fafnir, Loch Ness, Leshy 325 |
+| 350–500 | Gugalanna 350 · Hydra 375 · Airavata 425 · World Turtle 500 |
+
+**The HP range was compressed from 50–625 to 75–500**, a 6.7× spread rather than
+12.5×. The main effect is that the six-character pile-up at exactly 200 hit
+points is gone — the bodies now step evenly through 200, 225, 250, 275, 300, 325,
+so no single Power threshold flips a quarter of the roster at once.
+
+A 180-damage hit — a 120 move from the game's highest Power — still one-shots
+exactly six characters, so the compression did not change the low end. What it
+changed is the top: **World Turtle drops from 10.8 effective turns to kill to 8.6,
+and Hydra from 7.8 to 6.5.** Those are still walls. They are no longer
+unreachable.
+
+**Leshy is still the outlier at 12.5 turns**, and compression cannot fix it
+because the problem is not its body — it is that Photosynthesis and free Parasite
+stack to 82 healing a turn against a 108-damage median attack. That needs the
+sustain cap, not fewer hit points.

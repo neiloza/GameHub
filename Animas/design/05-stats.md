@@ -46,11 +46,11 @@ The widest spread in the game — a 375-hit-point dragon, a 50-hit-point serpent
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 75 | 120 | 435 | **Slow Burn** — after three turns, Power doubles |
-| **Phoenix** | 🔥/🌪️ | **30** *(75)* | 90 | 125 | **50** | 295 | **Rebirth** — first time it faints, returns at half HP |
-| **Xiuhcoatl** | 🔥/⚡ | **20** *(50)* | 80 | **165** | 90 | 355 | **Cometfall** — 50 damage on every switch-in |
+| **Fafnir** | 🔥 Fire | 130 *(325)* | 90 | 75 | 120 | 415 | **Slow Burn** — after three turns, Power doubles |
+| **Phoenix** | 🔥/🌪️ | **40** *(100)* | 90 | 125 | **50** | 305 | **Rebirth** — first time it faints, returns at half HP |
+| **Xiuhcoatl** | 🔥/⚡ | **30** *(75)* | 80 | **165** | 90 | 365 | **Cometfall** — 50 damage on every switch-in |
 | **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 120 | 120 | 370 | **Metronome** — a random move from anywhere in the game |
-| **Simargl** | 🔥/✨ | 120 *(300)* | 80 | 100 | 80 | 380 | **Hearthfire** — every damaging attack it lands heals it |
+| **Simargl** | 🔥/✨ | 110 *(275)* | 80 | 100 | 80 | 370 | **Hearthfire** — every damaging attack it lands heals it |
 
 ## 💧 WATER
 
@@ -59,9 +59,9 @@ Every Water character is slow — not one reaches 80 Speed. Control does not nee
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Kelpie** | 💧 Water | 120 *(300)* | 90 | 50 | **160** | 420 | **Undertow** — the opposing character cannot switch out |
-| **Hydra** | 💧/🌿 | **180** *(450)* | **130** | **40** | **50** | 400 | **Regenerator** — restores half its HP on switching out |
-| **Loch Ness** | 💧/🌑 | **150** *(375)* | 90 | 90 | 100 | 430 | **From the Deep** — untargetable the turn it enters |
-| **Matsya** | 💧/✨ | 90 *(225)* | **30** | 85 | **200** | 405 | **Forewarning** — reveals the opponent's moves and Ability |
+| **Hydra** | 💧/🌿 | **150** *(375)* | **130** | **40** | **50** | 370 | **Regenerator** — restores half its HP on switching out |
+| **Loch Ness** | 💧/🌑 | 130 *(325)* | 90 | 90 | 100 | 410 | **From the Deep** — untargetable the turn it enters |
+| **Matsya** | 💧/✨ | 100 *(250)* | **30** | 85 | **200** | 415 | **Forewarning** — reveals the opponent's moves and Ability |
 
 ## 🌿 GRASS
 
@@ -69,8 +69,8 @@ Two walls and a wrecking ball, and they are finally distinct.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Leshy** | 🌿 Grass | **150** *(375)* | 80 | **15** | 100 | 345 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
-| **World Turtle** | 🌿/✨ | **250** *(625)* | **20** | **5** | **160** | 435 | **Unaware** — ignores the opponent's stat changes |
+| **Leshy** | 🌿 Grass | 130 *(325)* | 80 | **15** | 100 | 325 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
+| **World Turtle** | 🌿/✨ | **200** *(500)* | **20** | **5** | **160** | 385 | **Unaware** — ignores the opponent's stat changes |
 | **Otso** | 🌿/👊 | 120 *(300)* | **150** | 70 | 100 | 440 | **Honey-Gorge** — if it does not attack, Power doubles next turn |
 
 ## ⚡ ELECTRIC
@@ -80,7 +80,7 @@ Both fast, both frail, and one hoards mana while the other manufactures it for e
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Raiju** | ⚡ Electric | 70 *(175)* | 90 | **175** | 110 | 445 | **Battery** — restores 25% of total mana each turn |
-| **Thunderbird** | ⚡/🌪️ | **50** *(125)* | 110 | 115 | 70 | 345 | **Stormbringer** — sets Storm Front on entry |
+| **Thunderbird** | ⚡/🌪️ | **60** *(150)* | 110 | 115 | 70 | 355 | **Stormbringer** — sets Storm Front on entry |
 
 ## 🌪️ AIR
 
@@ -89,7 +89,7 @@ One buys the board, one buys the hit.
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Garuda** | 🌪️ Air | 80 *(200)* | 100 | **155** | 120 | 455 | **First Flight** — its first attack after entering goes first |
-| **Roc** | 🌪️/👊 | 120 *(300)* | **150** | 110 | **50** | 430 | **Intimidate** — the opponent's Power drops on entry |
+| **Roc** | 🌪️/👊 | 110 *(275)* | **150** | 110 | **50** | 420 | **Intimidate** — the opponent's Power drops on entry |
 
 ## 👊 FIGHTING
 
@@ -97,8 +97,8 @@ A hundred and twenty points of HP apart and ninety of Speed.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Sun Wukong** | 👊 Fighting | 80 *(200)* | 110 | **145** | 90 | 425 | **Bloodlust** — Power +50% for every character it defeats |
-| **Airavata** | 👊/⚡ | **200** *(500)* | 90 | **30** | 80 | 400 | **First Answer** — each move doubles the first time it is used |
+| **Sun Wukong** | 👊 Fighting | 90 *(225)* | 110 | **145** | 90 | 435 | **Bloodlust** — Power +50% for every character it defeats |
+| **Airavata** | 👊/⚡ | **170** *(425)* | 90 | **30** | 80 | 370 | **First Answer** — each move doubles the first time it is used |
 
 ## 🔮 PSYCHIC
 
@@ -106,9 +106,9 @@ The type that pays for everything, and now has one member that can also hit back
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **25** | **190** | 415 | **Pressure** — the opponent's moves cost double mana |
+| **Baku** | 🔮 Psychic | 120 *(300)* | 70 | **25** | **190** | 405 | **Pressure** — the opponent's moves cost double mana |
 | **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | **135** | 70 | 385 | **Illusion** — enters disguised; breaks on damage |
-| **Sphinx** | 🔮/🌑 | 80 *(200)* | 120 | 60 | **150** | 410 | **Enigma** — the opponent cannot use the same move twice |
+| **Sphinx** | 🔮/🌑 | 100 *(250)* | 120 | 60 | **150** | 430 | **Enigma** — the opponent cannot use the same move twice |
 
 ## 🌑 DARK
 
@@ -117,8 +117,8 @@ An executioner, a berserker and a siege engine.
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Grim Reaper** | 🌑 Dark | **60** *(150)* | 90 | **45** | 130 | 325 | **Harvest** — Death Touch costs half mana |
-| **Fenrir** | 🌑/👊 | 80 *(200)* | 110 | 130 | **40** | 360 | **Berserk** — below half HP, Power is doubled |
-| **Gugalanna** | 🌑/🌪️ | **170** *(425)* | 120 | 95 | **60** | 445 | **Seven Years of Famine** — nobody on either side can heal |
+| **Fenrir** | 🌑/👊 | 90 *(225)* | 110 | 130 | **40** | 370 | **Berserk** — below half HP, Power is doubled |
+| **Gugalanna** | 🌑/🌪️ | 140 *(350)* | 120 | 95 | **60** | 415 | **Seven Years of Famine** — nobody on either side can heal |
 
 ## ✨ LIGHT
 
@@ -126,14 +126,14 @@ One character, and it cannot hurt anybody.
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Unicorn** | ✨ Light | 80 *(200)* | **30** | 105 | **150** | 365 | **Miracle** — at full HP, survives anything at 1 HP |
+| **Unicorn** | ✨ Light | 100 *(250)* | **30** | 105 | **150** | 385 | **Miracle** — at full HP, survives anything at 1 HP |
 ---
 
 ## The extremes
 
 | | Lowest | Highest | Ratio |
 |---|---|---|---|
-| **HP** | Xiuhcoatl — 20 *(50 hp)* | World Turtle — 250 *(625 hp)* | **12.5×** |
+| **HP** | Xiuhcoatl — 30 *(75 hp)* | World Turtle — 200 *(500 hp)* | **6.7×** |
 | **Power** | World Turtle — 20 | Otso, Roc — 150 | **7.5×** |
 | **Speed** | World Turtle — 10 | Raiju — 150 | **15×** |
 | **Mana** | Hydra, Phoenix, Roc — 50 | Matsya — 200 | **4.0×** |
@@ -343,15 +343,20 @@ correcting. **Past sixteen the wall stops being a decision.**
 
 ### Where the balance stands
 
-**All four stats are doing real work.** HP 12.5×, Speed 35×, Power 7.5×, Mana 5×.
+**All four stats are doing real work.** HP 6.7×, Speed 35×, Power 7.5×, Mana 5×.
+HP was compressed from a 12.5× spread — World Turtle down from 625 hit points to
+500 and Hydra from 450 to 375, with everything between pulled in to match.
 Fenrir dropping to 40 Mana restored a floor that had drifted up to 50, so there is
 once again a character that genuinely cannot afford things.
 
-Totals run 295 to 455 against a 500 ceiling, mean 397 — up fourteen from the
-respread, since pulling the Speed baseline toward 100 lifted almost everyone. The
-lowest are still the characters whose Abilities do something a stat line cannot:
-Phoenix at 295, the Grim Reaper at 325, Thunderbird and Leshy at 345, Xiuhcoatl
-at 355.
+Totals run 305 to 455 against a 500 ceiling, mean 391. The lowest are still the
+characters whose Abilities do something a stat line cannot: Phoenix at 305, the
+Grim Reaper and Leshy at 325, Thunderbird at 355, Xiuhcoatl at 365.
+
+**The HP compression broke the 200-hit-point cliff.** Six characters used to sit
+on exactly 200, so a single Power threshold flipped a quarter of the roster at
+once. Now the largest cluster is three, and the bodies step evenly through 200,
+225, 250, 275, 300, 325. No single point of Power does that much work any more.
 
 **Nothing on the stat sheet is open.** No collisions, no ties, no dominated
 characters. The only outstanding design question is the three-way Power-doubling

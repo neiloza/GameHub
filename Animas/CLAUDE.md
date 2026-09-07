@@ -9,13 +9,19 @@ the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.
 
 First pass done: damage and mana cost for all 88 moves (`design/04-costs.md`).
-Baseline HP is 500; a standard attack does 50-80, a powerful attack 90-150, a
-priority attack 20-60, and every character regains 10 mana per turn. **Every
-number in the game is a multiple of five, and every Mana stat a multiple of
-ten** — no 68s, no 42s. Mental arithmetic at the table is a design requirement. Power
-is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
-effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
-types by design; Light, Grass and Water are the bottom three.
+**Baseline HP is 250 and the damage formula has no constant: damage = the move's
+number x the attacker's Power x type effectiveness.** Power is a multiplier
+centred on 1.0, roughly 0.8 to 1.3. The 250 comes straight from the design
+target — a 100-Power character with a 100-damage attack defeats a 250-HP
+character in exactly 2.5 turns — and it makes that true with no scaling factor,
+so the number printed on a move is the damage it deals.
+
+A standard attack does 50-80, a powerful attack 90-150, a priority attack 20-60,
+and every character regains 10 mana per turn. **Every number is a multiple of
+five and every Mana stat a multiple of ten** — no 68s, no 42s. Percentage effects
+use 10, 20, 40 and 50 only, the four that land on multiples of five at 250 HP.
+Fire, Dark, Fighting and Electric are the four offensive types by design; Light,
+Grass and Air are the bottom three.
 
 **Attack costs vary widely by type** — powerful attacks run 20 to 50 mana,
 priority attacks 5 to 50. Dark hits hardest and pays most (150 @ 50); Light hits
@@ -26,14 +32,12 @@ is 6.00 damage per mana against a field high of 4.50, and Water's Crosscurrent
 at 50 @ 50 is worse than its own free standard attack. Air also lost its
 priority identity to Jolt and currently has no compensating claim.
 
-**Light's Gift at 10 mana is the most urgent balance problem in the game.** Five
-hundred points of healing for ten mana, on top of a free 125-point Mend, makes a
-Light character unkillable by any single attacker while still affording its own
-offence. Light's whole kit costs 245 mana, the cheapest of any type. Recommend
+**Light's Gift at 10 mana is the most urgent balance problem in the game.** A full 250-point heal for ten mana, on top of a free 50-point
+Mend, is by far the best healing rate in the game. Light's whole kit costs 245 mana, the cheapest of any type. Recommend
 Gift at 30; see `04-costs.md`.
 
 **Voltage is uncapped and is now a four-turn kill clock.** It doubles forever at
-20 mana a use — 50, 100, 200, 400, 800 — killing a 500-HP character on the
+20 mana a use — 50, 100, 200, 400, 800 — killing a 250-HP character on the
 fourth consecutive cast and switching off the type chart from the fifth. Mana is
 not the brake; commitment is, since any other move or a switch resets it. An
 opponent switching does NOT reset it. This is deliberate. If a brake is ever
@@ -41,8 +45,8 @@ needed, escalate the cost alongside the damage rather than capping the count.
 
 **Two moves are free in every type:** the standard attack (slot 1) and the
 status move (slot 4), with no exceptions in any type. Three status moves were
-rebalanced to survive being free: Resolve to +50% Power, Mend to a 25% heal,
-Malediction to 15% a turn. Everything else in every type is bought.
+rebalanced to survive being free: Resolve to +50% Power, Mend to a 20% heal,
+Malediction to 20% a turn. Everything else in every type is bought.
 
 **The hundred-mana breakpoint is the economy's load-bearing rule.** Mana is a
 stat that varies — roughly 70 at the low end, 120 to 150 at the high end. No

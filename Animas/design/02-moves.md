@@ -52,7 +52,7 @@ Immolation costs your health, Meltdown costs your tempo, Pyroclasm costs your li
 1. **Bramble** — Standard damage. No cost.
 2. **Sunspear** — Heavy damage. High mana.
 3. **Burr** — Light damage. Always moves first.
-4. **Parasite** — The target loses 15% of max HP each turn. The user heals that amount.
+4. **Parasite** — The target loses 20% of max HP each turn. The user heals that amount.
 5. **Overgrowth** — *FIELD.* Every character on the field heals 10% of max HP each turn.
 6. **Germinate** — Plant an attack. It detonates for heavy damage next turn, and the user still acts normally in the meantime. **Immune to Clear Sight and Tempest.**
 7. **Graft** — Switch out and pass all boosts to the incoming ally. Works even while trapped.
@@ -124,8 +124,8 @@ else.*
 1. **Ripshade** — Standard damage. No cost.
 2. **Nightfall** — Heavy damage. High mana.
 3. **Umbra** — Light damage. Always moves first.
-4. **Malediction** — The user sacrifices 25% of its max HP. The target loses 15% of its max HP every turn.
-5. **Snare** — *FIELD.* Every enemy that switches in takes 15% of max HP as damage.
+4. **Malediction** — The user sacrifices 20% of its max HP. The target loses 20% of its max HP every turn.
+5. **Snare** — *FIELD.* Every enemy that switches in takes 20% of max HP as damage.
 6. **Damnation** — Costs 50% of max HP. The user's Power, Speed, and Mana are all doubled, and it can never switch out.
 7. **Death Pact** — Immediately, both the user and the target lose HP equal to whichever of them has less. The one with less faints; the other survives with the difference.
 8. **Last Rites** — The user faints. The target's Power and Mana are halved for the rest of the battle.
@@ -138,8 +138,8 @@ else.*
 1. **Lumenlash** — Standard damage. No cost.
 2. **Solar Flare** — Heavy damage. High mana.
 3. **Glimmer** — Light damage. Always moves first.
-4. **Mend** — Restore 25% of the user's max HP.
-5. **Sanctuary** — *FIELD.* Every character switching in on your side restores 15% of max HP.
+4. **Mend** — Restore 20% of the user's max HP.
+5. **Sanctuary** — *FIELD.* Every character switching in on your side restores 20% of max HP.
 6. **Gift** — Two turns from now, whoever is active on your side heals to full.
 7. **Lifedraw** — Damage, and the user heals HP equal to the damage dealt.
 8. **Renewal** — Restores every living character on your team to full HP.
@@ -176,8 +176,8 @@ All field effects last a maximum of five turns.
 | Air | Slipstream | Your team's Speed is doubled |
 | Fighting | Proving Ground | Priority disabled; everything resolves by Speed |
 | Psychic | Inversion | Turn order reversed |
-| Dark | Snare | Enemies take 15% max HP on switch-in |
-| Light | Sanctuary | Your team restores 15% max HP on switch-in |
+| Dark | Snare | Enemies take 20% max HP on switch-in |
+| Light | Sanctuary | Your team restores 20% max HP on switch-in |
 
 Fire and Grass are exact mirrors. Snare and Sanctuary are exact mirrors.
 

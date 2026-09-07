@@ -1,281 +1,201 @@
-# Animas — The Move List (100 moves)
+# Animas — The Move List
 
-## The structure
+**88 moves.** Nine types × nine moves, plus seven neutral.
 
-Pokémon has ~900 moves, most of which are strictly worse versions of ~120 real
-ones. Animas has 100, and none of them is a worse version of another.
+Every type follows the same skeleton. Moves 1–3 are the attacks (standard,
+powerful, priority). Move 4 is a status or non-damage ability. Move 5 is the field
+effect. Moves 6–8 are the type's distinctive tools. Move 9 is its signature.
 
-```
- 45  Typed moves     — 9 types × a fixed 5-slot grid
- 53  Utility moves   — typeless, gated by an Anima's Focus role
-  2  Universal moves — every Anima has them
-───
-100
-```
+Characters take four moves total, drawn from their own type or types plus the
+neutral pool.
 
-**Utility moves are typeless.** No matchup lookup, no STAB. Setting hazards or
-healing shouldn't require a chart consultation. The handful of utility moves that
-*do* deal damage inherit the user's primary type.
+---
 
-## Part 1 — The typed grid (45)
+## 🔥 FIRE — high damage, slow burn
 
-Every type gets exactly five moves, in the same five slots:
+*Four different prices for the same product: Overheat costs your future damage,
+Flare Blitz costs your health, Meltdown costs your tempo, Eruption costs your life.*
 
-| Slot | Weight | Focus | Role |
-| --- | --- | --- | --- |
-| **Strike** | 80 | 0 | The free, always-available attack. No rider. |
-| **Surge** | 120 | 4 | The heavy hit, with the type's mechanic attached at full strength. |
-| **Dart** | 40 | 1 | Priority +1. A small piece of the type's mechanic. |
-| **Brand** | — | 3 | Non-damaging. Applies the type's signature status. |
-| **Field** | — | 4 | A multi-turn side or self effect. The type's win condition. |
+1. **Ember** — Standard damage. No cost.
+2. **Fire Blast** — Heavy damage. High mana.
+3. **Flare Dash** — Light damage. Always moves first.
+4. **Scorch** — The target is Burned: it loses 10% of max HP each turn.
+5. **Wildfire** — *FIELD.* Every character on the field loses 10% of max HP each turn.
+6. **Overheat** — Massive damage. The user's Power is halved afterward.
+7. **Flare Blitz** — Heavy damage. The user takes 40% recoil.
+8. **Meltdown** — Massive damage. The user must skip its next turn to recharge.
+9. **Eruption** — Enormous damage. The user faints.
 
-This grid *is* the answer to "how do I collapse five Fire moves into one?" You
-don't pick between Ember and Fire Blast. You pick between attacking for free,
-attacking hard on credit, attacking first, applying the status, or setting the
-field. Five genuinely different decisions instead of five power levels.
+## 💧 WATER — control and strangulation
 
-### 🌿 Grass — Attrition
+*Bind, then Drown. Trap them, start the clock, hold the door.*
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Thornlash** | Strike | 80 damage. |
-| **Bloomburst** | Surge | 120 damage; user heals 50% of damage dealt. |
-| **Seedshot** | Dart | 40 damage, +1 priority; applies **Sap** for 1 turn. |
-| **Rootbind** | Brand | Target gains **Sap**: the user drains 8% of the target's max HP each turn while the user stays in. Ends if the user switches. |
-| **Overgrowth** | Field | 5 turns. Every Anima on the user's side heals 8% max HP at end of turn. |
+1. **Surge** — Standard damage. No cost.
+2. **Tidal Crush** — Heavy damage. High mana.
+3. **Undertow** — Light damage. Always moves first.
+4. **Bind** — The target cannot switch out.
+5. **Whirlpool** — *FIELD.* No character on either side can switch out.
+6. **Wellspring** — Restore 40% of max HP.
+7. **Dive** — Untargetable this turn. Strike next turn.
+8. **Riptide** — The target is forced out. The next character in their team order replaces it, and **takes damage on arrival.**
+9. **Drown** — The target faints in three turns if it is still on the field. **Immune to Clear Sight and Tempest.**
 
-*Grass never wins a race. It wins the turn after the race ends.*
+## 🌿 GRASS — sustain, growth, and the handoff
 
-### 🔥 Fire — Escalation
+*Stall, grow, pass. Its damage keeps ticking even while it is trapped and broke.*
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Searing Blow** | Strike | 80 damage. |
-| **Pyre** | Surge | 120 damage; +2 Burn stacks. |
-| **Cinderstep** | Dart | 40 damage, +1 priority; +1 Burn stack. |
-| **Kindle** | Brand | +3 Burn stacks. |
-| **Conflagration** | Field | 4 turns. Every Fire move that connects adds 1 extra Burn stack. |
+1. **Vine Lash** — Standard damage. No cost.
+2. **Solar Beam** — Heavy damage. High mana.
+3. **Seed Shot** — Light damage. Always moves first.
+4. **Leech Seed** — The target loses 15% of max HP each turn. The user heals that amount.
+5. **Overgrowth** — *FIELD.* Every character on the field heals 10% of max HP each turn.
+6. **Germinate** — Plant an attack. It detonates for heavy damage next turn, and the user still acts normally in the meantime. **Immune to Clear Sight and Tempest.**
+7. **Baton Pass** — Switch out and pass all boosts to the incoming ally. Works even while trapped.
+8. **Sap** — The target cannot switch out. Very high mana.
+9. **Growth** — The user's Power and Mana are doubled.
 
-**Burn:** 3% of max HP per stack at end of turn, cap 8 stacks (24%/turn).
-**Stacks reset to 0 when the burned Anima switches out.** That reset is the
-entire type. Fire doesn't kill you — it makes staying in fatal and leaving
-expensive, and then something else on Fire's team punishes the switch.
+## ⚡ ELECTRIC — the resource type
 
-### ⚡ Electric — Initiative
+*Every move touches the mana economy. Short Circuit and Overload are the same
+equation pointed in opposite directions.*
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Arcjolt** | Strike | 80 damage. |
-| **Thunderhead** | Surge | 120 damage; applies **Static**. |
-| **Spark Step** | Dart | 40 damage, **+2 priority** (the highest bracket in the game). Focus 2. |
-| **Grounding Field** | Brand | Applies **Static**: Speed halved, and the target loses every Speed tie. Lasts until it switches out. |
-| **Overcharge** | Field | User's Speed +2; for 3 turns all of the user's moves gain +1 priority. |
+1. **Spark** — Standard damage. No cost.
+2. **Thunderbolt** — Heavy damage. High mana.
+3. **Thunder Dart** — Light damage. Always moves first.
+4. **Charge** — The user's mana is doubled.
+5. **Storm Front** — *FIELD.* Every character's mana is doubled.
+6. **Volt Switch** — Damage, then the user switches out.
+7. **Voltage** — Damage doubles with each consecutive use. Resets if the user switches out or uses anything else.
+8. **Short Circuit** — Destroys all of the target's mana. Damage scales with the amount destroyed.
+9. **Overload** — Spend all of the user's mana. Damage scales with the amount spent.
 
-*Electric's Field turns its Strike into a priority move. Setting up Overcharge on
-a forced switch is the type's whole game plan.*
+## 🌪️ AIR — speed, mobility, and position
 
-### 💧 Water — Momentum
+*Moves 6–8 are three answers to one question: who is standing here?*
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Tidebreak** | Strike | 80 damage. |
-| **Maelstrom** | Surge | 120 damage, then the target is forced out. **The defending player chooses the replacement** (deterministic — they lose tempo, not agency). |
-| **Undertow** | Dart | 40 damage, +1 priority; applies **Drench** (Focus regeneration halved) for 3 turns. |
-| **Riptide** | Brand | The target is forced out at end of turn, and the incoming Anima takes hazard damage on arrival. |
-| **Deluge** | Field | 5 turns. Switching in costs 1 Focus for **both sides**, and all hazards deal +50%. |
+1. **Gust** — Standard damage. No cost.
+2. **Hurricane** — Heavy damage. High mana.
+3. **Wingbeat** — Light damage. Always moves first.
+4. **Jet Stream** — All of the user's moves gain +1 priority until it switches out.
+5. **Tailwind** — *FIELD.* Your team's Speed is doubled.
+6. **Skimstrike** — Damage, then the user switches out.
+7. **Skyfall** — Untargetable this turn. Strike next turn.
+8. **Cyclone** — Damage to the target, then it is forced out. The next character in their team order replaces it, untouched.
+9. **Tempest** — Massive damage. Removes everything on both sides: status, traps, stat changes, fields, and hazards.
 
-*Water is the hazard-stacking partner. Riptide plus Caltrops is a soft lock.*
+## 👊 FIGHTING — commitment and prediction
 
-### 👊 Fighting — Breaking
+*Counter punishes them for attacking. Focus Punch punishes them for not attacking.*
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Ironpalm** | Strike | 80 damage. |
-| **Shatterblow** | Surge | 120 damage; ignores Guard boosts, screens, and Bulwark (Protect). Applies **Rend**. |
-| **Snapkick** | Dart | 40 damage, +1 priority; ignores Bulwark. |
-| **Guardbreak** | Brand | Removes all of the target's stat boosts and all screens on its side; the target cannot raise Guard for 3 turns. |
-| **Stance** | Field | User's Force +1; for 4 turns the user's attacks ignore the target's Guard boosts and screens. |
+1. **Jab** — Standard damage. No cost.
+2. **Haymaker** — Heavy damage. High mana.
+3. **Quick Strike** — Light damage. Always moves first.
+4. **Resolve** — The user's Power is doubled.
+5. **Proving Ground** — *FIELD.* Priority is disabled; everything resolves by Speed alone.
+6. **Counter** — Reflects the damage the user takes this turn back at the attacker, doubled.
+7. **Focus Punch** — Resolves last. If the user took no damage this turn, massive damage. If it was hit, the move fails.
+8. **Bullet Punch** — Damage, and the user's Speed increases.
+9. **Outrage** — Very powerful attack. Locked in for three turns. Cannot switch.
 
-**Rend:** the target takes +10% damage per hit it has received since switching in,
-capping at +50%. Resets on switch.
+## 🔮 PSYCHIC — mind bending and rule breaking
 
-*Fighting is the reason stall is not the default strategy. Every "just don't die"
-plan has to answer Shatterblow.*
+*Set Future Sight, force them to rotate, and their fresh character walks into it.*
 
-### 🌪️ Air — Displacement
+1. **Mindspike** — Standard damage. No cost.
+2. **Psystrike** — Heavy damage. High mana.
+3. **Premonition** — Light damage. Always moves first.
+4. **Force Swap** — The target is forced to switch out. The next character in their team order replaces it.
+5. **Trick Room** — *FIELD.* Turn order is reversed; the slowest acts first.
+6. **Future Sight** — Sets an attack that lands in two turns. The user acts normally in between. **Immune to Clear Sight and Tempest.**
+7. **Mind Drain** — Steals all of the target's mana and adds it to the user's own.
+8. **Mind Stun** — The target cannot act next turn.
+9. **Mind Crush** — Massive damage to the target, and 10% of max HP to every other character on the enemy team.
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Galeslash** | Strike | 80 damage. |
-| **Cyclone** | Surge | 120 damage; clears **all** hazards and field effects on both sides. |
-| **Skimstrike** | Dart | 40 damage, +1 priority; the user switches out afterward (its choice of replacement). |
-| **Downdraft** | Brand | Target's Speed −2, and it cannot switch out next turn. |
-| **Tailwind** | Field | 4 turns. Every Anima on the user's side has doubled Speed. |
+## 🌑 DARK — death, destruction, secrecy
 
-*Air is the only type that can undo a field state, which makes it the natural
-answer to Deluge, Overgrowth, and hazard stacking — but Cyclone clears your own
-side too.*
+*Three ways to lose on purpose. Dying is productive.*
 
-### 🔮 Psychic — Foresight
+1. **Ripshade** — Standard damage. No cost.
+2. **Nightfall** — Heavy damage. High mana.
+3. **Shadow Sneak** — Light damage. Always moves first.
+4. **Curse** — The user sacrifices 25% of its max HP. The target loses 25% of its max HP every turn.
+5. **Snare** — *FIELD.* Every enemy that switches in takes 15% of max HP as damage.
+6. **No Retreat** — Costs 50% of max HP. The user's Power, Speed, and Mana are all doubled, and it can never switch out.
+7. **Death Pact** — Immediately, both the user and the target lose HP equal to whichever of them has less. The one with less faints; the other survives with the difference.
+8. **Memento** — The user faints. The target's Power and Mana are halved for the rest of the battle.
+9. **Death Touch** — Instantly defeats the target character.
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Mindspike** | Strike | 80 damage. |
-| **Cerebral Lance** | Surge | 120 damage; applies **Daze** (the target cannot spend Focus) for 2 turns. |
-| **Preempt** | Dart | 40 damage, +1 priority. **If the target switches this turn, this hits the incoming Anima instead.** |
-| **Foresee** | Brand | Focus 2. Reveals the target's four moves and current Focus, and applies **Exposed** (+50% damage taken) for 2 turns. |
-| **Wager** | Field | Declare `attack` or `switch`. **Correct:** user's Force +2 and it moves first next turn regardless of Speed. **Wrong:** user loses 4 Focus and its Speed drops 1 stage. |
+## ✨ LIGHT — healing and restoration
 
-*Foresee is the deterministic critical hit — you don't roll a crit, you set one
-up and you pay for it. Wager is the game's thesis compressed into one move: the
-only gamble in Animas is a gamble on a person.*
+*The only type that can undo what has already happened.*
 
-### 🌑 Dark — Cost
+1. **Lumenlash** — Standard damage. No cost.
+2. **Solar Flare** — Heavy damage. High mana.
+3. **Glimmer** — Light damage. Always moves first.
+4. **Mend** — Restore 50% of the user's max HP.
+5. **Sanctuary** — *FIELD.* Every character switching in on your side restores 15% of max HP.
+6. **Gift** — Two turns from now, whoever is active on your side heals to full.
+7. **Lifedraw** — Damage, and the user heals HP equal to the damage dealt.
+8. **Renewal** — Restores every living character on your team to full HP.
+9. **Revival Blessing** — Very high mana. Fully revive a fallen teammate. Once per battle.
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Ripshade** | Strike | 80 damage. |
-| **Devour** | Surge | 120 damage; the user loses 15% max HP and **steals all of the target's stat boosts**. |
-| **Cutpurse** | Dart | 40 damage, +1 priority; drains 3 Focus from the target. |
-| **Mark** | Brand | The target is **Marked**: if it switches out, it loses 25% max HP and the incoming Anima loses 10%. |
-| **Shadowbind** | Field | Costs 4 Focus **and 10% of the user's max HP**. The target cannot switch out for 3 turns. |
+---
 
-*Dark is the type that says no. Everything it does costs it something, which is
-why it can afford effects no other type gets.*
+## NEUTRAL — available to every character
 
-### ✨ Light — Clarity
+*The governing rule: a neutral move must never do a type's job.*
 
-| Move | Slot | Effect |
-| --- | --- | --- |
-| **Lumenlash** | Strike | 80 damage. |
-| **Solar Judgment** | Surge | 120 damage; removes all status conditions and stat drops from the user's **entire team**, including the bench. |
-| **Glimmer** | Dart | 40 damage, +1 priority; applies **Reveal** — the target's moves and Focus are visible for the rest of the battle, even after it switches. |
-| **Sanctify** | Brand | Cures the user's status and grants immunity to new status for 3 turns. |
-| **Aegis** | Field | 5 turns. The user's whole team takes 33% less damage from Surge (Weight-120) moves. |
+1. **Guard** — Blocks all damage and effects to the user this turn. The mana cost doubles with each consecutive use, and resets when the user switches out.
+2. **Focus** — Restores a large amount of the user's mana.
+3. **Run** — The user's Speed increases.
+4. **Taunt** — For three turns, the target can only use damaging moves.
+5. **Encore** — The target must repeat its last-used move for three turns.
+6. **Sleep** — Restores all of the user's HP, but it cannot act for the next two turns. Does not cure status.
+7. **Clear Sight** — Removes all status effects, traps, and stat reductions **from the user only.** Does not touch the opponent, the field, or the user's own boosts. Cannot cancel Drown.
 
-*Light doesn't out-damage you. It deletes the advantage you spent four turns
-building, and it tells your opponent what you're holding.*
+**Struggle** is automatic when nothing else is usable, and does not occupy a slot.
 
-## Part 2 — Utility moves (53)
+---
 
-Typeless. An Anima can only learn utility moves from **its Focus role's pool**
-(see `03-characters.md`). This is what keeps a Bulwark from also being a Warden
-and a Saboteur — the roles are the reason two Water Animas play differently.
+## FIELD EFFECTS AT A GLANCE
 
-### Breaker — offense, setup, and getting through defense (7)
+All field effects last a maximum of five turns.
 
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Sharpen** | 2 | Force +2. |
-| **Pierce** | 3 | The user's next attack ignores type resistance and Guard boosts. |
-| **Reckless** | 0 | The user's next attack deals +50%; the user takes 25% of the damage dealt as recoil. |
-| **Expose** | 2 | Target is **Exposed** (+50% damage taken) for 2 turns. |
-| **Lock In** | 1 | Force +1, and Focus costs are halved — but the user must repeat its next chosen move until it switches out. |
-| **Overexert** | 0 | Gain 5 Focus immediately; Guard −1 for 3 turns. |
-| **Finisher** | 2 | 3 turns. The user's attacks deal +40% to targets below 40% HP. |
+| Type | Field | Effect |
+|---|---|---|
+| Fire | Wildfire | All characters lose 10% max HP each turn |
+| Grass | Overgrowth | All characters heal 10% max HP each turn |
+| Water | Whirlpool | Nobody on either side can switch out |
+| Electric | Storm Front | Every character's mana is doubled |
+| Air | Tailwind | Your team's Speed is doubled |
+| Fighting | Proving Ground | Priority disabled; everything resolves by Speed |
+| Psychic | Trick Room | Turn order reversed |
+| Dark | Snare | Enemies take 15% max HP on switch-in |
+| Light | Sanctuary | Your team restores 15% max HP on switch-in |
 
-### Bulwark — defense and recovery (7)
+Fire and Grass are exact mirrors. Snare and Sanctuary are exact mirrors.
 
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Mend** | 3 | Restore 50% max HP. |
-| **Fortify** | 2 | Guard +2. |
-| **Bulwark** | 2 | Blocks all damage and effects this turn. **The Focus cost doubles for each consecutive use** (2 → 4 → 8 → unusable) and resets when the user switches out. Deterministic replacement for Protect's diminishing-odds check. |
-| **Screen** | 4 | 5 turns. The user's whole team takes 33% less damage. |
-| **Cleanse** | 2 | Remove all status conditions and stat drops from the user. |
-| **Endure** | 3 | The user survives this turn's damage at 1 HP. Once per Anima per battle. |
-| **Ward Off** | 3 | Creates a shield absorbing damage equal to 25% of the user's max HP. Blocks status while it holds. (Substitute.) |
+---
 
-### Pivot — momentum and repositioning (6)
+## HOW PERSISTENT STATE ENDS
 
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Relay** | 1 | 40 damage of the user's primary type, then the user switches out. |
-| **Bait** | 2 | **If the target switches this turn**, the user's next move gains +2 priority and +50% damage. |
-| **Sidestep** | 3 | Swap to a teammate; the incoming Anima may still act this turn, but at −50% damage. |
-| **Handoff** | 3 | The user switches out and passes all of its stat boosts to the incoming Anima. |
-| **Displace** | 3 | Forces the target out; the defending player chooses the replacement. |
-| **Momentum** | 2 | 4 turns. Every Anima on the user's side gains +2 extra Focus on switch-in. |
+- **Status** — cleared when the affected character switches out.
+- **Traps** — end when the character that applied them switches out.
+- **Your own status, traps, and stat drops** — cleared by Clear Sight, or by switching out.
+- **Field effects, hazards, and enemy stat boosts** — removed only by Air's Tempest.
+- **Germinate, Future Sight, Drown** — cannot be cleared by anything. Once set, they resolve.
+- **Forced switches** — always bring in the next character in the defender's team order. No dice anywhere in the game.
 
-### Warden — hazards and field control (7)
+The three forced-switch moves are split by who takes the hit: **Riptide** damages the character coming *in*, **Cyclone** damages the character going *out*, and **Force Swap** damages nobody.
 
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Caltrops** | 3 | Hazard. Each Anima switching in on that side loses 12% max HP. Stacks to 3 layers (12/20/26%). |
-| **Barbs** | 3 | Hazard. Each Anima switching in loses 3 Focus. |
-| **Snarelines** | 4 | Hazard. Each Anima switching in has its Speed lowered 1 stage. |
-| **Sweep** | 1 | Removes all hazards on the user's side. |
-| **Uproot** | 3 | Removes all hazards and field effects on the **opponent's** side. |
-| **Snare** | 4 | The target cannot switch out for 2 turns. |
-| **Anchorpoint** | 2 | 4 turns. The user is immune to forced switching (Maelstrom, Riptide, Displace). |
+---
 
-### Oracle — prediction and information (6)
+## RESERVED FOR CHARACTER ABILITIES
 
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Foresight** | 2 | Reveals the opponent's remaining team and their types. |
-| **Read** | 3 | Declare `attack`, `status`, or `switch`. **Correct:** the target's action is cancelled. **Wrong:** the user loses 3 Focus. |
-| **Mirror** | 4 | Reflects the next status move or field effect targeting the user back at its source. |
-| **Premonition** | 3 | Sets a delayed strike. Two turns later it deals 100 damage of the user's primary type to whoever is active then — it does not care about switches. |
-| **Echo** | 3 | The target must repeat its last-used move for 3 turns. (Encore.) |
-| **Silence** | 2 | The target cannot use non-damaging moves for 3 turns. (Taunt.) |
+Cut from the neutral pool as too strange to be staples, but kept as candidates for
+unique character Abilities:
 
-### Ravager — speed and sweeping (6)
-
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Quicken** | 2 | Speed +2. |
-| **Frenzy** | 4 | The user's next 3 attacks cost 0 Focus and deal +25%. The user cannot switch out until they resolve. |
-| **Pursue** | 2 | **If the target switches this turn**, deal 80 damage of the user's primary type to it before it leaves. Otherwise this does nothing. |
-| **Bloodrush** | 2 | For the rest of this switch-in, the user gains Force +1 each time an opposing Anima faints (max +3). |
-| **Overrun** | 3 | 3 turns. The user's Speed is doubled and it takes +25% damage. |
-| **Last Stand** | 1 | Usable only below 33% HP. Force +2 and Speed +2. |
-
-### Anchor — team support (6)
-
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Rally** | 3 | The user's whole team gains Force +1 (persists through switching). |
-| **Guardian Ward** | 4 | 4 turns. The user's whole team is immune to new status conditions. |
-| **Regroup** | 3 | Restore 25% max HP to a chosen benched teammate. |
-| **Reserve** | 0 | The user does nothing this turn; gain 6 Focus and Guard +1 until end of turn. |
-| **Chain** | 3 | The next teammate to switch in arrives with +2 Focus and ignores hazards on arrival. |
-| **Vow** | 3 | When the user faints, the incoming teammate enters with Force +2 and Speed +2. |
-
-### Saboteur — disruption and denial (8)
-
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Sap Focus** | 2 | Target loses 5 Focus. |
-| **Disable** | 3 | The target's last-used move is unusable for 4 turns. |
-| **Blackout** | 3 | 3 turns. The target's damage previews are hidden from its player, and Reveal effects on the user are cancelled. |
-| **Sabotage** | 3 | Inverts all of the target's stat stages (+2 Force becomes −2 Force). |
-| **Toxin** | 3 | The target loses 6% max HP at end of turn, increasing by 6% each turn. **Persists through switching.** |
-| **Weaken** | 2 | Target's Force −2. |
-| **Slow** | 2 | Target's Speed −2. |
-| **Fracture** | 3 | 4 turns. All Focus costs for the target are increased by 2. |
-
-## Part 3 — Universal (2)
-
-Every Anima has both, and they do not occupy move slots.
-
-| Move | Focus | Effect |
-| --- | --- | --- |
-| **Brace** | 0 | Gain 4 Focus; take 25% less damage this turn. The "I'm banking resources and you know it" move. |
-| **Struggle** | — | Automatic when no other move is legal. 50 typeless damage; the user takes 25% of it. |
-
-## Move-pool math
-
-An Anima with two types and one Focus role can learn:
-
-```
-  2 types × 5 typed moves     = 10
-+ 1 Focus role                =  6–8
-+ Brace and Struggle          = free
-───────────────────────────────────
-  ~16–18 candidates → pick 4
-```
-
-A mono-type has ~11–13 candidates. That's a genuinely tight build decision — you
-cannot fit your Strike, your Surge, your Brand, your Field, *and* recovery — while
-staying small enough that a new player can read the entire pool in a minute.
+- **Metronome** — uses a random move from anywhere in the game.
+- **Copycat** — uses the move the target used last turn.
+- **Swap Fates** — the user and the target exchange current HP.
+- **Skywarden** — reveals every character's Ability and moves on both sides.

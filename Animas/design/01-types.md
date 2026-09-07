@@ -1,122 +1,96 @@
 # Animas — The Nine Types
 
-Nine types, each with exactly **two weaknesses** and exactly **two types it hits
-super-effectively**. Perfectly regular, so no type is secretly the best defensive
-typing the way Steel is in Pokémon.
+## PART TWO — THE TYPE CHART
 
-## 1. The mechanic behind each type
+Every type is strong against exactly two, weak to exactly two, and resists exactly
+two. The backbone rule is that **a type resists what it is strong against**, with
+two exceptions noted below.
 
-A type is not a damage flavor. It's a **strategy** — a specific answer to the
-question "how does this type intend to win?" Every move a type gets pushes the
-same plan.
+**Fire** is strong against Grass and Dark. Weak to Water and Fighting. Resists
+Grass and Light.
 
-| Type | Mechanic | Wins by |
-| --- | --- | --- |
-| 🌿 **Grass** | **Attrition** — drain and regeneration | Outlasting. Sap ticks while it heals; it wins turn 20, not turn 4. |
-| 🔥 **Fire** | **Escalation** — Burn stacks that ramp | Forcing you to stay in. Stacks reset when you switch, so Fire's threat is *"leave and lose tempo, stay and die."* |
-| ⚡ **Electric** | **Initiative** — speed and priority control | Moving first, always. Static halves your Speed; Overcharge gives Electric priority on everything. |
-| 💧 **Water** | **Momentum** — forced switches and Focus denial | Choosing who's on the field. Water drags things in and out and starves the economy. |
-| 👊 **Fighting** | **Breaking** — ignores Guard boosts, screens, Protect | Refusing to respect defense. The answer to setup walls and stall. |
-| 🌪️ **Air** | **Displacement** — repositioning and field clearing | Mobility. Immune to grounded pressure, clears hazards, pivots for free, controls Speed. |
-| 🔮 **Psychic** | **Foresight** — prediction payoffs | Being right. Reads the switch, hits what comes in, locks out Focus. |
-| 🌑 **Dark** | **Cost** — pays HP and Focus for outsized effects | Denial and trapping. Nothing gets to leave, and everything gets more expensive. |
-| ✨ **Light** | **Clarity** — information, cleansing, team protection | Removing the opponent's edge. Reveals moves, strips status, shields the whole team. |
+**Water** is strong against Fire and Fighting. Weak to Electric and Air. Resists
+Fire and Fighting.
 
-Note how much of the design orbits the switch: **Water forces it, Dark punishes
-it, Air enables it, Psychic predicts it, Fire makes it mandatory.** That's not an
-accident — the switch is the game, so five of nine types should have an opinion
-about it.
+**Grass** is strong against Electric and Air. Weak to Fire and Air. Resists Water
+and Electric.
 
-## 2. The matchup chart
+**Electric** is strong against Water and Air. Weak to Grass and Psychic. Resists
+Water and Air.
 
-**Rows attack, columns defend.**
+**Air** is strong against Water and Grass. Weak to Grass and Electric. Resists
+Water and Fighting.
 
-| ATK ↓ / DEF → | 🌿 Gr | 🔥 Fi | ⚡ El | 💧 Wa | 👊 Ft | 🌪️ Ai | 🔮 Ps | 🌑 Da | ✨ Li |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 🌿 **Grass**    | 1 | ½ | **2** | **2** | 1 | ½ | 1 | 1 | 1 |
-| 🔥 **Fire**     | **2** | 1 | 1 | ½ | ½ | 1 | 1 | 1 | **2** |
-| ⚡ **Electric** | ½ | 1 | 1 | **2** | 1 | **2** | 1 | 1 | 1 |
-| 💧 **Water**    | ½ | **2** | **2** | 1 | 1 | 1 | 1 | 1 | 1 |
-| 👊 **Fighting** | 1 | **2** | 1 | 1 | 1 | ½ | ½ | **2** | 1 |
-| 🌪️ **Air**      | **2** | 1 | ½ | 1 | **2** | 1 | ½ | 1 | 1 |
-| 🔮 **Psychic**  | 1 | 1 | 1 | 1 | **2** | **2** | 1 | ½ | ½ |
-| 🌑 **Dark**     | 1 | 1 | 1 | 1 | ½ | 1 | **2** | 1 | **2** |
-| ✨ **Light**    | 1 | ½ | 1 | 1 | 1 | 1 | **2** | **2** | 1 |
+**Fighting** is strong against Fire and Light. Weak to Water and Psychic. Resists
+Fire and Light.
 
-### The one rule
+**Psychic** is strong against Electric and Fighting. Weak to Dark and Light.
+Resists Electric and Fighting.
 
-> **A type resists what it beats — except in the two rival pairs.**
+**Dark** is strong against Psychic and Light. Weak to Fire and Light. Resists
+Fighting and Psychic.
 
-Fire beats Grass, so Fire resists Grass. Psychic beats Fighting, so Psychic
-resists Fighting. That's the whole chart. Learn nine offensive pairings and the
-defensive half comes free.
+**Light** is strong against Dark and Psychic. Weak to Fighting and Dark. Resists
+Grass and Psychic.
 
-The exceptions are the two **rival pairs**, where both types are super-effective
-on each other and *neither* resists the other:
+**The two mutual pairs.** Grass and Air are strong against each other, and neither
+resists the other. Dark and Light are strong against each other, and neither
+resists the other. These are the two matchups where whoever moves first wins.
 
-- ⚡ **Electric ↔ 💧 Water** — the elemental rivalry. Current conducts; water shorts.
-- ✨ **Light ↔ 🌑 Dark** — the metaphysical one. Neither has a defensive answer.
+**Two exceptions to the backbone rule.** Fire resists Light without being strong
+against it — a torch is not troubled by more light. Air resists Fighting without
+being strong against it.
 
-Rival matchups are the most violent in the game: whoever moves first, wins.
-Everything about them is a Speed and prediction problem.
+### The second layer
 
-### Where the pairings come from
+The chart is only half the matchup system. Underneath it, kits invalidate other
+kits in ways no chart shows:
 
-Three overlapping cycles, all inherited from shapes players already know:
+- **Grass beats Water mechanically** even though the chart calls it neutral. Leech
+  Seed keeps draining while Grass is Bound and out of mana, and Water's whole win
+  condition assumes that denying you actions matters.
+- **Fighting beats Air mechanically** — Proving Ground turns off priority, which
+  deletes Jet Stream and most of Air's tempo — even though Air resists Fighting on
+  the chart. Chart and kit pull opposite directions, which makes that matchup
+  close and skill-dependent rather than decided at team preview.
+- **Air and Electric are both predators of setup.** Cyclone forces the boosted body
+  out, Tempest erases the boosts, Short Circuit strips the mana.
 
-- **The elemental four-cycle:** Fire → Grass → Electric → Water → Fire.
-  Fire burns Grass; Grass roots ground Electric; Electric conducts through Water;
-  Water douses Fire.
-- **The mind/body three-cycle:** Fighting → Dark → Psychic → Fighting. Straight
-  from Pokémon, because it's perfect.
-- **Air and Light complete it:** Air beats the ground-bound (Fighting, Grass) and
-  falls to what fills the sky (Electric, Psychic). Light beats the two mental
-  types — clarity dispels manipulation and deception — and falls to Dark and to
-  Fire, whose blaze drowns it out.
+---
 
-The one pairing that's mechanical rather than naturalistic: **Fighting > Fire.**
-Fire's whole plan is ramping Burn stacks over a long switch-in. Fighting's whole
-plan is ending fights before defense matters. Discipline beats rage.
+## PART THREE — FIELD EFFECTS
 
-### Defensive summary
+One per type. Each is a single sentence.
 
-| Type | Weak to | Resists |
-| --- | --- | --- |
-| 🌿 Grass | Fire, Air | Electric, Water |
-| 🔥 Fire | Water, Fighting | Grass, Light |
-| ⚡ Electric | Grass, Water | Air |
-| 💧 Water | Electric, Grass | Fire |
-| 👊 Fighting | Psychic, Air | Dark, Fire |
-| 🌪️ Air | Electric, Psychic | Fighting, Grass |
-| 🔮 Psychic | Dark, Light | Fighting, Air |
-| 🌑 Dark | Fighting, Light | Psychic |
-| ✨ Light | Fire, Dark | Psychic |
+**Fire — Wildfire.** Every character on the field loses ten percent of max HP each
+turn.
 
-**No type immunities.** 0× multipliers make whole Animas unusable into whole
-other Animas, which is a worse experience than a hard counter. Immunities exist
-only as **Aspects** (e.g. *Skyborne* — immune to hazards), where they're a
-readable per-character trait instead of a chart rule.
+**Grass — Overgrowth.** Every character on the field heals ten percent of max HP
+each turn.
 
-### Balance notes on the chart
+**Water — Whirlpool.** No character on either side can switch out.
 
-- **Best offensive types** (resisted only once): Electric, Water, Dark, Light.
-- **Most resisted** (twice): Grass, Fire, Fighting, Air, Psychic.
-- Because *strong-against = resists*, a favorable matchup is a **4× swing** in
-  both directions. This is intentional and it is the biggest tuning knob in the
-  game: it makes bringing the right answer enormously valuable, which is exactly
-  the behavior — switching, prediction, positioning — the design is trying to
-  reward. **If playtesting shows matchups are too decisive, drop the resistance
-  multiplier from ½ to ⅔ before touching anything else.**
-- Bring-4-of-6 exists partly to cushion this. Team Preview lets you leave your
-  Fire in the box against a Water-heavy team.
+**Electric — Storm Front.** Every character's mana is doubled.
 
-## 3. Dual typing
+**Air — Tailwind.** Your team's Speed is doubled.
 
-- Maximum **two types** per Anima.
-- Matchups multiply, as in Pokémon (so 4× weaknesses and ¼× resistances exist).
-- Dual-typed Animas get a **460-point stat budget instead of 480**.
+**Fighting — Proving Ground.** Priority is disabled. Everything resolves by Speed
+alone.
 
-That 20-point tax is important. In Pokémon, dual typing is nearly free, so
-mono-typed species are mostly worse. Here, a second type is a purchase: more
-coverage and more resistances, paid for in raw stats. Expect mono-types to be
-the faster, harder-hitting half of the roster.
+**Psychic — Trick Room.** Turn order is reversed. The slowest acts first.
+
+**Dark — Snare.** Every enemy that switches in takes fifteen percent max HP damage.
+
+**Light — Sanctuary.** Every character that switches in on your side restores
+fifteen percent of max HP.
+
+**All field effects last a maximum of five turns.**
+
+Two deliberate mirrors: Fire and Grass are the same number with opposite signs on a
+matchup that already exists, and Light's Sanctuary is the exact inverse of Dark's
+Snare — one heals your team on entry, the other damages theirs. Fighting and Psychic
+both own turn order by opposite rules: one flattens priority, the other inverts the
+order.
+
+---
+

@@ -2,56 +2,58 @@
 
 ## Status
 
-**Design phase.** No code. The design package under `design/` is complete enough
-to prototype from.
+Design only. No code. The docs in `design/` are the source of truth.
 
-## What's decided
+Locked: the nine types, the type chart, the nine field effects, all 88 moves,
+the neutral pool, the system rules for persistent state, and the roster of 25
+characters with their Abilities.
 
-- Nine types, fully specified matchup chart, one memorizable rule
-  (`design/01-types.md`).
-- 100 moves, fully written (`design/02-moves.md`): 45 typed on a 5-slot grid,
-  53 role-gated utility, 2 universal.
-- Four stats, 480-point budget, deterministic damage formula, Focus economy
-  (`design/00-overview.md`).
-- Character framework: 8 Focus roles, 24 shared Aspects, 6-slot archetype grid,
-  54-Anima launch roster. Fire's six are written (`design/03-characters.md`).
+Not started: stat values, the damage formula, mana costs and regeneration,
+stat budgets per character.
+
+## The rules that constrain every change
+
+1. **No randomness.** The only uncertainty is the opponent's decision. Any
+   proposal with a percentage chance, an accuracy roll, or a damage range is
+   wrong on its face. Forced switches bring in the next character in the
+   defender's team order — never a random one.
+2. **Every type is 2 strong / 2 weak / 2 resists.** The chart was rebalanced
+   from scratch to satisfy this. Changing one cell breaks it; re-verify the
+   full 9×9 before committing any chart edit.
+3. **Abilities are the character layer.** Moves are shared within a type. A
+   character is its Ability and its stats.
+4. **Type determines movepool, so type must match temperament.** A gentle
+   creature cannot be Fire, because Fire's movepool is aggression. Appearance
+   is not enough.
+5. **Only the core nine are mono-typed.** Everything else is dual.
+6. **Simplicity is the brief.** Every ability should be readable in one
+   sentence. Stacking counters, hidden multipliers, and conditional tables were
+   all cut for this reason.
+
+## How persistent state ends
+
+- Status conditions clear when the affected character switches out.
+- Traps end when the character that applied them leaves.
+- Stat changes, fields, and hazards are cleared by **Tempest** (Air's
+  signature, whole board) or **Clear Sight** (neutral, self only).
+- **Germinate, Future Sight, and Drown** are immune to all clearing.
 
 ## Open questions
 
-1. **Resistance multiplier.** Because "strong-against = resists," a favorable
-   matchup is a 4× swing. Intended, but untested. Fallback: ⅔ instead of ½.
-   This is the single highest-risk number in the design.
-2. **No physical/special split.** Removing it costs the mixed-attacker /
-   specialized-wall dynamic. The bet is that Focus + Fighting's guard-breaking
-   covers it. If defensive play turns out to be one-dimensional, this is the
-   first thing to revisit.
-3. **Bring-4-of-6 vs bring-6.** 4-of-6 makes Team Preview a skill and cushions the
-   sharp chart. It also makes games shorter, which may or may not be wanted.
-4. **Focus numbers.** Pool 12, +2/turn, +4 on switch-in, costs 0–4 are first-pass
-   values. The Surge (cost 4) cadence — roughly every other turn — is the thing to
-   validate.
-5. **Are the read moves fun or frustrating?** Wager, Read, Bait, Pursue, Preempt
-   are the deliberate uncertainty. If they feel like coin flips rather than reads,
-   the whole "no RNG" pitch is undermined and they need re-costing.
-6. **Ashwyrm/Afterburn** breaks Fire's core rule (Burn resets on switch) by
-   design. Watch whether the Wildcard slot's "one Anima that breaks the type's
-   rule" pattern is exciting or just confusing.
-
-## Next steps
-
-1. Fill the remaining 48 roster slots against the archetype grid in
-   `design/03-characters.md` §4.
-2. Write a damage calculator and validate the 480-point budget against the
-   formula across all matchups — confirm the intended 2HKO/3HKO breakpoints.
-3. Prototype the battle engine as a static HTML game in `games/animas/` and
-   register it in `js/games.js`, per the hub's convention in the root README.
-   The engine has no RNG, so it's fully unit-testable — write the turn resolver
-   test-first.
+1. **Forewarning's scale** — Matsya reveals the active opponent, or the whole
+   opposing team? Team-wide fits the myth but deletes hidden information.
+2. **Death Touch has no cost** beyond mana, and Grim Reaper's Ability halves
+   that. Mana alone may not be a sufficient brake on an instant KO.
+3. **Taunt may be mandatory** — it shuts off five of seven neutral moves, plus
+   every heal and every setup move in the game.
+4. **Mono-types need compensating stats.** Duals outnumber monos sixteen to
+   nine; the core nine give up coverage for nothing unless their raw numbers
+   are better.
+5. **The fifth stat.** HP, Power, Speed, Mana are locked. Defense is the
+   obvious fifth and has not been decided either way.
 
 ## Conventions
 
-- Design docs are the source of truth until code exists. Change the doc in the
-  same commit as the code.
-- Every mechanic added must pass the two design rules in
-  `design/00-overview.md` §1: no uncertainty except the opponent's decision, and
-  nothing memorized that isn't derivable from a rule.
+Docs are written to be read aloud — the user listens to them via
+text-to-speech. Prose over bullets where a choice exists, no bare tables
+without a sentence framing them, and no unpronounceable shorthand.

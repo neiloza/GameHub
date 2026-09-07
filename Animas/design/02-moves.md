@@ -6,9 +6,10 @@ Every type follows the same skeleton. Moves 1–3 are the attacks (standard,
 powerful, priority). Move 4 is a status or non-damage ability. Move 5 is the field
 effect. Moves 6–8 are the type's distinctive tools. Move 9 is its signature.
 
-**Three moves in every type are free:** the standard attack, the status move, and
-one of the three tools. A player who runs out of mana always has an attack, a
-status effect, and one real piece of the type's kit still available.
+**Two moves in every type are free:** the standard attack and the status move. A
+player who runs out of mana always has something to hit with and something to
+apply. Fire, Fighting, and Dark each get a third free move as well — the three
+types whose kits already charge a price steeper than mana.
 
 Characters take four moves total, drawn from their own type or types plus the
 neutral pool.
@@ -72,7 +73,7 @@ else.*
 6. **Volt Switch** — Damage, then the user switches out.
 7. **Voltage** — Damage doubles with each consecutive use, to a maximum of three. Resets if the user switches out or uses anything else.
 8. **Short Circuit** — Destroys all of the target's mana. Damage scales with the amount destroyed.
-9. **Overload** — Massive damage. Costs the user's entire mana bar.
+9. **Overload** — Consumes all of the user's mana. The damage equals the mana consumed.
 
 ## 🌪️ AIR — speed, mobility, and position
 

@@ -40,14 +40,15 @@ The cost anchors:
 | 3 — Priority attack | **20** |
 | 4 — Status | **0** |
 | 5 — Field effect | **30** |
-| 6–8 — Tools | 20–60, **with exactly one of the three free** |
+| 6–8 — Tools | 15–60, free only where it fits |
 | 9 — Signature | **100** |
 
-**Every type has exactly three free moves, and they sit in the same three
-structural slots: the standard attack, the status move, and one of the three
-tools.** A player who runs dry always has an attack, a status effect, and one
-piece of the type's real toolkit still available — the same shape in every type,
-so it is learnable once rather than memorized nine times.
+**Two moves are free in every type: the standard attack and the status move.**
+That is the guarantee — a player who runs completely dry always has something to
+hit with and something to apply, in the same two slots in all nine types, so it
+is learnable once rather than memorized nine times. Beyond those two, a tool is
+free only when the type has a reason for it, which turns out to be three types
+and not nine.
 
 **The identity rule, applied literally.** A move that does the job its type
 exists to do is cheap. A move that reaches outside that job is expensive. This
@@ -95,7 +96,7 @@ Four different prices for the same product, and none of them is mana.
 | 4 | **Scorch** | 10% per turn (50) | **0** | The free status. |
 | 5 | **Wildfire** | 10% to all, per turn | 30 | Field. |
 | 6 | **Overheat** | 175 | 25 | Paid for mostly with every attack you make afterward. |
-| 7 | **Flare Blitz** | 140 | **0** | The free tool. Paid for with 40% of your health — 200, at baseline HP. |
+| 7 | **Flare Blitz** | 140 | **0** | **Free.** Paid for with 40% of your health — 200, at baseline HP. |
 | 8 | **Meltdown** | 195 | 25 | Paid for with a turn. The turn is the cheaper currency, so this one also costs mana. |
 | 9 | **Eruption** | **280** | **100** | The largest number in the game, for the whole bar and your life. |
 
@@ -117,11 +118,11 @@ what keeps it from happening on turn one.
 | 4 | **Bind** | — | **0** | The free status, and the purest expression of what Water is for. |
 | 5 | **Whirlpool** | — | 30 | Field. |
 | 6 | **Wellspring** | heals 40% (200) | **50** | Healing is Light's job. Water pays a premium to borrow it. |
-| 7 | **Dive** | 105 | **0** | The free tool. 52 a turn, well below simply attacking — you are buying the untargetable turn, not the damage. |
+| 7 | **Dive** | 105 | 20 | 52 a turn, well below simply attacking — you are buying the untargetable turn, not the damage. |
 | 8 | **Riptide** | 42 to the incoming character | 25 | Forced switching plus damage is too much board control to hand out free. |
 | 9 | **Drown** | the target dies | **100** | It cannot be cleared, cannot be outplayed, and kills. |
 
-**Free: Surge, Bind, Dive.**
+**Free: Surge, Bind.**
 
 Bind is free and Drown costs the ceiling, which is the split that keeps the lock
 honest — the trap happens immediately, the kill takes a full bar. Kelpie's
@@ -138,11 +139,11 @@ that character, and a Kelpie built under the breakpoint cannot use it at all.
 | 4 | **Leech Seed** | 15% per turn (75), healed to the user | **0** | The free status, and Grass's real damage output. |
 | 5 | **Overgrowth** | heals 10% to all, per turn | 30 | Field. |
 | 6 | **Germinate** | 100 | 25 | Uncounterable, and you still act on the turn it lands. |
-| 7 | **Baton Pass** | — | **0** | The free tool. The handoff is the point of the type. |
+| 7 | **Baton Pass** | — | 20 | The handoff is the point of the type, but escaping a trap and keeping every boost is worth paying for. |
 | 8 | **Sap** | — | **60** | Trapping is Water's job. High cost, as called for. |
 | 9 | **Growth** | — | **100** | Power doubled, mana refilled to full. |
 
-**Free: Vine Lash, Leech Seed, Baton Pass.**
+**Free: Vine Lash, Leech Seed.**
 
 **Leech Seed is Grass's strongest move and it is free.** At 500 HP it drains 75 a
 turn and heals the user for the same — a 150-point swing every turn, larger than
@@ -161,11 +162,11 @@ oppressive, this is the line to cut, not its attacks.
 | 4 | **Charge** | — | **0** | The free status. A move that generates mana could not cost mana anyway. |
 | 5 | **Storm Front** | — | 30 | Field. |
 | 6 | **Volt Switch** | 63 | 20 | Below a standard attack, because you also get a free pivot. |
-| 7 | **Voltage** | 50 → 100 → 200 | **0** | The free tool. The escalation is the cost — you are locked into one move to keep it. |
+| 7 | **Voltage** | 50 → 100 → 200 | 15 | Cheap, and the escalation costs you flexibility besides — you are locked into one move to keep it. |
 | 8 | **Short Circuit** | 35 + half the mana destroyed | 30 | Against a full bar, 85 damage and the target has nothing left. |
-| 9 | **Overload** | **175** | **100** | A flat conversion of the full bar. |
+| 9 | **Overload** | **equal to the mana consumed** | **your entire bar** | The one signature with no fixed price. See the note below. |
 
-**Free: Spark, Charge, Voltage.**
+**Free: Spark, Charge.**
 
 **Voltage needs its three-use cap or it breaks the game.** Uncapped, the fourth
 use is 400 and the fifth is 800, both larger than Eruption, for zero mana. Capped
@@ -173,9 +174,22 @@ at three it tops out at 200 — roughly Meltdown, reached over three fully
 committed turns during which you cannot switch or do anything else. That is a
 fair trade and a genuinely interesting one.
 
-Charge is the move that changed most under the breakpoint rule. It doubles the
-user's mana for nothing, so any Electric character sitting at 50 or more reaches
-100 in a single turn. It went from filler to the reason to play the type.
+**Overload is now a pure conversion: it consumes everything you have and hits
+for exactly that number.** This is the best version of the move and it makes the
+whole type cohere, but the break-even is worth stating plainly. Fired off a flat
+100-mana bar it deals 100 damage — less than a Thunderbolt, which costs 35. Cast
+naked, it is a bad move.
+
+It only justifies itself on top of Electric's own doubling. Charge is free and
+doubles your mana, so a full character charges to 200 and Overloads for 200.
+Charge first and then Storm Front, in that order, reaches 340. Against a double
+weakness that is 680 damage in a single action, which is more than any character
+in the game can survive at any health.
+
+So Overload is not an attack. It is the payoff for a two- or three-turn
+engine, and it turns Charge and Storm Front from filler into combo pieces —
+which is exactly what the resource type's signature should do. If it plays weak
+in practice, the fix is a 1.5× multiplier on the conversion, not a rewrite.
 
 ## 🌪️ AIR
 
@@ -187,11 +201,11 @@ user's mana for nothing, so any Electric character sitting at 50 or more reaches
 | 4 | **Jet Stream** | — | **0** | The free status. See the note below. |
 | 5 | **Tailwind** | — | 30 | Field. |
 | 6 | **Skimstrike** | 63 | 20 | Priced level with Volt Switch, the same move in Electric. |
-| 7 | **Skyfall** | 105 | **0** | The free tool. Costs a turn instead. |
+| 7 | **Skyfall** | 105 | 20 | Costs a turn as well. |
 | 8 | **Cyclone** | 56 | 25 | Damage plus a phaze. |
 | 9 | **Tempest** | **175** | **100** | Massive damage that also erases the entire board state. The single most valuable button in the game. |
 
-**Free: Gust, Jet Stream, Skyfall.**
+**Free: Gust, Jet Stream.**
 
 **Jet Stream is the strongest thing the new rule made free**, and it is worth
 watching. Plus-one priority on every move for as long as you stay in is
@@ -211,7 +225,7 @@ The cheapest type on the list, and it should be. Fighting pays by guessing wrong
 | 3 | **Quick Strike** | 46 | 20 | Priority, at the high end. |
 | 4 | **Resolve** | — | **0** | The free status. **Reduced to +50% Power** — see the note below. |
 | 5 | **Proving Ground** | — | 30 | Field. |
-| 6 | **Counter** | twice the damage taken | **0** | The free tool. Does nothing at all if they do not attack. That is the cost. |
+| 6 | **Counter** | twice the damage taken | **0** | **Free.** Does nothing at all if they do not attack. That is the cost. |
 | 7 | **Focus Punch** | **175** | 25 | Fails outright if anything touches you. |
 | 8 | **Bullet Punch** | 63 | 20 | Damage and a Speed increase. |
 | 9 | **Outrage** | **140 per turn, three turns** | **100** | 420 total, but you cannot switch and everyone can see it coming. |
@@ -243,11 +257,11 @@ stopping it.
 | 4 | **Force Swap** | — | **0** | The free status. No damage, no board effect on its own — pure repositioning. |
 | 5 | **Trick Room** | — | **35** | The only field above 30. Reversing turn order rewrites the game's most fundamental rule. |
 | 6 | **Future Sight** | 125 | 30 | Uncounterable, so it pays over a normal powerful attack. |
-| 7 | **Mind Drain** | — | **0** | The free tool. A move that steals mana could not cost mana anyway. |
+| 7 | **Mind Drain** | — | 20 | It nets positive against anyone holding mana, and does nothing against an empty bar. |
 | 8 | **Mind Stun** | — | **50** | A free turn is the most valuable thing in a game with no randomness. |
 | 9 | **Mind Crush** | **175**, plus 50 to every other enemy | **100** | It hits five characters for 375 total. |
 
-**Free: Mindspike, Force Swap, Mind Drain.**
+**Free: Mindspike, Force Swap.**
 
 Force Swap being free is what makes the type's signature play work — set Future
 Sight, then rotate them into it for nothing. That is exactly the combination the
@@ -264,7 +278,7 @@ type was written around, and it should be affordable.
 | 5 | **Snare** | 15% (75) on switch-in | 30 | Field. |
 | 6 | **No Retreat** | — | 30 | Half your health and you can never leave, but it also doubles Mana — which is a route to the breakpoint and should not be free. |
 | 7 | **Death Pact** | mutual | 25 | You choose when. |
-| 8 | **Memento** | — | **0** | The free tool. You die. There is no larger cost. |
+| 8 | **Memento** | — | **0** | **Free.** You die. There is no larger cost. |
 | 9 | **Death Touch** | the target is gone | **100** | The hardest gate in the game. |
 
 **Free: Ripshade, Curse, Memento.**
@@ -294,12 +308,11 @@ character.
 | 4 | **Mend** | **heals 25% (125)** | **0** | The free status. Halved from 50% — see the note below. |
 | 5 | **Sanctuary** | heals 15% (75) on switch-in | 30 | Field. |
 | 6 | **Gift** | heals to full in two turns | **40** | A 500-point heal. Telegraphed, but not free. |
-| 7 | **Lifedraw** | 77, healed back in full | **0** | The free tool. |
+| 7 | **Lifedraw** | 77, healed back in full | 25 | Damage and healing in one action. |
 | 8 | **Renewal** | your whole living team to full | **80** | Once a match, realistically. |
 | 9 | **Revival Blessing** | a dead teammate returns | **100** | The only effect in the game that undoes a death. |
 
-**Free: Lumenlash, Mend, Lifedraw.** The structural rule fixes the problem
-Light had a version ago — it now gets three like everyone else.
+**Free: Lumenlash, Mend.**
 
 **Mend had to be halved to 25%.** A free 250-point heal every turn is an
 unbreakable loop: it out-heals every attack in the game including doubly
@@ -310,7 +323,7 @@ does Gugalanna.
 
 **Gift moved to 40 for the same reason.** It heals to full — 500 points. Two
 turns of warning does not make that free, especially stacked with a free Mend.
-Lifedraw takes the free tool slot instead: 77 damage and 77 healing is real
+Lifedraw at 25 is the middle rung: 77 damage and 77 healing in one action, real
 sustain that still requires you to be winning the damage race.
 
 ---
@@ -337,39 +350,41 @@ what gets a starved character back into the game, so it can never cost anything.
 
 ---
 
-## The twenty-seven free moves
+## The twenty-one free moves
 
-Three per type, in the same three slots every time.
+Two guaranteed in every type, and a third in three of them.
 
-| Type | Slot 1 — attack | Slot 4 — status | Slot 6–8 — tool |
+| Type | Slot 1 — attack | Slot 4 — status | A free tool? |
 |---|---|---|---|
 | 🔥 Fire | Ember | Scorch | **Flare Blitz** |
-| 💧 Water | Surge | Bind | **Dive** |
-| 🌿 Grass | Vine Lash | Leech Seed | **Baton Pass** |
-| ⚡ Electric | Spark | Charge | **Voltage** |
-| 🌪️ Air | Gust | Jet Stream | **Skyfall** |
 | 👊 Fighting | Jab | Resolve | **Counter** |
-| 🔮 Psychic | Mindspike | Force Swap | **Mind Drain** |
 | 🌑 Dark | Ripshade | Curse | **Memento** |
-| ✨ Light | Lumenlash | Mend | **Lifedraw** |
+| 💧 Water | Surge | Bind | — |
+| 🌿 Grass | Vine Lash | Leech Seed | — |
+| ⚡ Electric | Spark | Charge | — |
+| 🌪️ Air | Gust | Jet Stream | — |
+| 🔮 Psychic | Mindspike | Force Swap | — |
+| ✨ Light | Lumenlash | Mend | — |
 
-Read the middle column down and you get a clean summary of what each type
-actually is: Fire burns, Water traps, Grass drains, Electric charges, Air gets
-ahead, Fighting builds, Psychic displaces, Dark curses, Light heals. Nine
-one-word identities, all free, all in the same slot.
+Read the status column down and you get a one-word summary of the whole game:
+Fire burns, Water traps, Grass drains, Electric charges, Air gets ahead,
+Fighting builds, Psychic displaces, Dark curses, Light heals. Nine identities,
+all free, all in the same slot.
 
-Read the right column and you get each type's most characteristic trade — the
-thing it does that costs something other than mana. Flare Blitz costs health.
-Dive costs a turn. Baton Pass costs your position. Voltage costs your
-flexibility. Skyfall costs a turn. Counter costs being wrong. Mind Drain costs
-nothing but only works if they have mana. Memento costs your life. Lifedraw
-costs nothing but requires you to be out-damaging them.
+**The three types that keep a free tool are exactly the three that pay in
+something other than mana**, which was not planned and is the strongest argument
+that the loose rule is the right one. Flare Blitz costs 40% of your health.
+Counter costs being wrong about what they were going to do. Memento costs your
+life. Nothing else in the game charges a price that steep, so nothing else earns
+a third free move. Fire, Fighting, and Dark are also three of the four types you
+named as the most offensive — the odd one out being Electric, whose offense runs
+through the mana economy rather than around it, and which therefore should be
+the type that feels its costs.
 
-Three moves in the type had to change to survive being free — **Resolve** from
-doubling Power to +50%, **Mend** from a 50% heal to 25%, and **Curse** from 25%
-a turn to 15%. All three were already doing more than a free move should, and
-the rule is what forced the reckoning. The neutral pool keeps Focus and Run free
-on top of this, so no character is ever without options.
+Three moves still had to change to survive being free, all of them in the
+guaranteed status slot: **Resolve** from doubling Power to +50%, **Mend** from a
+50% heal to 25%, and **Curse** from 25% a turn to 15%. The neutral pool keeps
+Focus and Run free on top of all this, so no character is ever without options.
 
 ---
 
@@ -385,7 +400,7 @@ character with 100 or more Mana can use its type's ultimate. A character below
 | 🔥 Fire | **Eruption** | 280 damage. You faint. |
 | 💧 Water | **Drown** | The target dies in three turns. Nothing clears it. |
 | 🌿 Grass | **Growth** | Power doubled, mana refilled. |
-| ⚡ Electric | **Overload** | 175 damage. |
+| ⚡ Electric | **Overload** | Damage equal to your entire mana bar. |
 | 🌪️ Air | **Tempest** | 175 damage and the entire board erased. |
 | 👊 Fighting | **Outrage** | 420 damage over three turns. You cannot leave. |
 | 🔮 Psychic | **Mind Crush** | 175 to the target, 50 to each of the other four. |
@@ -454,7 +469,13 @@ character that reaches its ultimate on a schedule. Leshy's Photosynthesis adds
    largest recurring number in the game. It is correct for the type's identity
    and it may still be too much.
 6. **Is Jet Stream too good for free?** Permanent plus-one priority beats
-   Tailwind, which costs 30 and expires. Proving Ground is its only hard answer.
-7. **Is Baku's Pressure too much?** It turns nine moves off entirely for as long
+   Tailwind, which costs 30 and expires. Proving Ground is its only hard answer,
+   and Jet Stream is now the only slot-four status that is unambiguously
+   stronger than its type's slot-five field.
+7. **Does Overload need a multiplier?** At a flat one-to-one conversion it is
+   weaker than a Thunderbolt unless you have doubled your mana first. That is
+   probably the point, but it makes an entire type's signature dependent on a
+   setup turn.
+8. **Is Baku's Pressure too much?** It turns nine moves off entirely for as long
    as it is on the field. Either the best-designed passive on the roster or the
    most oppressive, and there is no way to know without playing it.

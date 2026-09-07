@@ -15,10 +15,11 @@ is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
 effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
 types by design; Light, Grass and Water are the bottom three.
 
-**Every type has exactly three free moves, in the same three slots:** the
-standard attack (1), the status move (4), and one of the three tools (6-8). The
-shape is identical in all nine types, so it is learnable once. Three moves were
-rebalanced to survive being free — Resolve to +50% Power, Mend to a 25% heal,
+**Two moves are free in every type:** the standard attack (slot 1) and the
+status move (slot 4). That is the guarantee. Fire, Fighting and Dark each get a
+third — Flare Blitz, Counter and Memento — because those three already charge a
+price steeper than mana (health, being wrong, and dying). Three status moves were
+rebalanced to survive being free: Resolve to +50% Power, Mend to a 25% heal,
 Curse to 15% a turn.
 
 **The hundred-mana breakpoint is the economy's load-bearing rule.** Every type's

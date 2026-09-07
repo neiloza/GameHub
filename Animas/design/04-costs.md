@@ -192,8 +192,8 @@ rare. Worth watching; if Pyre stops being played, Meltdown is why.
 | 4 | **Strangle** | — | **0** | The free status, and the purest expression of what Water is for. |
 | 5 | **Maelstrom** | — | 30 | Field. |
 | 6 | **Wellspring** | heals 40% (200) | **50** | Healing is Light's job. Water pays a premium to borrow it. |
-| 7 | **Submerge** | **90** | **60** | 52 a turn, well below simply attacking — you are buying the untargetable turn, not the damage. |
-| 8 | **Riptide** | **60** to the incoming character | **40** | Forced switching plus damage is too much board control to hand out free. |
+| 7 | **Submerge** | **90** | **60** | 45 a turn across the two it takes, well under the free Surge. You are buying the untargetable turn, not the damage. |
+| 8 | **Riptide** | **60** to the incoming character | **40** | Forced switching plus real damage to whoever arrives. |
 | 9 | **Drown** | the target dies | **100** | It cannot be cleared, cannot be outplayed, and kills. |
 
 **Free: Surge, Strangle.**
@@ -202,6 +202,22 @@ Strangle is free and Drown costs the ceiling, which is the split that keeps the 
 honest — the trap happens immediately, the kill takes a full bar. Kelpie's
 Undertow makes the trap free permanently, so Drown's price is the only brake on
 that character, and a Kelpie built under the breakpoint cannot use it at all.
+
+**Water is now far and away the most expensive type in the game.** Its seven paid
+moves cost 40, 50, 30, 50, 60, 40, and 100 — no discounts anywhere and nothing
+under 30. On a 100-mana bar a Water character affords roughly two paid actions
+per cycle and no more.
+
+That is coherent rather than broken, and it may be the best expression of the
+type yet. Water's two free moves are Surge and Strangle: hit for 70, and stop
+them leaving. A Water character that can afford nothing else still does the two
+things Water exists to do, and every point it saves is going toward Drown. The
+expensive kit forces the type to play its own game — trap, chip, bank, kill —
+instead of trading attacks.
+
+The exception is still **Crosscurrent at 50 for 50**, which does twenty less
+damage than the free Surge for half a bar. Everything else in Water buys
+something Surge cannot. That one does not.
 
 ## 🌿 GRASS
 
@@ -212,8 +228,8 @@ that character, and a Kelpie built under the breakpoint cannot use it at all.
 | 3 | **Burr** | **40** | **15** | Cheap, and it needs to be — it barely does anything. |
 | 4 | **Parasite** | 15% per turn (75), healed to the user | **0** | The free status, and Grass's real damage output. |
 | 5 | **Overgrowth** | heals 10% to all, per turn | 30 | Field. |
-| 6 | **Germinate** | **120** | **40** | Uncounterable, and you still act on the turn it lands. |
-| 7 | **Graft** | — | **30** | The handoff is the point of the type, but escaping a trap and keeping every boost is worth paying for. |
+| 6 | **Germinate** | **120** | **40** | Uncounterable, and you still act on the turn it lands — 120 stacked on top of a normal turn. Grass's hardest hit by a clear margin. |
+| 7 | **Graft** | — | **30** | The handoff is the point of the type, but escaping a trap while keeping every boost is worth a real price. |
 | 8 | **Sap** | — | **60** | Trapping is Water's job. High cost, as called for. |
 | 9 | **Bloom** | — | **100** | Power doubled, mana refilled to full. |
 

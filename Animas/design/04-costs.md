@@ -192,8 +192,8 @@ rare. Worth watching; if Pyre stops being played, Meltdown is why.
 | 4 | **Strangle** | — | **0** | The free status, and the purest expression of what Water is for. |
 | 5 | **Maelstrom** | — | 30 | Field. |
 | 6 | **Wellspring** | heals 40% (200) | **50** | Healing is Light's job. Water pays a premium to borrow it. |
-| 7 | **Submerge** | 105 | 20 | 52 a turn, well below simply attacking — you are buying the untargetable turn, not the damage. |
-| 8 | **Riptide** | 40 to the incoming character | 25 | Forced switching plus damage is too much board control to hand out free. |
+| 7 | **Submerge** | **90** | **60** | 52 a turn, well below simply attacking — you are buying the untargetable turn, not the damage. |
+| 8 | **Riptide** | **60** to the incoming character | **40** | Forced switching plus damage is too much board control to hand out free. |
 | 9 | **Drown** | the target dies | **100** | It cannot be cleared, cannot be outplayed, and kills. |
 
 **Free: Surge, Strangle.**
@@ -212,8 +212,8 @@ that character, and a Kelpie built under the breakpoint cannot use it at all.
 | 3 | **Burr** | **40** | **15** | Cheap, and it needs to be — it barely does anything. |
 | 4 | **Parasite** | 15% per turn (75), healed to the user | **0** | The free status, and Grass's real damage output. |
 | 5 | **Overgrowth** | heals 10% to all, per turn | 30 | Field. |
-| 6 | **Germinate** | 100 | 25 | Uncounterable, and you still act on the turn it lands. |
-| 7 | **Graft** | — | 20 | The handoff is the point of the type, but escaping a trap and keeping every boost is worth paying for. |
+| 6 | **Germinate** | **120** | **40** | Uncounterable, and you still act on the turn it lands. |
+| 7 | **Graft** | — | **30** | The handoff is the point of the type, but escaping a trap and keeping every boost is worth paying for. |
 | 8 | **Sap** | — | **60** | Trapping is Water's job. High cost, as called for. |
 | 9 | **Bloom** | — | **100** | Power doubled, mana refilled to full. |
 

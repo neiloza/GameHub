@@ -117,27 +117,72 @@ twice in a match.
 
 ---
 
+## Information
+
+**The rule: anything a diligent player could track by hand is shown. Only what
+requires the opponent to reveal it stays hidden.**
+
+That single principle settles every case, and it settles them the right way — it
+removes bookkeeping without removing mind games. A player who writes down every
+point of damage and every mana spent should not have an advantage over one who
+does not; a player who guesses what is on the bench should.
+
+| Shown | Hidden |
+|---|---|
+| Both health bars | **The opponent's four moves** |
+| Both mana bars | **The opponent's other four characters** |
+| Both Abilities | |
+| Field effects, traps, status, stat changes | |
+
+**There is no team preview. Leads are blind.** You do not know what you are
+facing until it walks onto the field, and you never see the bench until it is
+brought in.
+
+### What this does to the game
+
+**Forced switches become a gamble on both sides.** Riptide, Cyclone and Force
+Swap bring in "the next character in team order" — and the attacker cannot see
+who that is. Phazing is now a genuine risk rather than a tool for picking a
+favourable matchup, which is a much more interesting version of it.
+
+**Information accumulates across the match.** Turn one you know one character and
+one Ability. By the midgame you have seen three or four, and some of their moves.
+The endgame is played with near-complete information, the opening with almost
+none. That curve is worth having.
+
+**Moves being hidden makes Sphinx's Enigma sharper than it looks.** It stops the
+opponent repeating a move — which forces them to show you a second move, then a
+third. Enigma is not just a lock; it is an interrogation.
+
+### Two Abilities need a ruling now
+
+**Matsya's Forewarning currently reveals "the opposing character's moves and
+Ability."** Abilities are visible to everyone by default, so half of that does
+nothing. **Recommend it reveals moves only** — which is still the single most
+valuable piece of hidden information in the game, and enough on its own. If it
+needs to be bigger, the natural expansion is revealing the opponent's *whole
+team*, which is the other hidden layer and fits the omniscience of a Vishnu
+avatar exactly.
+
+**Kitsune's Illusion has a real problem.** It enters disguised as your last team
+member — but if Abilities are visible, the opponent reads "Illusion" the moment
+Kitsune arrives and the disguise never begins. **The disguise has to cover the
+Ability display as well**, showing whatever the impersonated character's Ability
+is. That is the only version that works, and it makes Illusion the one exception
+to the visibility rule — appropriate, since deception is the entire point of the
+character.
+
+---
+
 ## Still to decide
 
 These are the rules with no ruling yet. Recommendations given, none applied.
 
 **Team order.** Riptide, Cyclone and Force Swap all bring in "the next character
 in team order," so the order you arrange your five in is a real pre-match
-decision. **Recommend: order is set before the match, locked for its duration,
-and "next" wraps from position five back to position one.**
-
-**Team preview.** Do both players see the opposing five before choosing a lead?
-**Recommend yes — characters visible, moves hidden.** It rewards knowing the
-roster without removing the guessing, and it keeps Matsya's Forewarning valuable
-since moves stay secret.
-
-**Ability visibility.** **Recommend: an Ability is revealed the first time it
-does something.** Passive locks like Pressure and Famine announce themselves
-immediately; conditional ones like Miracle and Rebirth stay hidden until they
-fire, which is when they are most dramatic.
-
-**Mana visibility.** **Recommend: visible.** Hidden mana turns every read into
-guesswork about a number, which is noise rather than mind-games.
+decision — and with the bench hidden, it is one the opponent is guessing at all
+match. **Recommend: order is set before the match, locked for its duration, and
+"next" wraps from position five back to position one.**
 
 **Turn limit.** The game has none, and needs one — Leshy at 300 hit points
 healing 80 a turn against a 108-damage attacker is a match that does not end.

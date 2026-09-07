@@ -57,17 +57,20 @@ Regeneration is a flat 10 per turn, not a percentage, so a high-mana character
 holds a bigger tank but refills it more slowly — which keeps high Mana a
 tradeoff rather than pure upside.
 
-Proposed: stat spreads for all 25 characters (`design/05-stats.md`). Every line
-redistributes the same 100/100/100/100 baseline; totals run 380-410 against a
-500 cap. HP is an index — hit points = HP stat x 2.5, so 100 is the 250-hit-point
-baseline. Power is the damage multiplier divided by 100. Stat total is the
-counterweight to Ability strength, so Kelpie (the most oppressive Ability) is
-lowest at 380, and the core nine average 405 against the duals' 393 as
-compensation for mono-typing.
+Proposed: stat spreads for all 25 characters (`design/05-stats.md`). HP is an
+index — hit points = HP stat x 2.5, so 100 is the 250-hit-point baseline. Power
+is the damage multiplier divided by 100.
 
-Kelpie at 80 Mana is the most load-bearing number on that page: it puts Drown
-out of reach and dismantles the Bind-and-Drown lock. Do not raise it to 100
-without re-solving that combination.
+**Two rules govern the spreads.** Stat total is the price of the Ability: S-tier
+Abilities that rewrite a rule of the game average 327 total (Kelpie, Grim Reaper,
+Baku), A-tier 382, B-tier 420, and situational C-tier Abilities 450 (Matsya,
+Otso, World Turtle, Roc). And nothing is average at anything — every stat spans
+a factor of four or more across the roster, from Baku's 30 Power to Gugalanna's
+150, from World Turtle's 20 Speed to Raiju's 160.
+
+Twelve of twenty-five reach 100 Mana and can use their signature. The six hardest
+hitters — Garuda, Gugalanna, Roc, Sun Wukong, Fenrir, Phoenix — are all locked
+out of theirs. That is the shape of the roster, not an accident.
 
 ## The rules that constrain every change
 

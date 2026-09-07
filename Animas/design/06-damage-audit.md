@@ -51,6 +51,65 @@ Only seven characters survive it: Fafnir, Loch Ness and Leshy at 375, Gugalanna
 at 425, Hydra at 450, Airavata at 500, and World Turtle at 625. **Against a
 double weakness it is 720 and nothing survives.**
 
+## Raw attacks — no Ability, no setup
+
+This is the honest picture of the game's damage. A clean single-turn attack, the
+character's own Power, nothing charged and no drawback.
+
+| Damage | Character | Best clean move | One-shots | Own hit points |
+|---|---|---|---|---|
+| **210** | Sphinx | Mind Crush *(100 mana)* | **11/24 · 46%** | 200 |
+| 180 | Roc | Haymaker | 6/24 · 25% | 300 |
+| 180 | Otso | Haymaker | 6/24 · 25% | 300 |
+| 180 | Gugalanna | Nightfall | 6/24 · 25% | 425 |
+| 156 | Kitsune | Mindshatter | 4/24 · 17% | 125 |
+| 135 | Loch Ness | Nightfall | 4/24 · 17% | 375 |
+| 135 | Grim Reaper | Nightfall | 4/24 · 17% | 150 |
+| 132 | Sun Wukong | Haymaker | 4/24 · 17% | 200 |
+| 132 | Fenrir | Haymaker | 4/24 · 17% | 200 |
+| 122 | Baku | Mind Crush | 2/24 | 325 |
+| 121 | Thunderbird | Fulminate | 2/24 | 125 |
+| 117 | Hydra | Tsunami | 2/24 | 450 |
+| **108** | *median* | | | **225** |
+| 108 | Phoenix · Fafnir · Airavata | Pyre / Haymaker | 1–2/24 | |
+| 100 | Garuda | Tempest | 2/24 | 200 |
+| 99 | Raiju | Fulminate | 2/24 | 175 |
+| 96 | Xiuhcoatl · Simargl | Pyre | 1–2/24 | |
+| 88 | Bakeneko | Mind Crush | 2/24 | 200 |
+| 81 | Kelpie | Tsunami | 2/24 | 300 |
+| 72 | Leshy | Sunspear | 1/24 | 375 |
+| 27 | Unicorn | Solar Flare | **0/24** | 200 |
+| 27 | Matsya | Tsunami | **0/24** | 225 |
+| 18 | World Turtle | Sunspear | **0/24** | 625 |
+
+### This is well balanced, and the median proves it
+
+**The median character deals 108 into a median body of 225 hit points — 2.1 turns
+to a kill, against a design target of 2.5.** Slightly hot, but in the right zone
+and comfortably inside the band where switches and reads still decide matches.
+
+**The hardest raw attack in the game one-shots less than half the roster**, and it
+comes from Sphinx spending a full hundred-mana signature to do it. Drop to the
+next tier and it is three characters at 180 removing a quarter of the cast.
+**Nobody deletes anything by walking in and pressing a button.**
+
+**Three characters cannot one-shot anybody at all** — Unicorn, Matsya and World
+Turtle, at 27, 27 and 18 damage. That is the design working: those are the three
+lowest Power stats in the game and all three win by other means entirely.
+
+**The bottom of the table is not a buff list.** Leshy at 72, Kelpie at 81 and
+Bakeneko at 88 are all doing something else with their turns — Leshy heals 37 a
+turn off 375 hit points, Kelpie is running two Drowns, Bakeneko is rolling
+somebody else's signature. Low raw damage is the price each pays, and each pays
+it knowingly.
+
+The one line worth a second look is **Xiuhcoatl at 96 damage on 50 hit points.**
+It hits about as hard as the median and dies to literally anything. Cometfall's
+free 50 on every entry is meant to make up the difference, and it probably does —
+but that is the thinnest margin on the roster.
+
+## What this says
+
 ## What this says
 
 **The problem is Wind-Up, not Otso.** It appears in four of the top five lines,
@@ -66,9 +125,17 @@ At the old scale, 250 was a one-shot on a fresh baseline character. At the
 current scale, tripled by an Ability, it is a one-shot on *the largest body in
 the game*.
 
-**Recommend Wind-Up to 150.** With Honey-Gorge that is 450 — still 92% of the
-cast, still the biggest read in the game, still worth building around. It stops
-being a move that ignores the HP stat entirely.
+**Recommend Wind-Up to 150**, and the raw numbers confirm it precisely. At 150,
+Roc and Otso hit for **225 raw — one-shotting 54% of the cast instead of 83%**,
+which puts it exactly level with Pyroclasm and Meltdown, the other two
+big-drawback moves. Charged through Honey-Gorge it becomes 450 and 92% instead of
+750 and 100%: still the biggest read in the game, still worth building around,
+but no longer a move that ignores the HP stat entirely.
+
+**Note what the raw table shows about Wind-Up specifically.** Without any Ability
+at all, it more than doubles its user's output — Roc goes from 180 with Haymaker
+to 375 with Wind-Up, and Otso the same. Every other character's best clean attack
+sits between 18 and 210. Wind-Up is not a strong move; it is a different game.
 
 **The second observation is that Power multipliers are the real damage source,
 not the moves.** Every line in that table is doubled or tripled by an Ability.

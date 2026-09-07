@@ -9,22 +9,24 @@ the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.
 
 First pass done: damage and mana cost for all 88 moves (`design/04-costs.md`).
-Baseline HP is 500; a standard attack does about 70, a powerful attack 100-120,
-a priority attack about 40, and every character regains 10 mana per turn. Power
+Baseline HP is 500; a standard attack does 65-80, a powerful attack 100-125, a
+priority attack 35-50, and every character regains 10 mana per turn. **Every
+number in the game is a multiple of five, and every Mana stat a multiple of
+ten** — no 68s, no 42s. Mental arithmetic at the table is a design requirement. Power
 is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
 effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
 types by design; Light, Grass and Water are the bottom three.
 
-**Attack costs vary by type and run opposite to damage.** Powerful attacks cost
-25 (Light) to 45 (Electric); priority attacks 14 to 25. Weak types buy their
-damage at a discount, strong types pay a premium — so running dry is trivial for
-Light and catastrophic for Electric, which is precisely why Electric's free
-status move manufactures mana.
+**Attack costs vary by type.** Powerful attacks cost 25 (Light) to 45
+(Electric); priority attacks 15 to 25. Running dry is trivial for Light, whose
+attacks were nearly free, and catastrophic for Electric, whose attacks were the
+expensive part — which is precisely why Electric's free status move manufactures
+mana. Fire is the exception to the curve: Fire Blast at 30 makes it tied for the
+best value in the game, a deliberate reversal recorded in `04-costs.md`.
 
 **Two moves are free in every type:** the standard attack (slot 1) and the
-status move (slot 4). That is the guarantee. Fire, Fighting and Dark each get a
-third — Flare Blitz, Counter and Memento — because those three already charge a
-price steeper than mana (health, being wrong, and dying). Three status moves were
+status move (slot 4). That is the guarantee. Fighting and Dark each get a third —
+Counter and Memento — the two steepest non-mana prices in the game. Three status moves were
 rebalanced to survive being free: Resolve to +50% Power, Mend to a 25% heal,
 Curse to 15% a turn.
 

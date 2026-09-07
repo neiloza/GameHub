@@ -107,7 +107,7 @@ The type that pays for everything, and now has one member that can also hit back
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **20** | **190** | 410 | **Pressure** — the opponent's moves cost double mana |
-| **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | 90 | 70 | 340 | **Illusion** — enters disguised; breaks on damage |
+| **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | 110 | 70 | 360 | **Illusion** — enters disguised; breaks on damage |
 | **Sphinx** | 🔮/🌑 | 80 *(200)* | 90 | **40** | **150** | 360 | **Enigma** — the opponent cannot use the same move twice |
 
 ## 🌑 DARK
@@ -216,18 +216,132 @@ stat, not a damage one.
 
 ---
 
-## The one remaining collision
+## Balance audit
 
-**Simargl 90/80/110/90 and Fenrir 80/80/110/90** are still ten points apart and
-still want opposite things — Berserk wants a fragile body with high Power,
-Hearthfire wants a durable one. Recommend **Fenrir → 80/110/130/40** and
-**Simargl → 120/80/90/80**.
+### Stat collisions
 
-**Bakeneko and Garuda have separated.** At 50 Power against Garuda's 100 they no
-longer read as the same build, and the collision is closed without touching
-Garuda at all.
+Seven pairs sit within 50 points of each other across all four stats. Only one is
+a genuine problem.
 
----
+| Distance | Pair | Verdict |
+|---|---|---|
+| **10** | Simargl 90/80/110/90 · **Fenrir** 80/80/110/90 | **Real problem** |
+| **20** | Thunderbird 50/110/110/70 · **Kitsune** 50/130/110/70 | **Real problem** |
+| 30 | Fafnir 150/90/60/120 · Loch Ness 150/90/70/100 | Acceptable |
+| 40 | Sun Wukong 80/110/120/90 · Fenrir 80/80/110/90 | Acceptable |
+| 40 | Garuda 80/100/120/120 · Sun Wukong 80/110/120/90 | Acceptable |
+| 50 | Sphinx 80/90/40/150 · Grim Reaper 60/90/30/130 | Acceptable |
+| 50 | Simargl 90/80/110/90 · Sun Wukong 80/110/120/90 | Acceptable |
+
+**Simargl and Fenrir are ten points apart and want opposite things.** Berserk
+doubles Fenrir's Power below half health, so it wants high Power on a body that
+crosses the threshold fast. Hearthfire heals Simargl off every landed attack, so
+it wants durability and staying power. Neither gets what it needs.
+**Fenrir → 80/110/130/40** and **Simargl → 120/80/90/80** fixes both at once.
+
+**Thunderbird and Kitsune are twenty apart and identical on three stats.** Same
+HP, same Speed, same Mana, twenty points of Power between them — and they are
+about as different conceptually as two characters get. A storm bird that sets a
+field on entry should not have the same body as a fox that arrives in disguise.
+**Kitsune should be the frailer and faster of the two**, since Illusion breaks on
+contact and Stormbringer does not care what happens next: **Kitsune → 50/130/130/70**,
+**Thunderbird → 70/110/100/70**.
+
+The 30-to-50 pairs are fine. Fafnir and Loch Ness share a body but nothing else —
+one is a three-turn escalation, the other a repeatable untouchable entry. Sphinx
+and the Grim Reaper differ by 20 HP and 20 Mana, and those 20 Mana are two more
+Death Touches. Distance alone is not the test; whether the Abilities pull the
+characters into the same play pattern is.
+
+### Speed ties
+
+Twelve characters share a Speed value with someone else, and one cluster is
+crowded enough to matter.
+
+| Speed | Characters |
+|---|---|
+| **110** | **Bakeneko, Fenrir, Kitsune, Simargl, Thunderbird** |
+| 120 | Garuda, Sun Wukong |
+| 90 | Roc, Unicorn |
+| 70 | Loch Ness, Matsya |
+| 30 | Airavata, Grim Reaper, Hydra, Kelpie |
+| 20 | Baku, Leshy |
+
+**Five characters at 110 is too many**, and three of them are Fire types who will
+face each other. The tiebreak rule matters more here than anywhere else — the
+30-cluster is four characters that all want to move last anyway, so ties there are
+harmless, but at 110 the tie decides who lands Illusion, who lands Cometfall's
+follow-up, and who gets to attack before Hearthfire matters. Splitting Kitsune to
+130 as recommended above brings this to four.
+
+### Ability roles
+
+Every Ability falls into one of five jobs. The distribution is more even than it
+looks.
+
+| Role | Count | Characters |
+|---|---|---|
+| **Escalation** | 6 | Fafnir, Fenrir, Otso, Sun Wukong, Airavata, Raiju |
+| **Entry** | 6 | Xiuhcoatl, Thunderbird, Roc, Loch Ness, Kitsune, Matsya |
+| **Sustain** | 5 | Leshy, Simargl, Hydra, Unicorn, Phoenix |
+| **Denial** | 4 | Kelpie, Baku, Sphinx, Gugalanna |
+| **Other** | 4 | Grim Reaper, World Turtle, Bakeneko, Garuda |
+
+**Denial is the best-designed cluster in the game.** Four characters that each
+take away a completely different thing — Kelpie takes switching, Baku takes mana,
+Sphinx takes move choice, Gugalanna takes healing. No overlap at all, and every
+one of them is a different problem to solve.
+
+**Entry is six characters and still clean.** Damage, a field, a debuff, immunity,
+deception, information — six entries doing six unrelated things. This is the
+largest cluster and the least redundant.
+
+**Escalation is the real overlap, and it is worse than the count suggests.**
+Three of the six say the same three words:
+
+- **Fafnir** — Power doubles after three turns
+- **Fenrir** — Power doubles below half health
+- **Otso** — Power doubles if it does not attack
+
+Same effect, three triggers. They read as one Ability with a condition slot, and
+a player who has seen one will not find the other two interesting. Sun Wukong's
++50% per knockout at least stacks differently, Airavata's per-move doubling is a
+genuinely distinct shape, and Raiju's is a mana engine that has no business in
+this category at all.
+
+**This is the one place the roster repeats itself.** The fix is not to weaken any
+of them — the fantasy of each is fine — it is to make one of the three double
+something other than Power. **Otso is the natural candidate**, since Honey-Gorge
+is already about restraint rather than rage: doubling its *next move's* effect
+rather than its Power would let it double a heal, a field, or a status, which
+nothing else in the game can do.
+
+### The mana wall
+
+**Fourteen above, eleven below**, which is the right side of a coin flip. The
+eleven locked out are Airavata, Fenrir, Gugalanna, Hydra, Kitsune, Phoenix, Roc,
+Simargl, Sun Wukong, Thunderbird and Xiuhcoatl — and six of those are among the
+hardest hitters in the game. That relationship has held through every pass and it
+is the strongest structural statement the roster makes.
+
+Watch the drift, though. This number has gone 12 → 13 → 15 → 14 across recent
+passes, always upward before correcting. **Past sixteen the wall stops being a
+decision.**
+
+### Where the balance stands
+
+The spread is healthy. HP runs 12.5×, Speed 15×, Power 7.5× — three stats doing
+real work. **Mana at 4× is the flat one**, and the floor is the reason: nothing
+sits below 50 any more, so no character is genuinely unable to afford its own
+cheap tools. That was Roc's whole identity two passes ago and it is gone.
+
+Totals run 275 to 440 against a 500 ceiling, mean 381. The bottom four — Phoenix
+at 275, Grim Reaper 310, Xiuhcoatl 330, Kitsune 360 — are all characters whose
+Abilities do something a stat line cannot, which is exactly where the low totals
+should sit.
+
+**Two changes would close everything open:** split Simargl and Fenrir, and split
+Thunderbird and Kitsune. Everything else on this page is working.
 
 ## Open items
 

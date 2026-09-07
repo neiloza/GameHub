@@ -26,9 +26,9 @@ be real enough that a mistimed switch loses you the character outright:
 - **The Grim Reaper is slow and made of paper.** Thirty Speed and 150 hit points
   means it acts after almost everything and dies to one powerful attack. Bring it
   in at the wrong moment and it dies without killing anything.
-- **Kelpie has 40 Power and 30 Speed.** It cannot finish anything itself and it
-  cannot outrun anything. It has to commit to the drowning and take the beating
-  that comes with it.
+- **Kelpie has 30 Speed.** It acts after almost everything alive, every turn, so
+  it takes the hit before it lands one. It cannot open a fight or escape a bad
+  one; it can only commit to the drowning and outlast what comes.
 - **Baku has 20 Power.** A Mindspike deals twelve damage. It is physically
   incapable of winning a fight; it can only make one unwinnable for the opponent.
 - **Raiju has 125 hit points.** The infinite-mana engine ends the moment
@@ -64,28 +64,33 @@ levers**, and they swing hard: Power runs 20 to 170, Mana runs 20 to 200.
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **Grim Reaper** 🌑 | **60** | **50** | **30** | **180** | **320** |
-| **Kelpie** 💧 | 90 | **40** | **30** | **160** | 320 |
+| **Grim Reaper** 🌑 | **60** | 90 | **30** | **130** | **310** |
+| **Kelpie** 💧 | 120 | 90 | **30** | **160** | 400 |
 
-**The Grim Reaper carries 180 Mana against a Death Touch that Harvest halves to
-50. That is three instant kills.** Three characters, gone, no counterplay but
-Unicorn's Miracle. That is the fantasy and it should not be clipped.
+**The Grim Reaper carries 130 Mana against a Death Touch that Harvest halves to
+50. That is two instant kills**, with 30 left over, and 90 Power means it can
+actually fight in between — a Nightfall from the Reaper lands for 135. It is no
+longer a suicide bomber that does nothing else; it is a genuine threat that also
+happens to delete two characters.
 
-The bill: **150 hit points and 30 Speed.** It acts after everything alive except
-World Turtle, so it eats a full turn before it does anything, and one Nightfall
-kills it outright. Realistically it gets one or two before it dies, and which one
-depends entirely on when you brought it in. Play it wrong and it dies having
-achieved nothing. **The Reaper is not a character you play, it is a character you
-spend.**
+The bill: **150 hit points and 30 Speed**, the lowest total on the roster at 310.
+It acts after everything alive except World Turtle and Leshy, so it eats a full
+turn before it does anything, and a single Nightfall kills it outright. Bring it
+in against the wrong character and it dies having achieved nothing at all.
+**The Reaper is not a character you play, it is a character you spend** — the
+question is only whether you spend it well.
 
 **Kelpie has 160 Mana, which is two Drowns and change.** Undertow means the target
 cannot leave; Drown cannot be cleared by anything. That is two characters on a
-three-turn timer with no way out, and Maelstrom or Strangle can add more.
+three-turn timer with no way out, and Maelstrom or Strangle can add more. At 90
+Power and 300 hit points it is not a passive trapper either — it can hold you
+there and beat you to death while the clock runs, and Tsunami lands for 81.
 
-The bill: **40 Power and 30 Speed on 225 hit points.** It cannot finish anyone
-itself, it acts last, and it is not remotely bulky enough to sit there
-comfortably. It has to commit to the drowning and absorb whatever comes while the
-clock runs.
+The bill is one stat: **30 Speed.** Kelpie acts after almost everything alive,
+every single turn, which means it takes the hit before it lands one. It cannot
+open a fight, it cannot escape a bad one, and it cannot respond to anything — it
+can only commit and outlast. Four hundred total makes it the strongest executioner
+on the roster, and being permanently last is the entire price.
 
 ## THE WRECKING BALLS — enormous Power, no reach
 
@@ -213,7 +218,7 @@ then brings a dead teammate back. It has never threatened anybody.
 | **Speed** | World Turtle — 10 | Raiju — 170 | **17×** |
 | **Mana** | Roc, Phoenix, Gugalanna — 20 | Baku — 200 | **10×** |
 
-Totals run 320 to 460, mean 389. **The average internal spread is 53**, up from 44 two passes ago and roughly
+Totals run 310 to 460, mean 392. **The average internal spread is 53**, up from 44 two passes ago and roughly
 double the version before that.
 
 **Six of the seven hardest hitters cannot use their own signature move.**

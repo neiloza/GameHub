@@ -64,18 +64,18 @@ is the damage multiplier divided by 100.
 **The design philosophy is push, not clip.** Balance here is not the absence of
 broken things, it is the presence of twenty-five of them. Every character does
 one degenerate thing as well as it can possibly be done — Kelpie drowns two
-characters that cannot leave, the Grim Reaper carries three Death Touches, Otso
+characters that cannot leave, the Grim Reaper carries two Death Touches, Otso
 triples to 300 Power, Raiju's Voltage escalates while its mana rises — and pays
 for it with a genuinely crippling weakness. The Reaper has 150 hit points and 30
-Speed. Kelpie has 40 Power. Baku has 20 Power and deals twelve damage a hit.
-Raiju dies to one Nightfall.
+Speed. Kelpie has 30 Speed and acts last every turn. Baku has 20 Power and deals
+twelve damage a hit. Raiju dies to one Nightfall.
 
 **Do not "fix" a strong interaction by weakening the Ability.** The counterplay
 is meant to be killing the character before it acts, or bringing the one answer
 to it. Weaknesses are the balancing tool; Power and Mana are the levers, HP and
 Speed follow the creature's aesthetics.
 
-Totals run 320-430. Thirteen of twenty-five reach 100 Mana. Six of the seven
+Totals run 310-460. Thirteen of twenty-five reach 100 Mana. Six of the seven
 hardest hitters cannot use their own signature, and the four characters with the
 most mana cannot hurt anybody.
 

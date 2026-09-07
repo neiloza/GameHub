@@ -410,12 +410,30 @@ type was written around, and it should be affordable.
 | 3 | **Umbra** | **60** | **40** | Tied with Premonition for the hardest-hitting priority attack, and it pays for it. |
 | 4 | **Malediction** | **15% per turn (75)** | **0** | The free status. Reduced from 25% — see the warning below. |
 | 5 | **Snare** | 15% (75) on switch-in | 30 | Field. |
-| 6 | **Damnation** | — | 30 | Half your health and you can never leave, but it also doubles Mana — which is a route to the breakpoint and should not be free. |
-| 7 | **Death Pact** | mutual | 25 | You choose when. |
-| 8 | **Last Rites** | — | **0** | **Free.** You die. There is no larger cost. |
+| 6 | **Damnation** | — | **60** | Half your health, sixty mana, and you can never leave. See the note below on what the mana doubling is now worth. |
+| 7 | **Death Pact** | mutual | **20** | Dark's only cheap move. You choose when. |
+| 8 | **Last Rites** | — | **40** | Forty mana *and* your life, to halve their Power and Mana for the rest of the battle. |
 | 9 | **Death Touch** | the target is gone | **100** | The hardest gate in the game. |
 
-**Free: Ripshade, Malediction, Last Rites.**
+**Free: Ripshade, Malediction.** Last Rites now costs 40, which means **no type
+in the game has a third free move any more.** Every type has exactly two, in the
+same two slots: the standard attack and the status move. That is a cleaner rule
+than the one it replaces — the guarantee is uniform, and every tool in every type
+is bought.
+
+**Damnation's mana doubling is now nearly self-defeating.** At 60 mana, a
+100-mana character spends 60, sits at 40, doubles to 80 — a net loss of 20. The
+break-even is 120 Mana; only a character built above that gains anything from the
+Mana half of the effect. Below 120 you are paying 60 mana and half your health
+for doubled Power and Speed alone, and giving up the ability to switch. That may
+be the right price for what those two are worth, but the move's third clause is
+now doing nothing for most of the roster.
+
+**Dark is the second-most expensive type after Water.** Its paid moves run 50,
+40, 30, 60, 20, 40, and 100 — only Death Pact is cheap. What carries it is that
+its two free moves are the best free pair in the game: Ripshade hits for 75, the
+joint-hardest free attack, and Malediction ticks 75 a turn on top. A Dark
+character with no mana at all still deals 150 a turn.
 
 **Malediction is now 15%, and being free forced the issue.** At 25% it dealt 125 a
 turn — more than any powerful attack in the game, every turn, from a status
@@ -484,33 +502,41 @@ what gets a starved character back into the game, so it can never cost anything.
 
 ---
 
-## The nineteen free moves
+## The eighteen free moves
 
-Two guaranteed in every type, and a third in one of them.
+Two in every type, no exceptions.
 
-| Type | Slot 1 — attack | Slot 4 — status | A free tool? |
-|---|---|---|---|
-| 🌑 Dark | Ripshade | Malediction | **Last Rites** |
-| 🔥 Fire | Cinder | Scorch | — |
-| 👊 Fighting | Jab | Resolve | — |
-| 💧 Water | Surge | Strangle | — |
-| 🌿 Grass | Bramble | Parasite | — |
-| ⚡ Electric | Arc | Amplify | — |
-| 🌪️ Air | Draft | Jet Stream | — |
-| 🔮 Psychic | Mindspike | Force Swap | — |
-| ✨ Light | Lumenlash | Mend | — |
+| Type | Slot 1 — attack | Slot 4 — status |
+|---|---|---|
+| 🔥 Fire | Cinder — 80 | Scorch — 40, then 50 a turn |
+| 💧 Water | Surge — 70 | Strangle — they cannot leave |
+| 🌿 Grass | Bramble — 55 | Parasite — 75 a turn, healed back |
+| ⚡ Electric | Arc — 75 | Amplify — your mana doubles |
+| 🌪️ Air | Draft — 60 | Jet Stream — everything gains priority |
+| 👊 Fighting | Jab — 75 | Resolve — Power +50% |
+| 🔮 Psychic | Mindspike — 60 | Force Swap — they are forced out |
+| 🌑 Dark | Ripshade — 75 | Malediction — 75 a turn |
+| ✨ Light | Lumenlash — 50 | Mend — heals 125 |
 
 Read the status column down and you get a one-word summary of the whole game:
-Fire burns, Water traps, Grass drains, Electric charges, Air gets ahead,
-Fighting builds, Psychic displaces, Dark curses, Light heals. Nine identities,
-all free, all in the same slot.
+Fire burns, Water traps, Grass drains, Electric charges, Air gets ahead, Fighting
+builds, Psychic displaces, Dark curses, Light heals. Nine identities, all free,
+all in the same slot.
 
-**One type keeps a free tool: Dark.** Last Rites costs your life, which is the
-steepest price anything in the game charges, and it is the only move left that
-buys a third free slot. Fire lost its third when Immolation was priced at 20, and
-Fighting lost its when Riposte went to 20. Both still charge steeply in their own
-currency — 200 health, and being wrong about what the opponent was going to do —
-they just also cost a little mana now.
+**No type has a third free move any more.** Fire lost its when Immolation was
+priced at 20, Fighting lost its when Riposte went to 20, and Dark lost its when
+Last Rites went to 40. The rule is now perfectly uniform.
+
+That is the better version. Each exception was defensible on its own — Immolation
+costs 200 health, Riposte costs being wrong, Last Rites costs your life — but a
+rule with no exceptions is one a player learns once and never checks again, and
+all three moves still charge steeply in their own currency on top of the mana.
+
+The free pairs are not equal in strength, and they should not be. **Dark's is the
+best: Ripshade for 75 and Malediction for 75 a turn means a Dark character with
+no mana at all still deals 150 a turn.** Light's is the weakest at 50 damage and
+a 125 heal. Fire's Scorch is the only free move in the game that deals damage and
+applies a status in one action.
 
 Three moves still had to change to survive being free, all of them in the
 guaranteed status slot: **Resolve** from doubling Power to +50%, **Mend** from a

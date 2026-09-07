@@ -794,6 +794,32 @@ turn it lands.
 
 ---
 
+## The stacking question, which nothing has answered
+
+Eight moves modify a stat: **Resolve** (+50% Power), **Bloom** (doubles Power),
+**Damnation** (doubles Power, Speed and Mana), **Amplify** (doubles Mana),
+**Storm Front** (doubles everyone's Mana), **Slipstream** (doubles your team's
+Speed), **Run** (Speed up), and **Flurry** (Speed up). Several Abilities do the
+same — Slow Burn, Bloodlust, Berserk, Honey-Gorge, Resolve's cousins.
+
+Nothing in the rules says what happens when two of them apply at once, and one
+combination is already broken by it. **Bloom costs 100 mana and refills the
+user's mana to full**, so a character with exactly 100 Mana pays nothing to cast
+it. If the Power doubling compounds, that character reaches 400 Power in four
+free turns.
+
+**Recommend a hard cap: no stat may exceed double its base value, counting every
+source together.** Resolve twice is +100%, not +125%. Bloom on top of Resolve is
+still ×2. Damnation into Amplify is still ×2 Mana. Slow Burn on a Fafnir that
+already used Resolve is ×2 Power, not ×3.
+
+That one sentence closes the Bloom loop, settles seven other interactions, and
+keeps the ceiling on damage where the type chart can still matter — a ×2 Power
+character hitting a double weakness is already ×4, and ×4 on a 150-damage
+Nightfall is 600 into a 250-hit-point bar.
+
+---
+
 ## What still needs deciding
 
 1. **Gift at 10 mana, and the turn limit behind it.** Five hundred points of

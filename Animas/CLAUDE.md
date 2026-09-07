@@ -91,6 +91,12 @@ out of theirs. That is the shape of the roster, not an accident.
    sentence. Stacking counters, hidden multipliers, and conditional tables were
    all cut for this reason.
 
+**Stat modification needs a stacking cap.** Eight moves and several Abilities
+modify Power, Speed or Mana, and nothing says what happens when two apply at
+once. Bloom is already broken by it: it costs 100 and refills mana to full, so a
+character at exactly 100 Mana (Leshy) casts it free every turn. Recommended rule:
+no stat may exceed double its base value counting all sources together.
+
 ## How persistent state ends
 
 - Status conditions clear when the affected character switches out.

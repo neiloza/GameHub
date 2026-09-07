@@ -93,7 +93,7 @@ afford anything.
 | **Hydra** 💧/🌿 | **160** | 120 | **40** | 60 | 380 |
 | **Airavata** 👊/⚡ | **170** | 70 | **30** | 110 | 380 |
 | **Unicorn** ✨ | **60** | **40** | 140 | **140** | 380 |
-| **Leshy** 🌿 | **180** | 50 | **30** | **130** | 390 |
+| **Leshy** 🌿 | **180** | 50 | **30** | 100 | **360** |
 | **Gugalanna** 🌑/🌪️ | **160** | **150** | **40** | **40** | 390 |
 | **Xiuhcoatl** 🔥/⚡ | **60** | 120 | **150** | 60 | 390 |
 | **Loch Ness** 💧/🌑 | 150 | 90 | 60 | 100 | 400 |
@@ -126,8 +126,23 @@ slow, enormous, and it hits back harder than it looks.
 140 Speed, 140 Mana for Resurrection, and Miracle, which means at full health it
 walks away from anything once.
 
-**Leshy** is the wall: 450 hit points, 30 Speed, 50 Power. It acts last against
-everything alive and heals 10% of that enormous bar every turn.
+**Leshy** is the wall: 450 hit points, 30 Speed, 50 Power, and a total of 360
+that sits with the S tier rather than the A. It acts last against nearly
+everything alive and heals 45 a turn off that enormous bar, plus 10 mana on top
+of the natural regeneration.
+
+**At exactly 100 Mana it sits on the wall, and that exposes a rules problem with
+Bloom.** Bloom costs 100 and refills the user's mana to full, so for a character
+at exactly 100 it is free — cast it, drop to zero, refill to 100, cast it again
+next turn. Nothing stops that loop. Whether it matters depends entirely on a
+question the rules have never answered: **do stat changes stack?** If Bloom's
+doubling compounds, Leshy reaches 400 Power in four turns for no cost. If it does
+not, the loop is pointless and Bloom is fine.
+
+**Recommend capping all Power, Speed and Mana modification at double the base
+value from all sources combined.** That closes the Bloom loop, settles what
+happens when Resolve is used twice, and stops Damnation stacking with either. It
+is one sentence and it resolves a gap that touches eight moves.
 
 **Gugalanna** is the game's most polarized line — **150 Power and 40 Speed on 400
 hit points, with 40 Mana and no access to anything.** It cannot cast, it cannot

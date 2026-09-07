@@ -49,7 +49,7 @@ The widest spread in the game — a 375-hit-point dragon, a 50-hit-point serpent
 | **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 60 | 120 | 420 | **Slow Burn** — after three turns, Power doubles |
 | **Phoenix** | 🔥/🌪️ | **30** *(75)* | 90 | 105 | **50** | 275 | **Rebirth** — first time it faints, returns at half HP |
 | **Xiuhcoatl** | 🔥/⚡ | **20** *(50)* | 80 | **140** | 90 | 330 | **Cometfall** — 50 damage on every switch-in |
-| **Bakeneko** | 🔥/🔮 | 80 *(200)* | 90 | 110 | 120 | 400 | **Metronome** — a random move from anywhere in the game |
+| **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 110 | 120 | 360 | **Metronome** — a random move from anywhere in the game |
 | **Simargl** | 🔥/✨ | 90 *(225)* | 80 | 110 | 90 | 370 | **Hearthfire** — every damaging attack it lands heals it |
 
 ## 💧 WATER
@@ -70,7 +70,7 @@ Two walls and a wrecking ball, and they are finally distinct.
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Leshy** | 🌿 Grass | **150** *(375)* | 80 | **20** | 100 | 350 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
-| **World Turtle** | 🌿/✨ | **250** *(625)* | **40** | **10** | **160** | 460 | **Unaware** — ignores the opponent's stat changes |
+| **World Turtle** | 🌿/✨ | **250** *(625)* | **20** | **10** | **160** | 440 | **Unaware** — ignores the opponent's stat changes |
 | **Otso** | 🌿/👊 | 120 *(300)* | **150** | 50 | 100 | 420 | **Honey-Gorge** — if it does not attack, Power doubles next turn |
 
 ## ⚡ ELECTRIC
@@ -134,20 +134,20 @@ One character, and it cannot hurt anybody.
 | | Lowest | Highest | Ratio |
 |---|---|---|---|
 | **HP** | Xiuhcoatl — 20 *(50 hp)* | World Turtle — 250 *(625 hp)* | **12.5×** |
-| **Power** | Matsya, Unicorn — 30 | Otso, Roc — 150 | **5.0×** |
+| **Power** | World Turtle — 20 | Otso, Roc — 150 | **7.5×** |
 | **Speed** | World Turtle — 10 | Raiju — 150 | **15×** |
 | **Mana** | Hydra, Phoenix, Roc — 50 | Baku — 200 | **4.0×** |
 
-Totals run 275 to 460, mean 381. **Fourteen of twenty-five clear the
+Totals run 275 to 440, mean 379. **Fourteen of twenty-five clear the
 hundred-mana wall.**
 
-**HP and Speed are still the polarized stats; Power and Mana have compressed.**
-Power now spans 5× where it was 8.5×, and Mana 4× where it was 10×. That is a
-real change of character — the roster reads less like nine wildly different
-economies and more like everyone being roughly able to afford things. Not
-necessarily wrong, but it happened gradually and is worth deciding on rather than
-drifting into. The two stats you named as the balancing levers are now the two
-doing the least work.
+**Power has recovered to a 7.5× spread; Mana is the one that stayed compressed
+at 4×.** HP is 12.5× and Speed 15×, so three of the four stats are doing real
+work and Mana is the outlier. Nothing on the roster now sits below 50 Mana — the
+old 20s at Roc and Phoenix are gone — which means no character is genuinely
+locked out of its own cheap tools any more. Whether that is a loss depends on
+whether "this character cannot afford anything" was a shape worth keeping. It was
+Roc's whole identity two passes ago.
 
 **Two characters can choose between signature moves.** Bakeneko at 120 Mana
 reaches Pyroclasm *or* Mind Crush; **Otso at 100 now reaches Bloom *or* Frenzy.**
@@ -171,6 +171,14 @@ At 50 Mana it can at least reach its cheap tools. Dropping Power from 170 to 150
 also means **Otso and Roc now share the highest Power in the game**, which reads
 correctly — a bear that has eaten and a bird that carries elephants.
 
+### Fixed — Bakeneko is priced for what Metronome actually does
+
+Fifty Power is the second-lowest in the game, and it is the right number for a
+character that casts other people's moves. Metronome rolling Pyroclasm on a
+110-Power body would deal 330; on a 50-Power body it deals 150. **The cat should
+not be the best user of every move in the game — it should be the most
+unpredictable one**, and low Power is what separates those two things.
+
 ### Broken — Kitsune stopped being a fox
 
 At 90 Speed it is slower than Simargl, Bakeneko, Fenrir, Sun Wukong and
@@ -193,16 +201,16 @@ matters. The 150 Mana is fine; the Speed works against the Ability.
 
 ---
 
-## Remaining collisions
+## The one remaining collision
 
 **Simargl 90/80/110/90 and Fenrir 80/80/110/90** are still ten points apart and
 still want opposite things — Berserk wants a fragile body with high Power,
 Hearthfire wants a durable one. Recommend **Fenrir → 80/110/130/40** and
 **Simargl → 120/80/90/80**.
 
-**Bakeneko 80/90/110/120 and Garuda 80/100/120/120** are twenty apart. Recommend
-lifting Garuda's Speed to 130 or 140, since First Flight is a tempo Ability and
-Metronome is not.
+**Bakeneko and Garuda have separated.** At 50 Power against Garuda's 100 they no
+longer read as the same build, and the collision is closed without touching
+Garuda at all.
 
 ---
 

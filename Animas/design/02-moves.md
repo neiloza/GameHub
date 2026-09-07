@@ -87,7 +87,7 @@ else.*
 6. **Skimstrike** — Damage, then the user switches out.
 7. **Skyfall** — Untargetable this turn. Strike next turn.
 8. **Cyclone** — Damage to the target, then it is forced out. The next character in their team order replaces it, untouched.
-9. **Tempest** — Massive damage. Removes everything on both sides: status, traps, stat changes, fields, and hazards.
+9. **Tempest** — Modest damage. Removes everything on both sides: status, traps, stat changes, fields, and hazards.
 
 ## 👊 FIGHTING — commitment and prediction
 

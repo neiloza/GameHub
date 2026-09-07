@@ -15,7 +15,7 @@ not have to work anything out: **a Mana number starting with a one means that
 character can use its type's signature move. Anything lower means it cannot,
 ever.** See *The hundred-mana breakpoint* below.
 
-**A standard attack does 65 to 80. A powerful attack does 100 to 125. A priority
+**A standard attack does 60 to 80. A powerful attack does 90 to 125. A priority
 attack does 35 to 50.** Each type sits differently inside those bands depending
 on what it is for.
 
@@ -81,7 +81,7 @@ type that hits softly gets a discount.**
 | **🌑 Dark** | 75 | 115 @ 35 | 45 @ 20 | Hits hard at a fair price. Dark's real costs are paid in blood elsewhere. |
 | **👊 Fighting** | 75 | 115 @ 30 | 45 @ 15 | Cheap and strong everywhere. Fighting pays by guessing wrong, not by spending. |
 | **🔮 Psychic** | 70 | 110 @ **40** | 35 @ **25** | Expensive, mid-power, and the worst priority on the board. Psychic taxes everything and does not want to go fast. |
-| **🌪️ Air** | 70 | 105 @ 30 | **50** @ **15** | The best priority attack in the game and the cheapest place to buy it. Acting first is the entire type. |
+| **🌪️ Air** | **60** | **90** @ 25 | **50** @ **15** | The weakest attacks in the game paired with the best priority. Air is a speed type, not a power type. |
 | **💧 Water** | 70 | 105 @ 35 | 40 @ 20 | Middling everywhere. Water's mana belongs to Drown and Wellspring, not to its attacks. |
 | **🌿 Grass** | 65 | 100 @ 30 | 35 @ 15 | Cheap and weak. Grass's damage comes from Parasite ticking every turn, not from attacking. |
 | **✨ Light** | 65 | **100** @ **25** | 35 @ 15 | The weakest attacks in the game and the cheapest, so the mana is still there for Renewal and Resurrection. |
@@ -95,12 +95,12 @@ Sorted by damage per mana on the powerful attack, best value to worst:
 | 1 | 🔥 Fire | **4.00** |
 | 1 | ✨ Light | **4.00** |
 | 3 | 👊 Fighting | 3.83 |
-| 4 | 🌪️ Air | 3.50 |
+| 4 | 🌪️ Air | 3.60 |
 | 5 | 🌿 Grass | 3.33 |
 | 6 | 🌑 Dark | 3.29 |
 | 7 | 💧 Water | 3.00 |
-| 8 | 🔮 Psychic | 2.75 |
-| 9 | ⚡ Electric | 2.78 |
+| 8 | ⚡ Electric | 2.78 |
+| 9 | 🔮 Psychic | 2.75 |
 
 **Running out of mana means something completely different depending on what you
 are playing.** A dry Light character has lost almost nothing — its attacks were
@@ -112,8 +112,18 @@ a penalty on Electric — they are the reason its free status move exists.
 
 **Air buys the best priority attack in the game for the lowest price** — 15 mana
 for 50 damage, a rate of 3.33, better than most types get on their powerful
-attack. Psychic sits at the opposite corner at 1.40, because a type that
-reverses turn order should not also be good at going first.
+attack. Psychic sits at the opposite corner at 1.40, because a type that reverses
+turn order should not also be good at going first.
+
+**Air is now the weakest attacking type in the game, deliberately.** Standard 60,
+powerful 90, and a signature of only 100 — a number six other types beat with
+their ordinary slot-two attack. All three are the lowest on the board. What Air
+buys instead is initiative: the best priority attack, free permanent priority
+from Jet Stream, doubled Speed from Slipstream, two ways to leave the field on
+its own terms, a phaze, and a signature that wipes the board clean. It wins by
+controlling *when* things happen, never by hitting harder. Tempest at a hundred
+mana for a hundred damage is the clearest statement of that — a terrible rate,
+and you are not paying for the damage.
 
 ### One inconsistency the Fire repricing created
 
@@ -265,15 +275,15 @@ is doing something no other build in the game can do.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Draft** | 70 | **0** | The fallback. |
-| 2 | **Galeforce** | 105 | 30 | Cheap, average, unremarkable — Air's budget goes to priority. |
+| 1 | **Draft** | **60** | **0** | The weakest standard attack in the game. |
+| 2 | **Galeforce** | **90** | **25** | The weakest powerful attack in the game, and cheap to match. Air's budget goes to priority. |
 | 3 | **Wingbeat** | **50** | **15** | The best priority attack in the game and the cheapest. A rate of 3.33 — better than most types get on their powerful attack. |
 | 4 | **Jet Stream** | — | **0** | The free status. See the note below. |
 | 5 | **Slipstream** | — | 30 | Field. |
-| 6 | **Skimstrike** | 65 | 20 | Priced level with Flicker, the same move in Electric. |
-| 7 | **Skyfall** | 105 | 20 | Costs a turn as well. |
-| 8 | **Cyclone** | 55 | 25 | Damage plus a phaze. |
-| 9 | **Tempest** | **175** | **100** | Massive damage that also erases the entire board state. The single most valuable button in the game. |
+| 6 | **Skimstrike** | 55 | 20 | Priced level with Flicker, the same move in Electric. |
+| 7 | **Skyfall** | 85 | 20 | Costs a turn as well. |
+| 8 | **Cyclone** | 50 | 25 | Damage plus a phaze. |
+| 9 | **Tempest** | **100** | **100** | Modest damage that erases the entire board state on both sides. Air's signature is a reset button, not a nuke. |
 
 **Free: Draft, Jet Stream.**
 
@@ -474,7 +484,7 @@ tooltip — the first digit answers the question.
 | 💧 Water | **Drown** | The target dies in three turns. Nothing clears it. |
 | 🌿 Grass | **Bloom** | Power doubled, mana refilled. |
 | ⚡ Electric | **Overload** | Damage equal to your entire mana bar. |
-| 🌪️ Air | **Tempest** | 175 damage and the entire board erased. |
+| 🌪️ Air | **Tempest** | 100 damage and the entire board erased. |
 | 👊 Fighting | **Frenzy** | 420 damage over three turns. You cannot leave. |
 | 🔮 Psychic | **Mind Crush** | 175 to the target, 50 to each of the other four. |
 | 🌑 Dark | **Death Touch** | The target is gone. |

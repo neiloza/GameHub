@@ -46,10 +46,10 @@ Fire is the widest spread in the game — a 375-hit-point dragon, a 50-hit-point
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | **40** | **150** | 430 | **Slow Burn** — after three turns, Power doubles |
+| **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 60 | 120 | 420 | **Slow Burn** — after three turns, Power doubles |
 | **Phoenix** | 🔥/🌪️ | **30** *(75)* | 90 | 105 | **50** | 275 | **Rebirth** — first time it faints, returns at half HP |
 | **Xiuhcoatl** | 🔥/⚡ | **20** *(50)* | 80 | **140** | 90 | 330 | **Cometfall** — 50 damage on every switch-in |
-| **Bakeneko** | 🔥/🔮 | 80 *(200)* | 110 | **160** | 60 | 410 | **Metronome** — a random move from anywhere in the game |
+| **Bakeneko** | 🔥/🔮 | 80 *(200)* | 90 | 110 | 120 | 400 | **Metronome** — a random move from anywhere in the game |
 | **Simargl** | 🔥/✨ | 90 *(225)* | 80 | 110 | 90 | 370 | **Hearthfire** — every damaging attack it lands heals it |
 
 ## 💧 WATER
@@ -135,10 +135,13 @@ One character, and it cannot hurt anybody.
 |---|---|---|---|
 | **HP** | Xiuhcoatl — 20 *(50 hp)* | World Turtle — 250 *(625 hp)* | **12.5×** |
 | **Power** | Baku — 20 | Roc — 170 | **8.5×** |
-| **Speed** | World Turtle — 10 | Bakeneko — 160 | **16×** |
+| **Speed** | World Turtle — 10 | Kitsune — 160 | **16×** |
 | **Mana** | Roc — 20 | Baku — 200 | **10×** |
 
-Totals run 275 to 460, mean 388.
+Totals run 275 to 460, mean 387. **Fifteen of twenty-five now clear the
+hundred-mana wall**, which is a majority — worth watching, since the wall only
+means something while a real share of the roster sits under it. If it drifts much
+past sixteen, the breakpoint stops being a decision and becomes a formality.
 
 **Xiuhcoatl at 50 hit points is the most extreme line in the game**, and there is
 a symmetry worth keeping: Cometfall deals exactly 50 damage on switch-in, so the
@@ -152,7 +155,7 @@ at 40 — cannot hurt anybody at all.
 
 ---
 
-## Two problems in the current spread
+## Three problems in the current spread
 
 ### Simargl and Fenrir are the same character
 
@@ -176,6 +179,27 @@ gets what it needs, and they read as the same card.
   reaching Berserk in one hit and swinging at 220 Power when it does.
 - **Simargl → 120 HP · 80 Power · 90 Speed · 80 Mana** *(370)* — the bruiser that
   outlasts, healing off a body that can take the return fire.
+
+### Bakeneko and Garuda are twenty points apart
+
+| | HP | Power | Speed | Mana |
+|---|---|---|---|---|
+| **Bakeneko** | 80 | 90 | 110 | 120 |
+| **Garuda** | 80 | 100 | 120 | 120 |
+
+Ten points of Power, ten of Speed, identical otherwise. They are in different
+types, so they will rarely be compared side by side, but they still read as the
+same build.
+
+The Abilities point in different directions and the stats should follow.
+**Metronome is free chaos** — Bakeneko does not need mana for it, so 120 Mana is
+there to let a Fire/Psychic character reach Pyroclasm *or* Mind Crush, which is
+a genuinely distinctive thing to be able to do. **First Flight is a tempo tool**,
+so Garuda wants Speed above everything.
+
+**Recommend Garuda to 130 or 140 Speed** and leaving Bakeneko where it is. That
+separates them on the axis that matters and puts the eagle back above the cat,
+which is where a player would expect it.
 
 ### Leshy is a worse World Turtle
 

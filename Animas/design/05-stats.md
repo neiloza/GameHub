@@ -1,244 +1,240 @@
 # Animas — Character Stat Spreads
 
-Twenty-five stat lines, deliberately lopsided. Totals run 320 to 460 against a
-500 ceiling, and inside each line the four numbers are as far apart as the
-character can bear.
+Twenty-five stat lines built on one rule: **every character does one degenerate
+thing as well as it can possibly be done, and is genuinely bad at everything
+else.**
+
+---
+
+## The design philosophy, stated plainly
+
+The safe version of this game gives every character a strong-but-answerable
+Ability and a rounded stat line, and the result is twenty-five characters nobody
+remembers. That is not what we are building.
+
+**Balance here is not the absence of broken things. It is the presence of
+twenty-five of them.** Kelpie should drown people who cannot escape, because that
+is the fantasy of a kelpie. The Grim Reaper should delete three characters in
+three turns, because that is the fantasy of Death. Gugalanna should hit like a
+god's bull. Every one of them should have a line on their sheet that makes a
+player say "wait, it can just do that?"
+
+What stops it being chaos is the second half of the rule. **The price of a
+degenerate strength is a genuinely crippling weakness**, and the weakness has to
+be real enough that a mistimed switch loses you the character outright:
+
+- **The Grim Reaper is slow and made of paper.** Thirty Speed and 150 hit points
+  means it acts after almost everything and dies to one powerful attack. Bring it
+  in at the wrong moment and it dies without killing anything.
+- **Kelpie has 40 Power and 30 Speed.** It cannot finish anything itself and it
+  cannot outrun anything. It has to commit to the drowning and take the beating
+  that comes with it.
+- **Baku has 20 Power.** A Mindspike deals twelve damage. It is physically
+  incapable of winning a fight; it can only make one unwinnable for the opponent.
+- **Raiju has 125 hit points.** The infinite-mana engine ends the moment
+  anything at all connects.
+
+So the counterplay is never "their Ability is not that strong." It is **"kill it
+before it does the thing, or bring the one character that answers it."** That is
+a better game, and it is a much better set of characters.
 
 ---
 
 ## How the four stats read
 
-**HP** is an index, not hit points. **Hit points = HP stat × 2.5**, so 100 is the
-250-hit-point baseline the damage formula assumes. World Turtle's 200 is 500 hit
-points; Phoenix's 50 is 125. Every stat is a multiple of ten, so every hit-point
-total lands on a multiple of twenty-five.
+**HP** is an index. **Hit points = HP stat × 2.5**, so 100 is the 250-hit-point
+baseline the damage formula assumes. World Turtle's 220 is 550 hit points;
+Raiju's 50 is 125.
 
-**Power** is the damage multiplier, divided by 100. Gugalanna's 150 multiplies
-every move by 1.5. Baku's 30 multiplies it by 0.3.
+**Power** is the damage multiplier ÷ 100. Roc's 170 multiplies every move by 1.7.
+Baku's 20 multiplies it by 0.2.
 
-**Speed** is turn order, high first. Nothing else.
+**Speed** is turn order, high first.
 
-**Mana** is the pool, and **the hundred is a wall.** At 100 or above a character
-can use its type's signature move; below it, never. Twelve of the twenty-five are
-above the line.
+**Mana** is the pool, and 100 is the wall — at or above it a character can use its
+type's signature move, below it never. **Thirteen of twenty-five clear it.**
 
----
-
-## The two rules these numbers follow
-
-### One. Stat total is the price of the Ability
-
-The stronger a character's Ability, the less stat it gets. This is the only
-lever that can balance Abilities against each other, because the Abilities
-themselves are all one-line effects that cannot be partially nerfed.
-
-| Tier | What the Ability does | Average total | Characters |
-|---|---|---|---|
-| **S** | Rewrites a rule of the game | **323** | Kelpie, Grim Reaper, Baku |
-| **A** | Wins a matchup on its own | **382** | ten characters |
-| **B** | Strong but conditional | **420** | eight characters |
-| **C** | Situational or break-even | **450** | Matsya, Otso, World Turtle, Roc |
-
-Kelpie denies switching outright and gets 320. Roc lowers one stat on entry and
-gets 460. That 140-point gap is the whole balancing act, and it is visible on the
-stat line rather than buried in the Ability text.
-
-### Two. Nothing is average at anything
-
-The old spreads clustered around 100 and read as noise. These do not. **Baku has
-30 Power and 30 Speed. Garuda has 160 Speed and 50 Mana. World Turtle has 200 HP
-and 20 Speed.** Every character on this roster is broken in at least one
-direction, and the ones that are not obviously broken are the ones whose Ability
-is doing the work.
+**HP and Speed follow the creature.** A player looking at a world-turtle expects
+it to be unkillable and glacial, and it is. **Power and Mana are the balancing
+levers**, and they swing hard: Power runs 20 to 170, Mana runs 20 to 200.
 
 ---
 
-## THE ROSTER, WEAKEST TOTAL TO STRONGEST
-
-### S tier — Abilities that rewrite the rules
+## THE EXECUTIONERS — they delete characters and die doing it
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **Kelpie** 💧 | 100 | **40** | **40** | **140** | **320** |
-| **Grim Reaper** 🌑 | **60** | 90 | **30** | **130** | **310** |
-| **Baku** 🔮 | 130 | **30** | **30** | **150** | **340** |
+| **Grim Reaper** 🌑 | **60** | **50** | **30** | **180** | **320** |
+| **Kelpie** 💧 | 100 | **40** | **30** | **160** | **330** |
 
-**Kelpie** is a drowning, not a fight. Forty Power means its attacks deal
-essentially nothing, forty Speed means it acts after almost everything, and 140
-Mana means it can afford Drown. The pattern is fixed and unpleasant: trap them,
-start the clock, absorb three turns of punishment, and take one character with
-you. It is the only character in the game whose best outcome is a one-for-one
-trade, and at 320 total it is priced for exactly that.
+**The Grim Reaper carries 180 Mana against a Death Touch that Harvest halves to
+50. That is three instant kills.** Three characters, gone, no counterplay but
+Unicorn's Miracle. That is the fantasy and it should not be clipped.
 
-**The Grim Reaper** has the lowest total in the game at 310, and 30 Speed is the
-reason it is survivable at all. It acts after everything alive except World
-Turtle, so it eats a full turn of damage before it does anything — on 150 hit
-points, which two ordinary attacks will end. What it has is 90 Power, enough to
-actually threaten, and 130 Mana against a Death Touch that Harvest halves to 50.
-**Two instant kills, if it lives long enough to use both.** The Reaper is not a
-character you play; it is a character you spend.
+The bill: **150 hit points and 30 Speed.** It acts after everything alive except
+World Turtle, so it eats a full turn before it does anything, and one Nightfall
+kills it outright. Realistically it gets one or two before it dies, and which one
+depends entirely on when you brought it in. Play it wrong and it dies having
+achieved nothing. **The Reaper is not a character you play, it is a character you
+spend.**
 
-**Baku** has the worst offensive stats in the game by a distance: 30 Power and 30
-Speed, which is 18 damage from a Mindspike, acting last, every turn. It is not a
-fighter. It is a tax, and 150 Mana lets it keep casting while the opponent cannot
-afford anything.
+**Kelpie has 160 Mana, which is two Drowns and change.** Undertow means the target
+cannot leave; Drown cannot be cleared by anything. That is two characters on a
+three-turn timer with no way out, and Maelstrom or Strangle can add more.
 
-### A tier — Abilities that win a matchup
+The bill: **40 Power and 30 Speed on 250 hit points.** It cannot finish anyone
+itself, it acts last, and it is not remotely bulky enough to sit there
+comfortably. It has to commit to the drowning and absorb whatever comes while the
+clock runs.
 
-| Character | HP | Power | Speed | Mana | Total |
-|---|---|---|---|---|---|
-| **Phoenix** 🔥/🌪️ | **50** | **130** | **140** | **40** | 360 |
-| **Sun Wukong** 👊 | **70** | 110 | **150** | **40** | 370 |
-| **Raiju** ⚡ | **50** | **70** | **150** | 110 | 380 |
-| **Hydra** 💧/🌿 | **160** | 120 | **40** | 60 | 380 |
-| **Airavata** 👊/⚡ | **170** | 70 | **30** | 110 | 380 |
-| **Unicorn** ✨ | **60** | **40** | 140 | **140** | 380 |
-| **Leshy** 🌿 | **180** | 50 | **30** | 100 | **360** |
-| **Gugalanna** 🌑/🌪️ | **160** | **150** | **40** | **40** | 390 |
-| **Xiuhcoatl** 🔥/⚡ | **60** | 120 | **150** | 60 | 390 |
-| **Loch Ness** 💧/🌑 | 150 | 90 | 60 | 100 | 400 |
-
-**Phoenix** is 125 hit points — it dies to a single Nightfall — and it does not
-matter, because Rebirth hands it a second body. 130 Power and 140 Speed twice
-over, and no mana for anything else.
-
-**Sun Wukong** has 40 Mana and cannot cast Frenzy, ever. Bloodlust is the win
-condition: 110 Power at 150 Speed, climbing by half again with every knockout,
-on 175 hit points that will not survive a mistake.
-
-**Raiju** is 125 hit points and 70 Power — joint-frailest on the roster, and one
-of its weakest attackers. What it has is 150 Speed and 110 Mana against a Battery
-that restores 30 a turn, three times the natural rate.
-
-**That combination makes Raiju the best Voltage carrier in the game, and it is
-worth watching.** Voltage costs 20 a use and doubles forever; Battery pays 30 a
-turn. Raiju is the one character that can hold the escalation open indefinitely
-while its own mana *rises*, and at 150 Speed it lands each doubling first. The
-brake is that 125 hit points does not survive a single Nightfall, so the whole
-plan ends the moment anything connects.
-
-**Hydra and Airavata are the two immovable objects.** Hydra is 400 hit points and
-120 Power at 40 Speed, healing half its bar every time it leaves. Airavata is 425
-hit points at 30 Speed, and First Answer doubles each of its four moves once —
-slow, enormous, and it hits back harder than it looks.
-
-**Unicorn** is 40 Power and 150 hit points: it cannot fight at all. What it has is
-140 Speed, 140 Mana for Resurrection, and Miracle, which means at full health it
-walks away from anything once.
-
-**Leshy** is the wall: 450 hit points, 30 Speed, 50 Power, and a total of 360
-that sits with the S tier rather than the A. It acts last against nearly
-everything alive and heals 45 a turn off that enormous bar, plus 10 mana on top
-of the natural regeneration.
-
-**At exactly 100 Mana it sits on the wall, and that exposes a rules problem with
-Bloom.** Bloom costs 100 and refills the user's mana to full, so for a character
-at exactly 100 it is free — cast it, drop to zero, refill to 100, cast it again
-next turn. Nothing stops that loop. Whether it matters depends entirely on a
-question the rules have never answered: **do stat changes stack?** If Bloom's
-doubling compounds, Leshy reaches 400 Power in four turns for no cost. If it does
-not, the loop is pointless and Bloom is fine.
-
-**Recommend capping all Power, Speed and Mana modification at double the base
-value from all sources combined.** That closes the Bloom loop, settles what
-happens when Resolve is used twice, and stops Damnation stacking with either. It
-is one sentence and it resolves a gap that touches eight moves.
-
-**Gugalanna** is the game's most polarized line — **150 Power and 40 Speed on 400
-hit points, with 40 Mana and no access to anything.** It cannot cast, it cannot
-move, and it hits harder than anything else on the roster while the drought runs.
-
-**Xiuhcoatl** is 150 hit points at 150 Speed: a pivot that deals 50 on every
-entry and cannot afford to stay.
-
-### B tier — strong, but conditional
+## THE WRECKING BALLS — enormous Power, no reach
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **Simargl** 🔥/✨ | 140 | 120 | 90 | 60 | 410 |
-| **Sphinx** 🔮/🌑 | 140 | 80 | **50** | **140** | 410 |
-| **Fafnir** 🔥 | **170** | 80 | **40** | **130** | 420 |
-| **Garuda** 🌪️ | **70** | **140** | **160** | **50** | 420 |
-| **Fenrir** 🌑/👊 | 130 | 110 | 140 | **40** | 420 |
-| **Thunderbird** ⚡/🌪️ | **80** | **130** | **150** | 60 | 420 |
-| **Bakeneko** 🔥/🔮 | 100 | 100 | **150** | 80 | 430 |
-| **Kitsune** 🔮/✨ | **60** | 100 | **160** | 110 | 430 |
+| **Gugalanna** 🌑/🌪️ | **170** | **170** | **30** | **20** | 390 |
+| **Roc** 🌪️/👊 | 150 | **170** | 90 | **20** | 430 |
+| **Garuda** 🌪️ | **80** | **160** | **160** | **30** | 430 |
+| **Phoenix** 🔥/🌪️ | **60** | **150** | **150** | **20** | 380 |
+| **Otso** 🌿/👊 | 160 | **150** | 50 | 60 | 420 |
+| **Simargl** 🔥/✨ | 130 | 140 | 100 | 40 | 410 |
 
-**Fafnir** is built entirely to survive its own Ability. Slow Burn needs three
-turns before Power doubles, so the dragon gets 425 hit points and 40 Speed to buy
-them. Eighty Power becoming 160 on turn four is the largest telegraphed swing in
-the game.
+**Gugalanna and Roc share the highest Power in the game at 170, and the lowest
+Mana at 20.** Neither can cast anything at all. Gugalanna is 425 hit points that
+cannot move at 30 Speed and stops all healing on the board while it stands there.
+Roc arrives, Intimidates, and swings a Haymaker for 204.
 
-**Garuda** is the purest striker on the roster: **140 Power and 160 Speed on 175
-hit points, with 50 Mana.** It goes first, it hits hardest, it cannot use Tempest,
-and it folds to one clean hit.
+**Garuda is 160 Power at 160 Speed, and 200 hit points.** It goes first, it hits
+hardest, and it dies to one clean connection. Thirty Mana means Tempest is a
+fiction.
 
-**Fenrir** needs to be hurt before it is dangerous, so it gets 325 hit points to
-bleed through. Below half, 110 Power becomes 220 — and 40 Mana means Berserk is
-the only signature it will ever have.
+**Otso is the purest expression of the philosophy on the roster.** Skip a turn,
+and Honey-Gorge doubles 150 Power to 300 — a Haymaker for 360, which one-shots
+anything alive. The bill is 50 Speed, so the whole board sees it coming and gets
+a free turn to answer it.
 
-**Thunderbird** has 60 Mana, which Storm Front doubles to 120 the moment it
-enters. It is the one character that crosses the hundred-mana wall by using its
-own Ability.
+**Phoenix is 150 hit points and 150 Power, twice.** Rebirth means the glass cannon
+gets a second barrel.
 
-**Kitsune** is 150 hit points at 160 Speed. Illusion collapses the instant
-anything connects, so the fox is built never to be touched.
-
-### C tier — situational Abilities, paid for in stats
+## THE ENGINES — they escalate until you stop them
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **World Turtle** 🌿/✨ | **200** | 70 | **20** | **150** | 440 |
-| **Matsya** 💧/✨ | **160** | **50** | 80 | **160** | 450 |
-| **Otso** 🌿/👊 | **170** | 130 | 60 | 90 | 450 |
-| **Roc** 🌪️/👊 | 150 | **150** | 110 | **50** | 460 |
+| **Raiju** ⚡ | **50** | **60** | **170** | **120** | 400 |
+| **Fenrir** 🌑/👊 | 130 | 130 | 140 | **30** | 430 |
+| **Sun Wukong** 👊 | 110 | 120 | 150 | **30** | 410 |
+| **Fafnir** 🔥 | 160 | 120 | **20** | 100 | 400 |
+| **Thunderbird** ⚡/🌪️ | 90 | 130 | 140 | 60 | 420 |
+| **Xiuhcoatl** 🔥/⚡ | **80** | 130 | 150 | 40 | 400 |
+| **Airavata** 👊/⚡ | **180** | 110 | **30** | 100 | 420 |
 
-**World Turtle holds three records: 500 hit points, 20 Speed, and the largest
-internal spread on the roster.** It is the world resting on a shell. It is also
-the best Inversion partner in the game by a distance — under a reversed turn
-order, the slowest character on the board acts first, every single turn.
+**Raiju is the best Voltage carrier in the game and it should stay that way.**
+Battery restores 30 a turn against a 20-mana Voltage that doubles forever, so
+Raiju's meter *rises* while the damage goes 50, 100, 200, 400, 800 — and at 170
+Speed, the fastest in the game, it lands every doubling first. That is an
+unanswerable escalation.
 
-**Matsya** is 50 Power and 160 Mana: the purest support line in the game. It
-reveals the opponent, heals the team, and raises the dead, and it cannot threaten
-anything.
+The bill is **125 hit points and 60 Power.** Raiju dies to one Nightfall. The
+entire engine ends the first time anything touches it, and it cannot defend
+itself in the meantime. Terrifying if unanswered, free if answered.
 
-**Roc carries elephants and has 50 Mana to prove it.** 150 Power at 110 Speed on
-375 hit points, with almost no access to its own type's toolkit. It arrives,
-Intimidates, and swings.
+**Fenrir at 130 Power becomes 260 under Berserk** — a Haymaker for 312, which
+kills anything on the board. It has 325 hit points specifically so it has a real
+window below half health to use them.
+
+**Fafnir is the slowest attacker in the game at 20 Speed**, and it needs three
+turns before Slow Burn doubles 120 Power to 240. Survive that and it has 100 Mana
+for a Pyroclasm at 240% Power: **720 damage**, three times what anything in the
+game has. It kills itself doing it. Worth it.
+
+**Sun Wukong at two knockouts is at 240 Power**, at three it is at 300, and with
+30 Mana it will never cast Frenzy. Bloodlust is the win condition and the only
+one it gets.
+
+**Airavata is 450 hit points that acts at 30 Speed**, and First Answer doubles
+each of its four moves the first time it is used. Four Haymakers at 264 each,
+delivered slowly, from something that will not fall over.
+
+## THE UNMOVABLE — they simply do not die
+
+| Character | HP | Power | Speed | Mana | Total |
+|---|---|---|---|---|---|
+| **World Turtle** 🌿/✨ | **220** | **40** | **10** | **160** | 430 |
+| **Leshy** 🌿 | **180** | **40** | **20** | 120 | **360** |
+| **Hydra** 💧/🌿 | **170** | 130 | **30** | 50 | 380 |
+| **Loch Ness** 💧/🌑 | 150 | 90 | 70 | 100 | 410 |
+| **Sphinx** 🔮/🌑 | 140 | 90 | 40 | **150** | 420 |
+
+**World Turtle is 550 hit points at 10 Speed.** It is the slowest thing in the
+game by a clear margin and the only character that genuinely cannot be removed by
+ordinary means — six consecutive Nightfalls at full Power. It also has 160 Mana
+and Unaware, so nothing you set up matters to it.
+
+**And it is the best Inversion partner ever designed**, because a reversed turn
+order puts the single slowest character on the board first, every turn, forever.
+
+**Hydra is 425 hit points and 130 Power at 30 Speed**, leaving at any health and
+returning at half again. You cannot out-damage it; you have to trap it.
+
+**Leshy has the lowest total on this list at 360** because 450 hit points that
+heal 45 a turn is already most of a character. Forty Power means it will never
+threaten anything.
+
+## THE ORACLES — they cannot fight at all
+
+| Character | HP | Power | Speed | Mana | Total |
+|---|---|---|---|---|---|
+| **Baku** 🔮 | 120 | **20** | **20** | **200** | 360 |
+| **Matsya** 💧/✨ | 140 | **30** | 70 | **190** | 430 |
+| **Unicorn** ✨ | 90 | **30** | 120 | **170** | 410 |
+| **Kitsune** 🔮/✨ | **60** | 110 | **160** | 100 | 430 |
+| **Bakeneko** 🔥/🔮 | **80** | 110 | **160** | 60 | 410 |
+
+**Baku holds the two lowest offensive stats in the game — 20 Power and 20
+Speed — against the highest Mana at 200.** A Mindspike from Baku deals twelve
+damage. It cannot kill anything, ever. What it does is double every cost on the
+other side of the board while casting freely itself, which means the opponent's
+signature moves cost 200 and simply do not exist.
+
+**Matsya at 190 Mana can cast Resurrection and Renewal in the same match** and
+still have change. At 30 Power it is completely harmless. It reads the opponent,
+heals the team, and raises the dead.
+
+**Unicorn is 30 Power and 170 Mana.** It survives anything once at full health,
+then brings a dead teammate back. It has never threatened anybody.
 
 ---
 
 ## The extremes
 
-| | Lowest | Highest |
-|---|---|---|
-| **HP** | Phoenix, Raiju — 50 *(125 hit points)* | World Turtle — 200 *(500)* |
-| **Power** | Baku — 30 | Gugalanna, Roc — 150 |
-| **Speed** | World Turtle, Grim Reaper — 20 and 30 | Garuda, Kitsune — 160 |
-| **Mana** | Phoenix, Sun Wukong, Gugalanna, Fenrir — 40 | Matsya — 160 |
+| | Lowest | Highest | Ratio |
+|---|---|---|---|
+| **HP** | Raiju — 50 *(125 hp)* | World Turtle — 220 *(550 hp)* | **4.4×** |
+| **Power** | Baku — 20 | Gugalanna, Roc — 170 | **8.5×** |
+| **Speed** | World Turtle — 10 | Raiju — 170 | **17×** |
+| **Mana** | Roc, Phoenix, Gugalanna — 20 | Baku — 200 | **10×** |
 
-Every stat now spans a factor of four or more from bottom to top. A 150-Power
-Gugalanna hits five times as hard as a 30-Power Baku. A 160-Speed Garuda acts
-eight times sooner than a 20-Speed World Turtle in any ordering that matters.
+Totals run 320 to 430, mean 402. **The average internal spread is 52**, up from
+44 on the previous pass and roughly double the version before that.
 
-**Thirteen of twenty-five can use a signature move.** Note who is *not* on that
-list: Garuda, Gugalanna, Roc, Sun Wukong, Fenrir and Phoenix — six of the hardest
-hitters in the game, all locked out of their own type's best move. That is not an
-accident. It is the shape of the whole roster: **the characters that hit hardest
-cannot reach the buttons that end matches.**
+**Six of the seven hardest hitters cannot use their own signature move.**
+Gugalanna, Roc, Garuda, Phoenix, Otso and Sun Wukong all sit at 60 Mana or below.
+The characters that hit hardest cannot reach the buttons that end matches, and
+the characters that can reach them — Baku at 20 Power, Matsya at 30, Unicorn at
+30, World Turtle at 40 — cannot hurt anybody.
+
+That is the shape of the whole roster in one sentence, and it fell out of the
+philosophy rather than being imposed on it.
 
 ## Open items
 
-1. **Does Power scale healing and percentage effects, or only damage?** It has to
-   be damage only. Otherwise a 150-Power character heals more than a 50-Power one
-   and Matsya, the dedicated healer at 50 Power, becomes the worst healer in the
-   game.
-2. **Speed ties.** Several characters share a value and the tiebreak cannot be
-   random. Cleanest options: the defender acts first, or whoever switched in more
-   recently acts last.
-3. **Is 125 hit points survivable?** Phoenix and Raiju both die to a single
-   Nightfall at 150 damage, before Power multipliers. That is the intended shape
-   for a glass cannon, but it may mean neither ever gets a turn against Dark.
-4. **Kelpie is now a one-for-one trade by design.** It has the Mana for Drown
-   again, but 40 Power and 40 Speed mean it does nothing else. If that trade
-   proves too good, the fix is Mana, not Power.
+1. **Power scales damage only, never healing or percentage effects.** Otherwise
+   Matsya at 30 Power becomes the worst healer in the game, which is absurd.
+2. **Stat modification needs a cap.** Fenrir at 260 Power, Otso at 300, Fafnir at
+   240 — these are intended. What is not settled is what happens when two
+   modifiers stack, or when Bloom is cast repeatedly by a character sitting on
+   exactly 100 Mana. Recommend a hard ceiling at double the base value from all
+   sources combined.
+3. **Speed ties.** Several characters share values and the tiebreak cannot be
+   random. Cleanest: the defender acts first.
+4. **This roster needs a turn limit more than the safe version did.** World Turtle
+   at 550 hit points against Leshy healing 45 a turn is a match with no ending.

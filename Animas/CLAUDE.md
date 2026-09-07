@@ -61,16 +61,23 @@ Proposed: stat spreads for all 25 characters (`design/05-stats.md`). HP is an
 index — hit points = HP stat x 2.5, so 100 is the 250-hit-point baseline. Power
 is the damage multiplier divided by 100.
 
-**Two rules govern the spreads.** Stat total is the price of the Ability: S-tier
-Abilities that rewrite a rule of the game average 327 total (Kelpie, Grim Reaper,
-Baku), A-tier 382, B-tier 420, and situational C-tier Abilities 450 (Matsya,
-Otso, World Turtle, Roc). And nothing is average at anything — every stat spans
-a factor of four or more across the roster, from Baku's 30 Power to Gugalanna's
-150, from World Turtle's 20 Speed to Raiju's 160.
+**The design philosophy is push, not clip.** Balance here is not the absence of
+broken things, it is the presence of twenty-five of them. Every character does
+one degenerate thing as well as it can possibly be done — Kelpie drowns two
+characters that cannot leave, the Grim Reaper carries three Death Touches, Otso
+triples to 300 Power, Raiju's Voltage escalates while its mana rises — and pays
+for it with a genuinely crippling weakness. The Reaper has 150 hit points and 30
+Speed. Kelpie has 40 Power. Baku has 20 Power and deals twelve damage a hit.
+Raiju dies to one Nightfall.
 
-Thirteen of twenty-five reach 100 Mana and can use their signature. The six hardest
-hitters — Garuda, Gugalanna, Roc, Sun Wukong, Fenrir, Phoenix — are all locked
-out of theirs. That is the shape of the roster, not an accident.
+**Do not "fix" a strong interaction by weakening the Ability.** The counterplay
+is meant to be killing the character before it acts, or bringing the one answer
+to it. Weaknesses are the balancing tool; Power and Mana are the levers, HP and
+Speed follow the creature's aesthetics.
+
+Totals run 320-430. Thirteen of twenty-five reach 100 Mana. Six of the seven
+hardest hitters cannot use their own signature, and the four characters with the
+most mana cannot hurt anybody.
 
 ## The rules that constrain every change
 

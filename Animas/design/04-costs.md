@@ -48,6 +48,12 @@ do not, so Parasite, Malediction, Snare, Sanctuary and Mend all move to 20%.
 | 40% | 100 |
 | 50% | 125 |
 
+**The base-five rule governs printed numbers, not computed ones.** Once Power and
+type effectiveness apply, results land wherever they land — a 75-damage Jab under
+Resolve's +50% is 112.5, and a 75 halved by a resistance is 37.5. **Computed
+damage rounds to the nearest five**, which keeps every number a player actually
+reads on the same grid as the ones printed on the moves.
+
 ### What the pace actually feels like
 
 | Attack | Damage | Turns to defeat a 250-HP character |
@@ -111,13 +117,18 @@ on priority.
 |---|---|---|---|---|
 | **🌑 Dark** | 75 | **150** @ **50** | **60** @ 40 | 3.00 · 1.50 |
 | **🔥 Fire** | **80** | 120 @ 30 | 40 @ 20 | 4.00 · 2.00 |
-| **👊 Fighting** | 75 | 120 @ **20** | 40 @ 20 | **6.00** · 2.00 |
+| **👊 Fighting** | 75 | 120 @ 40 | 40 @ 20 | 3.00 · 2.00 |
 | **🔮 Psychic** | 60 | 120 @ 40 | **60** @ 25 | 3.00 · 2.40 |
 | **⚡ Electric** | 75 | 110 @ 30 | 50 @ **5** | 3.67 · **10.00** |
 | **💧 Water** | 70 | 90 @ 40 | 50 @ **50** | 2.25 · **1.00** |
 | **🌿 Grass** | **55** | 90 @ 20 | 40 @ 15 | 4.50 · 2.67 |
 | **🌪️ Air** | 60 | 90 @ 25 | 50 @ 15 | 3.60 · 3.33 |
 | **✨ Light** | **50** | 90 @ 20 | **20** @ 5 | 4.50 · 4.00 |
+
+Sorted by value on the powerful attack: Grass and Light at 4.50, Fire 4.00,
+Electric 3.67, Air 3.60, then Fighting, Psychic and Dark all at 3.00, with Water
+last at 2.25. **A factor of two from top to bottom and six of nine types between
+3.00 and 4.00** — real differences, no outliers.
 
 **Dark hits hardest and pays most. Light hits softest and pays least.** Those two
 poles are clean. Dark's 150 into a double weakness is 300 before any Power
@@ -386,8 +397,8 @@ The cheapest type on the list, and it should be. Fighting pays by guessing wrong
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Jab** | 75 | **0** | The fallback. |
-| 2 | **Haymaker** | **120** | **20** | 6.00 damage per mana, half again the next-best type. Five casts from a full bar. Flagged above. |
-| 3 | **Snapkick** | **40** | 20 | Strong and cheap, second only to Wingbeat. |
+| 2 | **Haymaker** | **120** | **40** | 3.00 — mid-field now, down from a 6.00 that led the game by half again. |
+| 3 | **Snapkick** | **40** | 20 | Unchanged at 20. |
 | 4 | **Resolve** | — | **0** | The free status. **Reduced to +50% Power** — see the note below. |
 | 5 | **Proving Ground** | — | 30 | Field. |
 | 6 | **Riposte** | twice the damage taken | **20** | No longer free. Still does nothing at all if they do not attack. |
@@ -395,8 +406,34 @@ The cheapest type on the list, and it should be. Fighting pays by guessing wrong
 | 8 | **Flurry** | **60** | **40** | Damage and a Speed increase, priced as setup rather than as an attack. |
 | 9 | **Frenzy** | **150 per turn, three turns** | **100** | 450 total, but you cannot switch and everyone can see it coming. |
 
-**Free: Jab, Resolve.** Riposte now costs 20, so Fighting drops to two free moves
-and Dark is the only type left with a third.
+**Free: Jab, Resolve.**
+
+Haymaker at 40 brings Fighting from first in value to joint sixth, which is where
+it should have been. The type is no longer the cheapest way to deal damage in the
+game. Two things about it still stand out, though, and neither was touched by
+that change.
+
+**Jab plus Resolve is 110 free damage a turn, forever.** Resolve costs nothing,
+lasts until the character switches out, and adds 50% Power — so a Fighting
+character opens with Resolve and then hits for 110 with a free move, every turn,
+without ever spending a point. That is more than most types get from their paid
+powerful attack. It is arguably correct for the type that "pays by guessing
+wrong," and it is certainly the engine that makes Fighting feel like Fighting.
+But it means Fighting's floor is the highest in the game, and the floor is what
+matters when a match goes long.
+
+**Wind-Up at 250 is now a guaranteed one-shot.** After the rebase to 250 HP, a
+correct read with Wind-Up removes a baseline character outright — no chip, no
+follow-up, gone. The condition is genuinely hard: it resolves last and fails if
+anything touches the user, so it only lands when the opponent switches, sets up,
+or uses a status move. But when it lands there is no counterplay at all, and at
+25 mana it costs almost nothing to try.
+
+**Recommend Wind-Up at 200.** It still kills anything at or below baseline HP
+once chipped, it still makes a correct read decisive, and it stops making the HP
+stat irrelevant on the turn it connects. Alternatively leave 250 and treat it as
+the game's designated all-or-nothing button — but that is a decision worth
+making rather than inheriting from an HP rebase.
 
 **Resolve had to come down from doubling Power to +50%.** Doubling Power for
 free would make Fighting's slot-four status move strictly better than Bloom,
@@ -711,13 +748,13 @@ drifted. Each repricing pass has been per-type, so nothing has been checked
 against the whole board since the first one. Three types are clearly ahead and one
 is possibly behind.
 
-**Fighting is the strongest type in the game and it is not close.** Haymaker at
-120 for 20 mana is 6.00 damage per mana against a field high of 4.50. Wind-Up at
-250 for 25 is 10.00. Free Jab hits for 75, the joint-hardest free attack, and
-free Resolve adds 50% Power on top of it. Fighting has the best value at the top
-of its curve, the best value at the bottom, and one of the two cheapest kits.
-**Haymaker at 30 is the single fix**, and it still leaves the type spammable at
-three casts a bar.
+**Fighting is tuned.** Haymaker moved from 20 to 40, dropping the type from 6.00
+damage per mana — first in the game by half again — to 3.00, joint sixth. Its kit
+now costs 275, mid-pack. What remains is the free Jab-plus-Resolve engine at 110
+a turn, which is the highest floor in the game, and Wind-Up at 250, which is a
+guaranteed one-shot on a correct read. Both are discussed in the Fighting section
+above; both are arguably correct for the type, and neither is a value problem any
+more.
 
 **Electric is second, and for stranger reasons.** Its whole kit costs 165 mana —
 45% of Water's. Jolt at 50 damage for 5 mana costs less than the 10 a character
@@ -750,9 +787,10 @@ which is exactly what a type built on taxation should look like. Dark hits
 hardest, pays most, and has the best free pair in the game — a Dark character
 with zero mana still deals 125 a turn between Ripshade and Malediction.
 
-**Four single-number changes would put the whole board within tolerance:**
-Haymaker 20 → 30, Jolt 5 → 20, Gift 10 → 30, Crosscurrent 50 → 15. Nothing
-structural, nothing that touches a type's identity.
+**Three single-number changes remain:** Jolt 5 → 20, Gift 10 → 30,
+Crosscurrent 50 → 15. Nothing structural, nothing that touches a type's identity.
+Wind-Up 250 → 200 is a fourth if you want the HP stat to keep mattering on the
+turn it lands.
 
 ---
 

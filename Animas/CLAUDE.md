@@ -25,12 +25,12 @@ Grass and Air are the bottom three.
 
 **Attack costs vary widely by type** — powerful attacks run 20 to 50 mana,
 priority attacks 5 to 50. Dark hits hardest and pays most (150 @ 50); Light hits
-softest and pays least (90 @ 20). Several numbers are flagged in
-`04-costs.md` as probably unintended: Electric's Jolt at 50 @ 5 costs less than
-a turn of regeneration and so is free forever, Fighting's Haymaker at 120 @ 20
-is 6.00 damage per mana against a field high of 4.50, and Water's Crosscurrent
-at 50 @ 50 is worse than its own free standard attack. Air also lost its
-priority identity to Jolt and currently has no compensating claim.
+softest and pays least (90 @ 20). Fighting was tuned by moving Haymaker from
+20 to 40 mana, dropping it from 6.00 damage per mana to 3.00 and out of first
+place. Two numbers are still flagged in `04-costs.md` as probably unintended:
+Electric's Jolt at 50 @ 5 costs less than a turn of regeneration and so is free
+forever, and Water's Crosscurrent at 50 @ 50 is worse than its own free standard
+attack. Wind-Up at 250 is also now a guaranteed one-shot at baseline HP.
 
 **Light's Gift at 10 mana is the most urgent balance problem in the game.** A full 250-point heal for ten mana, on top of a free 50-point
 Mend, is by far the best healing rate in the game. Light's whole kit costs 245 mana, the cheapest of any type. Recommend

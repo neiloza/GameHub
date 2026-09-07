@@ -71,8 +71,8 @@ else.*
 4. **Amplify** — The user's mana is doubled.
 5. **Storm Front** — *FIELD.* Every character's mana is doubled.
 6. **Flicker** — Damage, then the user switches out.
-7. **Voltage** — Damage doubles with each consecutive use, to a maximum of three. Resets if the user switches out or uses anything else.
-8. **Short Circuit** — Destroys all of the target's mana. Damage scales with the amount destroyed.
+7. **Voltage** — Damage doubles with each consecutive use, without limit. Resets if the user switches out or uses anything else.
+8. **Short Circuit** — Damage, and the target loses all of its mana.
 9. **Overload** — Consumes all of the user's mana. The damage equals the mana consumed.
 
 ## 🌪️ AIR — speed, mobility, and position

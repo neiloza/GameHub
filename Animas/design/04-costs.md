@@ -251,23 +251,49 @@ oppressive, this is the line to cut, not its attacks.
 | 3 | **Jolt** | **50** | **5** | Cheaper than the 10 mana you regenerate each turn, so it is free in perpetuity. Flagged above. |
 | 4 | **Amplify** | — | **0** | The free status. A move that generates mana could not cost mana anyway. |
 | 5 | **Storm Front** | — | 30 | Field. |
-| 6 | **Flicker** | 65 | 20 | Below a standard attack, because you also get a free pivot. |
-| 7 | **Voltage** | 50 → 100 → 200 | 15 | Cheap, and the escalation costs you flexibility besides — you are locked into one move to keep it. |
-| 8 | **Short Circuit** | 35 + half the mana destroyed | 30 | Mana stats are multiples of ten, so half is always a clean multiple of five. Against a full 100 bar, 85 damage and the target has nothing left. |
+| 6 | **Flicker** | **70** | **30** | Damage and a free pivot in one action. |
+| 7 | **Voltage** | **50 → 100 → 200 → 400 → …** | **20** | No cap. Doubles every consecutive use, forever. See the note below. |
+| 8 | **Short Circuit** | **100** | **50** | Flat damage now, plus the target loses every point of mana it had. Against a 150-mana character that is the whole build erased. |
 | 9 | **Overload** | **equal to the mana consumed** | **your entire bar** | The one signature with no fixed price. See the note below. |
 
 **Free: Arc, Amplify.**
 
-**Voltage needs its three-use cap or it breaks the game.** Uncapped, the fourth
-use is 400 and the fifth is 800, both larger than Pyroclasm, for zero mana. Capped
-at three it tops out at 200 — roughly Meltdown, reached over three fully
-committed turns during which you cannot switch or do anything else. That is a
-fair trade and a genuinely interesting one.
+### Uncapped Voltage is a four-turn kill clock
+
+Voltage now doubles forever at 20 mana a use: 50, 100, 200, 400, 800, 1600, and
+it does not stop.
+
+Cumulative damage after each turn is 50, 150, 350, 750. **A 500-HP character dies
+during the fourth consecutive Voltage** — and by the fifth the move alone hits for
+800, more health than anything in the game has.
+
+Mana is not the brake. At 20 a use against 10 regenerated, the net drain is 10 a
+turn, so a full bar sustains ten uses. **Commitment is the brake.** Voltage resets
+if the user switches out or uses any other move, so those four turns must be four
+turns of doing nothing else, opening at 50 damage — the weakest attack in
+Electric's kit. You are behind for three turns to win on the fourth.
+
+**The opponent switching does not reset it**, and that is the part to decide on
+purpose. A Voltage at 800 one-shots each character as it arrives, and at that
+size resistance stops meaning anything: a half-resist still takes 400, a
+quarter-resist still takes 200. From the fifth use onward the type chart is
+switched off.
+
+The real answers are to kill it, force it out with Riptide or Cyclone, or stun it
+with Mind Stun — if being stunned counts as not using a move, which needs a
+ruling either way. Provoke does nothing, since Voltage is a damaging move, and
+Guard blocks one hit without resetting the count.
+
+This is a genuinely good mechanic and the purest form of the escalation idea
+Electric was built around. If it ever needs a brake, **the elegant one is to
+escalate the cost alongside the damage** — 20, 40, 80, 160 — which self-caps at
+about five uses with no arbitrary rule, and fits the type whose every move touches
+the mana economy.
 
 **Overload is now a pure conversion: it consumes everything you have and hits
 for exactly that number.** This is the best version of the move and it makes the
 whole type cohere, but the break-even is worth stating plainly. Fired off a flat
-100-mana bar it deals 100 damage — less than a Fulminate, which costs 35. Cast
+100-mana bar it deals 100 damage — less than a Fulminate, which costs 30. Cast
 naked, it is a bad move.
 
 It only justifies itself on top of Electric's own doubling. Amplify is free and
@@ -280,6 +306,11 @@ So Overload is not an attack. It is the payoff for a two- or three-turn
 engine, and it turns Amplify and Storm Front from filler into combo pieces —
 which is exactly what the resource type's signature should do. If it plays weak
 in practice, the fix is a 1.5× multiplier on the conversion, not a rewrite.
+
+Short Circuit reads differently now that Mana is a real stat with a hard
+breakpoint. At 100 damage for 50 mana it is poor value as an attack — 2.00, near
+the bottom of the board. You are not buying the damage. You are buying the fact
+that a 130-mana character with a signature move loaded suddenly has neither.
 
 **Overload is also the only move in the game whose damage comes from a stat
 other than Power.** A 150-mana Electric character Overloads for 150 before any

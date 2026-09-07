@@ -19,12 +19,19 @@ types by design; Light, Grass and Water are the bottom three.
 
 **Attack costs vary widely by type** — powerful attacks run 20 to 50 mana,
 priority attacks 5 to 50. Dark hits hardest and pays most (150 @ 50); Light hits
-softest and pays least (90 @ 20). Three numbers in the current pass are flagged
-in `04-costs.md` as probably unintended: Electric's Jolt at 50 @ 5 costs less
-than a turn of regeneration and so is free forever, Fighting's Haymaker at
-120 @ 20 is 6.00 damage per mana against a field high of 4.50, and Water's
-Crosscurrent at 50 @ 50 is worse than its own free standard attack. Air also
-lost its priority identity to Jolt and currently has no compensating claim.
+softest and pays least (90 @ 20). Several numbers are flagged in
+`04-costs.md` as probably unintended: Electric's Jolt at 50 @ 5 costs less than
+a turn of regeneration and so is free forever, Fighting's Haymaker at 120 @ 20
+is 6.00 damage per mana against a field high of 4.50, and Water's Crosscurrent
+at 50 @ 50 is worse than its own free standard attack. Air also lost its
+priority identity to Jolt and currently has no compensating claim.
+
+**Voltage is uncapped and is now a four-turn kill clock.** It doubles forever at
+20 mana a use — 50, 100, 200, 400, 800 — killing a 500-HP character on the
+fourth consecutive cast and switching off the type chart from the fifth. Mana is
+not the brake; commitment is, since any other move or a switch resets it. An
+opponent switching does NOT reset it. This is deliberate. If a brake is ever
+needed, escalate the cost alongside the damage rather than capping the count.
 
 **Two moves are free in every type:** the standard attack (slot 1) and the
 status move (slot 4). That is the guarantee. Fighting and Dark each get a third —

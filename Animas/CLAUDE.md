@@ -75,9 +75,9 @@ is meant to be killing the character before it acts, or bringing the one answer
 to it. Weaknesses are the balancing tool; Power and Mana are the levers, HP and
 Speed follow the creature's aesthetics.
 
-Totals run 310-460. Thirteen of twenty-five reach 100 Mana. Six of the seven
-hardest hitters cannot use their own signature, and the four characters with the
-most mana cannot hurt anybody.
+Totals run 275-460. Fourteen of twenty-five reach 100 Mana. All seven of the hardest hitters are locked
+out of their own signature, and the four characters with the most mana cannot
+hurt anybody.
 
 ## The rules that constrain every change
 

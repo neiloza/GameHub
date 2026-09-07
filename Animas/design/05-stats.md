@@ -52,7 +52,7 @@ Baku's 20 multiplies it by 0.2.
 **Speed** is turn order, high first.
 
 **Mana** is the pool, and 100 is the wall — at or above it a character can use its
-type's signature move, below it never. **Thirteen of twenty-five clear it.**
+type's signature move, below it never. **Fourteen of twenty-five clear it.**
 
 **HP and Speed follow the creature.** A player looking at a world-turtle expects
 it to be unkillable and glacial, and it is. **Power and Mana are the balancing
@@ -96,29 +96,48 @@ on the roster, and being permanently last is the entire price.
 
 | Character | HP | Power | Speed | Mana | Total |
 |---|---|---|---|---|---|
-| **Gugalanna** 🌑/🌪️ | **170** | **170** | **30** | **20** | 390 |
+| **Gugalanna** 🌑/🌪️ | **170** | **120** | **80** | **60** | 430 |
 | **Roc** 🌪️/👊 | 120 | **170** | 90 | **20** | 400 |
-| **Garuda** 🌪️ | **80** | **160** | **160** | **30** | 430 |
-| **Phoenix** 🔥/🌪️ | **30** | **150** | **150** | **20** | 350 |
+| **Garuda** 🌪️ | **80** | **100** | **120** | **120** | 420 |
+| **Phoenix** 🔥/🌪️ | **30** | **90** | **105** | **50** | 275 |
 | **Otso** 🌿/👊 | 160 | **150** | 50 | 60 | 420 |
-| **Simargl** 🔥/✨ | 130 | 140 | 100 | 40 | 410 |
 
-**Gugalanna and Roc share the highest Power in the game at 170, and the lowest
-Mana at 20.** Neither can cast anything at all. Gugalanna is 425 hit points that
-cannot move at 30 Speed and stops all healing on the board while it stands there.
-Roc arrives, Intimidates, and swings a Haymaker for 204.
+**Roc has the highest Power in the game at 170 and the lowest Mana at 20.** It
+cannot cast anything at all. It arrives, Intimidates, and swings a Haymaker for
+204, and that is the entire character.
 
-**Garuda is 160 Power at 160 Speed, and 200 hit points.** It goes first, it hits
-hardest, and it dies to one clean connection. Thirty Mana means Tempest is a
-fiction.
+**Gugalanna is 425 hit points and 120 Power at 80 Speed** — no longer immobile,
+which makes it a far more dangerous thing to be standing opposite. It stops all
+healing on the board while it is there, and 60 Mana means it does that without
+ever reaching for its own signature.
+
+**Garuda changed shape entirely.** At 100 Power and 120 Speed it is no longer the
+game's fastest, hardest striker — but **120 Mana puts Tempest in its hands**, and
+Tempest erases the whole board on both sides. Garuda is now the eagle that
+resets the game rather than the one that wins the exchange, which is a better fit
+for Vishnu's mount than a pure damage stat ever was. Two hundred hit points still
+means one clean connection ends it.
 
 **Otso is the purest expression of the philosophy on the roster.** Skip a turn,
 and Honey-Gorge doubles 150 Power to 300 — a Haymaker for 360, which one-shots
 anything alive. The bill is 50 Speed, so the whole board sees it coming and gets
 a free turn to answer it.
 
-**Phoenix is 75 hit points and 150 Power, twice.** One Cinder ends it — and then
-Rebirth hands the glass cannon a second barrel. 
+**Phoenix has the lowest total on the roster at 275, and it is not close.** Seventy-five
+hit points, 90 Power, and 50 Mana — it dies to a single Cinder and it cannot
+afford anything. What it has is 105 Speed and **two lives**, so the real total is
+550 spread across two bodies that each hit for 90 and vanish. It is the only
+character whose stat line is deliberately half a character.
+
+**Simargl is now the one character on the roster with no extreme at all** — 90,
+80, 110, 90. In a design built on polarization that is itself a statement: the
+winged guard dog is the generalist, and Hearthfire healing it off every landed
+attack is the whole reason it can afford to be one. If any character here feels
+out of place, it is this one, and that is deliberate.
+
+| Character | HP | Power | Speed | Mana | Total |
+|---|---|---|---|---|---|
+| **Simargl** 🔥/✨ | 90 | 80 | 110 | 90 | 370 |
 
 ## THE ENGINES — they escalate until you stop them
 
@@ -214,18 +233,23 @@ then brings a dead teammate back. It has never threatened anybody.
 | | Lowest | Highest | Ratio |
 |---|---|---|---|
 | **HP** | Phoenix, Xiuhcoatl — 30 *(75 hp)* | World Turtle — 250 *(625 hp)* | **8.3×** |
-| **Power** | Baku — 20 | Gugalanna, Roc — 170 | **8.5×** |
+| **Power** | Baku — 20 | Roc — 170 | **8.5×** |
 | **Speed** | World Turtle — 10 | Raiju — 170 | **17×** |
-| **Mana** | Roc, Phoenix, Gugalanna — 20 | Baku — 200 | **10×** |
+| **Mana** | Roc — 20 | Baku — 200 | **10×** |
 
-Totals run 310 to 460, mean 392. **The average internal spread is 53**, up from 44 two passes ago and roughly
+Totals run 275 to 460, mean 388. **The average internal spread is 53**, up from 44 two passes ago and roughly
 double the version before that.
 
-**Six of the seven hardest hitters cannot use their own signature move.**
-Gugalanna, Roc, Garuda, Phoenix, Otso and Sun Wukong all sit at 60 Mana or below.
-The characters that hit hardest cannot reach the buttons that end matches, and
-the characters that can reach them — Baku at 20 Power, Matsya at 30, Unicorn at
-30, World Turtle at 40 — cannot hurt anybody.
+**All seven of the hardest hitters are locked out of their own signature move.**
+Roc, Otso, Fenrir, Thunderbird, Xiuhcoatl, Hydra and Gugalanna sit at 60 Mana or
+below without exception. And the four characters with the most mana — Baku at 20
+Power, Matsya at 30, Unicorn at 30, World Turtle at 40 — cannot hurt anybody at
+all.
+
+**The characters that hit hardest cannot reach the buttons that end matches, and
+the characters that can reach them are harmless.** That is now true without a
+single exception, and it was never designed — it fell out of pricing each
+character's fantasy honestly.
 
 That is the shape of the whole roster in one sentence, and it fell out of the
 philosophy rather than being imposed on it.

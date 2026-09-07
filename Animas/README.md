@@ -32,9 +32,10 @@ Ability and the stat line, not the movepool.
 | [`design/01-types.md`](design/01-types.md) | The type chart and the nine field effects |
 | [`design/02-moves.md`](design/02-moves.md) | All 88 moves |
 | [`design/03-characters.md`](design/03-characters.md) | The roster of 25 |
+| [`design/04-costs.md`](design/04-costs.md) | Mana cost and move power for all 88 moves |
 
 ## Status
 
 Design. The types, the chart, the field effects, the full move list, and the
-roster are locked. Stats, the damage formula, and mana economy are the next
-body of work — no numbers have been set.
+roster are locked. Move power and mana costs have a first pass. Character stat
+lines, the damage formula, and the Power-to-damage conversion are next.

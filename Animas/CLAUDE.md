@@ -8,8 +8,12 @@ Locked: the nine types, the type chart, the nine field effects, all 88 moves,
 the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.
 
-Not started: stat values, the damage formula, mana costs and regeneration,
-stat budgets per character.
+First pass done: move power and mana cost for all 88 moves (`design/04-costs.md`),
+against a 100-mana bar, 100-power standard attack, and 10 mana regenerated per
+turn.
+
+Not started: character stat lines, the damage formula, the Power-to-damage
+conversion.
 
 ## The rules that constrain every change
 

@@ -101,7 +101,7 @@ else.*
 6. **Riposte** — Reflects the damage the user takes this turn back at the attacker, doubled.
 7. **Wind-Up** — Resolves last. If the user took no damage this turn, massive damage. If it was hit, the move fails.
 8. **Flurry** — Damage, and the user's Speed increases.
-9. **Frenzy** — Very powerful attack. Locked in for three turns. Cannot switch.
+9. **Frenzy** — Very powerful attack, three turns running. Cannot switch.
 
 ## 🔮 PSYCHIC — mind bending and rule breaking
 

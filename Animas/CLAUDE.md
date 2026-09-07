@@ -9,20 +9,22 @@ the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.
 
 First pass done: damage and mana cost for all 88 moves (`design/04-costs.md`).
-Baseline HP is 500; a standard attack does 65-80, a powerful attack 100-125, a
-priority attack 35-50, and every character regains 10 mana per turn. **Every
+Baseline HP is 500; a standard attack does 50-80, a powerful attack 90-150, a
+priority attack 20-60, and every character regains 10 mana per turn. **Every
 number in the game is a multiple of five, and every Mana stat a multiple of
 ten** — no 68s, no 42s. Mental arithmetic at the table is a design requirement. Power
 is a multiplier (roughly 0.8-1.3) applied to those base numbers, then type
 effectiveness on top. Fire, Dark, Fighting and Electric are the four offensive
 types by design; Light, Grass and Water are the bottom three.
 
-**Attack costs vary by type.** Powerful attacks cost 25 (Light) to 45
-(Electric); priority attacks 15 to 25. Running dry is trivial for Light, whose
-attacks were nearly free, and catastrophic for Electric, whose attacks were the
-expensive part — which is precisely why Electric's free status move manufactures
-mana. Fire is the exception to the curve: Pyre at 30 makes it tied for the
-best value in the game, a deliberate reversal recorded in `04-costs.md`.
+**Attack costs vary widely by type** — powerful attacks run 20 to 50 mana,
+priority attacks 5 to 50. Dark hits hardest and pays most (150 @ 50); Light hits
+softest and pays least (90 @ 20). Three numbers in the current pass are flagged
+in `04-costs.md` as probably unintended: Electric's Jolt at 50 @ 5 costs less
+than a turn of regeneration and so is free forever, Fighting's Haymaker at
+120 @ 20 is 6.00 damage per mana against a field high of 4.50, and Water's
+Crosscurrent at 50 @ 50 is worse than its own free standard attack. Air also
+lost its priority identity to Jolt and currently has no compensating claim.
 
 **Two moves are free in every type:** the standard attack (slot 1) and the
 status move (slot 4). That is the guarantee. Fighting and Dark each get a third —

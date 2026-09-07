@@ -71,75 +71,75 @@ and undo damage, and mana is the only brake either one has.
 ## The three attacks, by type
 
 Standard attacks are free everywhere. The other two are priced by type, and the
-price tracks the damage — **a type that hits harder pays a premium for it, and a
-type that hits softly gets a discount.**
+spread is now wide — from 20 mana to 50 on the powerful attack, and from 5 to 50
+on priority.
 
-| Type | Standard | Powerful | Priority | Why |
+| Type | Standard | Powerful | Priority | Damage per mana |
 |---|---|---|---|---|
-| **⚡ Electric** | 75 | **125** @ **45** | 40 @ **25** | The hardest-hitting attack in the game and by far the most expensive. Electric is the type that manufactures mana, so it is the type that can afford it. |
-| **🔥 Fire** | **80** | 120 @ **30** | 40 @ 20 | The best-value powerful attack in the game after the Fire repricing. See the note below. |
-| **🌑 Dark** | 75 | 115 @ 35 | 45 @ 20 | Hits hard at a fair price. Dark's real costs are paid in blood elsewhere. |
-| **👊 Fighting** | 75 | 115 @ 30 | 45 @ 15 | Cheap and strong everywhere. Fighting pays by guessing wrong, not by spending. |
-| **🔮 Psychic** | 70 | 110 @ **40** | 35 @ **25** | Expensive, mid-power, and the worst priority on the board. Psychic taxes everything and does not want to go fast. |
-| **🌪️ Air** | **60** | **90** @ 25 | **50** @ **15** | The weakest attacks in the game paired with the best priority. Air is a speed type, not a power type. |
-| **💧 Water** | 70 | 105 @ 35 | 40 @ 20 | Middling everywhere. Water's mana belongs to Drown and Wellspring, not to its attacks. |
-| **🌿 Grass** | 65 | 100 @ 30 | 35 @ 15 | Cheap and weak. Grass's damage comes from Parasite ticking every turn, not from attacking. |
-| **✨ Light** | 65 | **100** @ **25** | 35 @ 15 | The weakest attacks in the game and the cheapest, so the mana is still there for Renewal and Resurrection. |
+| **🌑 Dark** | 75 | **150** @ **50** | **60** @ 40 | 3.00 · 1.50 |
+| **🔥 Fire** | **80** | 120 @ 30 | 40 @ 20 | 4.00 · 2.00 |
+| **👊 Fighting** | 75 | 120 @ **20** | 40 @ 20 | **6.00** · 2.00 |
+| **🔮 Psychic** | 60 | 120 @ 40 | **60** @ 25 | 3.00 · 2.40 |
+| **⚡ Electric** | 75 | 110 @ 30 | 50 @ **5** | 3.67 · **10.00** |
+| **💧 Water** | 70 | 90 @ 40 | 50 @ **50** | 2.25 · **1.00** |
+| **🌿 Grass** | **55** | 90 @ 20 | 40 @ 15 | 4.50 · 2.67 |
+| **🌪️ Air** | 60 | 90 @ 25 | 50 @ 15 | 3.60 · 3.33 |
+| **✨ Light** | **50** | 90 @ 20 | **20** @ 5 | 4.50 · 4.00 |
 
-### What the price curve actually does
+**Dark hits hardest and pays most. Light hits softest and pays least.** Those two
+poles are clean. Dark's 150 into a double weakness is 300 before any Power
+multiplier — over half a health bar from one ordinary attack — and it costs half
+a bar of mana to do it. Light's whole attacking kit costs 25 mana combined,
+leaving everything for Renewal and Resurrection.
 
-Sorted by damage per mana on the powerful attack, best value to worst:
+Psychic's shape is unusual and worth naming: a weak free attack at 60, then 120
+and 60 on the paid ones. It is the type whose fallback is worst and whose
+purchases are best, which reads correctly for a type built on paying a tax.
 
-| | Type | Damage per mana |
-|---|---|---|
-| 1 | 🔥 Fire | **4.00** |
-| 1 | ✨ Light | **4.00** |
-| 3 | 👊 Fighting | 3.83 |
-| 4 | 🌪️ Air | 3.60 |
-| 5 | 🌿 Grass | 3.33 |
-| 6 | 🌑 Dark | 3.29 |
-| 7 | 💧 Water | 3.00 |
-| 8 | ⚡ Electric | 2.78 |
-| 9 | 🔮 Psychic | 2.75 |
+### Three numbers that break something
 
-**Running out of mana means something completely different depending on what you
-are playing.** A dry Light character has lost almost nothing — its attacks were
-nearly free and its free Mend still works. A dry Electric character has lost its
-entire game, because its attacks were the expensive part. That asymmetry is what
-makes Amplify matter: Electric is the only type that manufactures mana, and the
-only one that genuinely cannot function without it. The expensive attacks are not
-a penalty on Electric — they are the reason its free status move exists.
+These are implemented as specified, but each one has a consequence that is
+probably not intended.
 
-**Air buys the best priority attack in the game for the lowest price** — 15 mana
-for 50 damage, a rate of 3.33, better than most types get on their powerful
-attack. Psychic sits at the opposite corner at 1.40, because a type that reverses
-turn order should not also be good at going first.
+**1. Electric's Jolt at 50 damage for 5 mana is effectively free forever.**
+Regeneration is 10 a turn, so a character can cast Jolt every single turn and
+still *gain* 5 mana doing it. That means an Electric character can act first,
+every turn, permanently, at no cost. It removes Speed from the game for anyone
+facing Electric, it removes the reason to ever use the free 75-damage Arc, and
+it takes Air's identity away wholesale. It is also the best damage-per-mana in
+the game at 10.00, nearly triple the next entry. **Recommend 50 @ 20**, which is
+still cheap and still fast, or **30 @ 5** if the intent was a cheap chip rather
+than a real attack.
 
-**Air is now the weakest attacking type in the game, deliberately.** Standard 60,
-powerful 90, and a signature of only 100 — a number six other types beat with
-their ordinary slot-two attack. All three are the lowest on the board. What Air
-buys instead is initiative: the best priority attack, free permanent priority
-from Jet Stream, doubled Speed from Slipstream, two ways to leave the field on
-its own terms, a phaze, and a signature that wipes the board clean. It wins by
-controlling *when* things happen, never by hitting harder. Tempest at a hundred
-mana for a hundred damage is the clearest statement of that — a terrible rate,
-and you are not paying for the damage.
+**2. Fighting's Haymaker at 120 for 20 mana is 6.00, half again the next-best
+type.** Five casts from a full bar, 600 damage, from a type that also has three
+free moves and the cheapest total cost of admission in the game. Frenzy at 150
+per turn does not power-creep it, as you said — but it does not need to, because
+Haymaker already is the power creep. **Recommend 120 @ 30**, matching Fire, which
+keeps it spammable at three casts a bar without making every other type's
+powerful attack look overpriced.
 
-### One inconsistency the Fire repricing created
+**3. Water's Crosscurrent at 50 damage for 50 mana is worse than doing nothing.**
+Water's free standard attack does 70. Crosscurrent does 50 for half a mana bar.
+The only thing it buys is going first, and no priority attack in the game is
+worth half a bar. At 1.00 it is the worst rate on the board by a third. **Almost
+certainly meant 15 or 20** — at 50 @ 15 it sits level with Air and reads as a
+deliberate Water tool rather than a trap.
 
-**Fire is now tied for the best value in the game at 4.00, and it used to be
-seventh at 3.00.** Pyre at 30 mana costs less than Dark, Water, or Psychic
-pay for less damage. That reverses the price curve for the type that hits
-hardest, and it means the flavor argument I had been making — that Fire's mana
-attacks are poor value on purpose, steering you toward paying in health instead —
-no longer holds. Pyre is now simply the efficient option.
+### And one identity that is now gone
 
-This may be exactly what you want, since Fire is the game's premier offensive
-type and cheap access to that is a real identity. But it is a reversal rather
-than a tweak, so it is worth being deliberate about. **If you want the old curve
-back, Pyre at 35 does it** and leaves everything else alone. Fulminate
-went to 125 to keep Electric ahead on damage, since at 120 it would have been
-paying 45 for exactly what Fire pays 30 for.
+**Air no longer owns priority, and it has nothing else.** Two turns ago Air gave
+up all of its damage — weakest standard, weakest powerful, a signature of 100 —
+in exchange for being the type that acts first. It is now third in priority
+value behind Electric and Light, tied with Electric on priority damage at 50, and
+beaten outright on raw priority damage by both Psychic and Dark at 60.
+
+So Air currently has the worst attacks in the game and no compensating claim.
+Jet Stream, Slipstream, Skimstrike, Skyfall, and Cyclone are still real tools,
+but the *attack* that was supposed to say "this type goes first" no longer does.
+Fixing Jolt as recommended above restores it by itself. If Jolt stays at 5 mana,
+Air needs something else — the obvious candidate is dropping Wingbeat to 5 or 10
+mana as well, so Air at least ties the cheapest.
 
 ---
 
@@ -150,7 +150,7 @@ Four different prices for the same product, and none of them is mana.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Cinder** | 80 | **0** | The fallback. |
-| 2 | **Pyre** | 120 | 30 | Tied for the best value in the game. |
+| 2 | **Pyre** | 120 | 30 | 4.00 — solid value, no longer the best now that Fighting exists at 6.00. |
 | 3 | **Sear** | 40 | 20 | Weak and overpriced. Fire is not fast. |
 | 4 | **Scorch** | **40**, then 10% per turn (50) | **0** | The only status move in the game that also deals damage — and it is free. See the note below. |
 | 5 | **Wildfire** | 10% to all, per turn | 30 | Field. |
@@ -187,8 +187,8 @@ rare. Worth watching; if Pyre stops being played, Meltdown is why.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Surge** | 70 | **0** | The fallback. |
-| 2 | **Tsunami** | 105 | 35 | Middling. Water's mana belongs to Drown. |
-| 3 | **Crosscurrent** | 40 | 20 | Priority. |
+| 2 | **Tsunami** | **90** | **40** | Middling. Water's mana belongs to Drown. |
+| 3 | **Crosscurrent** | **50** | **50** | Half a mana bar for less damage than the free standard attack. Flagged above. |
 | 4 | **Strangle** | — | **0** | The free status, and the purest expression of what Water is for. |
 | 5 | **Maelstrom** | — | 30 | Field. |
 | 6 | **Wellspring** | heals 40% (200) | **50** | Healing is Light's job. Water pays a premium to borrow it. |
@@ -207,9 +207,9 @@ that character, and a Kelpie built under the breakpoint cannot use it at all.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Bramble** | 65 | **0** | The fallback. |
-| 2 | **Sunspear** | 100 | 30 | Cheap and weak. Grass's damage is Parasite, not this. |
-| 3 | **Burr** | 35 | 15 | Cheap, and it needs to be — it barely does anything. |
+| 1 | **Bramble** | **55** | **0** | The fallback. |
+| 2 | **Sunspear** | **90** | **20** | Cheap and weak. Grass's damage is Parasite, not this. |
+| 3 | **Burr** | **40** | **15** | Cheap, and it needs to be — it barely does anything. |
 | 4 | **Parasite** | 15% per turn (75), healed to the user | **0** | The free status, and Grass's real damage output. |
 | 5 | **Overgrowth** | heals 10% to all, per turn | 30 | Field. |
 | 6 | **Germinate** | 100 | 25 | Uncounterable, and you still act on the turn it lands. |
@@ -231,8 +231,8 @@ oppressive, this is the line to cut, not its attacks.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Arc** | 75 | **0** | The fallback. |
-| 2 | **Fulminate** | **125** | **45** | The hardest-hitting powerful attack in the game and the most expensive. Electric manufactures mana, so it can afford it. |
-| 3 | **Jolt** | 40 | **25** | The most expensive priority attack in the game. |
+| 2 | **Fulminate** | **110** | **30** | Electric flipped from expensive-and-strongest to cheap-and-middling. |
+| 3 | **Jolt** | **50** | **5** | Cheaper than the 10 mana you regenerate each turn, so it is free in perpetuity. Flagged above. |
 | 4 | **Amplify** | — | **0** | The free status. A move that generates mana could not cost mana anyway. |
 | 5 | **Storm Front** | — | 30 | Field. |
 | 6 | **Flicker** | 65 | 20 | Below a standard attack, because you also get a free pivot. |
@@ -301,14 +301,14 @@ The cheapest type on the list, and it should be. Fighting pays by guessing wrong
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Jab** | 75 | **0** | The fallback. |
-| 2 | **Haymaker** | 115 | 30 | The best raw value in the game: near-top damage at a low price. |
-| 3 | **Snapkick** | 45 | 15 | Strong and cheap, second only to Wingbeat. |
+| 2 | **Haymaker** | **120** | **20** | 6.00 damage per mana, half again the next-best type. Five casts from a full bar. Flagged above. |
+| 3 | **Snapkick** | **40** | 20 | Strong and cheap, second only to Wingbeat. |
 | 4 | **Resolve** | — | **0** | The free status. **Reduced to +50% Power** — see the note below. |
 | 5 | **Proving Ground** | — | 30 | Field. |
 | 6 | **Riposte** | twice the damage taken | **0** | **Free.** Does nothing at all if they do not attack. That is the cost. |
 | 7 | **Wind-Up** | **175** | 25 | Fails outright if anything touches you. |
 | 8 | **Flurry** | 65 | 20 | Damage and a Speed increase. |
-| 9 | **Frenzy** | **140 per turn, three turns** | **100** | 420 total, but you cannot switch and everyone can see it coming. |
+| 9 | **Frenzy** | **150 per turn, three turns** | **100** | 450 total, but you cannot switch and everyone can see it coming. |
 
 **Free: Jab, Resolve, Riposte.**
 
@@ -331,9 +331,9 @@ stopping it.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Mindspike** | 70 | **0** | The fallback. |
-| 2 | **Mindshatter** | 110 | **40** | Psychic pays a tax on everything. |
-| 3 | **Premonition** | 35 | **25** | The worst priority rate in the game. A type that reverses turn order should not also be good at going first. |
+| 1 | **Mindspike** | **60** | **0** | Deliberately poor. Psychic wants you to pay. |
+| 2 | **Mindshatter** | **120** | 40 | Psychic's paid attacks are strong; its free one is the weakest of any offensive type. |
+| 3 | **Premonition** | **60** | 25 | Tied with Umbra for the hardest-hitting priority attack in the game. |
 | 4 | **Force Swap** | — | **0** | The free status. No damage, no board effect on its own — pure repositioning. |
 | 5 | **Inversion** | — | **35** | The only field above 30. Reversing turn order rewrites the game's most fundamental rule. |
 | 6 | **Prophecy** | 125 | 30 | Uncounterable, so it pays over a normal powerful attack. |
@@ -352,8 +352,8 @@ type was written around, and it should be affordable.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Ripshade** | 75 | **0** | The fallback. |
-| 2 | **Nightfall** | 115 | 35 | Nearly Fire's damage for well under Fire's price. |
-| 3 | **Umbra** | 45 | 20 | Above average — Dark ambushes. |
+| 2 | **Nightfall** | **150** | **50** | The hardest-hitting ordinary attack in the game, at the highest ordinary price. |
+| 3 | **Umbra** | **60** | **40** | Tied with Premonition for the hardest-hitting priority attack, and it pays for it. |
 | 4 | **Malediction** | **15% per turn (75)** | **0** | The free status. Reduced from 25% — see the warning below. |
 | 5 | **Snare** | 15% (75) on switch-in | 30 | Field. |
 | 6 | **Damnation** | — | 30 | Half your health and you can never leave, but it also doubles Mana — which is a route to the breakpoint and should not be free. |
@@ -382,9 +382,9 @@ character.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Lumenlash** | 65 | **0** | The fallback. |
-| 2 | **Solar Flare** | 100 | **25** | The weakest powerful attack in the game, and the cheapest — the mana is meant for Renewal. |
-| 3 | **Glimmer** | 35 | **15** | The cheapest attack in the game. |
+| 1 | **Lumenlash** | **50** | **0** | The weakest attack in the game. |
+| 2 | **Solar Flare** | **90** | **20** | Tied for the weakest powerful attack and the cheapest. The mana is meant for Renewal. |
+| 3 | **Glimmer** | **20** | **5** | A token. Twenty damage is 4% of a health bar — this buys the turn order, not a hit. |
 | 4 | **Mend** | **heals 25% (125)** | **0** | The free status. Halved from 50% — see the note below. |
 | 5 | **Sanctuary** | heals 15% (75) on switch-in | 30 | Field. |
 | 6 | **Gift** | heals to full in two turns | **40** | A 500-point heal. Telegraphed, but not free. |

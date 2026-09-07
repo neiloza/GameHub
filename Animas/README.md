@@ -38,6 +38,18 @@ Ability and the stat line, not the movepool.
 
 ## Status
 
-Design. The types, the chart, the field effects, the full move list, and the
-roster are locked. Damage, mana costs and character stat lines all have a first
-pass. Playtesting and the remaining rules questions are next.
+Design, and a playable first build.
+
+The types, the chart, the field effects, the full move list and the roster are
+locked. Damage, mana costs and character stat lines all have a first pass.
+
+**The game itself lives at [neiloza/Animas](https://github.com/neiloza/Animas)** —
+an installable, offline-capable web app with every type, move, character and
+Ability implemented, an opponent to play against, and a team builder. Its tests
+re-derive the tables in `design/` from its own data, so the two cannot drift
+apart quietly.
+
+Playtesting is next, and it is now something a person can actually do rather
+than something the documents can only reason about. The remaining rules
+questions are listed in that repository's `CLAUDE.md`, each with the answer the
+code currently uses, so settling one is a sentence rather than a specification.

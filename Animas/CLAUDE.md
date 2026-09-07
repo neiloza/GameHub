@@ -2,7 +2,32 @@
 
 ## Status
 
-Design only. No code. The docs in `design/` are the source of truth.
+Design, plus a playable first build. **The docs in `design/` are still the
+source of truth** — the app transcribes them, not the other way round.
+
+**The game is built and playable**: [neiloza/Animas](https://github.com/neiloza/Animas).
+An installable, offline-capable, zero-dependency web app carrying all nine
+types, all 88 moves, all 25 characters with their Abilities, the full 5v5
+format, an opponent, a team builder and a codex. Its test suite re-derives the
+tables in `design/` from its own data, so a transcription drift fails loudly and
+names the character.
+
+Two things that build wants from this repo, both written up in full in that
+repo's `CLAUDE.md`:
+
+- **Thirteen rulings the docs deliberately leave open** — Enigma's scale,
+  Forewarning's scale, how Metronome fires, what Struggle costs, and so on. The
+  code has picked an answer for each, and the longer those run unchallenged the
+  more they read as the design.
+- **Six places the docs contradict themselves or the data.** Three are
+  document-versus-document (Mind Crush's splash, Snare and Sanctuary's
+  percentage, Cometfall's form) and are resolved in favour of `04-costs.md`.
+  Three are claims the numbers do not support: Gugalanna is **not** the only
+  quarter-resistance (there are five, and three of them are to Fighting); a
+  standard attack into a quadruple weakness is **not** always a one-shot (four
+  of the nine fall short of 250); and `05-stats.md` and `06-damage-audit.md`
+  both carry stale prose beside their current tables. The tables are right; the
+  paragraphs around them are one or more passes out of date.
 
 Locked: the nine types, the type chart, the nine field effects, all 88 moves,
 the neutral pool, the system rules for persistent state, and the roster of 25

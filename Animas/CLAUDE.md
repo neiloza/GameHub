@@ -26,6 +26,12 @@ is 6.00 damage per mana against a field high of 4.50, and Water's Crosscurrent
 at 50 @ 50 is worse than its own free standard attack. Air also lost its
 priority identity to Jolt and currently has no compensating claim.
 
+**Light's Gift at 10 mana is the most urgent balance problem in the game.** Five
+hundred points of healing for ten mana, on top of a free 125-point Mend, makes a
+Light character unkillable by any single attacker while still affording its own
+offence. Light's whole kit costs 245 mana, the cheapest of any type. Recommend
+Gift at 30; see `04-costs.md`.
+
 **Voltage is uncapped and is now a four-turn kill clock.** It doubles forever at
 20 mana a use — 50, 100, 200, 400, 800 — killing a 500-HP character on the
 fourth consecutive cast and switching off the type chart from the fifth. Mana is

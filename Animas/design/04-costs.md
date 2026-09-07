@@ -459,24 +459,54 @@ character.
 | 3 | **Glimmer** | **20** | **5** | A token. Twenty damage is 4% of a health bar — this buys the turn order, not a hit. |
 | 4 | **Mend** | **heals 25% (125)** | **0** | The free status. Halved from 50% — see the note below. |
 | 5 | **Sanctuary** | heals 15% (75) on switch-in | 30 | Field. |
-| 6 | **Gift** | heals to full in two turns | **40** | A 500-point heal. Telegraphed, but not free. |
-| 7 | **Lifedraw** | 75, healed back in full | 25 | Damage and healing in one action. |
-| 8 | **Renewal** | your whole living team to full | **80** | Once a match, realistically. |
+| 6 | **Gift** | heals to full in two turns | **10** | A 500-point heal for ten mana. See the warning below. |
+| 7 | **Lifedraw** | 75, healed back in full | **20** | 150 points of swing for twenty mana. |
+| 8 | **Renewal** | your whole living team to full | **60** | Up to 2,500 points of healing for sixty mana. |
 | 9 | **Resurrection** | a dead teammate returns | **100** | The only effect in the game that undoes a death. |
 
 **Free: Lumenlash, Mend.**
 
-**Mend had to be halved to 25%.** A free 250-point heal every turn is an
-unbreakable loop: it out-heals every attack in the game including doubly
-effective ones, and a character that cannot be killed but also cannot kill turns
-the match into a timer. At 125 it out-sustains a standard attack and loses to
-any powerful one, which is the right line. Provoke shuts it off entirely, and so
-does Gugalanna.
+**Light is now the cheapest type in the game and has by far the strongest
+sustain, and the two together are a problem.**
 
-**Gift moved to 40 for the same reason.** It heals to full — 500 points. Two
-turns of warning does not make that free, especially stacked with a free Mend.
-Lifedraw at 25 is the middle rung: 77 damage and 77 healing in one action, real
-sustain that still requires you to be winning the damage race.
+Its entire kit costs 245 mana. Every other type is well above that; Water alone
+is over 370. And here is what Light gets for it, per turn:
+
+| Move | Healing | Mana |
+|---|---|---|
+| **Mend** | 125 | **0** |
+| **Gift** | 500, two turns later | **10** |
+| **Lifedraw** | 75, plus 75 damage | 20 |
+| **Renewal** | up to 2,500 across the team | 60 |
+| **Resurrection** | a dead character returns | 100 |
+
+**Gift at 10 mana is the specific break.** Five hundred points of healing for ten
+mana is fifty healed per point — the best rate in the game by an order of
+magnitude, and roughly what Nightfall charges for a third of that in damage. A
+Light character can cast it every third turn indefinitely and use free Mend in
+between, which is 125 a turn plus a full heal every third turn, for ten mana a
+cycle.
+
+Run the arithmetic against the game's hardest ordinary attack. Nightfall does 150
+a turn. Mend alone absorbs 125 of it. Gift covers the remaining 25 a turn several
+times over. **A Light character cannot be killed by any single attacker in the
+game** short of Pyroclasm, Death Touch or Drown, and it does not need to spend
+anything to achieve that.
+
+The reasons this was survivable when Mend went free no longer hold. Then, the
+argument was that a character which cannot be killed also cannot kill, so the
+match becomes a timer. But the game still has no turn limit, and Light now has
+enough mana left over — 245 for the whole kit — to run Solar Flare and Lifedraw
+alongside the healing and actually win the damage race while stalling.
+
+**Recommend Gift at 30.** It stays cheap, it stays the type's signature comeback,
+and it stops being castable on a loop. Provoke and Gugalanna remain the only hard
+answers to Light either way, and one character and one neutral move is thin
+coverage for the strongest sustain engine in the game.
+
+**Mend was already halved to 25% to survive being free**, which was the right
+call and remains so. The rest of Light's numbers are fine; it is the one line
+above that changes the type from strong to unanswerable.
 
 ---
 
@@ -484,21 +514,27 @@ sustain that still requires you to be winning the damage race.
 
 | # | Move | Effect | Mana |
 |---|---|---|---|
-| 1 | **Guard** | Blocks everything this turn | **20, doubling** |
+| 1 | **Guard** | Blocks everything this turn | **60** |
 | 2 | **Focus** | Restores 50 mana | **0** |
-| 3 | **Run** | Speed increases | **0** |
+| 3 | **Run** | Speed increases | **20** |
 | 4 | **Provoke** | Damaging moves only, three turns | 30 |
 | 5 | **Echo** | Repeats their last move, three turns | 30 |
 | 6 | **Sleep** | Full health, two turns helpless | 40 |
-| 7 | **Clear Sight** | Self-only cleanup | 15 |
+| 7 | **Clear Sight** | Self-only cleanup | **20** |
 
-Guard's price doubles with each consecutive use — 20, 40, 80, then 160, at which
-point it is uncastable. That fourth-use overshoot past 100 is the one
-intentional exception to the ceiling, and it is precisely how the move stops
-working.
+**Guard at 60 makes its doubling clause dead, and it should be removed.** The
+rule was that the price doubles with each consecutive use — at a base of 20 that
+gave 20, 40, 80, 160, a genuine escalating decision. At 60 the second use costs
+120, which is above the game's ceiling and therefore uncastable. The doubling no
+longer does anything except sit in the rules text confusing people. **Recommend
+cutting the clause and leaving Guard as a flat 60** — a once-per-mana-cycle
+button, which is what the number already makes it.
 
-Focus restoring 50 for free is the release valve for the whole economy. It is
-what gets a starved character back into the game, so it can never cost anything.
+**Focus is now the only free move outside the type pools**, and that matters
+more than it did. Run costing 20 and Clear Sight costing 20 means a character
+that is completely dry has exactly one universal option: restore 50 mana. That
+is a cleaner release valve than three free neutrals were, and it makes Focus a
+near-automatic pick on any build that spends heavily.
 
 ---
 
@@ -636,10 +672,11 @@ character that reaches its ultimate on a schedule. Leshy's Photosynthesis adds
 
 ## What still needs deciding
 
-1. **Does the game have a turn limit?** Free Mend makes a Light character very
-   hard to kill without being able to kill anything itself. Without a cap or a
-   tiebreaker, two defensive teams can produce a match that never ends. This is
-   now the most urgent unanswered rule in the game.
+1. **Gift at 10 mana, and the turn limit behind it.** Five hundred points of
+   healing for ten mana lets a Light character stall indefinitely on free Mend
+   plus a full heal every third turn, while still affording attacks. With no turn
+   limit and only Provoke and Gugalanna as answers, this is the single most
+   urgent number in the game. Recommend 30.
 2. **Voltage must cap at three uses.** Uncapped it reaches 400 and then 800 for
    zero mana, which is larger than the game's most expensive move.
 3. **Can Amplify and Storm Front push a character above its own maximum?** They

@@ -96,7 +96,10 @@ hurt anybody.
    defender's team order — never a random one.
 2. **Every type is 2 strong / 2 weak / 2 resists.** The chart was rebalanced
    from scratch to satisfy this. Changing one cell breaks it; re-verify the
-   full 9×9 before committing any chart edit.
+   full 9x9 before committing any chart edit. The backbone rule is that a type
+   resists what it is strong against, with exactly two exceptions (Dark resists
+   Fighting, Light resists Grass) forced by the one mutual pair, Dark and Light.
+   Fire > Grass > Water > Fire is the elemental triangle and must hold.
 3. **Abilities are the character layer.** Moves are shared within a type. A
    character is its Ability and its stats.
 4. **Type determines movepool, so type must match temperament.** A gentle

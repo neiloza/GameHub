@@ -3,53 +3,73 @@
 ## PART TWO — THE TYPE CHART
 
 Every type is strong against exactly two, weak to exactly two, and resists exactly
-two. The backbone rule is that **a type resists what it is strong against**, with
-two exceptions noted below.
+two. The backbone rule is that **a type resists what it is strong against.**
 
-**Fire** is strong against Grass and Dark. Weak to Water and Fighting. Resists
-Grass and Light.
+| Type | Strong against | Weak to | Resists |
+|---|---|---|---|
+| 🔥 **Fire** | Grass, Dark | Water, Fighting | Grass, Dark |
+| 💧 **Water** | Fire, Air | Grass, Electric | Fire, Air |
+| 🌿 **Grass** | Water, Electric | Fire, Air | Water, Electric |
+| ⚡ **Electric** | Water, Air | Grass, Psychic | Water, Air |
+| 🌪️ **Air** | Grass, Fighting | Water, Electric | Grass, Fighting |
+| 👊 **Fighting** | Fire, Light | Air, Psychic | Fire, Light |
+| 🔮 **Psychic** | Electric, Fighting | Dark, Light | Electric, Fighting |
+| 🌑 **Dark** | Psychic, Light | Fire, Light | Fighting, Psychic |
+| ✨ **Light** | Dark, Psychic | Fighting, Dark | Grass, Psychic |
 
-**Water** is strong against Fire and Fighting. Weak to Electric and Air. Resists
-Fire and Fighting.
+### The grid
 
-**Grass** is strong against Electric and Air. Weak to Fire and Air. Resists Water
-and Electric.
+| ATK → DEF | Fire | Water | Grass | Elec | Air | Fight | Psy | Dark | Light |
+|---|---|---|---|---|---|---|---|---|---|
+| **Fire** | — | ½ | **2** | — | — | ½ | — | **2** | — |
+| **Water** | **2** | — | ½ | ½ | **2** | — | — | — | — |
+| **Grass** | ½ | **2** | — | **2** | ½ | — | — | — | ½ |
+| **Electric** | — | **2** | ½ | — | **2** | — | ½ | — | — |
+| **Air** | — | ½ | **2** | ½ | — | **2** | — | — | — |
+| **Fighting** | **2** | — | — | — | ½ | — | ½ | ½ | **2** |
+| **Psychic** | — | — | — | **2** | — | **2** | — | ½ | ½ |
+| **Dark** | ½ | — | — | — | — | — | **2** | — | **2** |
+| **Light** | — | — | — | — | — | ½ | **2** | **2** | — |
 
-**Electric** is strong against Water and Air. Weak to Grass and Psychic. Resists
-Water and Air.
+### The elemental triangle
 
-**Air** is strong against Water and Grass. Weak to Grass and Electric. Resists
-Water and Fighting.
+**Fire beats Grass, Grass beats Water, Water beats Fire.** That is the most
+intuitive relationship in the genre and the chart did not have it until now —
+Grass used to beat Electric and Air, so the three elements did not close a loop.
+They do now, and a player who has never read a word of this document will guess
+all three correctly.
 
-**Fighting** is strong against Fire and Light. Weak to Water and Psychic. Resists
-Fire and Light.
+**Electric threads through the same corner.** Grass beats Electric, Electric beats
+Water, Water beats Fire, Fire beats Grass — a four-cycle around the elemental
+quarter of the chart, with the triangle inside it.
 
-**Psychic** is strong against Electric and Fighting. Weak to Dark and Light.
-Resists Electric and Fighting.
+### One mutual pair
 
-**Dark** is strong against Psychic and Light. Weak to Fire and Light. Resists
-Fighting and Psychic.
+**Dark and Light** are strong against each other and neither resists the other.
+That is the one matchup where whoever moves first simply wins, and there is only
+one of them now — the old chart had a second in Grass and Air.
 
-**Light** is strong against Dark and Psychic. Weak to Fighting and Dark. Resists
-Grass and Psychic.
+### Two exceptions to the backbone rule
 
-**The two mutual pairs.** Grass and Air are strong against each other, and neither
-resists the other. Dark and Light are strong against each other, and neither
-resists the other. These are the two matchups where whoever moves first wins.
+Every type resists exactly what it is strong against, with two additions:
+**Dark resists Fighting**, and **Light resists Grass.** Both exist because Dark
+and Light are locked into a mutual pair and cannot resist each other, so each
+needed one free pick to reach two.
 
-**Two exceptions to the backbone rule.** Fire resists Light without being strong
-against it — a torch is not troubled by more light. Air resists Fighting without
-being strong against it.
+Seven of nine types are now perfectly regular. The old chart needed four
+exceptions; this one needs two.
 
 ### The second layer
 
 The chart is only half the matchup system. Underneath it, kits invalidate other
 kits in ways no chart shows:
 
-- **Grass beats Water mechanically** even though the chart calls it neutral. Leech
-  Seed keeps draining while Grass is Bound and out of mana, and Water's whole win
-  condition assumes that denying you actions matters.
-- **Fighting beats Air mechanically** — Proving Ground turns off priority, which
+- **Grass beats Water twice over.** The chart now says so outright, and the kits
+  agree — Parasite keeps draining while Grass is Strangled and out of mana, and
+  Water's whole win condition assumes that denying you actions matters. This is
+  the single most lopsided matchup in the game.
+- **Fighting still beats Air mechanically, even now that Air beats it on the
+  chart.** Proving Ground turns off priority, which
   deletes Jet Stream and most of Air's tempo — even though Air resists Fighting on
   the chart. Chart and kit pull opposite directions, which makes that matchup
   close and skill-dependent rather than decided at team preview.

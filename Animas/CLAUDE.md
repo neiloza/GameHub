@@ -47,6 +47,24 @@ paragraph in `01-types.md`'s "second layer" and every matchup sentence in
 The roster's quarter-resistances are now Phoenix and Simargl to Grass, Sphinx and
 Gugalanna to Fighting.
 
+**Two cells of that chart are unresolved, and it needs one word to settle.** The
+table given in conversation on 2026-09-08 and the committed chart in
+`01-types.md` differ on the two exception resists — the conversation has Dark
+resisting Fighting and Light resisting Grass; the document has Dark resisting
+Electric and Light resisting Fire, with a written argument for why the other
+arrangement was backwards. Every other cell agrees. **The app currently plays
+the conversation's version.** Under the document's version, no character
+quarter-resists Fighting at all, and Simargl loses its quarter-resistance to
+Grass.
+
+**`07-battle-rules.md` and `08-tier-list.md` arrived on this branch during the
+same day and the app does not implement them yet.** The battle rules change the
+engine in five places — no mana regeneration with a half-refund on switching
+out, a different end-of-turn order, Abilities visible and the bench hidden,
+Forewarning revealing moves only, Counter and Wind-Up at minus one priority —
+and the tier list is written entirely against those mana rules. The app's
+`CLAUDE.md` lists each delta against what is implemented.
+
 **Twenty-six moves and seven Abilities were renamed** so that a name says what
 the thing does. The full table:
 

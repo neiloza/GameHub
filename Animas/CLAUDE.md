@@ -29,6 +29,76 @@ repo's `CLAUDE.md`:
   both carry stale prose beside their current tables. The tables are right; the
   paragraphs around them are one or more passes out of date.
 
+## Decisions taken with the designer on 2026-09-08
+
+The playable build implements all of these. The chart, the move list and the
+roster tables in `design/` have been updated to match; **the prose around them
+has not**, and is out of date wherever it argues for a number that has since
+moved. Each item says which document still needs its paragraphs revisited.
+
+**The type chart was replaced wholesale.** The new table is in `01-types.md`.
+Water is strong against Air rather than Fighting and resists Fire and Air; Grass
+is strong against Water rather than Air; Air is strong against Fighting rather
+than Water and resists Grass rather than Water; Fire resists Dark rather than
+Light. Dark and Light are now the only mutual pair, and Air over Fighting is the
+hardest counter on the board — double going out, half coming back. Every
+paragraph in `01-types.md`'s "second layer" and every matchup sentence in
+`03-characters.md` (Gugalanna's write-up in particular) describes the old chart.
+The roster's quarter-resistances are now Phoenix and Simargl to Grass, Sphinx and
+Gugalanna to Fighting.
+
+**Twenty-six moves and seven Abilities were renamed** so that a name says what
+the thing does. The full table:
+
+| Was | Now | | Was | Now |
+|---|---|---|---|---|
+| Pyre | Inferno | | Riposte | Counter |
+| Pyroclasm | Supernova | | Frenzy | Rampage |
+| Crosscurrent | Waterjet | | Ripshade | Shadowstrike |
+| Strangle | Whirlpool | | Umbra | Blindside |
+| Sunspear | Thornspear | | Malediction | Curse |
+| Graft | Transplant | | Lumenlash | Sunbeam |
+| Sap | Entangle | | Glimmer | Flash |
+| Fulminate | Thunderstrike | | Gift | Blessing |
+| Draft | Gust | | Lifedraw | Lifesteal |
+| Skimstrike | Flyby | | Focus | Meditate |
+| Skyfall | Skydive | | Run | Sprint |
+| Resolve | Adrenaline | | Clear Sight | Cleanse |
+| Proving Ground | Level Ground | | Metronome | Wild Card |
+
+Abilities: Pressure is **Burden**, Regenerator is **Regrow**, Unaware is
+**Indifference**, First Answer is **Novelty**, Intimidate is **Overshadow**,
+Illusion is **False Face**, Enigma is **Riddle**. Every one of those is either a
+verbatim Pokémon ability name or a word that does not say what the Ability does.
+
+**Adrenaline doubles Power** rather than adding half. `04-costs.md` argues at
+length that a free slot-four doubling is strictly better than Bloom, Grass's
+hundred-mana signature; that consequence is now live and the paragraphs making
+the argument are stale.
+
+**Bloodlust doubles Sun Wukong's Power for every character he defeats, and the
+stacking cap does not apply to it.** Two kills is ×4, three is ×8. It is the one
+exemption from the cap, because under it the Ability would read "doubles once,
+ever". World Turtle's Indifference still ignores it entirely.
+
+**Curse ticks 10%** of the target's max HP per turn; the 20% self-sacrifice to
+set it is unchanged.
+
+**Snare and Sanctuary are 15%.** That is off the multiple-of-five grid at 250
+hit points — 37.5, which the app rounds to 40 — so the printed percentage and
+the dealt number no longer agree exactly. `04-costs.md`'s percentage rule
+paragraph is stale.
+
+**Cometfall is 20% of the target's max HP**, confirmed — the `05-stats.md`
+table's "flat 50" is the same number at baseline and the percentage is the
+general form.
+
+**Wild Card is a move, not an Ability.** Bakeneko's Ability is now Trickster,
+whose whole text is that it alone can take Wild Card as one of its four. Wild
+Card costs no mana — the slot is the price — and cannot roll itself.
+
+## Locked and first-pass, as before
+
 Locked: the nine types, the type chart, the nine field effects, all 88 moves,
 the neutral pool, the system rules for persistent state, and the roster of 25
 characters with their Abilities.

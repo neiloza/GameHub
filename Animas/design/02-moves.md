@@ -19,44 +19,44 @@ neutral pool.
 ## 🔥 FIRE — high damage, slow burn
 
 *Four different prices for the same product: Burnout costs your future damage,
-Immolation costs your health, Meltdown costs your tempo, Pyroclasm costs your life.*
+Immolation costs your health, Meltdown costs your tempo, Supernova costs your life.*
 
 1. **Cinder** — Standard damage. No cost.
-2. **Pyre** — Heavy damage. High mana.
+2. **Inferno** — Heavy damage. High mana.
 3. **Sear** — Light damage. Always moves first.
 4. **Scorch** — Damage, and the target is Burned: it loses 10% of max HP each turn.
 5. **Wildfire** — *FIELD.* Every character on the field loses 10% of max HP each turn.
 6. **Burnout** — Massive damage. The user's Power is halved afterward.
 7. **Immolation** — Heavy damage. The user takes 40% recoil.
 8. **Meltdown** — Massive damage. The user must skip its next turn to recharge.
-9. **Pyroclasm** — Enormous damage. The user faints.
+9. **Supernova** — Enormous damage. The user faints.
 
 ## 💧 WATER — control and strangulation
 
-*Strangle, then Drown. Trap them, start the clock, hold the door.*
+*Whirlpool, then Drown. Trap them, start the clock, hold the door.*
 
 1. **Surge** — Standard damage. No cost.
 2. **Tsunami** — Heavy damage. High mana.
-3. **Crosscurrent** — Light damage. Always moves first.
-4. **Strangle** — The target cannot switch out.
+3. **Waterjet** — Light damage. Always moves first.
+4. **Whirlpool** — The target cannot switch out.
 5. **Maelstrom** — *FIELD.* No character on either side can switch out.
 6. **Wellspring** — Restore 40% of max HP.
 7. **Submerge** — Untargetable this turn. Strike next turn.
 8. **Riptide** — The target is forced out. The next character in their team order replaces it, and **takes damage on arrival.**
-9. **Drown** — The target faints in three turns if it is still on the field. **Immune to Clear Sight and Tempest.**
+9. **Drown** — The target faints in three turns if it is still on the field. **Immune to Cleanse and Tempest.**
 
 ## 🌿 GRASS — sustain, growth, and the handoff
 
 *Stall, grow, pass. Its damage keeps ticking even while it is trapped and broke.*
 
 1. **Bramble** — Standard damage. No cost.
-2. **Sunspear** — Heavy damage. High mana.
+2. **Thornspear** — Heavy damage. High mana.
 3. **Burr** — Light damage. Always moves first.
 4. **Parasite** — The target loses 20% of max HP each turn. The user heals that amount.
 5. **Overgrowth** — *FIELD.* Every character on the field heals 10% of max HP each turn.
-6. **Germinate** — Plant an attack. It detonates for heavy damage next turn, and the user still acts normally in the meantime. **Immune to Clear Sight and Tempest.**
-7. **Graft** — Switch out and pass all boosts to the incoming ally. Works even while trapped.
-8. **Sap** — The target cannot switch out. Very high mana.
+6. **Germinate** — Plant an attack. It detonates for heavy damage next turn, and the user still acts normally in the meantime. **Immune to Cleanse and Tempest.**
+7. **Transplant** — Switch out and pass all boosts to the incoming ally. Works even while trapped.
+8. **Entangle** — The target cannot switch out. Very high mana.
 9. **Bloom** — The user's Power is doubled and its mana is restored to full.
 
 ## ⚡ ELECTRIC — the resource type
@@ -66,7 +66,7 @@ hundred-mana breakpoint; Short Circuit is how it takes that away from someone
 else.*
 
 1. **Arc** — Standard damage. No cost.
-2. **Fulminate** — Heavy damage. High mana.
+2. **Thunderstrike** — Heavy damage. High mana.
 3. **Jolt** — Light damage. Always moves first.
 4. **Amplify** — The user's mana is doubled.
 5. **Storm Front** — *FIELD.* Every character's mana is doubled.
@@ -79,29 +79,29 @@ else.*
 
 *Moves 6–8 are three answers to one question: who is standing here?*
 
-1. **Draft** — Standard damage. No cost.
+1. **Gust** — Standard damage. No cost.
 2. **Galeforce** — Heavy damage. High mana.
 3. **Wingbeat** — Light damage. Always moves first.
 4. **Jet Stream** — All of the user's moves gain +1 priority until it switches out.
 5. **Slipstream** — *FIELD.* Your team's Speed is doubled.
-6. **Skimstrike** — Damage, then the user switches out.
-7. **Skyfall** — Untargetable this turn. Strike next turn.
+6. **Flyby** — Damage, then the user switches out.
+7. **Skydive** — Untargetable this turn. Strike next turn.
 8. **Cyclone** — Damage to the target, then it is forced out. The next character in their team order replaces it, untouched.
 9. **Tempest** — Modest damage. Removes everything on both sides: status, traps, stat changes, fields, and hazards.
 
 ## 👊 FIGHTING — commitment and prediction
 
-*Riposte punishes them for attacking. Wind-Up punishes them for not attacking.*
+*Counter punishes them for attacking. Wind-Up punishes them for not attacking.*
 
 1. **Jab** — Standard damage. No cost.
 2. **Haymaker** — Heavy damage. High mana.
 3. **Snapkick** — Light damage. Always moves first.
-4. **Resolve** — The user's Power increases by 50%.
-5. **Proving Ground** — *FIELD.* Priority is disabled; everything resolves by Speed alone.
-6. **Riposte** — Reflects the damage the user takes this turn back at the attacker, doubled.
+4. **Adrenaline** — The user's Power doubles.
+5. **Level Ground** — *FIELD.* Priority is disabled; everything resolves by Speed alone.
+6. **Counter** — Reflects the damage the user takes this turn back at the attacker, doubled.
 7. **Wind-Up** — Resolves last. If the user took no damage this turn, massive damage. If it was hit, the move fails.
 8. **Flurry** — Damage, and the user's Speed increases.
-9. **Frenzy** — Very powerful attack, three turns running. Cannot switch.
+9. **Rampage** — Very powerful attack, three turns running. Cannot switch.
 
 ## 🔮 PSYCHIC — mind bending and rule breaking
 
@@ -112,7 +112,7 @@ else.*
 3. **Premonition** — Light damage. Always moves first.
 4. **Force Swap** — The target is forced to switch out. The next character in their team order replaces it.
 5. **Inversion** — *FIELD.* Turn order is reversed; the slowest acts first.
-6. **Prophecy** — Sets an attack that lands in two turns. The user acts normally in between. **Immune to Clear Sight and Tempest.**
+6. **Prophecy** — Sets an attack that lands in two turns. The user acts normally in between. **Immune to Cleanse and Tempest.**
 7. **Mind Drain** — Steals all of the target's mana and adds it to the user's own.
 8. **Mind Stun** — The target cannot act next turn.
 9. **Mind Crush** — Massive damage to the target, and 10% of max HP to every other character on the enemy team.
@@ -121,11 +121,11 @@ else.*
 
 *Three ways to lose on purpose. Dying is productive.*
 
-1. **Ripshade** — Standard damage. No cost.
+1. **Shadowstrike** — Standard damage. No cost.
 2. **Nightfall** — Heavy damage. High mana.
-3. **Umbra** — Light damage. Always moves first.
-4. **Malediction** — The user sacrifices 20% of its max HP. The target loses 20% of its max HP every turn.
-5. **Snare** — *FIELD.* Every enemy that switches in takes 20% of max HP as damage.
+3. **Blindside** — Light damage. Always moves first.
+4. **Curse** — The user sacrifices 20% of its max HP. The target loses 10% of its max HP every turn.
+5. **Snare** — *FIELD.* Every enemy that switches in takes 15% of max HP as damage.
 6. **Damnation** — Costs 50% of max HP. The user's Power, Speed, and Mana are all doubled, and it can never switch out.
 7. **Death Pact** — Immediately, both the user and the target lose HP equal to whichever of them has less. The one with less faints; the other survives with the difference.
 8. **Last Rites** — The user faints. The target's Power and Mana are halved for the rest of the battle.
@@ -135,13 +135,13 @@ else.*
 
 *The only type that can undo what has already happened.*
 
-1. **Lumenlash** — Standard damage. No cost.
+1. **Sunbeam** — Standard damage. No cost.
 2. **Solar Flare** — Heavy damage. High mana.
-3. **Glimmer** — Light damage. Always moves first.
+3. **Flash** — Light damage. Always moves first.
 4. **Mend** — Restore 20% of the user's max HP.
-5. **Sanctuary** — *FIELD.* Every character switching in on your side restores 20% of max HP.
-6. **Gift** — Two turns from now, whoever is active on your side heals to full.
-7. **Lifedraw** — Damage, and the user heals HP equal to the damage dealt.
+5. **Sanctuary** — *FIELD.* Every character switching in on your side restores 15% of max HP.
+6. **Blessing** — Two turns from now, whoever is active on your side heals to full.
+7. **Lifesteal** — Damage, and the user heals HP equal to the damage dealt.
 8. **Renewal** — Restores every living character on your team to full HP.
 9. **Resurrection** — Very high mana. Fully revive a fallen teammate. Once per battle.
 
@@ -152,12 +152,12 @@ else.*
 *The governing rule: a neutral move must never do a type's job.*
 
 1. **Guard** — Blocks all damage and effects to the user this turn. The mana cost doubles with each consecutive use, and resets when the user switches out.
-2. **Focus** — Restores a large amount of the user's mana.
-3. **Run** — The user's Speed increases.
+2. **Meditate** — Restores a large amount of the user's mana.
+3. **Sprint** — The user's Speed increases.
 4. **Provoke** — For three turns, the target can only use damaging moves.
 5. **Echo** — The target must repeat its last-used move for three turns.
 6. **Sleep** — Restores all of the user's HP, but it cannot act for the next two turns. Does not cure status.
-7. **Clear Sight** — Removes all status effects, traps, and stat reductions **from the user only.** Does not touch the opponent, the field, or the user's own boosts. Cannot cancel Drown.
+7. **Cleanse** — Removes all status effects, traps, and stat reductions **from the user only.** Does not touch the opponent, the field, or the user's own boosts. Cannot cancel Drown.
 
 **Struggle** is automatic when nothing else is usable, and does not occupy a slot.
 
@@ -174,10 +174,10 @@ All field effects last a maximum of five turns.
 | Water | Maelstrom | Nobody on either side can switch out |
 | Electric | Storm Front | Every character's mana is doubled |
 | Air | Slipstream | Your team's Speed is doubled |
-| Fighting | Proving Ground | Priority disabled; everything resolves by Speed |
+| Fighting | Level Ground | Priority disabled; everything resolves by Speed |
 | Psychic | Inversion | Turn order reversed |
-| Dark | Snare | Enemies take 20% max HP on switch-in |
-| Light | Sanctuary | Your team restores 20% max HP on switch-in |
+| Dark | Snare | Enemies take 15% max HP on switch-in |
+| Light | Sanctuary | Your team restores 15% max HP on switch-in |
 
 Fire and Grass are exact mirrors. Snare and Sanctuary are exact mirrors.
 
@@ -187,7 +187,7 @@ Fire and Grass are exact mirrors. Snare and Sanctuary are exact mirrors.
 
 - **Status** — cleared when the affected character switches out.
 - **Traps** — end when the character that applied them switches out.
-- **Your own status, traps, and stat drops** — cleared by Clear Sight, or by switching out.
+- **Your own status, traps, and stat drops** — cleared by Cleanse, or by switching out.
 - **Field effects, hazards, and enemy stat boosts** — removed only by Air's Tempest.
 - **Germinate, Prophecy, Drown** — cannot be cleared by anything. Once set, they resolve.
 - **Forced switches** — always bring in the next character in the defender's team order. No dice anywhere in the game.
@@ -201,7 +201,7 @@ The three forced-switch moves are split by who takes the hit: **Riptide** damage
 Cut from the neutral pool as too strange to be staples, but kept as candidates for
 unique character Abilities:
 
-- **Metronome** — uses a random move from anywhere in the game.
+- **Wild Card** — fires a random move from anywhere in the game. *Now a move: Bakeneko's Trickster Ability lets it alone take Wild Card as one of its four. The single deliberate exception to the no-randomness rule.*
 - **Copycat** — uses the move the target used last turn.
 - **Swap Fates** — the user and the target exchange current HP.
 - **Skywarden** — reveals every character's Ability and moves on both sides.

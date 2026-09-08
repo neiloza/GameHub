@@ -35,6 +35,8 @@ Ability and the stat line, not the movepool.
 | [`design/04-costs.md`](design/04-costs.md) | Damage and mana cost for all 88 moves |
 | [`design/05-stats.md`](design/05-stats.md) | HP, Power, Speed and Mana for all 25 characters |
 | [`design/06-damage-audit.md`](design/06-damage-audit.md) | What the hardest hit in the game does, and to how much of the roster |
+| [`design/07-battle-rules.md`](design/07-battle-rules.md) | Turn structure, priority tiers, and the mana economy |
+| [`design/08-tier-list.md`](design/08-tier-list.md) | Speculative tier list and what it says about the design |
 
 ## Status
 

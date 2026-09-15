@@ -14,11 +14,12 @@ import type { MemberRole, Role } from '../constants';
  *
  * The copy is written for a generic marketplace and is meant to be rewritten.
  * The *structure* is the reusable part: a tour per role, keyed on the role
- * rather than the profile, so an account that gains a second role gets the
- * second walkthrough instead of being marked "onboarded" for ever.
+ * rather than the profile, so an account that gains a second role — which every
+ * seller does, since they start as a buyer — gets the second walkthrough
+ * instead of being marked "onboarded" for ever.
  */
 
-export const ONBOARDING_ROLES = ['seller', 'buyer', 'advertiser', 'promoter'] as const;
+export const ONBOARDING_ROLES = ['buyer', 'seller', 'advertiser', 'promoter'] as const;
 export type OnboardingRole = (typeof ONBOARDING_ROLES)[number];
 
 export type OnboardingStep = {
@@ -42,72 +43,72 @@ export type OnboardingTour = {
   steps: OnboardingStep[];
 };
 
+const BUYER_TOUR: OnboardingTour = {
+  role: 'buyer',
+  title: 'Welcome',
+  subtitle: 'Find it. Ask about it. Buy it.',
+  steps: [
+    {
+      id: 'buyer-shop',
+      title: 'Everything is in the shop',
+      body: 'Search by words, narrow by category and condition, sort by price. No account is needed to look — you already have one, so you can also ask questions.',
+      href: '/shop',
+      cta: 'Open the shop',
+    },
+    {
+      id: 'buyer-enquire',
+      title: 'Ask the seller anything',
+      body: 'Every listing has a contact form. It opens a thread with that seller about that item, and everything you have asked lives in one place.',
+      href: '/messages',
+      cta: 'See your messages',
+    },
+    {
+      id: 'buyer-safety',
+      title: 'Sellers cannot message you first',
+      body: 'A conversation only exists because you started one. Nobody on this platform can put something in your inbox you did not ask for.',
+    },
+    {
+      id: 'buyer-sell',
+      title: 'Want to sell too?',
+      body: 'Anybody can buy from the moment they sign up. Selling is reviewed by a person — apply and you keep your buying account alongside the shop.',
+      href: '/apply/seller',
+      cta: 'Apply to sell',
+    },
+  ],
+};
+
 const SELLER_TOUR: OnboardingTour = {
   role: 'seller',
-  title: 'Welcome',
-  subtitle: 'List it. Meet buyers. Close.',
+  title: 'Your shop is open',
+  subtitle: 'List it. Answer questions. Sell.',
   steps: [
     {
       id: 'seller-listing',
       title: 'Start with a listing',
-      body: 'Everything else hangs off this: buyers discover the listing, not the account, and every conversation is scoped to one.',
+      body: 'Name, category, condition and a price. Everything else is optional, and you can come back to it.',
       href: '/listings/new',
       cta: 'Create a listing',
     },
     {
       id: 'seller-publish',
       title: 'Publish when it is ready',
-      body: 'A draft is yours alone. Publishing is what puts it in the discovery feed, and you can unpublish at any time without losing the conversations it started.',
+      body: 'A draft is yours alone. Publishing is what puts it in the shop, where anyone — signed in or not — can find it. You can unpublish at any time without losing the questions it has already attracted.',
       href: '/listings/:listingId/edit',
       cta: 'Finish your listing',
     },
     {
-      id: 'seller-interest',
-      title: 'Buyers come to you',
-      body: 'A buyer expressing interest does not open a chat. You see the interest, and the conversation exists only once you accept — nobody can message you uninvited.',
-      href: '/listings/:listingId/buyers',
-      cta: 'See interested buyers',
+      id: 'seller-enquiries',
+      title: 'Answer the people who ask',
+      body: 'A shopper with a question opens a thread about one listing. Every thread on a listing sits together, so you are never guessing which item somebody means.',
+      href: '/listings/:listingId/enquiries',
+      cta: 'See your enquiries',
     },
     {
       id: 'seller-membership',
       title: 'What a membership is for',
-      body: 'Browsing, reading messages and managing your account are free and always will be. A membership raises how many listings you can hold at once.',
+      body: 'Browsing, buying, reading and sending messages and managing your account are free and always will be. A membership raises how many listings you can hold at once.',
       href: '/membership',
       cta: 'See membership',
-    },
-  ],
-};
-
-const BUYER_TOUR: OnboardingTour = {
-  role: 'buyer',
-  title: 'Welcome',
-  subtitle: 'Find it. Reach out. Talk.',
-  steps: [
-    {
-      id: 'buyer-approved',
-      title: 'You are approved',
-      body: 'An administrator reviewed your application, which is what unlocks the discovery feed. Buyers are reviewed because sellers are told they will be.',
-    },
-    {
-      id: 'buyer-preferences',
-      title: 'Tell us what you are looking for',
-      body: 'Categories, stage, budget and location. These rank the feed rather than filter it, so a strong listing outside your stated range still reaches you.',
-      href: '/buyer/profile',
-      cta: 'Set your preferences',
-    },
-    {
-      id: 'buyer-discover',
-      title: 'Work the feed',
-      body: 'One listing at a time, ranked by how well it matches. Passing is permanent for that listing; expressing interest sends it to the seller to answer.',
-      href: '/buyer/discover',
-      cta: 'Open discovery',
-    },
-    {
-      id: 'buyer-messages',
-      title: 'Chat opens on mutual consent',
-      body: 'A seller has to accept before either of you can send a message. That is the whole trust model — nobody receives an unsolicited approach.',
-      href: '/buyer/messages',
-      cta: 'Open messages',
     },
   ],
 };
@@ -174,8 +175,8 @@ const PROMOTER_TOUR: OnboardingTour = {
 };
 
 export const ONBOARDING_TOURS: Record<OnboardingRole, OnboardingTour> = {
-  seller: SELLER_TOUR,
   buyer: BUYER_TOUR,
+  seller: SELLER_TOUR,
   advertiser: ADVERTISER_TOUR,
   promoter: PROMOTER_TOUR,
 };
@@ -183,10 +184,11 @@ export const ONBOARDING_TOURS: Record<OnboardingRole, OnboardingTour> = {
 /**
  * Which tours an account is owed.
  *
- * `both` returns two — an account that sells and buys runs each walkthrough
- * separately and each is tracked on its own row. Administrators get none: the
- * console is not a first-run experience and an admin previewing a role should
- * not be interrupted by that role's tour.
+ * `both` returns two, buyer first — an account that buys and sells runs each
+ * walkthrough separately and each is tracked on its own row, which is the whole
+ * reason progress is keyed on the role. Administrators get none: the console is
+ * not a first-run experience and an admin previewing a role should not be
+ * interrupted by that role's tour.
  */
 export function onboardingRolesFor({
   role,
@@ -196,7 +198,7 @@ export function onboardingRolesFor({
   isAdmin?: boolean;
 }): OnboardingRole[] {
   if (isAdmin) return [];
-  if (role === 'both') return ['seller', 'buyer'];
+  if (role === 'both') return ['buyer', 'seller'];
   return (ONBOARDING_ROLES as readonly string[]).includes(role)
     ? [role as OnboardingRole]
     : [];
@@ -239,7 +241,7 @@ export function resumeStepIndex(tour: OnboardingTour, progress?: OnboardingProgr
  *
  * Seller steps point at `/listings/:listingId/…`, which cannot be built until
  * the seller has a listing, so those steps lose their link until one exists
- * rather than sending anyone to a broken URL.
+ * rather than sending anybody to a broken URL.
  */
 export function resolveStepHref(
   step: OnboardingStep,

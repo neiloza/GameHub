@@ -29,9 +29,13 @@ create table public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
 
   -- The five parties. `both` sells and buys; administrators are not a role,
-  -- they are is_admin on top of one. Defaulted to 'seller' because that is the
-  -- only self-serve role — see protect_profile_privileged_columns below.
-  role text not null default 'seller'
+  -- they are is_admin on top of one.
+  --
+  -- Defaulted to 'buyer' because buying is the only thing anybody can do
+  -- without being reviewed. That is the shape of a shop: browsing and buying
+  -- are open to everyone, and it is *selling* that is vetted. Selling, running
+  -- ads and promoting all arrive through review_application().
+  role text not null default 'buyer'
     check (role in ('seller', 'buyer', 'both', 'advertiser', 'promoter')),
 
   display_name text not null check (char_length(display_name) between 1 and 80),
@@ -144,7 +148,7 @@ $$;
  * is_*() helper above reads that column, so that one write would open the
  * advertiser portal, the buyer feed and their policies at once.
  *
- * Only the seller role is self-serve. Buyer, advertiser and promoter arrive
+ * Only the buyer role is self-serve. Seller, advertiser and promoter arrive
  * through review_application(), which is security definer and runs as an
  * administrator, so it reaches the short-circuit at the top.
  */
@@ -164,7 +168,7 @@ begin
     -- Account setup creates this row. Forcing the value rather than rejecting
     -- the insert keeps /onboarding working when it posts a role, and closes the
     -- hole when it posts somebody else's.
-    new.role := 'seller';
+    new.role := 'buyer';
     new.verified := false;
     new.is_admin := false;
     new.account_status := 'active';

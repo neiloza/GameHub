@@ -40,13 +40,13 @@ describe('describeNotification', () => {
   it('names the listing when the payload carries it and degrades when it does not', () => {
     const named = describeNotification({
       ...base,
-      kind: 'interest_received',
-      payload: { listing_name: 'Blue Door Bakery', listing_id: 'l1' },
+      kind: 'enquiry_received',
+      payload: { listing_name: 'Walnut Desk Lamp', listing_id: 'l1', conversation_id: 'c1' },
     });
-    expect(named.body).toContain('Blue Door Bakery');
-    expect(named.href).toBe('/listings/l1/buyers');
+    expect(named.body).toContain('Walnut Desk Lamp');
+    expect(named.href).toBe('/listings/l1/enquiries/c1');
 
-    const bare = describeNotification({ ...base, kind: 'interest_received' });
+    const bare = describeNotification({ ...base, kind: 'enquiry_received' });
     expect(bare.body).not.toContain('undefined');
     expect(bare.href).toBe('/listings');
   });
@@ -57,14 +57,14 @@ describe('describeNotification', () => {
       kind: 'message_received',
       payload: { conversation_id: 'c1', recipient_side: 'buyer' },
     });
-    expect(toBuyer.href).toBe('/buyer/messages/c1');
+    expect(toBuyer.href).toBe('/messages/c1');
 
     const toSeller = describeNotification({
       ...base,
       kind: 'message_received',
       payload: { conversation_id: 'c1', recipient_side: 'seller', listing_id: 'l1' },
     });
-    expect(toSeller.href).toBe('/listings/l1/buyers/c1');
+    expect(toSeller.href).toBe('/listings/l1/enquiries/c1');
   });
 
   it('renders a row written by an older build rather than crashing', () => {
@@ -86,7 +86,7 @@ describe('describeNotification', () => {
 describe('isCategoryEnabled', () => {
   it('defaults everything except marketing to on when there is no row yet', () => {
     expect(isCategoryEnabled(null, 'message_received', 'email')).toBe(true);
-    expect(isCategoryEnabled(null, 'interest_received', 'email')).toBe(true);
+    expect(isCategoryEnabled(null, 'enquiry_received', 'email')).toBe(true);
     expect(isCategoryEnabled(null, 'membership_started', 'email')).toBe(true);
     expect(isCategoryEnabled(null, 'system_announcement', 'email')).toBe(false);
   });
@@ -94,12 +94,12 @@ describe('isCategoryEnabled', () => {
   it('honours an explicit opt-out', () => {
     const prefs = { email_messages: false, email_activity: true };
     expect(isCategoryEnabled(prefs, 'message_received', 'email')).toBe(false);
-    expect(isCategoryEnabled(prefs, 'interest_received', 'email')).toBe(true);
+    expect(isCategoryEnabled(prefs, 'enquiry_received', 'email')).toBe(true);
   });
 
   it('pushes only the two categories that are worth a phone buzzing', () => {
     expect(isCategoryEnabled(null, 'message_received', 'push')).toBe(true);
-    expect(isCategoryEnabled(null, 'interest_received', 'push')).toBe(true);
+    expect(isCategoryEnabled(null, 'enquiry_received', 'push')).toBe(true);
     expect(isCategoryEnabled(null, 'membership_started', 'push')).toBe(false);
     expect(isCategoryEnabled(null, 'system_announcement', 'push')).toBe(false);
   });
@@ -109,8 +109,8 @@ describe('unreadCount', () => {
   it('counts rows with no read_at', () => {
     expect(
       unreadCount([
-        { ...base, kind: 'match_accepted' },
-        { ...base, kind: 'match_accepted', read_at: '2026-06-02T00:00:00Z' },
+        { ...base, kind: 'enquiry_received' },
+        { ...base, kind: 'enquiry_received', read_at: '2026-06-02T00:00:00Z' },
       ])
     ).toBe(1);
   });

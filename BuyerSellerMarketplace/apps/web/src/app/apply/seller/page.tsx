@@ -3,32 +3,26 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
-  BUYER_TYPES,
   CATEGORIES,
   CATEGORY_LABELS,
-  buyerApplicationSchema,
-  submitBuyerApplication,
-  type BuyerType,
+  SELLER_TYPES,
+  SELLER_TYPE_LABELS,
+  sellerApplicationSchema,
+  submitSellerApplication,
   type Category,
+  type SellerType,
 } from '@marketplace/shared';
 import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
 
-const TYPE_LABELS: Record<BuyerType, string> = {
-  individual: 'An individual',
-  business: 'A business',
-  institution: 'An institution',
-  intermediary: 'Acting for somebody else',
-  other: 'Something else',
-};
-
-export default function BuyerApplicationPage() {
+export default function SellerApplicationPage() {
   const router = useRouter();
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
-  const [organization, setOrganization] = useState('');
+  const [shopName, setShopName] = useState('');
   const [website, setWebsite] = useState('');
-  const [buyerType, setBuyerType] = useState<BuyerType>('individual');
+  const [sellerType, setSellerType] = useState<SellerType>('individual');
   const [categories, setCategories] = useState<Category[]>([]);
+  const [fulfilment, setFulfilment] = useState('');
   const [motivation, setMotivation] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,16 +32,15 @@ export default function BuyerApplicationPage() {
     setBusy(true);
     setError(null);
 
-    const parsed = buyerApplicationSchema.safeParse({
+    const parsed = sellerApplicationSchema.safeParse({
       contact_name: contactName,
       contact_email: contactEmail,
       website: website || null,
       motivation,
-      buyer_type: buyerType,
-      organization: organization || null,
+      shop_name: shopName,
+      seller_type: sellerType,
       categories,
-      budget_min_cents: null,
-      budget_max_cents: null,
+      fulfilment_note: fulfilment || null,
     });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? 'Check the form.');
@@ -56,7 +49,7 @@ export default function BuyerApplicationPage() {
     }
 
     try {
-      await submitBuyerApplication(getSupabaseBrowserClient(), parsed.data);
+      await submitSellerApplication(getSupabaseBrowserClient(), parsed.data);
       router.push('/apply');
       router.refresh();
     } catch (e) {
@@ -67,10 +60,11 @@ export default function BuyerApplicationPage() {
 
   return (
     <div className="py-8">
-      <h1 className="text-2xl font-extrabold text-ink sm:text-3xl">Apply as a buyer</h1>
+      <h1 className="text-2xl font-extrabold text-ink sm:text-3xl">Open a shop</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Sellers are told every buyer who reaches them has been reviewed by a person. This is that
-        review.
+        Buying needs no application — you can already do that. Selling is reviewed by a person,
+        because a shop is answerable for what is on its shelves. You keep your buying account
+        either way.
       </p>
 
       <form onSubmit={submit} className="mt-6 grid gap-5 rounded-xl border border-slate-200 bg-white p-6">
@@ -98,44 +92,46 @@ export default function BuyerApplicationPage() {
           </label>
         </div>
 
-        <label className="grid gap-1 text-sm font-medium text-slate-700">
-          You are
-          <select
-            value={buyerType}
-            onChange={(e) => setBuyerType(e.target.value as BuyerType)}
-            className="h-11 rounded-lg border border-slate-300 px-3"
-          >
-            {BUYER_TYPES.map((t) => (
-              <option key={t} value={t}>
-                {TYPE_LABELS[t]}
-              </option>
-            ))}
-          </select>
-        </label>
-
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="grid gap-1 text-sm font-medium text-slate-700">
-            Organisation <span className="font-normal text-slate-400">(optional)</span>
+            Shop name
             <input
-              maxLength={200}
-              value={organization}
-              onChange={(e) => setOrganization(e.target.value)}
+              required
+              maxLength={120}
+              value={shopName}
+              onChange={(e) => setShopName(e.target.value)}
+              placeholder="What buyers will see above your listings"
               className="h-11 rounded-lg border border-slate-300 px-3"
             />
           </label>
           <label className="grid gap-1 text-sm font-medium text-slate-700">
-            Website <span className="font-normal text-slate-400">(optional)</span>
-            <input
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              placeholder="example.com"
+            You are
+            <select
+              value={sellerType}
+              onChange={(e) => setSellerType(e.target.value as SellerType)}
               className="h-11 rounded-lg border border-slate-300 px-3"
-            />
+            >
+              {SELLER_TYPES.map((t) => (
+                <option key={t} value={t}>
+                  {SELLER_TYPE_LABELS[t]}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
 
+        <label className="grid gap-1 text-sm font-medium text-slate-700">
+          Website <span className="font-normal text-slate-400">(optional)</span>
+          <input
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            placeholder="example.com"
+            className="h-11 rounded-lg border border-slate-300 px-3"
+          />
+        </label>
+
         <fieldset className="grid gap-2">
-          <legend className="text-sm font-medium text-slate-700">What interests you?</legend>
+          <legend className="text-sm font-medium text-slate-700">What will you be selling?</legend>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((c) => (
               <button
@@ -160,7 +156,20 @@ export default function BuyerApplicationPage() {
         </fieldset>
 
         <label className="grid gap-1 text-sm font-medium text-slate-700">
-          What are you looking for, and why here?
+          How will you fulfil orders?{' '}
+          <span className="font-normal text-slate-400">(optional)</span>
+          <textarea
+            rows={3}
+            maxLength={2000}
+            value={fulfilment}
+            onChange={(e) => setFulfilment(e.target.value)}
+            placeholder="Roughly how much, how often, and how it reaches the buyer"
+            className="rounded-lg border border-slate-300 p-3"
+          />
+        </label>
+
+        <label className="grid gap-1 text-sm font-medium text-slate-700">
+          Tell us about your shop
           <textarea
             required
             rows={5}

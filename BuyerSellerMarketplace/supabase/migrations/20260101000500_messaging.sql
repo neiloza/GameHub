@@ -1,24 +1,39 @@
--- Messaging: the conversation a mutual match creates, and the reports queue.
+-- Messaging: a shopper's enquiry about a listing, and the reports queue.
 --
--- A conversation exists only because a seller accepted an interest. There is no
--- other way to create one, and no policy that lets a member insert into this
--- table directly — that is the whole of the trust model, expressed as a schema.
+-- The rule, and the only thing here that needs defending: **a conversation is
+-- started by the buyer, never by the seller.** A shopper can ask a question
+-- about anything on sale — that is what a shop is for — but a seller cannot
+-- open a thread with somebody who has not spoken to them first.
+--
+-- That asymmetry is what stops the member list becoming a mailing list. It is
+-- enforced as an INSERT policy requiring `buyer_id = auth.uid()`, not as a rule
+-- in the client, because the client is the part an interested party would
+-- skip.
 
 create table public.conversations (
   id uuid primary key default gen_random_uuid(),
-  -- One conversation per accepted match. The unique constraint is what makes
-  -- respond_to_match() idempotent under a double-click.
-  match_id uuid not null unique references public.matches (id) on delete cascade,
-  buyer_id uuid not null references public.profiles (id) on delete cascade,
-  seller_id uuid not null references public.profiles (id) on delete cascade,
   listing_id uuid not null references public.listings (id) on delete cascade,
+  buyer_id uuid not null references public.profiles (id) on delete cascade,
+  -- Denormalised from the listing so the participant check is one read rather
+  -- than a join, and so a conversation survives with a readable history if the
+  -- listing is later deleted... which it does not, because the cascade above
+  -- takes it. Kept anyway: the policies are simpler for it, and the day
+  -- somebody softens that cascade this column is already right.
+  seller_id uuid not null references public.profiles (id) on delete cascade,
+
   buyer_last_read_at timestamptz,
   seller_last_read_at timestamptz,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+
+  -- One thread per shopper per listing. A second question about the same item
+  -- belongs in the thread where the first answer is.
+  unique (listing_id, buyer_id),
+  -- A seller enquiring about their own listing is a bug, not a use case.
+  check (buyer_id <> seller_id)
 );
 
-create index conversations_buyer_idx on public.conversations (buyer_id);
-create index conversations_seller_idx on public.conversations (seller_id);
+create index conversations_buyer_idx on public.conversations (buyer_id, created_at desc);
+create index conversations_seller_idx on public.conversations (seller_id, created_at desc);
 create index conversations_listing_idx on public.conversations (listing_id);
 
 create or replace function public.is_conversation_participant(p_conversation_id uuid)
@@ -33,6 +48,51 @@ as $$
   );
 $$;
 
+/**
+ * Keep `seller_id` honest.
+ *
+ * The buyer inserts the row, so they supply both ids, and nothing in an INSERT
+ * policy can check that the one they claim is the seller actually owns the
+ * listing. Without this, a shopper could open a "conversation" naming any
+ * account as the seller and message a stranger through it — which is exactly
+ * the thing the buyer-initiates rule is supposed to prevent.
+ *
+ * So the column is overwritten from the listing rather than trusted, and a
+ * listing that is not on sale cannot be enquired about at all.
+ */
+create or replace function public.set_conversation_seller()
+returns trigger
+language plpgsql security definer
+set search_path = public
+as $$
+declare
+  v_owner uuid;
+  v_status text;
+begin
+  select owner_id, status into v_owner, v_status
+  from public.listings where id = new.listing_id;
+
+  if v_owner is null then
+    raise exception 'listing not found';
+  end if;
+
+  if v_status <> 'published' then
+    raise exception 'that listing is not on sale';
+  end if;
+
+  if public.is_blocked_between(new.buyer_id, v_owner) then
+    raise exception 'you cannot contact this seller';
+  end if;
+
+  new.seller_id := v_owner;
+  return new;
+end;
+$$;
+
+create trigger conversations_set_seller
+  before insert on public.conversations
+  for each row execute function public.set_conversation_seller();
+
 alter table public.conversations enable row level security;
 
 create policy "participants read their conversations"
@@ -45,9 +105,15 @@ create policy "admins read all conversations"
   to authenticated
   using (public.is_admin());
 
--- No INSERT policy at all: respond_to_match() is the only writer.
--- No UPDATE policy either: the read markers move through
--- mark_conversation_read(), which knows which side the caller is on.
+-- The asymmetry, in one policy. A member may only ever create a conversation
+-- with themselves as the buyer; the trigger above fills in who the seller is.
+create policy "buyers open a conversation about a listing"
+  on public.conversations for insert
+  to authenticated
+  with check (buyer_id = auth.uid() and public.is_member());
+
+-- No UPDATE policy: the read markers move through mark_conversation_read(),
+-- which knows which side the caller is on.
 
 -- ---------------------------------------------------------------------------
 -- messages
@@ -76,8 +142,8 @@ create policy "participants send messages"
   with check (
     sender_id = auth.uid()
     and public.is_conversation_participant(conversation_id)
-    -- A block stops the thread from both ends, without deleting it: the
-    -- history stays readable, and neither side can add to it.
+    -- A block stops the thread from both ends without deleting it: the history
+    -- stays readable, and neither side can add to it.
     and not exists (
       select 1 from public.conversations c
       where c.id = conversation_id
@@ -90,8 +156,8 @@ create policy "admins read messages"
   to authenticated
   using (public.is_admin());
 
--- A message is never edited or deleted. The other person already read it, and
--- a thread that can be rewritten after the fact is not a record of anything.
+-- A message is never edited or deleted. The other person has already read it,
+-- and a thread that can be rewritten afterwards is not a record of anything.
 
 /**
  * Mark everything up to now as read.
@@ -114,63 +180,47 @@ begin
 end;
 $$;
 
--- ---------------------------------------------------------------------------
--- the seller's answer
--- ---------------------------------------------------------------------------
-
 /**
- * Accept or decline an interest.
+ * Start an enquiry, or return the thread that already exists.
  *
- * Accepting is two writes — the match status and the conversation row — so it
- * happens here, in one transaction. A client doing both would occasionally
- * leave a buyer told they matched with nowhere to talk.
+ * Two writes — the conversation and its first message — so it happens here, in
+ * one transaction. A client doing both would occasionally leave a seller with
+ * an empty thread and no idea what was being asked.
  *
- * Returns the conversation id on an accept, null on a decline.
+ * Idempotent on `(listing_id, buyer_id)`: asking a second question reuses the
+ * thread the first answer is in rather than starting a parallel one.
  */
-create or replace function public.respond_to_match(p_match_id uuid, p_accept boolean)
+create or replace function public.start_enquiry(p_listing_id uuid, p_body text)
 returns uuid
 language plpgsql security definer
 set search_path = public
 as $$
 declare
-  v_match public.matches;
-  v_seller uuid;
   v_conversation uuid;
 begin
-  select * into v_match from public.matches where id = p_match_id;
-  if not found then
-    raise exception 'match not found';
+  if auth.uid() is null then
+    raise exception 'not signed in';
   end if;
 
-  select owner_id into v_seller from public.listings where id = v_match.listing_id;
-
-  -- The seller decides. An administrator cannot accept on their behalf: an
-  -- accepted match is a consent, and consent is not an administrative action.
-  if v_seller is distinct from auth.uid() then
-    raise exception 'only the listing owner may answer this';
+  if coalesce(btrim(p_body), '') = '' then
+    raise exception 'say something to the seller';
   end if;
 
-  if v_match.status <> 'pending' then
-    raise exception 'this has already been answered';
-  end if;
-
-  update public.matches
-     set status = case when p_accept then 'accepted' else 'declined' end,
-         responded_at = now()
-   where id = p_match_id;
-
-  if not p_accept then
-    return null;
-  end if;
-
-  insert into public.conversations (match_id, buyer_id, seller_id, listing_id)
-  values (p_match_id, v_match.buyer_id, v_seller, v_match.listing_id)
-  on conflict (match_id) do nothing
-  returning id into v_conversation;
+  select id into v_conversation
+  from public.conversations
+  where listing_id = p_listing_id and buyer_id = auth.uid();
 
   if v_conversation is null then
-    select id into v_conversation from public.conversations where match_id = p_match_id;
+    -- seller_id is set by the trigger, which also refuses an unpublished
+    -- listing and a blocked pair. Passing auth.uid() here is a placeholder the
+    -- trigger overwrites.
+    insert into public.conversations (listing_id, buyer_id, seller_id)
+    values (p_listing_id, auth.uid(), auth.uid())
+    returning id into v_conversation;
   end if;
+
+  insert into public.messages (conversation_id, sender_id, body)
+  values (v_conversation, auth.uid(), btrim(p_body));
 
   return v_conversation;
 end;

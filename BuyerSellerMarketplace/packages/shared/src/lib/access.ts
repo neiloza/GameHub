@@ -3,22 +3,25 @@ import type { Role } from '../constants';
 /**
  * Who may reach what.
  *
- * The permission matrix as data, in one pure module, so "may this role open
+ * The permission matrix as data, in one pure module, so "may this member open
  * this page?" has a single answer shared by the navigation, the middleware and
  * any per-page guard — and so it can be unit-tested instead of inferred from
  * conditionals scattered across components.
  *
  * **This is routing and presentation only.** The database is the real boundary:
- * RLS decides which rows come back, `is_approved_buyer()` gates the discovery
- * deck, and `protect_profile_privileged_columns()` decides who may change a
- * role. A member who types a URL this module would hide still gets nothing
- * useful — the point of gating it here is that they get their own home surface
- * instead of an empty shell belonging to somebody else's role.
+ * RLS decides which rows come back, and
+ * `protect_profile_privileged_columns()` decides who may change a role. A
+ * member who types a URL this module would hide still gets nothing useful — the
+ * point of gating it here is that they get their own home surface instead of an
+ * empty shell belonging to somebody else's role.
+ *
+ * Note what is *absent*: the catalogue. `/shop` is not in this table, because
+ * browsing is public — a shop nobody can look at without an account is not a
+ * shop, and published listings are readable by `anon` in the database to match.
  */
 
 /** Roles that reach seller tooling. `both` sells and buys. */
 const SELLER_ROLES: readonly Role[] = ['seller', 'both'];
-const BUYER_ROLES: readonly Role[] = ['buyer', 'both'];
 
 export type AccessRule = {
   /** Route prefix. Matched as the whole path or as `prefix + '/'`. */
@@ -30,8 +33,8 @@ export type AccessRule = {
 };
 
 /**
- * Longest-prefix-first at lookup time, so `/buyer/messages` resolves against
- * `/buyer` and never against a shorter neighbour.
+ * Longest-prefix-first at lookup time, so `/listings/x/enquiries` resolves
+ * against `/listings` and never against a shorter neighbour.
  */
 export const ACCESS_RULES: readonly AccessRule[] = [
   // --- seller tooling ---
@@ -39,22 +42,20 @@ export const ACCESS_RULES: readonly AccessRule[] = [
   { prefix: '/membership', roles: SELLER_ROLES },
   { prefix: '/refer', roles: SELLER_ROLES },
 
-  // --- buyer portal (the database also requires an approved application) ---
-  { prefix: '/buyer', roles: BUYER_ROLES },
-
   // --- promoter: their portal and nothing else ---
   { prefix: '/promoter', roles: ['promoter'] },
 
-  // --- advertiser: their listing and campaigns, nothing that reaches a seller ---
+  // --- advertiser: their listing and campaigns, nothing that reaches a member ---
   { prefix: '/advertiser', roles: ['advertiser'] },
 
   // --- admin ---
   { prefix: '/admin', admin: true },
 
-  // --- feedback: matches may_give_feedback_as() in the database ---
-  { prefix: '/feedback', roles: [...SELLER_ROLES, 'buyer'] },
-
   // --- open to every signed-in member ---
+  // Anybody can buy, so anybody can have an enquiry thread and speak from the
+  // buyer side of the feedback form.
+  { prefix: '/messages' },
+  { prefix: '/feedback' },
   { prefix: '/directory' },
   { prefix: '/apply' },
   { prefix: '/onboarding' },
@@ -70,7 +71,7 @@ function matches(path: string, prefix: string): boolean {
 
 /**
  * The rule governing `path`, or `null` when the path is public — the landing
- * page, the auth screens, the legal pages and anything else not listed above.
+ * page, the catalogue, the auth screens, the legal pages.
  */
 export function ruleFor(path: string): AccessRule | null {
   let best: AccessRule | null = null;
@@ -93,7 +94,7 @@ export type Viewer = { role: Role; isAdmin?: boolean };
  *
  * Administrators pass everywhere: an administrator has to be able to enter and
  * test every role, workflow and dashboard without being redirected into the
- * seller experience.
+ * buyer experience.
  */
 export function canAccessPath(path: string, viewer: Viewer): boolean {
   const rule = ruleFor(path);
@@ -107,19 +108,22 @@ export function canAccessPath(path: string, viewer: Viewer): boolean {
 /**
  * Where a role lands after sign-in, after account setup, and when it is turned
  * away from a surface it may not reach.
+ *
+ * A seller lands in their own shop rather than in the catalogue: they came to
+ * work, and the catalogue is one click away in the navigation.
  */
 export function homeFor(role: Role): string {
   switch (role) {
-    case 'buyer':
-      return '/buyer/discover';
+    case 'seller':
+    case 'both':
+      return '/listings';
     case 'promoter':
       return '/promoter';
     case 'advertiser':
       return '/advertiser';
-    case 'seller':
-    case 'both':
+    case 'buyer':
     default:
-      return '/listings';
+      return '/shop';
   }
 }
 
@@ -128,9 +132,9 @@ export type NavLink = { href: string; label: string };
 type NavEntry = NavLink & { roles?: readonly Role[] };
 
 const NAV: readonly NavEntry[] = [
+  { href: '/shop', label: 'Shop' },
   { href: '/listings', label: 'My listings', roles: SELLER_ROLES },
-  { href: '/buyer/discover', label: 'Discover', roles: BUYER_ROLES },
-  { href: '/buyer/messages', label: 'Messages', roles: BUYER_ROLES },
+  { href: '/messages', label: 'Messages' },
   { href: '/directory', label: 'Directory' },
   { href: '/refer', label: 'Refer', roles: SELLER_ROLES },
   { href: '/membership', label: 'Membership', roles: SELLER_ROLES },
@@ -162,7 +166,7 @@ export function navLinksFor(viewer: Viewer): NavLink[] {
  * administrator's own RLS. `both` is excluded because it is a combination
  * rather than an experience of its own.
  */
-export const PREVIEWABLE_ROLES = ['seller', 'buyer', 'advertiser', 'promoter'] as const;
+export const PREVIEWABLE_ROLES = ['buyer', 'seller', 'advertiser', 'promoter'] as const;
 export type PreviewableRole = (typeof PREVIEWABLE_ROLES)[number];
 
 export function isPreviewableRole(value: unknown): value is PreviewableRole {

@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <li>Your email address and password, held by our authentication provider.</li>
         <li>The profile you fill in: display name, location, a short bio, an optional website.</li>
         <li>Listings you create, and the messages in conversations you are part of.</li>
-        <li>What you expressed interest in, and what you passed on.</li>
+        <li>Which listings you have asked a seller about.</li>
         <li>Your membership state and the identifiers our payment processor gives us.</li>
       </ul>
 
@@ -52,16 +52,16 @@ export default function PrivacyPage() {
 
       <h2 className="mt-8 font-bold text-brand-dark">Other members</h2>
       <p className="mt-2 text-sm text-slate-700">
-        Your display name, location, bio and verified badge are visible to signed-in members. A
-        published listing is visible to anyone, including people who are not signed in. Your email
-        address is never shown to another member.
+        Your display name, location, bio and verified badge are visible to signed-in members, and
+        to anybody at all on a listing you have published — a product page is public, and that is
+        the point of it. Your email address is never shown to another member.
       </p>
 
       <h2 className="mt-8 font-bold text-brand-dark">Your choices</h2>
       <p className="mt-2 text-sm text-slate-700">
         You can edit or delete your listings at any time, turn off any category of email, and ask us
         to delete your account — write to [contact address]. Deleting an account removes your
-        profile, listings and swipes. Messages you sent stay in the other person&apos;s thread,
+        profile and your listings. Messages you sent stay in the other person&apos;s thread,
         because a conversation is not one person&apos;s to erase.
       </p>
 

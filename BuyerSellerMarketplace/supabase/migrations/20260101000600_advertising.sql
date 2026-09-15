@@ -99,7 +99,7 @@ create table public.ad_campaigns (
   -- contract between a slot component and these rows: the component asks for
   -- one by name and this filters on it. Nothing is inferred.
   placement text not null check (placement in (
-    'discovery_feed', 'listing_detail', 'dashboard', 'directory'
+    'catalogue', 'listing_detail', 'dashboard', 'directory'
   )),
 
   headline text not null check (char_length(headline) between 1 and 80),

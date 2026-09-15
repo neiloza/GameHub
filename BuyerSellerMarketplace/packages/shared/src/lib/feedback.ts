@@ -9,21 +9,23 @@ import type { Role } from '../constants';
  * route that belongs to the other side, a role with no side at all), and a rule
  * with edges belongs somewhere it can be read and tested in one place.
  *
- * The rule is *route first, role second*. An account holding `both` sitting on
- * `/buyer/discover` is talking about the discovery deck, and stamping that
- * suggestion `seller` because their profile lists seller first would file it
- * under the wrong half of the roadmap — which is the one question the `surface`
- * column exists to answer.
+ * The rule is *route first, role second*. An account holding `both` sitting in
+ * the catalogue is talking about shopping, and stamping that suggestion
+ * `seller` because they also run a shop would file it under the wrong half of
+ * the roadmap — which is the one question the `surface` column exists to
+ * answer.
+ *
+ * Buyer is the fallback rather than a role check, because every signed-in
+ * member can buy. Only the seller side needs the role.
  */
 
 export const FEEDBACK_SURFACES = ['seller', 'buyer'] as const;
 export type FeedbackSurface = (typeof FEEDBACK_SURFACES)[number];
 
 const SELLER_ROLES: readonly Role[] = ['seller', 'both'];
-const BUYER_ROLES: readonly Role[] = ['buyer', 'both'];
 
-/** The buyer portal's own routes. Everything else is seller-side. */
-const BUYER_PREFIX = '/buyer';
+/** The seller's own routes. Everything else is somebody shopping. */
+const SELLER_PREFIXES = ['/listings', '/membership', '/refer'];
 
 /**
  * Routes where the button is an interruption rather than an invitation: the
@@ -53,23 +55,24 @@ export function isQuietForFeedback(pathname: string): boolean {
  * `null` when this member has no side of the product to speak from.
  *
  * Advertisers and promoters get `null`: their portals are a listing and a
- * referral link, and `may_give_feedback_as()` would refuse the insert anyway.
- * Returning null here is what stops us showing a button that fails.
+ * referral link, they cannot buy or sell, and `may_give_feedback_as()` would
+ * refuse the insert anyway. Returning null here is what stops us showing a
+ * button that fails.
  */
 export function feedbackSurfaceFor(
   role: Role | null | undefined,
   pathname: string
 ): FeedbackSurface | null {
   if (!role) return null;
-  const seller = SELLER_ROLES.includes(role);
-  const buyer = BUYER_ROLES.includes(role);
+  if (role === 'advertiser' || role === 'promoter') return null;
 
-  if (pathname === BUYER_PREFIX || pathname.startsWith(BUYER_PREFIX + '/')) {
-    return buyer ? 'buyer' : null;
-  }
-  if (seller) return 'seller';
-  if (buyer) return 'buyer';
-  return null;
+  const onSellerRoute = SELLER_PREFIXES.some(
+    (p) => pathname === p || pathname.startsWith(p + '/')
+  );
+  if (onSellerRoute) return SELLER_ROLES.includes(role) ? 'seller' : null;
+
+  // Everything else is the shop, and everybody can shop.
+  return 'buyer';
 }
 
 /** Should the floating feedback button be on screen at all? */

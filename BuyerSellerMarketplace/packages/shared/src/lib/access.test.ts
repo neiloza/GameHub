@@ -12,8 +12,8 @@ import { ROLES, type Role } from '../constants';
 
 /** Seller tooling no other role may reach. */
 const SELLER_ONLY = ['/listings', '/membership', '/refer'];
-/** The buyer portal. */
-const BUYER_ONLY = ['/buyer', '/buyer/discover', '/buyer/messages'];
+/** Open to anybody signed in, because anybody can buy. */
+const EVERY_MEMBER = ['/messages', '/feedback', '/settings', '/notifications', '/directory'];
 
 describe('ruleFor', () => {
   it('returns null for public paths', () => {
@@ -21,6 +21,12 @@ describe('ruleFor', () => {
       expect(ruleFor(path)).toBeNull();
       expect(requiresAuth(path)).toBe(false);
     }
+  });
+
+  it('leaves the catalogue public — a shop you must sign in to see is not a shop', () => {
+    expect(ruleFor('/shop')).toBeNull();
+    expect(ruleFor('/shop/some-listing-id')).toBeNull();
+    expect(requiresAuth('/shop')).toBe(false);
   });
 
   it('matches a prefix exactly or as a parent segment, never as a substring', () => {
@@ -31,9 +37,9 @@ describe('ruleFor', () => {
   });
 
   it('resolves the longest matching prefix', () => {
-    // Both `/buyer` and (were it added) a shorter neighbour could match; the
-    // longest wins so a nested portal route never inherits a looser rule.
-    expect(ruleFor('/buyer/messages/123')?.prefix).toBe('/buyer');
+    // A nested seller route must never inherit a looser rule from a shorter
+    // neighbour.
+    expect(ruleFor('/listings/abc/enquiries/def')?.prefix).toBe('/listings');
   });
 });
 
@@ -48,26 +54,26 @@ describe('canAccessPath', () => {
     }
   });
 
-  it('keeps every other role out of the buyer portal', () => {
-    for (const path of BUYER_ONLY) {
-      expect(canAccessPath(path, { role: 'buyer' })).toBe(true);
-      expect(canAccessPath(path, { role: 'both' })).toBe(true);
-      expect(canAccessPath(path, { role: 'seller' })).toBe(false);
-      expect(canAccessPath(path, { role: 'advertiser' })).toBe(false);
-      expect(canAccessPath(path, { role: 'promoter' })).toBe(false);
+  it('lets every signed-in role reach the surfaces buying needs', () => {
+    // Anybody can buy, so nothing here is role-gated — including the advertiser
+    // and promoter, who have an inbox like everybody else.
+    for (const path of EVERY_MEMBER) {
+      for (const role of ROLES) {
+        expect(canAccessPath(path, { role })).toBe(true);
+      }
     }
   });
 
-  it('gives the promoter their portal and nothing else', () => {
+  it("keeps the promoter out of every other role's tooling", () => {
     expect(canAccessPath('/promoter', { role: 'promoter' })).toBe(true);
-    for (const path of [...SELLER_ONLY, ...BUYER_ONLY, '/advertiser', '/admin']) {
+    for (const path of [...SELLER_ONLY, '/advertiser', '/admin']) {
       expect(canAccessPath(path, { role: 'promoter' })).toBe(false);
     }
   });
 
-  it('gives the advertiser their portal and nothing else', () => {
+  it("keeps the advertiser out of every other role's tooling", () => {
     expect(canAccessPath('/advertiser', { role: 'advertiser' })).toBe(true);
-    for (const path of [...SELLER_ONLY, ...BUYER_ONLY, '/promoter', '/admin']) {
+    for (const path of [...SELLER_ONLY, '/promoter', '/admin']) {
       expect(canAccessPath(path, { role: 'advertiser' })).toBe(false);
     }
   });
@@ -80,25 +86,17 @@ describe('canAccessPath', () => {
   });
 
   it('lets an administrator reach every role surface, so they can test them', () => {
-    for (const path of [...SELLER_ONLY, ...BUYER_ONLY, '/promoter', '/advertiser']) {
-      expect(canAccessPath(path, { role: 'seller', isAdmin: true })).toBe(true);
+    for (const path of [...SELLER_ONLY, '/promoter', '/advertiser']) {
+      expect(canAccessPath(path, { role: 'buyer', isAdmin: true })).toBe(true);
     }
   });
 
-  it('opens shared surfaces to every signed-in member', () => {
+  it('opens the application forms to everybody, since selling is applied for', () => {
     for (const role of ROLES) {
-      for (const path of ['/settings', '/notifications', '/apply', '/onboarding', '/directory']) {
-        expect(canAccessPath(path, { role })).toBe(true);
-      }
+      expect(canAccessPath('/apply', { role })).toBe(true);
+      expect(canAccessPath('/apply/seller', { role })).toBe(true);
+      expect(canAccessPath('/onboarding', { role })).toBe(true);
     }
-  });
-
-  it('offers feedback to the two sides that have a surface to speak from', () => {
-    expect(canAccessPath('/feedback', { role: 'seller' })).toBe(true);
-    expect(canAccessPath('/feedback', { role: 'buyer' })).toBe(true);
-    expect(canAccessPath('/feedback', { role: 'both' })).toBe(true);
-    expect(canAccessPath('/feedback', { role: 'advertiser' })).toBe(false);
-    expect(canAccessPath('/feedback', { role: 'promoter' })).toBe(false);
   });
 });
 

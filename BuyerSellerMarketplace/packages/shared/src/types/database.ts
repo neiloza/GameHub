@@ -19,16 +19,14 @@ import type {
   AdEventKind,
   AdPlacement,
   ApplicationStatus,
-  BuyerType,
   CampaignStatus,
   Category,
   EstimatedMonthlyReferrals,
   FeedbackCategory,
   FeedbackImpact,
   FeedbackStatus,
-  ListingStage,
+  ListingCondition,
   ListingStatus,
-  MatchStatus,
   MembershipState,
   NotificationChannel,
   Plan,
@@ -38,7 +36,7 @@ import type {
   ReportReason,
   ReportStatus,
   Role,
-  SwipeDirection,
+  SellerType,
   VerificationStatus,
 } from '../constants';
 import type { FeedbackSurface } from '../lib/feedback';
@@ -67,50 +65,38 @@ export type Listing = Timestamps & {
   name: string;
   tagline: string | null;
   category: Category;
-  stage: ListingStage;
+  condition: ListingCondition;
   location: string | null;
   summary: string | null;
   details: string | null;
   website: string | null;
-  price_cents: number | null;
+  /** Integer cents, and never null: a thing in a catalogue has a price. */
+  price_cents: number;
+  currency: string;
+  /** Null means not tracked; zero means tracked and sold out. */
+  stock_quantity: number | null;
   cover_image_url: string | null;
   status: ListingStatus;
 };
 
-export type BuyerProfile = {
-  profile_id: string;
-  categories: Category[];
-  stages: ListingStage[];
-  budget_min_cents: number | null;
-  budget_max_cents: number | null;
-  locations: string[];
-  notes: string | null;
-  updated_at: string;
-};
-
-export type Swipe = {
+/** The three public columns a product page shows about whoever is selling. */
+export type ListingSeller = {
   id: string;
-  buyer_id: string;
-  listing_id: string;
-  direction: SwipeDirection;
-  created_at: string;
+  display_name: string;
+  verified: boolean;
+  location: string | null;
 };
 
-export type Match = {
-  id: string;
-  buyer_id: string;
-  listing_id: string;
-  status: MatchStatus;
-  responded_at: string | null;
-  created_at: string;
-};
-
+/**
+ * An enquiry thread. One per (listing, buyer) — a second question about the
+ * same item belongs in the thread the first answer is in.
+ */
 export type Conversation = {
   id: string;
-  match_id: string;
-  buyer_id: string;
-  seller_id: string;
   listing_id: string;
+  buyer_id: string;
+  /** Set from the listing by a trigger, never trusted from the client. */
+  seller_id: string;
   buyer_last_read_at: string | null;
   seller_last_read_at: string | null;
   created_at: string;
@@ -160,12 +146,11 @@ type ApplicationBase = Timestamps & {
   review_note: string | null;
 };
 
-export type BuyerApplication = ApplicationBase & {
-  buyer_type: BuyerType;
-  organization: string | null;
+export type SellerApplication = ApplicationBase & {
+  shop_name: string;
+  seller_type: SellerType;
   categories: Category[];
-  budget_min_cents: number | null;
-  budget_max_cents: number | null;
+  fulfilment_note: string | null;
 };
 
 export type AdvertiserApplication = ApplicationBase & {
@@ -181,7 +166,7 @@ export type PromoterApplication = ApplicationBase & {
 };
 
 /** Which table a row lives in. Applications are one workflow over three tables. */
-export type ApplicationKind = 'buyer' | 'advertiser' | 'promoter';
+export type ApplicationKind = 'seller' | 'advertiser' | 'promoter';
 
 export type ApplicationMessage = {
   id: string;
@@ -433,17 +418,14 @@ export type Database = {
   public: {
     Tables: {
       profiles: Table<Profile, 'role' | 'verified' | 'is_admin' | 'account_status' | 'links'>;
-      listings: Table<Listing, 'status'>;
-      buyer_profiles: Table<BuyerProfile, 'updated_at' | 'categories' | 'stages' | 'locations'>;
-      swipes: Table<Swipe>;
-      matches: Table<Match, 'status' | 'responded_at'>;
+      listings: Table<Listing, 'status' | 'condition' | 'currency'>;
       conversations: Table<Conversation, 'buyer_last_read_at' | 'seller_last_read_at'>;
       messages: Table<Message>;
       blocks: Table<Block>;
       reports: Table<Report, 'status' | 'resolved_by' | 'resolved_at'>;
-      buyer_applications: Table<
-        BuyerApplication,
-        'status' | 'reviewed_by' | 'reviewed_at' | 'review_note' | 'categories'
+      seller_applications: Table<
+        SellerApplication,
+        'status' | 'reviewed_by' | 'reviewed_at' | 'review_note'
       >;
       advertiser_applications: Table<
         AdvertiserApplication,
@@ -495,20 +477,35 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
-      /** The ranked discovery feed for the calling buyer. */
-      get_discovery_feed: {
-        Args: { p_limit?: number; p_offset?: number };
-        Returns: (Listing & { score: number })[];
-      };
-      /** Listings this buyer passed on, so a pass can be undone. */
-      get_skipped_feed: {
-        Args: { p_limit?: number };
+      /** The catalogue: filtered, sorted, paged. Public — `anon` may call it. */
+      search_catalogue: {
+        Args: {
+          p_query?: string | null;
+          p_category?: string | null;
+          p_condition?: string | null;
+          p_min_cents?: number | null;
+          p_max_cents?: number | null;
+          p_sort?: string;
+          p_limit?: number;
+          p_offset?: number;
+        };
         Returns: Listing[];
       };
-      respond_to_match: {
-        Args: { p_match_id: string; p_accept: boolean };
-        Returns: string | null;
+      /** How many rows the same filters match, for the pager. */
+      count_catalogue: {
+        Args: {
+          p_query?: string | null;
+          p_category?: string | null;
+          p_condition?: string | null;
+          p_min_cents?: number | null;
+          p_max_cents?: number | null;
+        };
+        Returns: number;
       };
+      /** The seller behind a listing, for a product page a stranger can open. */
+      listing_seller: { Args: { p_listing_id: string }; Returns: ListingSeller[] };
+      /** Open an enquiry, or add to the one that already exists. */
+      start_enquiry: { Args: { p_listing_id: string; p_body: string }; Returns: string };
       mark_conversation_read: { Args: { p_conversation_id: string }; Returns: void };
       review_application: {
         Args: {

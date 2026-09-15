@@ -5,7 +5,6 @@ export * from './schemas';
 // Pure logic — no client, no React, unit-tested.
 export * from './lib/access';
 export * from './lib/feedback';
-export * from './lib/matching';
 export * from './lib/membership';
 export * from './lib/notifications';
 export * from './lib/onboarding';
@@ -20,8 +19,8 @@ export * from './api/admin';
 export * from './api/advertising';
 export * from './api/applications';
 export * from './api/billing';
+export * from './api/catalogue';
 export * from './api/chat';
-export * from './api/discovery';
 export * from './api/feedback';
 export * from './api/identity';
 export * from './api/listings';

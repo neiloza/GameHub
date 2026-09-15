@@ -7,8 +7,8 @@ import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
 /**
  * One conversation, both sides.
  *
- * The seller reads it at `/listings/:id/buyers/:conversationId` and the buyer
- * at `/buyer/messages/:id`, but the thread itself is identical, so it lives
+ * The seller reads it at `/listings/:id/enquiries/:conversationId` and the
+ * shopper at `/messages/:id`, but the thread itself is identical, so it lives
  * here once. `useMessages` owns the realtime subscription, the optimistic send
  * and the read receipt.
  */

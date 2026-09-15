@@ -9,8 +9,8 @@ import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
  * Account setup: the screen that turns an auth user into a member.
  *
  * The role picked here is a *routing* choice, not a grant. The database forces
- * every new profile to `seller` and refuses any later self-change, so picking
- * "buyer" sends the member to the buyer application rather than making them
+ * every new profile to `buyer` and refuses any later self-change, so picking
+ * "seller" sends the member to the seller application rather than making them
  * one. Saying so on the screen is the difference between an application and a
  * form that appears to have failed.
  */
@@ -20,7 +20,7 @@ function OnboardingForm() {
   const initial = search.get('role');
 
   const [role, setRole] = useState(
-    (MEMBER_ROLES as readonly string[]).includes(initial ?? '') ? initial! : 'seller'
+    (MEMBER_ROLES as readonly string[]).includes(initial ?? '') ? initial! : 'buyer'
   );
   const [displayName, setDisplayName] = useState('');
   const [location, setLocation] = useState('');
@@ -37,9 +37,9 @@ function OnboardingForm() {
         location: location || null,
         bio: null,
       });
-      // Seller is the only role an account can simply have. Everything else is
+      // Buyer is the only role an account can simply have. Everything else is
       // an application, so send them to write one.
-      router.push(role === 'seller' ? homeFor('seller') : `/apply/${role}`);
+      router.push(role === 'buyer' ? homeFor('buyer') : `/apply/${role}`);
       router.refresh();
     } catch (e) {
       setError((e as Error).message);
@@ -93,8 +93,8 @@ function OnboardingForm() {
               >
                 <span className="block font-semibold text-brand-dark">{ROLE_LABELS[r]}</span>
                 <span className="block text-xs text-slate-600">
-                  {r === 'seller'
-                    ? 'Start straight away'
+                  {r === 'buyer'
+                    ? 'Start straight away — you already can'
                     : 'An administrator reviews this before it goes live'}
                 </span>
               </button>

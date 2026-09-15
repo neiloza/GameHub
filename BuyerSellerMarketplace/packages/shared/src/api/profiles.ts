@@ -1,8 +1,8 @@
 import type { MarketplaceClient } from './client';
 import { assertOk, requireUserId } from './client';
-import type { BuyerProfile, Profile } from '../types/database';
-import { buyerPreferencesSchema, onboardingSchema, profileSchema } from '../schemas';
-import type { BuyerPreferencesInput, OnboardingInput, ProfileInput } from '../schemas';
+import type { Profile } from '../types/database';
+import { onboardingSchema, profileSchema } from '../schemas';
+import type { OnboardingInput, ProfileInput } from '../schemas';
 
 export async function getMyProfile(client: MarketplaceClient): Promise<Profile | null> {
   const { data: auth } = await client.auth.getUser();
@@ -25,10 +25,10 @@ export async function getProfile(client: MarketplaceClient, id: string): Promise
 /**
  * Account setup: the row that turns an auth user into a member.
  *
- * `role` is not sent. The database forces a new profile to `seller` and refuses
+ * `role` is not sent. The database forces a new profile to `buyer` and refuses
  * any later self-change (`protect_profile_privileged_columns`), so sending one
  * would be a value that is silently discarded — worse than not sending it,
- * because it reads as if it worked.
+ * because it reads as if it worked. Selling is applied for afterwards.
  */
 export async function completeOnboarding(
   client: MarketplaceClient,
@@ -54,34 +54,6 @@ export async function updateMyProfile(
     .from('profiles')
     .update(parsed)
     .eq('id', id)
-    .select()
-    .single();
-  return assertOk(data, error);
-}
-
-export async function getMyBuyerPreferences(
-  client: MarketplaceClient
-): Promise<BuyerProfile | null> {
-  const { data: auth } = await client.auth.getUser();
-  if (!auth.user) return null;
-  const { data, error } = await client
-    .from('buyer_profiles')
-    .select('*')
-    .eq('profile_id', auth.user.id)
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  return data;
-}
-
-export async function upsertBuyerPreferences(
-  client: MarketplaceClient,
-  input: BuyerPreferencesInput
-): Promise<BuyerProfile> {
-  const parsed = buyerPreferencesSchema.parse(input);
-  const profile_id = await requireUserId(client);
-  const { data, error } = await client
-    .from('buyer_profiles')
-    .upsert({ profile_id, ...parsed })
     .select()
     .single();
   return assertOk(data, error);

@@ -23,9 +23,7 @@ import type { NotificationCategory, NotificationKind } from '../constants';
  * actually decides whether a delivery row is written.
  */
 export const NOTIFICATION_KIND_CATEGORY: Record<NotificationKind, NotificationCategory> = {
-  interest_received: 'activity',
-  match_accepted: 'activity',
-  match_declined: 'activity',
+  enquiry_received: 'activity',
   message_received: 'messages',
   application_reviewed: 'account',
   application_info_requested: 'account',
@@ -100,46 +98,34 @@ export function describeNotification(n: NotificationLike): DescribedNotification
   const conversationId = field(p, 'conversation_id');
 
   switch (n.kind) {
-    case 'interest_received':
+    case 'enquiry_received': {
+      const buyer = field(p, 'buyer_name');
       return {
-        title: 'A buyer is interested',
+        title: 'Somebody asked about a listing',
         body: listingName
-          ? `A buyer wants to connect about ${listingName}.`
-          : 'A buyer wants to connect with you.',
-        href: listingId ? `/listings/${listingId}/buyers` : '/listings',
+          ? `${buyer ?? 'A shopper'} has a question about ${listingName}.`
+          : `${buyer ?? 'A shopper'} has a question about one of your listings.`,
+        href:
+          listingId && conversationId
+            ? `/listings/${listingId}/enquiries/${conversationId}`
+            : '/listings',
       };
-
-    case 'match_accepted':
-      return {
-        title: 'You matched',
-        body: listingName
-          ? `${listingName} accepted — the chat is open.`
-          : 'Your interest was accepted — the chat is open.',
-        href: conversationId ? `/buyer/messages/${conversationId}` : '/buyer/messages',
-      };
-
-    case 'match_declined':
-      return {
-        title: 'Not this time',
-        body: listingName
-          ? `${listingName} passed on connecting.`
-          : 'That seller passed on connecting.',
-        href: '/buyer/discover',
-      };
+    }
 
     case 'message_received': {
       const sender = field(p, 'sender_name');
-      // The two sides read the same thread at different routes: `/buyer/*` is
-      // gated on an approved buyer application, so a seller cannot be sent
-      // there. The payload carries the recipient's side for exactly this.
+      // The two sides read the same thread at different routes — a shopper at
+      // /messages/:id, a seller inside the listing it is about. The payload
+      // carries the recipient's side for exactly this, because the trigger
+      // knows which of the two it just wrote to and the client does not.
       const side = field(p, 'recipient_side');
       const href =
         conversationId == null
           ? null
           : side === 'buyer'
-            ? `/buyer/messages/${conversationId}`
+            ? `/messages/${conversationId}`
             : listingId
-              ? `/listings/${listingId}/buyers/${conversationId}`
+              ? `/listings/${listingId}/enquiries/${conversationId}`
               : '/listings';
       return {
         title: 'New message',

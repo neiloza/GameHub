@@ -9,7 +9,7 @@ export default function BuyerThreadPage() {
 
   return (
     <div className="py-8">
-      <Link href="/buyer/messages" className="text-sm font-medium text-brand">
+      <Link href="/messages" className="text-sm font-medium text-brand">
         ← Back to messages
       </Link>
       <Thread conversationId={id} />

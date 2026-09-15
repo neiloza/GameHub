@@ -20,10 +20,12 @@ GameHub/
 ## BuyerSellerMarketplace
 
 `BuyerSellerMarketplace/` is not a game. It is a reusable two-sided marketplace
-starter — the buyer / seller / advertiser / promoter / admin role structure, with
-Google authentication, password recovery, mutual-consent messaging, role
-applications, an admin console, membership billing, notifications and a PWA
-shell.
+starter, shaped like a shop — a public catalogue with search and filters,
+buyer-initiated enquiries, and the buyer / seller / advertiser / promoter / admin
+role structure, with Google authentication, password recovery, role applications,
+an admin console, membership billing, notifications and a PWA shell. It maps onto
+anything where one side lists and the other buys: Amazon, Etsy, Redbubble, eBay,
+classifieds.
 
 **It was extracted from the Aquarium project** (`neiloza/Aquarium`) at the end of
 that engagement and genericised: the reusable parts were kept and renamed, and

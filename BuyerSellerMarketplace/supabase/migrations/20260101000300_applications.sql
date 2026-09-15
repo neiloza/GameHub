@@ -1,21 +1,22 @@
--- Applications: how an account becomes a buyer, an advertiser or a promoter.
+-- Applications: how an account becomes a seller, an advertiser or a promoter.
 --
 -- Three tables rather than one with a `kind` column, because the payloads have
--- nothing in common past the contact block — a buyer states a budget, an
--- advertiser states placements, a promoter states channels. One table would be
--- a wide sheet of columns that are null for two kinds out of three, held
--- together by CHECK constraints saying which. The shared *workflow* lives in
--- review_application() at the bottom of this file.
+-- nothing in common past the contact block — a seller states what they intend
+-- to sell, an advertiser states placements, a promoter states channels. One
+-- table would be a wide sheet of columns that are null for two kinds out of
+-- three, held together by CHECK constraints saying which. The shared *workflow*
+-- lives in review_application() at the bottom of this file.
 --
--- Seller is the only self-serve role. Everything else is reviewed by a person,
--- and review_application() is the single sanctioned path past the role guard in
--- the foundation migration.
+-- Buyer is the only self-serve role: browsing and buying are open to anybody
+-- who signs up. Everything else is reviewed by a person, and
+-- review_application() is the single sanctioned path past the role guard in the
+-- foundation migration.
 
 -- ---------------------------------------------------------------------------
--- buyer_applications
+-- seller_applications
 -- ---------------------------------------------------------------------------
 
-create table public.buyer_applications (
+create table public.seller_applications (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles (id) on delete cascade,
 
@@ -24,13 +25,16 @@ create table public.buyer_applications (
   website text check (char_length(website) <= 500),
   motivation text not null check (char_length(motivation) between 1 and 4000),
 
-  buyer_type text not null check (buyer_type in (
-    'individual', 'business', 'institution', 'intermediary', 'other'
+  -- The shop, not the person. This is what appears above their listings once
+  -- they are approved.
+  shop_name text not null check (char_length(shop_name) between 1 and 120),
+  seller_type text not null check (seller_type in (
+    'individual', 'business', 'artist', 'reseller', 'other'
   )),
-  organization text check (char_length(organization) <= 200),
   categories text[] not null default '{}',
-  budget_min_cents bigint check (budget_min_cents is null or budget_min_cents >= 0),
-  budget_max_cents bigint check (budget_max_cents is null or budget_max_cents >= 0),
+  -- Free text on purpose: "roughly how much, how often" is a sentence, and
+  -- turning it into a dropdown loses the answer that tells you the most.
+  fulfilment_note text check (char_length(fulfilment_note) <= 2000),
 
   status text not null default 'pending'
     check (status in ('pending', 'info_requested', 'approved', 'rejected')),
@@ -100,18 +104,18 @@ create table public.promoter_applications (
   updated_at timestamptz not null default now()
 );
 
-create index buyer_applications_status_idx on public.buyer_applications (status, created_at);
+create index seller_applications_status_idx on public.seller_applications (status, created_at);
 create index advertiser_applications_status_idx
   on public.advertiser_applications (status, created_at);
 create index promoter_applications_status_idx
   on public.promoter_applications (status, created_at);
 
-create index buyer_applications_profile_idx on public.buyer_applications (profile_id);
+create index seller_applications_profile_idx on public.seller_applications (profile_id);
 create index advertiser_applications_profile_idx on public.advertiser_applications (profile_id);
 create index promoter_applications_profile_idx on public.promoter_applications (profile_id);
 
-create trigger buyer_applications_updated_at
-  before update on public.buyer_applications
+create trigger seller_applications_updated_at
+  before update on public.seller_applications
   for each row execute function public.set_updated_at();
 create trigger advertiser_applications_updated_at
   before update on public.advertiser_applications
@@ -131,7 +135,7 @@ create trigger promoter_applications_updated_at
  * Same reasoning as the profile guard: the owner UPDATE policy permits the row,
  * and RLS cannot see which column changed. Without this an applicant could set
  * `status = 'approved'` on their own row — which review_application() would
- * then never be asked about, but is_approved_buyer() reads directly.
+ * then never be asked about, but is_seller() reads the role it would grant.
  */
 create or replace function public.protect_application_review_columns()
 returns trigger
@@ -167,8 +171,8 @@ begin
 end;
 $$;
 
-create trigger buyer_applications_protect_review
-  before insert or update on public.buyer_applications
+create trigger seller_applications_protect_review
+  before insert or update on public.seller_applications
   for each row execute function public.protect_application_review_columns();
 create trigger advertiser_applications_protect_review
   before insert or update on public.advertiser_applications
@@ -181,21 +185,21 @@ create trigger promoter_applications_protect_review
 -- policies — identical across the three, because the workflow is
 -- ---------------------------------------------------------------------------
 
-alter table public.buyer_applications enable row level security;
+alter table public.seller_applications enable row level security;
 alter table public.advertiser_applications enable row level security;
 alter table public.promoter_applications enable row level security;
 
-create policy "applicants read their own buyer application"
-  on public.buyer_applications for select to authenticated using (profile_id = auth.uid());
-create policy "applicants submit their own buyer application"
-  on public.buyer_applications for insert to authenticated with check (profile_id = auth.uid());
-create policy "applicants amend their open buyer application"
-  on public.buyer_applications for update to authenticated
+create policy "applicants read their own seller application"
+  on public.seller_applications for select to authenticated using (profile_id = auth.uid());
+create policy "applicants submit their own seller application"
+  on public.seller_applications for insert to authenticated with check (profile_id = auth.uid());
+create policy "applicants amend their open seller application"
+  on public.seller_applications for update to authenticated
   using (profile_id = auth.uid()) with check (profile_id = auth.uid());
-create policy "admins read all buyer applications"
-  on public.buyer_applications for select to authenticated using (public.is_admin());
-create policy "admins review buyer applications"
-  on public.buyer_applications for update to authenticated
+create policy "admins read all seller applications"
+  on public.seller_applications for select to authenticated using (public.is_admin());
+create policy "admins review seller applications"
+  on public.seller_applications for update to authenticated
   using (public.is_admin()) with check (true);
 
 create policy "applicants read their own advertiser application"
@@ -232,7 +236,7 @@ create policy "admins review promoter applications"
 
 create table public.application_messages (
   id uuid primary key default gen_random_uuid(),
-  application_kind text not null check (application_kind in ('buyer', 'advertiser', 'promoter')),
+  application_kind text not null check (application_kind in ('seller', 'advertiser', 'promoter')),
   application_id uuid not null,
   author_id uuid not null references public.profiles (id) on delete cascade,
   body text not null check (char_length(body) between 1 and 4000),
@@ -252,7 +256,7 @@ create index application_messages_thread_idx
  */
 create table public.application_notes (
   id uuid primary key default gen_random_uuid(),
-  application_kind text not null check (application_kind in ('buyer', 'advertiser', 'promoter')),
+  application_kind text not null check (application_kind in ('seller', 'advertiser', 'promoter')),
   application_id uuid not null,
   author_id uuid not null references public.profiles (id) on delete cascade,
   body text not null check (char_length(body) between 1 and 4000),
@@ -273,8 +277,8 @@ declare
 begin
   -- No dynamic SQL: three tables, three branches, and nothing built from a
   -- caller-supplied string.
-  if p_kind = 'buyer' then
-    select profile_id into v_owner from public.buyer_applications where id = p_id;
+  if p_kind = 'seller' then
+    select profile_id into v_owner from public.seller_applications where id = p_id;
   elsif p_kind = 'advertiser' then
     select profile_id into v_owner from public.advertiser_applications where id = p_id;
   elsif p_kind = 'promoter' then
@@ -322,9 +326,9 @@ create policy "admins write application notes"
  * writes `profiles.role`, and it is why that guard can be absolute everywhere
  * else.
  *
- * Approving a buyer for an account that already sells makes it `both` rather
- * than replacing the role: somebody who lists and buys should not lose their
- * listings to get a feed.
+ * Approving a seller for an account that can already buy makes it `both` rather
+ * than replacing the role: opening a shop should not cost somebody the ability
+ * to buy from anybody else's.
  */
 create or replace function public.review_application(
   p_kind text,
@@ -355,8 +359,8 @@ begin
     raise exception 'a note is required for any outcome other than approval';
   end if;
 
-  if p_kind = 'buyer' then
-    update public.buyer_applications
+  if p_kind = 'seller' then
+    update public.seller_applications
        set status = p_status, review_note = p_note,
            reviewed_by = auth.uid(), reviewed_at = now()
      where id = p_application_id
@@ -385,9 +389,12 @@ begin
     select role into v_current from public.profiles where id = v_profile;
 
     v_new_role := case
-      -- An account that sells and is approved to buy does both.
-      when p_kind = 'buyer' and v_current in ('seller', 'both') then 'both'
-      when p_kind = 'buyer' then 'buyer'
+      -- Approving a seller for an account that can already buy — which is every
+      -- account, since buyer is the default — makes it `both` rather than
+      -- replacing the role. Opening a shop should not cost somebody the ability
+      -- to buy from anybody else's.
+      when p_kind = 'seller' and v_current in ('buyer', 'both') then 'both'
+      when p_kind = 'seller' then 'seller'
       when p_kind = 'advertiser' then 'advertiser'
       when p_kind = 'promoter' then 'promoter'
     end;

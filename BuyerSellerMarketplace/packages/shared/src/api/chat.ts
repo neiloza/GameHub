@@ -1,13 +1,67 @@
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import type { MarketplaceClient } from './client';
 import { assertOk, requireUserId } from './client';
-import { messageSchema, reportSchema } from '../schemas';
-import type { ReportInput } from '../schemas';
+import { enquirySchema, messageSchema, reportSchema } from '../schemas';
+import type { EnquiryInput, ReportInput } from '../schemas';
 import type { Conversation, Listing, Message, Report } from '../types/database';
 
 export type ConversationSummary = Conversation & {
-  listings: Pick<Listing, 'id' | 'name' | 'owner_id' | 'cover_image_url'>;
+  listings: Pick<Listing, 'id' | 'name' | 'owner_id' | 'cover_image_url' | 'price_cents' | 'currency'>;
 };
+
+/**
+ * Open an enquiry about a listing, or add to the thread that already exists.
+ *
+ * This is the *only* way a conversation comes into being, and it can only ever
+ * be called by the person who becomes the buyer on it. A seller has no
+ * equivalent: they answer threads, they do not start them. See the INSERT
+ * policy on `conversations` — the rule is a policy, not a convention.
+ *
+ * Returns the conversation id, new or existing.
+ */
+export async function startEnquiry(
+  client: MarketplaceClient,
+  input: EnquiryInput
+): Promise<string> {
+  const parsed = enquirySchema.parse(input);
+  const { data, error } = await client.rpc('start_enquiry', {
+    p_listing_id: parsed.listing_id,
+    p_body: parsed.body,
+  });
+  if (error) throw new Error(error.message);
+  return data as string;
+}
+
+/** The thread for one listing and the signed-in shopper, if there is one. */
+export async function getMyEnquiry(
+  client: MarketplaceClient,
+  listingId: string
+): Promise<Conversation | null> {
+  const { data: auth } = await client.auth.getUser();
+  if (!auth.user) return null;
+  const { data, error } = await client
+    .from('conversations')
+    .select('*')
+    .eq('listing_id', listingId)
+    .eq('buyer_id', auth.user.id)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+/** Every enquiry on one listing. The seller's side of the inbox. */
+export async function getListingEnquiries(
+  client: MarketplaceClient,
+  listingId: string
+): Promise<Conversation[]> {
+  const { data, error } = await client
+    .from('conversations')
+    .select('*')
+    .eq('listing_id', listingId)
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}
 
 /**
  * Every conversation this account is part of.
@@ -20,7 +74,7 @@ export type ConversationSummary = Conversation & {
 export async function getConversations(client: MarketplaceClient): Promise<ConversationSummary[]> {
   const { data, error } = await client
     .from('conversations')
-    .select('*, listings(id, name, owner_id, cover_image_url)')
+    .select('*, listings(id, name, owner_id, cover_image_url, price_cents, currency)')
     .order('created_at', { ascending: false });
   if (error) throw new Error(error.message);
   return (data ?? []) as unknown as ConversationSummary[];
@@ -32,7 +86,7 @@ export async function getConversation(
 ): Promise<ConversationSummary | null> {
   const { data, error } = await client
     .from('conversations')
-    .select('*, listings(id, name, owner_id, cover_image_url)')
+    .select('*, listings(id, name, owner_id, cover_image_url, price_cents, currency)')
     .eq('id', id)
     .maybeSingle();
   if (error) throw new Error(error.message);

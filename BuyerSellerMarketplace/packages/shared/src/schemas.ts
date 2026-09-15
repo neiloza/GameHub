@@ -2,7 +2,6 @@ import { z } from 'zod';
 import {
   AD_PLACEMENTS,
   APPLICATION_STATUSES,
-  BUYER_TYPES,
   CATEGORIES,
   ESTIMATED_MONTHLY_REFERRALS,
   FEEDBACK_BODY_MAX,
@@ -11,14 +10,14 @@ import {
   FEEDBACK_RESPONSE_MAX,
   FEEDBACK_STATUSES,
   FEEDBACK_TITLE_MAX,
-  LISTING_STAGES,
+  LISTING_CONDITIONS,
   MESSAGE_MAX,
   PROMOTER_PLATFORMS,
   PROMOTER_TYPES,
   PURCHASABLE_PLANS,
   REPORT_REASONS,
   ROLES,
-  SWIPE_DIRECTIONS,
+  SELLER_TYPES,
 } from './constants';
 import { FEEDBACK_SURFACES } from './lib/feedback';
 import { isValidWebsite, normalizeWebsite } from './lib/website';
@@ -76,10 +75,10 @@ export type ProfileInput = z.infer<typeof profileSchema>;
 /**
  * Account setup.
  *
- * `role` is accepted but not trusted: the database forces a new profile to
- * `seller` regardless of what is posted (see
- * `protect_profile_privileged_columns`). It is here so the form can carry the
- * choice through to the application step, not because it decides anything.
+ * `role` is deliberately absent. The database forces a new profile to `buyer`
+ * regardless of what is posted (see `protect_profile_privileged_columns`), so
+ * sending one would be a value that is silently discarded — worse than not
+ * sending it, because it reads as if it worked.
  */
 export const onboardingSchema = profileSchema.pick({
   display_name: true,
@@ -96,12 +95,19 @@ export const listingSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(80),
   tagline: z.string().max(140).nullish(),
   category: z.enum(CATEGORIES),
-  stage: z.enum(LISTING_STAGES),
+  condition: z.enum(LISTING_CONDITIONS).default('new'),
   location: z.string().max(120).nullish(),
   summary: z.string().max(4000).nullish(),
   details: z.string().max(8000).nullish(),
   website: optionalWebsite,
-  price_cents: cents.nullish(),
+  // Required, matching the NOT NULL in the migration: a thing in a catalogue
+  // has a price.
+  price_cents: cents,
+  currency: z.string().regex(/^[A-Z]{3}$/, 'Use a three-letter currency code').default('USD'),
+  // Null is "not tracked" (made to order, a service, a download); zero is
+  // "tracked, and sold out". They read differently on the page, so they are
+  // kept apart here rather than collapsed into one falsy value.
+  stock_quantity: z.number().int().nonnegative().nullish(),
   cover_image_url: z.string().url().nullish(),
   // `suspended` is deliberately absent: only an administrator sets it, through
   // a trigger-guarded path, so it must not be reachable from a form.
@@ -109,33 +115,17 @@ export const listingSchema = z.object({
 });
 export type ListingInput = z.infer<typeof listingSchema>;
 
-// ---------------------------------------------------------------------------
-// buyers
-// ---------------------------------------------------------------------------
-
-export const buyerPreferencesSchema = z
-  .object({
-    categories: z.array(z.enum(CATEGORIES)).default([]),
-    stages: z.array(z.enum(LISTING_STAGES)).default([]),
-    budget_min_cents: cents.nullish(),
-    budget_max_cents: cents.nullish(),
-    locations: z.array(z.string().trim().min(1).max(80)).default([]),
-    notes: z.string().max(2000).nullish(),
-  })
-  .refine(
-    (p) =>
-      p.budget_min_cents == null ||
-      p.budget_max_cents == null ||
-      p.budget_min_cents <= p.budget_max_cents,
-    { message: 'The minimum budget cannot be above the maximum', path: ['budget_max_cents'] }
-  );
-export type BuyerPreferencesInput = z.infer<typeof buyerPreferencesSchema>;
-
-export const swipeSchema = z.object({
-  listing_id: z.string().uuid(),
-  direction: z.enum(SWIPE_DIRECTIONS),
+/** What the catalogue accepts from a query string. */
+export const catalogueQuerySchema = z.object({
+  q: z.string().trim().max(200).optional(),
+  category: z.enum(CATEGORIES).optional(),
+  condition: z.enum(LISTING_CONDITIONS).optional(),
+  min_cents: cents.optional(),
+  max_cents: cents.optional(),
+  sort: z.enum(['newest', 'price_asc', 'price_desc']).default('newest'),
+  page: z.number().int().min(1).default(1),
 });
-export type SwipeInput = z.infer<typeof swipeSchema>;
+export type CatalogueQuery = z.infer<typeof catalogueQuerySchema>;
 
 // ---------------------------------------------------------------------------
 // messaging
@@ -146,6 +136,13 @@ export const messageSchema = z.object({
   body: z.string().trim().min(1, 'Message cannot be empty').max(MESSAGE_MAX),
 });
 export type MessageInput = z.infer<typeof messageSchema>;
+
+/** Opening an enquiry: a listing, and the first thing you want to ask about it. */
+export const enquirySchema = z.object({
+  listing_id: z.string().uuid(),
+  body: z.string().trim().min(1, 'Ask the seller something').max(MESSAGE_MAX),
+});
+export type EnquiryInput = z.infer<typeof enquirySchema>;
 
 export const reportSchema = z.object({
   subject_profile_id: z.string().uuid().nullish(),
@@ -167,15 +164,14 @@ const applicationBase = {
   motivation: z.string().trim().min(1, 'Tell us a little about why').max(4000),
 };
 
-export const buyerApplicationSchema = z.object({
+export const sellerApplicationSchema = z.object({
   ...applicationBase,
-  buyer_type: z.enum(BUYER_TYPES),
-  organization: z.string().max(200).nullish(),
-  categories: z.array(z.enum(CATEGORIES)).default([]),
-  budget_min_cents: cents.nullish(),
-  budget_max_cents: cents.nullish(),
+  shop_name: z.string().trim().min(1, 'Your shop needs a name').max(120),
+  seller_type: z.enum(SELLER_TYPES),
+  categories: z.array(z.enum(CATEGORIES)).min(1, 'Pick at least one category'),
+  fulfilment_note: z.string().max(2000).nullish(),
 });
-export type BuyerApplicationInput = z.infer<typeof buyerApplicationSchema>;
+export type SellerApplicationInput = z.infer<typeof sellerApplicationSchema>;
 
 export const advertiserApplicationSchema = z.object({
   ...applicationBase,

@@ -23,9 +23,9 @@ That is why, for example:
 - `canAccessPath()` in the shared package decides what a role *sees*, and RLS
   decides what a role *gets*. If the two disagree, the member sees an empty
   screen — annoying, not a breach.
-- `lib/matching.ts` mirrors the SQL in `get_discovery_feed()`. The database
-  orders the feed; the TypeScript exists so a card can explain its own position
-  and so a test can pin the weights.
+- `search_catalogue()` runs as the *caller*, not security definer, so RLS
+  decides what comes back rather than the function re-deriving it. A seller
+  searching their own shop finds their own draft, and nothing else changes.
 - `lib/membership.ts` says what a membership includes, and one gate —
   `enforce_listing_limit` — is also in the database, because it is the only one
   a client could otherwise bypass by writing straight to the table.
@@ -39,9 +39,16 @@ it:
 **A BEFORE trigger**, for a column inside a row the caller legitimately owns.
 `protect_profile_privileged_columns()` is the important one: the owner UPDATE
 policy permits the whole row, so without the trigger a member could PATCH
-`role` to `advertiser` and open four policies at once. The trigger short-circuits
+`role` to `seller` and open four policies at once. The trigger short-circuits
 for the service role (`auth.uid() is null`) and for administrators, which is how
 `review_application()` is allowed past it and nothing else is.
+
+`set_conversation_seller()` is the same pattern used for a different purpose: the
+buyer supplies both ids when opening an enquiry, and nothing an INSERT policy can
+express would check that the account they named as the seller actually owns the
+listing. So the column is overwritten from the listing rather than trusted —
+without it, a shopper could name any account as "the seller" and message a
+stranger through a conversation they were entitled to create.
 
 **A column grant**, for a column the caller may read rows of but should not see.
 `ad_events.viewer_id` is revoked from `authenticated` and re-granted per column,
@@ -52,9 +59,9 @@ their ad.
 
 | Written by | Examples |
 |---|---|
-| The member, under RLS | Their profile, their listings, their messages, their swipes |
-| A security-definer function | Role changes, application decisions, match responses, referral payouts |
-| A trigger | Matches (from a swipe), conversations (from an accept), notifications, audit rows |
+| The member, under RLS | Their profile, their listings, their messages, their enquiries |
+| A security-definer function | Role changes, application decisions, opening an enquiry, referral payouts |
+| A trigger | `conversations.seller_id` (from the listing), notifications, audit rows |
 | The service role only | Memberships, billing events, identity outcomes |
 
 `memberships` has no INSERT or UPDATE policy for anybody, administrators

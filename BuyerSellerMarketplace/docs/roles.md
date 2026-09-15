@@ -18,18 +18,25 @@ onboarding is keyed on `(profile_id, role)` rather than on the profile.
 
 ## How a role is acquired
 
-**Seller** is the only self-serve role. A new profile is forced to `seller` by
-`protect_profile_privileged_columns()`, whatever the client posted.
+**Buyer** is the only self-serve role. A new profile is forced to `buyer` by
+`protect_profile_privileged_columns()`, whatever the client posted. Browsing and
+buying are what a shop is for, and gating them behind a review would be absurd.
 
-**Buyer, advertiser and promoter** arrive through `review_application()`, which is
-security definer and therefore passes the `is_admin()` short-circuit in that same
-trigger. It is the only sanctioned path past the guard, alongside
+**Seller, advertiser and promoter** arrive through `review_application()`, which
+is security definer and therefore passes the `is_admin()` short-circuit in that
+same trigger. It is the only sanctioned path past the guard, alongside
 `admin_set_role()` for the cases an application cannot express — correcting a
 mistake, granting `both`, moving an account at its owner's request.
 
-Approving a buyer application for an account that already sells produces `both`
-rather than replacing the role. Somebody who lists and buys should not have to
-lose their listings to get a feed.
+Approving a seller application produces `both` rather than `seller`, because the
+account could already buy and opening a shop should not cost them that. In
+practice `seller` alone only appears if an administrator sets it deliberately.
+
+Two things guard the seller gate, and the order matters: the INSERT policy on
+`listings` requires `is_seller()`, and `enforce_listing_limit()` checks it too.
+A BEFORE trigger runs before RLS evaluates WITH CHECK, so without the second
+check somebody still in the review queue is told they need a membership — true,
+but not the reason, and it would send them to buy one that would not help.
 
 ## The three mechanisms
 
@@ -47,17 +54,21 @@ also empty.
 The table in `access.ts` is the answer, and `access.test.ts` asserts it. In
 summary:
 
-- **Seller**: `/listings`, `/membership`, `/refer`, `/feedback`
-- **Buyer**: `/buyer/*`, `/feedback`
+- **Nobody in particular**: `/`, `/shop`, `/shop/:id`, the auth screens and the
+  legal pages. These are not in the table at all — the catalogue is public, and
+  published listings are readable by `anon` in the database to match.
+- **Seller**: `/listings`, `/membership`, `/refer`
 - **Advertiser**: `/advertiser/*` and nothing else
 - **Promoter**: `/promoter` and nothing else
-- **Everyone signed in**: `/settings`, `/notifications`, `/apply`, `/onboarding`,
-  `/directory`, `/verify-identity`
+- **Everyone signed in**: `/messages`, `/feedback`, `/settings`, `/notifications`,
+  `/apply`, `/onboarding`, `/directory`, `/verify-identity`
 - **Administrators**: all of the above, plus `/admin/*`
 
-Advertisers and promoters get no feedback surface: `may_give_feedback_as()` would
-refuse the insert, so `feedbackSurfaceFor()` returns null and the button never
-renders rather than rendering a form that fails.
+`/messages` is open to every role because every account can buy, so every account
+can have a thread. Advertisers and promoters still get no *feedback surface* —
+they cannot buy or sell, `may_give_feedback_as()` would refuse the insert, and
+`feedbackSurfaceFor()` returns null so the button never renders rather than
+rendering a form that fails.
 
 ## Adding a role
 

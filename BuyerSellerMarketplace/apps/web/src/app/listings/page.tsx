@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react';
 import {
   canAddListing,
   CATEGORY_LABELS,
+  formatCents,
   getMyListings,
   getMyMembership,
-  LISTING_STAGE_LABELS,
+  LISTING_CONDITION_LABELS,
   type Listing,
   type Membership,
 } from '@marketplace/shared';
@@ -54,7 +55,8 @@ export default function ListingsPage() {
             <div className="mt-8 rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
               <p className="font-semibold text-brand-dark">Nothing listed yet</p>
               <p className="mt-1 text-sm text-slate-600">
-                A listing is what buyers discover, and every conversation is scoped to one.
+                A listing is what shoppers find in the shop, and every question you get is scoped
+                to one.
               </p>
               <Link
                 href="/listings/new"
@@ -103,7 +105,9 @@ export default function ListingsPage() {
                     </span>
                   </div>
                   <p className="mt-3 text-xs text-slate-500">
-                    {CATEGORY_LABELS[listing.category]} · {LISTING_STAGE_LABELS[listing.stage]}
+                    {formatCents(listing.price_cents, listing.currency)} ·{' '}
+                    {CATEGORY_LABELS[listing.category]} ·{' '}
+                    {LISTING_CONDITION_LABELS[listing.condition]}
                     {listing.location ? ` · ${listing.location}` : ''}
                   </p>
                 </Link>

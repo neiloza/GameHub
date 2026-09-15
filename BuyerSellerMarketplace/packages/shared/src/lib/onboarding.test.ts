@@ -50,12 +50,14 @@ describe('onboardingRolesFor', () => {
     expect(onboardingRolesFor({ role: 'promoter' })).toEqual(['promoter']);
   });
 
-  it('gives a `both` account two tours, tracked separately', () => {
-    expect(onboardingRolesFor({ role: 'both' })).toEqual(['seller', 'buyer']);
+  it('gives a `both` account two tours, tracked separately, buyer first', () => {
+    // Every seller was a buyer first — that is the only way to become one — so
+    // the buyer walkthrough is the one they have already been owed.
+    expect(onboardingRolesFor({ role: 'both' })).toEqual(['buyer', 'seller']);
   });
 
   it('gives an administrator none — the console is not a first run', () => {
-    expect(onboardingRolesFor({ role: 'seller', isAdmin: true })).toEqual([]);
+    expect(onboardingRolesFor({ role: 'buyer', isAdmin: true })).toEqual([]);
   });
 });
 
@@ -83,7 +85,7 @@ describe('pendingTour', () => {
   });
 
   it('still owes the second tour to a `both` account that finished the first', () => {
-    expect(pendingTour({ role: 'both' }, [done('seller')])?.role).toBe('buyer');
+    expect(pendingTour({ role: 'both' }, [done('buyer')])?.role).toBe('seller');
   });
 
   it('resumes rather than restarts a half-finished tour', () => {
@@ -129,14 +131,14 @@ describe('resumeStepIndex', () => {
 
 describe('resolveStepHref', () => {
   const plain = { id: 's', title: '', body: '', href: '/membership' };
-  const scoped = { id: 's', title: '', body: '', href: '/listings/:listingId/buyers' };
+  const scoped = { id: 's', title: '', body: '', href: '/listings/:listingId/enquiries' };
 
   it('passes an unscoped route through', () => {
     expect(resolveStepHref(plain)).toBe('/membership');
   });
 
   it('fills in a listing when there is one', () => {
-    expect(resolveStepHref(scoped, { listingId: 'l1' })).toBe('/listings/l1/buyers');
+    expect(resolveStepHref(scoped, { listingId: 'l1' })).toBe('/listings/l1/enquiries');
   });
 
   it('drops the link rather than building a broken URL for a seller with no listing', () => {

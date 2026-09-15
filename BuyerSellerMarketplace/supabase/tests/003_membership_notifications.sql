@@ -4,7 +4,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path to public, extensions;
-select plan(18);
+select plan(19);
 
 create or replace function pg_temp.impersonate(uid uuid)
 returns void language plpgsql as $$
@@ -22,6 +22,7 @@ $$;
 \set seller1  '55555555-0000-4000-8000-000000000001'
 \set seller2  '55555555-0000-4000-8000-000000000002'
 \set buyer1   'bbbbbbbb-0000-4000-8000-000000000001'
+\set applicant '55555555-0000-4000-8000-000000000003'
 \set promoter1 'cccccccc-0000-4000-8000-000000000001'
 
 -- ---------------------------------------------------------------------------
@@ -53,21 +54,34 @@ select is(
 select pg_temp.impersonate(:'seller2'::uuid);
 
 select throws_ok(
-  $$ insert into public.listings (owner_id, name, category, stage)
+  $$ insert into public.listings (owner_id, name, category, price_cents)
      values ('55555555-0000-4000-8000-000000000002', 'Another one',
-             'other', 'concept') $$,
+             'other', 1000) $$,
   'a membership is required to publish a listing',
   'a lapsed member cannot add a listing'
+);
+
+reset role;
+select pg_temp.impersonate(:'applicant'::uuid);
+
+-- The role check comes first, and says so. Somebody still in the review queue
+-- should not be told to buy a membership that would not help.
+select throws_ok(
+  $$ insert into public.listings (owner_id, name, category, price_cents)
+     values ('55555555-0000-4000-8000-000000000003', 'Too soon',
+             'other', 1000) $$,
+  'an approved seller application is needed before you can list anything',
+  'and somebody who is not a seller at all is told the actual reason'
 );
 
 reset role;
 select pg_temp.impersonate(:'seller1'::uuid);
 
 select lives_ok(
-  $$ insert into public.listings (owner_id, name, category, stage)
+  $$ insert into public.listings (owner_id, name, category, price_cents)
      values ('55555555-0000-4000-8000-000000000001', 'A fourth thing',
-             'other', 'concept') $$,
-  'a paid-up member can'
+             'other', 1000) $$,
+  'a paid-up seller can'
 );
 
 -- ---------------------------------------------------------------------------
@@ -112,8 +126,8 @@ select pg_temp.impersonate(:'seller1'::uuid);
 
 select ok(
   (select count(*) from public.notifications
-    where kind = 'interest_received') >= 1,
-  'an interest notified the seller'
+    where kind = 'enquiry_received') >= 1,
+  'an enquiry notified the seller'
 );
 
 select is(
@@ -127,8 +141,18 @@ reset role;
 select pg_temp.impersonate(:'buyer1'::uuid);
 
 select ok(
-  (select count(*) from public.notifications where kind = 'match_accepted') >= 1,
-  'the acceptance notified the buyer'
+  (select count(*) from public.notifications where kind = 'message_received') >= 1,
+  'the seller''s reply notified the shopper'
+);
+
+-- The opening message is the enquiry, and the conversation trigger has already
+-- covered it. One event, one notice.
+select is(
+  (select count(*)::int from public.notifications
+    where kind = 'message_received'
+      and payload ->> 'recipient_side' = 'seller'),
+  0,
+  'and the enquiry itself was not announced twice'
 );
 
 -- The two sides read the same thread at different routes, so the payload
@@ -138,17 +162,7 @@ select is(
   (select payload ->> 'recipient_side' from public.notifications
     where kind = 'message_received' order by created_at limit 1),
   'buyer',
-  'the buyer''s message notice routes them to the buyer portal'
-);
-
-reset role;
-select pg_temp.impersonate(:'seller1'::uuid);
-
-select is(
-  (select payload ->> 'recipient_side' from public.notifications
-    where kind = 'message_received' order by created_at limit 1),
-  'seller',
-  'and the seller''s routes them to their listing'
+  'the shopper''s message notice routes them to their own inbox'
 );
 
 -- Preferences gate delivery, never the record.
@@ -163,7 +177,7 @@ reset role;
 select set_config('role', 'postgres', true);
 
 select public.notify_profile(
-  '55555555-0000-4000-8000-000000000001', 'interest_received', '{}'::jsonb
+  '55555555-0000-4000-8000-000000000001', 'enquiry_received', '{}'::jsonb
 ) as muted_id \gset
 
 select is(

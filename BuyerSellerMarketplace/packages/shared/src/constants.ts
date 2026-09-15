@@ -14,8 +14,10 @@
 /**
  * The five parties this marketplace is built around.
  *
- * - `seller`     lists what is on offer and answers buyers who reach out.
- * - `buyer`      browses listings, expresses interest, and messages on a match.
+ * - `buyer`      browses the catalogue and asks sellers about what they list.
+ *                The default: anybody who signs up can buy, without review.
+ * - `seller`     lists what is on offer and answers the people who ask. Vetted,
+ *                because a shop is answerable for what is on its shelves.
  * - `both`       one account that sells and buys. A combination, not a party of
  *                its own — it is never previewed, and every `seller`/`buyer`
  *                check includes it.
@@ -27,27 +29,28 @@
  * top of whatever role the account holds. The role is granted, never applied
  * for, which is why there is no admin sign-up anywhere in the app.
  */
-export const ROLES = ['seller', 'buyer', 'both', 'advertiser', 'promoter'] as const;
+export const ROLES = ['buyer', 'seller', 'both', 'advertiser', 'promoter'] as const;
 export type Role = (typeof ROLES)[number];
 
-/** Roles a member can actually sign up as — `both` is reached by applying. */
-export const MEMBER_ROLES = ['seller', 'buyer', 'advertiser', 'promoter'] as const;
+/** Roles a member can end up holding — `both` is reached by applying to sell. */
+export const MEMBER_ROLES = ['buyer', 'seller', 'advertiser', 'promoter'] as const;
 export type MemberRole = (typeof MEMBER_ROLES)[number];
 
 /**
  * Roles that arrive through an admin-reviewed application.
  *
- * `seller` is the only self-serve role: a new account is a seller until an
- * application is approved. `protect_profile_privileged_columns()` enforces that
- * in the database — see the role_integrity migration.
+ * `buyer` is the only self-serve role: a new account is a buyer, because
+ * browsing and buying are what a shop is for and gating them behind a review
+ * would be absurd. Selling, advertising and promoting are all reviewed.
+ * `protect_profile_privileged_columns()` enforces that in the database.
  */
-export const APPLIED_ROLES = ['buyer', 'advertiser', 'promoter'] as const;
+export const APPLIED_ROLES = ['seller', 'advertiser', 'promoter'] as const;
 export type AppliedRole = (typeof APPLIED_ROLES)[number];
 
 export const ROLE_LABELS: Record<Role, string> = {
-  seller: 'Seller',
   buyer: 'Buyer',
-  both: 'Seller & buyer',
+  seller: 'Seller',
+  both: 'Buyer & seller',
   advertiser: 'Advertiser',
   promoter: 'Promoter',
 };
@@ -59,9 +62,9 @@ export const ROLE_LABELS: Record<Role, string> = {
 /**
  * Listing categories.
  *
- * One shared vocabulary for listing classification, buyer interests, matching,
- * search and filtering — these must be the same list, so every `category` /
- * `categories` column in the schema draws from here.
+ * One shared vocabulary for classifying a listing, filtering the catalogue and
+ * asking a seller applicant what they intend to sell — these must be the same
+ * list, so every `category` / `categories` column in the schema draws from here.
  *
  * This is the one enum in the file you are *expected* to replace: it is the
  * shape of a taxonomy, not a taxonomy anyone should inherit. Keep `other` last.
@@ -121,30 +124,38 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   other: 'Other',
 };
 
-/** How far along a listing is. Drives the buyer filter and the match score. */
-export const LISTING_STAGES = ['concept', 'early', 'established', 'scaling'] as const;
-export type ListingStage = (typeof LISTING_STAGES)[number];
+/**
+ * What state the thing is in. One of the two filters the catalogue offers.
+ *
+ * Chosen to cover both ends of the marketplaces this is built for: a used-goods
+ * site needs `used` and `refurbished`, a print-on-demand one needs
+ * `made_to_order`, and most catalogues only ever use `new`.
+ */
+export const LISTING_CONDITIONS = ['new', 'used', 'refurbished', 'made_to_order'] as const;
+export type ListingCondition = (typeof LISTING_CONDITIONS)[number];
 
-export const LISTING_STAGE_LABELS: Record<ListingStage, string> = {
-  concept: 'Concept',
-  early: 'Early',
-  established: 'Established',
-  scaling: 'Scaling',
+export const LISTING_CONDITION_LABELS: Record<ListingCondition, string> = {
+  new: 'New',
+  used: 'Used',
+  refurbished: 'Refurbished',
+  made_to_order: 'Made to order',
 };
+
+/** How a shopper can order the catalogue. */
+export const CATALOGUE_SORTS = ['newest', 'price_asc', 'price_desc'] as const;
+export type CatalogueSort = (typeof CATALOGUE_SORTS)[number];
+
+export const CATALOGUE_SORT_LABELS: Record<CatalogueSort, string> = {
+  newest: 'Newest first',
+  price_asc: 'Price: low to high',
+  price_desc: 'Price: high to low',
+};
+
+/** How many listings a catalogue page holds. */
+export const CATALOGUE_PAGE_SIZE = 24;
 
 export const LISTING_STATUSES = ['draft', 'published', 'suspended'] as const;
 export type ListingStatus = (typeof LISTING_STATUSES)[number];
-
-// ---------------------------------------------------------------------------
-// discovery
-// ---------------------------------------------------------------------------
-
-export const SWIPE_DIRECTIONS = ['interested', 'pass'] as const;
-export type SwipeDirection = (typeof SWIPE_DIRECTIONS)[number];
-
-/** A seller's answer to a buyer who expressed interest. */
-export const MATCH_STATUSES = ['pending', 'accepted', 'declined'] as const;
-export type MatchStatus = (typeof MATCH_STATUSES)[number];
 
 // ---------------------------------------------------------------------------
 // applications
@@ -173,15 +184,23 @@ export const APPLICATION_STATUS_LABELS: Record<ApplicationStatus, string> = {
   rejected: 'Not approved',
 };
 
-/** What a buyer applicant says they are. Presentation and vetting only. */
-export const BUYER_TYPES = [
+/** What a seller applicant says they are. Presentation and vetting only. */
+export const SELLER_TYPES = [
   'individual',
   'business',
-  'institution',
-  'intermediary',
+  'artist',
+  'reseller',
   'other',
 ] as const;
-export type BuyerType = (typeof BUYER_TYPES)[number];
+export type SellerType = (typeof SELLER_TYPES)[number];
+
+export const SELLER_TYPE_LABELS: Record<SellerType, string> = {
+  individual: 'An individual',
+  business: 'A business',
+  artist: 'An artist or maker',
+  reseller: 'A reseller',
+  other: 'Something else',
+};
 
 /** What a promoter applicant says they are. */
 export const PROMOTER_TYPES = [
@@ -227,7 +246,7 @@ export type EstimatedMonthlyReferrals = (typeof ESTIMATED_MONTHLY_REFERRALS)[num
  * that asks for it — nothing is inferred.
  */
 export const AD_PLACEMENTS = [
-  'discovery_feed',
+  'catalogue',
   'listing_detail',
   'dashboard',
   'directory',
@@ -235,7 +254,7 @@ export const AD_PLACEMENTS = [
 export type AdPlacement = (typeof AD_PLACEMENTS)[number];
 
 export const AD_PLACEMENT_LABELS: Record<AdPlacement, string> = {
-  discovery_feed: 'Discovery feed',
+  catalogue: 'Shop',
   listing_detail: 'Listing page',
   dashboard: 'Dashboard',
   directory: 'Directory',
@@ -414,9 +433,7 @@ export type AccountStatus = (typeof ACCOUNT_STATUSES)[number];
  * exhaustive over this list and the tests check it.
  */
 export const NOTIFICATION_KINDS = [
-  'interest_received',
-  'match_accepted',
-  'match_declined',
+  'enquiry_received',
   'message_received',
   'application_reviewed',
   'application_info_requested',

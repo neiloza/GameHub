@@ -1,4 +1,5 @@
--- Listings: what a seller offers, and the thing every conversation is scoped to.
+-- Listings: the catalogue. One row per thing a seller offers, and the thing
+-- every conversation is scoped to.
 
 create table public.listings (
   id uuid primary key default gen_random_uuid(),
@@ -21,12 +22,28 @@ create table public.listings (
     'trades_home_services', 'other'
   )),
 
-  stage text not null check (stage in ('concept', 'early', 'established', 'scaling')),
+  -- Covers both ends of the marketplaces this is built for: a used-goods site
+  -- needs `used` and `refurbished`, a print-on-demand one needs
+  -- `made_to_order`, and most catalogues only ever use `new`.
+  condition text not null default 'new'
+    check (condition in ('new', 'used', 'refurbished', 'made_to_order')),
+
   location text check (char_length(location) <= 120),
   summary text check (char_length(summary) <= 4000),
   details text check (char_length(details) <= 8000),
   website text check (char_length(website) <= 500),
-  price_cents bigint check (price_cents is null or price_cents >= 0),
+
+  -- Integer cents, and required: an item in a catalogue has a price. A listing
+  -- that genuinely cannot be priced up front belongs in `summary` as "contact
+  -- for a quote", not as a null that every template has to guard.
+  price_cents bigint not null check (price_cents >= 0),
+  currency text not null default 'USD' check (currency ~ '^[A-Z]{3}$'),
+
+  -- Null means "not tracked" — made to order, a service, a digital download.
+  -- Zero means "tracked, and there are none left", which is a different thing
+  -- and reads differently on the page.
+  stock_quantity int check (stock_quantity is null or stock_quantity >= 0),
+
   cover_image_url text,
 
   status text not null default 'draft' check (status in ('draft', 'published', 'suspended')),
@@ -36,9 +53,17 @@ create table public.listings (
 );
 
 create index listings_owner_idx on public.listings (owner_id);
--- The discovery feed filters on exactly these three, in this order.
-create index listings_discovery_idx on public.listings (status, category, stage);
-create index listings_name_idx on public.listings (name text_pattern_ops);
+-- The catalogue filters on exactly these, in this order.
+create index listings_catalogue_idx on public.listings (status, category, condition);
+-- Sorting the catalogue by price, within the published set.
+create index listings_price_idx on public.listings (status, price_cents);
+
+-- Full-text search over the three fields a shopper actually types words from.
+-- An expression index rather than a stored tsvector column: one fewer column to
+-- keep in step, and the catalogue is the only thing that searches.
+create index listings_search_idx on public.listings using gin (
+  to_tsvector('english', name || ' ' || coalesce(tagline, '') || ' ' || coalesce(summary, ''))
+);
 
 create trigger listings_updated_at
   before update on public.listings

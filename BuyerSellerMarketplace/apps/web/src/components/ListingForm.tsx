@@ -4,8 +4,8 @@ import { useState } from 'react';
 import {
   CATEGORIES,
   CATEGORY_LABELS,
-  LISTING_STAGES,
-  LISTING_STAGE_LABELS,
+  LISTING_CONDITIONS,
+  LISTING_CONDITION_LABELS,
   listingSchema,
   type Listing,
   type ListingInput,
@@ -33,14 +33,15 @@ export function ListingForm({
     name: listing?.name ?? '',
     tagline: listing?.tagline ?? '',
     category: listing?.category ?? CATEGORIES[0],
-    stage: listing?.stage ?? LISTING_STAGES[0],
+    condition: listing?.condition ?? LISTING_CONDITIONS[0],
     location: listing?.location ?? '',
     summary: listing?.summary ?? '',
     details: listing?.details ?? '',
     website: listing?.website ?? '',
-    // Held as a string: a number input bound to a number makes clearing the
+    // Held as strings: a number input bound to a number makes clearing the
     // field produce NaN, and the member sees "NaN" where their price was.
-    price: listing?.price_cents != null ? String(listing.price_cents / 100) : '',
+    price: listing ? String(listing.price_cents / 100) : '',
+    stock: listing?.stock_quantity != null ? String(listing.stock_quantity) : '',
   });
   const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -57,16 +58,23 @@ export function ListingForm({
     // Money is integer cents everywhere. Rounding happens once, here, at the
     // boundary between what a person typed and what the database stores.
     const price = values.price.trim();
+    const stock = values.stock.trim();
     const parsed = listingSchema.safeParse({
       name: values.name,
       tagline: values.tagline || null,
       category: values.category,
-      stage: values.stage,
+      condition: values.condition,
       location: values.location || null,
       summary: values.summary || null,
       details: values.details || null,
       website: values.website || null,
-      price_cents: price === '' ? null : Math.round(Number(price) * 100),
+      // An empty box means "not priced yet", which the schema refuses — NaN
+      // would produce an unreadable zod message, so send undefined and let the
+      // required-field error speak.
+      price_cents: price === '' ? undefined : Math.round(Number(price) * 100),
+      currency: listing?.currency ?? 'USD',
+      // Empty is "not tracked", which is different from zero. See the schema.
+      stock_quantity: stock === '' ? null : Math.round(Number(stock)),
       status: listing?.status === 'published' ? 'published' : 'draft',
     });
 
@@ -135,15 +143,15 @@ export function ListingForm({
         </label>
 
         <label className="grid gap-1 text-sm font-medium text-slate-700">
-          Stage
+          Condition
           <select
-            value={values.stage}
-            onChange={(e) => set('stage', e.target.value as (typeof LISTING_STAGES)[number])}
+            value={values.condition}
+            onChange={(e) => set('condition', e.target.value as (typeof LISTING_CONDITIONS)[number])}
             className={fieldClass}
           >
-            {LISTING_STAGES.map((s) => (
-              <option key={s} value={s}>
-                {LISTING_STAGE_LABELS[s]}
+            {LISTING_CONDITIONS.map((c) => (
+              <option key={c} value={c}>
+                {LISTING_CONDITION_LABELS[c]}
               </option>
             ))}
           </select>
@@ -162,9 +170,10 @@ export function ListingForm({
         </label>
 
         <label className="grid gap-1 text-sm font-medium text-slate-700">
-          Asking price <span className="font-normal text-slate-400">(optional)</span>
+          Price
           <input
             type="number"
+            required
             min={0}
             step="0.01"
             inputMode="decimal"
@@ -177,6 +186,23 @@ export function ListingForm({
           )}
         </label>
       </div>
+
+      <label className="grid gap-1 text-sm font-medium text-slate-700">
+        How many <span className="font-normal text-slate-400">(leave empty if you do not count them)</span>
+        <input
+          type="number"
+          min={0}
+          step="1"
+          inputMode="numeric"
+          value={values.stock}
+          onChange={(e) => set('stock', e.target.value)}
+          className={fieldClass}
+        />
+        <span className="text-xs text-slate-500">
+          Empty means made to order, a service, or something you never run out of. Zero means you
+          are tracking stock and it has sold out — the shop says so.
+        </span>
+      </label>
 
       <label className="grid gap-1 text-sm font-medium text-slate-700">
         Website <span className="font-normal text-slate-400">(optional)</span>

@@ -8,11 +8,11 @@ import {
   deleteListing,
   formatCents,
   getListing,
-  getPendingMatches,
-  LISTING_STAGE_LABELS,
+  getListingEnquiries,
+  LISTING_CONDITION_LABELS,
   setListingPublished,
+  type Conversation,
   type Listing,
-  type Match,
 } from '@marketplace/shared';
 import { SponsorSlot } from '@/components/SponsorSlot';
 import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
@@ -21,16 +21,16 @@ export default function ListingPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [listing, setListing] = useState<Listing | null>(null);
-  const [pending, setPending] = useState<Match[]>([]);
+  const [enquiries, setEnquiries] = useState<Conversation[]>([]);
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
-    Promise.all([getListing(supabase, id), getPendingMatches(supabase, id)])
-      .then(([l, m]) => {
+    Promise.all([getListing(supabase, id), getListingEnquiries(supabase, id)])
+      .then(([l, e]) => {
         setListing(l);
-        setPending(m);
+        setEnquiries(e);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -53,8 +53,8 @@ export default function ListingPage() {
 
   async function remove() {
     if (!listing) return;
-    // Deleting takes the conversations with it, so it is worth a pause.
-    if (!confirm('Delete this listing? Conversations about it go too.')) return;
+    // Deleting takes the enquiries with it, so it is worth a pause.
+    if (!confirm('Delete this listing? Every enquiry about it goes too.')) return;
     await deleteListing(getSupabaseBrowserClient(), listing.id);
     router.push('/listings');
     router.refresh();
@@ -70,12 +70,21 @@ export default function ListingPage() {
           <h1 className="text-2xl font-extrabold text-ink sm:text-3xl">{listing.name}</h1>
           {listing.tagline && <p className="mt-1 text-slate-600">{listing.tagline}</p>}
           <p className="mt-2 text-xs text-slate-500">
-            {CATEGORY_LABELS[listing.category]} · {LISTING_STAGE_LABELS[listing.stage]}
+            {CATEGORY_LABELS[listing.category]} ·{' '}
+            {LISTING_CONDITION_LABELS[listing.condition]} ·{' '}
+            {formatCents(listing.price_cents, listing.currency)}
             {listing.location ? ` · ${listing.location}` : ''}
-            {listing.price_cents != null ? ` · ${formatCents(listing.price_cents)}` : ''}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {listing.status === 'published' && (
+            <Link
+              href={`/shop/${listing.id}`}
+              className="inline-flex h-11 items-center rounded-lg border border-slate-300 px-4 text-sm font-medium hover:bg-surface"
+            >
+              View in the shop
+            </Link>
+          )}
           <Link
             href={`/listings/${listing.id}/edit`}
             className="inline-flex h-11 items-center rounded-lg border border-slate-300 px-4 text-sm font-medium hover:bg-surface"
@@ -120,18 +129,18 @@ export default function ListingPage() {
 
           <section className="rounded-xl border border-slate-200 bg-white p-6">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-bold text-brand-dark">Interested buyers</h2>
-              {pending.length > 0 && (
+              <h2 className="font-bold text-brand-dark">Enquiries</h2>
+              {enquiries.length > 0 && (
                 <span className="rounded-full bg-brand px-2.5 py-1 text-xs font-bold text-white">
-                  {pending.length} waiting
+                  {enquiries.length}
                 </span>
               )}
             </div>
             <p className="mt-2 text-sm text-slate-600">
-              A buyer expressing interest does not open a chat. You decide.
+              Questions shoppers have asked about this listing, each in its own thread.
             </p>
             <Link
-              href={`/listings/${listing.id}/buyers`}
+              href={`/listings/${listing.id}/enquiries`}
               className="mt-4 inline-flex h-11 items-center rounded-lg border border-slate-300 px-4 text-sm font-medium hover:bg-surface"
             >
               Open

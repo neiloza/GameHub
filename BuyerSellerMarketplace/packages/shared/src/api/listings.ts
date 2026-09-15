@@ -2,7 +2,6 @@ import type { MarketplaceClient } from './client';
 import { assertOk, requireUserId } from './client';
 import { listingSchema } from '../schemas';
 import type { ListingInput } from '../schemas';
-import type { Category, ListingStage } from '../constants';
 import type { Listing } from '../types/database';
 
 export async function getMyListings(client: MarketplaceClient): Promise<Listing[]> {
@@ -78,23 +77,4 @@ export async function setListingPublished(
 export async function deleteListing(client: MarketplaceClient, id: string): Promise<void> {
   const { error } = await client.from('listings').delete().eq('id', id);
   if (error) throw new Error(error.message);
-}
-
-/** Published listings, for the public directory and for search. */
-export async function searchListings(
-  client: MarketplaceClient,
-  opts: { category?: Category; stage?: ListingStage; query?: string; limit?: number } = {}
-): Promise<Listing[]> {
-  let q = client.from('listings').select('*').eq('status', 'published');
-  if (opts.category) q = q.eq('category', opts.category);
-  if (opts.stage) q = q.eq('stage', opts.stage);
-  // `textSearch` would need a tsvector column; for a starter, a prefix match on
-  // the name is honest about what it does and needs no extra index beyond the
-  // one the migration already creates.
-  if (opts.query) q = q.ilike('name', `${opts.query}%`);
-  const { data, error } = await q
-    .order('created_at', { ascending: false })
-    .limit(opts.limit ?? 50);
-  if (error) throw new Error(error.message);
-  return data ?? [];
 }

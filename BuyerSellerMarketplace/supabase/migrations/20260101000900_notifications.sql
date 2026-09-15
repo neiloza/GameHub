@@ -66,9 +66,7 @@ returns text
 language sql immutable
 as $$
   select case p_kind
-    when 'interest_received'          then 'activity'
-    when 'match_accepted'             then 'activity'
-    when 'match_declined'             then 'activity'
+    when 'enquiry_received'           then 'activity'
     when 'message_received'           then 'messages'
     when 'application_reviewed'       then 'account'
     when 'application_info_requested' then 'account'
@@ -285,70 +283,50 @@ grant execute on function public.claim_notification_delivery(int) to service_rol
 -- the events that notify
 -- ---------------------------------------------------------------------------
 
-create or replace function public.notify_on_new_match()
+/**
+ * A new enquiry tells the seller somebody is asking about their listing.
+ *
+ * On the conversation rather than on the message, so a seller gets one "you
+ * have an enquiry" notice and then ordinary message notices — rather than the
+ * same event announced twice because start_enquiry() writes both rows.
+ */
+create or replace function public.notify_on_new_enquiry()
 returns trigger
 language plpgsql security definer
 set search_path = public
 as $$
 declare
   v_listing public.listings;
+  v_buyer_name text;
 begin
   select * into v_listing from public.listings where id = new.listing_id;
+  select display_name into v_buyer_name from public.profiles where id = new.buyer_id;
 
   perform public.notify_profile(
-    v_listing.owner_id,
-    'interest_received',
-    jsonb_build_object('listing_id', v_listing.id, 'listing_name', v_listing.name)
+    new.seller_id,
+    'enquiry_received',
+    jsonb_build_object(
+      'listing_id', v_listing.id,
+      'listing_name', v_listing.name,
+      'conversation_id', new.id,
+      'buyer_name', v_buyer_name
+    )
   );
   return new;
 end;
 $$;
 
-create trigger matches_notify_seller
-  after insert on public.matches
-  for each row execute function public.notify_on_new_match();
+create trigger conversations_notify_seller
+  after insert on public.conversations
+  for each row execute function public.notify_on_new_enquiry();
 
-create or replace function public.notify_on_match_answered()
-returns trigger
-language plpgsql security definer
-set search_path = public
-as $$
-declare
-  v_listing public.listings;
-  v_conversation uuid;
-begin
-  if new.status = old.status then
-    return new;
-  end if;
-
-  select * into v_listing from public.listings where id = new.listing_id;
-  select id into v_conversation from public.conversations where match_id = new.id;
-
-  if new.status = 'accepted' then
-    perform public.notify_profile(
-      new.buyer_id,
-      'match_accepted',
-      jsonb_build_object(
-        'listing_id', v_listing.id, 'listing_name', v_listing.name,
-        'conversation_id', v_conversation
-      )
-    );
-  elsif new.status = 'declined' then
-    perform public.notify_profile(
-      new.buyer_id,
-      'match_declined',
-      jsonb_build_object('listing_id', v_listing.id, 'listing_name', v_listing.name)
-    );
-  end if;
-
-  return new;
-end;
-$$;
-
-create trigger matches_notify_buyer
-  after update on public.matches
-  for each row execute function public.notify_on_match_answered();
-
+/**
+ * Every message after the first tells the other side.
+ *
+ * The first message *is* the enquiry, and the conversation trigger has already
+ * told the seller about it — so that one is skipped here rather than buzzing
+ * the same phone twice for one event.
+ */
 create or replace function public.notify_on_new_message()
 returns trigger
 language plpgsql security definer
@@ -361,6 +339,24 @@ declare
   v_sender_name text;
 begin
   select * into v_conversation from public.conversations where id = new.conversation_id;
+
+  -- The opening message of a thread. `notify_on_new_enquiry` has already told
+  -- the seller, so notifying again here would buzz one phone twice for one
+  -- event.
+  --
+  -- "Is there an *earlier* message?" rather than "is this the only message?":
+  -- an AFTER ROW trigger can see every row its own statement inserted, so a
+  -- multi-row INSERT would make the only-message test false for the very row it
+  -- is meant to catch. Ordering by (created_at, id) is stable when two rows
+  -- share a timestamp, which they do inside one statement.
+  if new.sender_id = v_conversation.buyer_id
+     and not exists (
+       select 1 from public.messages m
+       where m.conversation_id = new.conversation_id
+         and (m.created_at, m.id) < (new.created_at, new.id)
+     ) then
+    return new;
+  end if;
 
   if v_conversation.buyer_id = new.sender_id then
     v_recipient := v_conversation.seller_id;
@@ -379,8 +375,8 @@ begin
       'conversation_id', v_conversation.id,
       'listing_id', v_conversation.listing_id,
       -- Which route to send them to. The two sides read the same thread at
-      -- different URLs, and `/buyer/*` is gated on an approved application, so
-      -- a seller sent there would bounce to their own home.
+      -- different URLs: a buyer at /messages/:id, a seller at
+      -- /listings/:listing/enquiries/:id.
       'recipient_side', v_side,
       'sender_name', v_sender_name
     )
@@ -423,8 +419,8 @@ begin
 end;
 $$;
 
-create trigger buyer_applications_notify
-  after update on public.buyer_applications
+create trigger seller_applications_notify
+  after update on public.seller_applications
   for each row execute function public.notify_on_application_reviewed();
 create trigger advertiser_applications_notify
   after update on public.advertiser_applications

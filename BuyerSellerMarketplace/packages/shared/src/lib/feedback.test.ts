@@ -3,31 +3,38 @@ import { feedbackSurfaceFor, isQuietForFeedback, showsFeedbackButton } from './f
 
 describe('feedbackSurfaceFor', () => {
   it('files a suggestion by the route, not by the role', () => {
-    // A `both` account on a buyer route is talking about the buyer side, even
-    // though their profile lists seller first.
-    expect(feedbackSurfaceFor('both', '/buyer/discover')).toBe('buyer');
+    // A `both` account in the shop is talking about shopping, even though they
+    // also run a shop of their own.
+    expect(feedbackSurfaceFor('both', '/shop')).toBe('buyer');
     expect(feedbackSurfaceFor('both', '/listings')).toBe('seller');
   });
 
-  it('refuses a buyer route to somebody with no buyer side', () => {
-    expect(feedbackSurfaceFor('seller', '/buyer/discover')).toBeNull();
+  it('refuses a seller route to somebody who does not sell', () => {
+    expect(feedbackSurfaceFor('buyer', '/listings')).toBeNull();
   });
 
-  it('matches the portal prefix exactly or as a parent, not as a substring', () => {
-    expect(feedbackSurfaceFor('buyer', '/buyer')).toBe('buyer');
-    expect(feedbackSurfaceFor('buyer', '/buyer/messages/1')).toBe('buyer');
-    // `/buyers-guide` is a seller-side page that happens to share a prefix.
-    expect(feedbackSurfaceFor('seller', '/buyers-guide')).toBe('seller');
+  it('matches a seller prefix exactly or as a parent, not as a substring', () => {
+    expect(feedbackSurfaceFor('seller', '/listings')).toBe('seller');
+    expect(feedbackSurfaceFor('seller', '/listings/1/enquiries')).toBe('seller');
+    // `/listings-guide` is a shopper-facing page that happens to share a prefix.
+    expect(feedbackSurfaceFor('seller', '/listings-guide')).toBe('buyer');
+  });
+
+  it('gives everybody who can buy the buyer surface, since everybody can', () => {
+    expect(feedbackSurfaceFor('buyer', '/shop')).toBe('buyer');
+    expect(feedbackSurfaceFor('seller', '/shop')).toBe('buyer');
+    expect(feedbackSurfaceFor('buyer', '/messages')).toBe('buyer');
   });
 
   it('gives advertisers and promoters no surface — the insert policy would refuse it', () => {
     expect(feedbackSurfaceFor('advertiser', '/advertiser')).toBeNull();
     expect(feedbackSurfaceFor('promoter', '/promoter')).toBeNull();
+    expect(feedbackSurfaceFor('advertiser', '/shop')).toBeNull();
   });
 
   it('has no surface for a signed-out visitor', () => {
-    expect(feedbackSurfaceFor(null, '/listings')).toBeNull();
-    expect(feedbackSurfaceFor(undefined, '/listings')).toBeNull();
+    expect(feedbackSurfaceFor(null, '/shop')).toBeNull();
+    expect(feedbackSurfaceFor(undefined, '/shop')).toBeNull();
   });
 });
 
@@ -37,7 +44,7 @@ describe('isQuietForFeedback', () => {
       '/',
       '/auth/sign-in',
       '/onboarding',
-      '/apply/buyer',
+      '/apply/seller',
       '/verify-identity',
       '/admin/users',
       '/feedback',
@@ -47,7 +54,7 @@ describe('isQuietForFeedback', () => {
   });
 
   it('is happy on the working surfaces', () => {
-    for (const path of ['/listings', '/buyer/discover', '/settings', '/directory']) {
+    for (const path of ['/listings', '/shop', '/settings', '/directory']) {
       expect(isQuietForFeedback(path)).toBe(false);
     }
   });
@@ -56,8 +63,9 @@ describe('isQuietForFeedback', () => {
 describe('showsFeedbackButton', () => {
   it('needs both a surface to speak from and a route worth speaking on', () => {
     expect(showsFeedbackButton('seller', '/listings')).toBe(true);
+    expect(showsFeedbackButton('buyer', '/shop')).toBe(true);
     expect(showsFeedbackButton('seller', '/admin')).toBe(false);
     expect(showsFeedbackButton('advertiser', '/advertiser')).toBe(false);
-    expect(showsFeedbackButton(null, '/listings')).toBe(false);
+    expect(showsFeedbackButton(null, '/shop')).toBe(false);
   });
 });

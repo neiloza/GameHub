@@ -9,8 +9,8 @@ export default function SellerThreadPage() {
 
   return (
     <div className="py-8">
-      <Link href={`/listings/${id}/buyers`} className="text-sm font-medium text-brand">
-        ← Back to interested buyers
+      <Link href={`/listings/${id}/enquiries`} className="text-sm font-medium text-brand">
+        ← Back to enquiries
       </Link>
       <Thread conversationId={conversationId} />
     </div>

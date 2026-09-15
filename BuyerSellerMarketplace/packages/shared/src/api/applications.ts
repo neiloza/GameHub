@@ -4,14 +4,14 @@ import {
   advertiserApplicationSchema,
   applicationMessageSchema,
   applicationReviewSchema,
-  buyerApplicationSchema,
   promoterApplicationSchema,
+  sellerApplicationSchema,
 } from '../schemas';
 import type {
   AdvertiserApplicationInput,
   ApplicationReviewInput,
-  BuyerApplicationInput,
   PromoterApplicationInput,
+  SellerApplicationInput,
 } from '../schemas';
 import type { ApplicationStatus } from '../constants';
 import type {
@@ -19,36 +19,40 @@ import type {
   ApplicationKind,
   ApplicationMessage,
   ApplicationNote,
-  BuyerApplication,
   PromoterApplication,
+  SellerApplication,
 } from '../types/database';
 
 /**
  * Three application tables, one workflow.
  *
  * They are separate tables rather than one with a `kind` column because their
- * payloads have nothing in common past the contact block — a buyer states a
- * budget, an advertiser states placements, a promoter states channels — and a
- * single table would be a wide sheet of columns that are null for two kinds out
- * of three, with CHECK constraints to say which. The shared *workflow* (submit,
- * question, answer, decide) lives here and in `review_application()`.
+ * payloads have nothing in common past the contact block — a seller states what
+ * they intend to sell, an advertiser states placements, a promoter states
+ * channels — and a single table would be a wide sheet of columns that are null
+ * for two kinds out of three, with CHECK constraints to say which. The shared
+ * *workflow* (submit, question, answer, decide) lives here and in
+ * `review_application()`.
+ *
+ * Buyer is absent because buying needs no application: a new account can buy
+ * from the moment it exists.
  */
 const TABLES = {
-  buyer: 'buyer_applications',
+  seller: 'seller_applications',
   advertiser: 'advertiser_applications',
   promoter: 'promoter_applications',
 } as const satisfies Record<ApplicationKind, string>;
 
-export type AnyApplication = BuyerApplication | AdvertiserApplication | PromoterApplication;
+export type AnyApplication = SellerApplication | AdvertiserApplication | PromoterApplication;
 
-export async function submitBuyerApplication(
+export async function submitSellerApplication(
   client: MarketplaceClient,
-  input: BuyerApplicationInput
-): Promise<BuyerApplication> {
-  const parsed = buyerApplicationSchema.parse(input);
+  input: SellerApplicationInput
+): Promise<SellerApplication> {
+  const parsed = sellerApplicationSchema.parse(input);
   const profile_id = await requireUserId(client);
   const { data, error } = await client
-    .from('buyer_applications')
+    .from('seller_applications')
     .insert({ profile_id, ...parsed })
     .select()
     .single();

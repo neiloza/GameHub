@@ -27,7 +27,7 @@ import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
  * grants the role.
  */
 export default function AdminApplicationsPage() {
-  const [kind, setKind] = useState<ApplicationKind>('buyer');
+  const [kind, setKind] = useState<ApplicationKind>('seller');
   const [rows, setRows] = useState<AnyApplication[]>([]);
   const [notes, setNotes] = useState<Record<string, ApplicationNote[]>>({});
   const [decision, setDecision] = useState<Record<string, { status: ApplicationStatus; note: string }>>(

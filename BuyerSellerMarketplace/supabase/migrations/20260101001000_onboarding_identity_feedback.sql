@@ -7,8 +7,8 @@
 -- Keyed on (profile_id, role), not on the profile. One account can hold more
 -- than one role over its life — `both` exists, and approving an application
 -- rewrites profiles.role in place — and a single `onboarded` column would mark
--- a seller done for ever and silently swallow the buyer walkthrough the day
--- their application is approved.
+-- a buyer done for ever and silently swallow the seller walkthrough the day
+-- their shop application is approved.
 --
 -- Administrators are deliberately absent from the CHECK: the console is not a
 -- first-run experience.
@@ -17,7 +17,7 @@
 create table public.onboarding_completions (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles (id) on delete cascade,
-  role text not null check (role in ('seller', 'buyer', 'advertiser', 'promoter')),
+  role text not null check (role in ('buyer', 'seller', 'advertiser', 'promoter')),
   -- Highest step reached, so a tour closed halfway resumes rather than restarts.
   last_step int not null default 0 check (last_step >= 0),
   -- True when the member chose "skip" rather than reaching the end. Both stop
@@ -145,7 +145,7 @@ create table public.feature_feedback (
 
   -- Which half of the product this is about. Set from the route the member was
   -- standing on, not from their role — see feedbackSurfaceFor().
-  surface text not null check (surface in ('seller', 'buyer')),
+  surface text not null check (surface in ('buyer', 'seller')),
   category text not null check (category in ('bug', 'idea', 'confusing', 'praise', 'other')),
   impact text not null check (impact in ('blocking', 'annoying', 'minor')),
 
@@ -204,8 +204,10 @@ language sql stable security definer
 set search_path = public
 as $$
   select case p_surface
+    -- Every signed-in member can buy, so the buyer surface is open to all of
+    -- them. Only an approved seller can speak from the seller side.
+    when 'buyer'  then public.is_member()
     when 'seller' then public.is_seller()
-    when 'buyer'  then public.is_buyer()
     else false
   end;
 $$;

@@ -134,6 +134,16 @@ begin
     return new;
   end if;
 
+  -- Checked here as well as in the INSERT policy, and first, because a BEFORE
+  -- trigger runs before RLS evaluates its WITH CHECK. Without this, somebody
+  -- whose seller application is still pending is told they need a membership —
+  -- which is true but not the reason, and sends them to buy one that would not
+  -- help.
+  if not public.is_seller() then
+    raise exception 'an approved seller application is needed before you can list anything'
+      using errcode = 'check_violation';
+  end if;
+
   select count(*) into v_count from public.listings where owner_id = new.owner_id;
 
   v_allowed := case when public.has_active_membership(new.owner_id) then 10 else 0 end;

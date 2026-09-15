@@ -77,7 +77,8 @@ export default function ApplyPage() {
       <div className="py-8">
         <h1 className="text-2xl font-extrabold text-ink sm:text-3xl">Apply for a role</h1>
         <p className="mt-1 text-sm text-slate-600">
-          Seller is the one role you can simply have. Everything else is reviewed by a person.
+          Buying is the one thing you can simply do — you already can. Everything below is reviewed
+          by a person.
         </p>
         <ul className="mt-6 grid gap-3">
           {APPLIED_ROLES.map((role) => (

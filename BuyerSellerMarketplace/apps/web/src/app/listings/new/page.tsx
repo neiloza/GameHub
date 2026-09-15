@@ -12,7 +12,7 @@ export default function NewListingPage() {
     <div className="py-8">
       <h1 className="text-2xl font-extrabold text-ink sm:text-3xl">New listing</h1>
       <p className="mt-1 text-sm text-slate-600">
-        Saved as a draft. Nobody sees it until you publish.
+        Saved as a draft. It reaches the shop when you publish it.
       </p>
       <ListingForm
         submitLabel="Create listing"

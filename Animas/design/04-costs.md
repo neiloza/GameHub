@@ -39,7 +39,7 @@ more than any tuning knob a formula constant would have bought.
 
 **Percentage effects use 10, 20, 40 and 50 only**, which are the four
 percentages that land on multiples of five at 250 HP. Fifteen and twenty-five
-do not, so Parasite, Malediction, Snare, Sanctuary and Mend all move to 20%.
+do not, so Parasite, Curse, Snare, Sanctuary and Mend all move to 20%.
 
 | Percentage | Damage or healing |
 |---|---|
@@ -50,7 +50,7 @@ do not, so Parasite, Malediction, Snare, Sanctuary and Mend all move to 20%.
 
 **The base-five rule governs printed numbers, not computed ones.** Once Power and
 type effectiveness apply, results land wherever they land — a 75-damage Jab under
-Resolve's +50% is 112.5, and a 75 halved by a resistance is 37.5. **Computed
+Adrenaline's +50% is 112.5, and a 75 halved by a resistance is 37.5. **Computed
 damage rounds to the nearest five**, which keeps every number a player actually
 reads on the same grid as the ones printed on the moves.
 
@@ -58,14 +58,14 @@ reads on the same grid as the ones printed on the moves.
 
 | Attack | Damage | Turns to defeat a 250-HP character |
 |---|---|---|
-| Lumenlash, the weakest | 50 | 5.0 |
+| Sunbeam, the weakest | 50 | 5.0 |
 | A typical standard attack | 75 | 3.3 |
 | A typical powerful attack | 90 | 2.8 |
-| Haymaker, Pyre, Skyfall | 120 | 2.1 |
+| Haymaker, Inferno, Skydive | 120 | 2.1 |
 | Nightfall, the hardest ordinary hit | 150 | 1.7 |
 | Burnout, Wind-Up | 175 | 1.4 |
 | Meltdown | 250 | **one shot** |
-| Pyroclasm | 300 | **one shot** |
+| Supernova | 300 | **one shot** |
 
 Three to four turns on free attacks, two on paid ones. Fast enough that a
 misplayed switch loses a character, slow enough that there is a game between the
@@ -157,14 +157,14 @@ than a real attack.
 
 **2. Fighting's Haymaker at 120 for 20 mana is 6.00, half again the next-best
 type.** Five casts from a full bar, 600 damage, from a type that also has three
-free moves and the cheapest total cost of admission in the game. Frenzy at 150
+free moves and the cheapest total cost of admission in the game. Rampage at 150
 per turn does not power-creep it, as you said — but it does not need to, because
 Haymaker already is the power creep. **Recommend 120 @ 30**, matching Fire, which
 keeps it spammable at three casts a bar without making every other type's
 powerful attack look overpriced.
 
-**3. Water's Crosscurrent at 50 damage for 50 mana is worse than doing nothing.**
-Water's free standard attack does 70. Crosscurrent does 50 for half a mana bar.
+**3. Water's Waterjet at 50 damage for 50 mana is worse than doing nothing.**
+Water's free standard attack does 70. Waterjet does 50 for half a mana bar.
 The only thing it buys is going first, and no priority attack in the game is
 worth half a bar. At 1.00 it is the worst rate on the board by a third. **Almost
 certainly meant 15 or 20** — at 50 @ 15 it sits level with Air and reads as a
@@ -176,9 +176,9 @@ Jolt at 5 mana took priority away from Air — it matches Wingbeat's 50 damage a
 third the cost, and Psychic and Dark both beat Air's priority damage outright at
 60. For a moment Air had the worst attacks in the game and no compensating claim.
 
-**The Air repricing fixes it in a different place than expected.** Skimstrike at
+**The Air repricing fixes it in a different place than expected.** Flyby at
 60 damage for 5 mana is a rate of 12.00 — the best in the game, ahead of Jolt.
-Skyfall hits for 120, the hardest single blow in the type. Jet Stream is free and
+Skydive hits for 120, the hardest single blow in the type. Jet Stream is free and
 Slipstream is 30. So Air is no longer the type that goes first; it is **the type
 that is cheapest to move around with**, and its damage comes from position rather
 than from attacking. Nothing else in the game pivots at that price.
@@ -195,20 +195,20 @@ Four different prices for the same product, and none of them is mana.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Cinder** | 80 | **0** | The fallback. |
-| 2 | **Pyre** | 120 | 30 | 4.00 — solid value, no longer the best now that Fighting exists at 6.00. |
+| 2 | **Inferno** | 120 | 30 | 4.00 — solid value, no longer the best now that Fighting exists at 6.00. |
 | 3 | **Sear** | 40 | 20 | Weak and overpriced. Fire is not fast. |
 | 4 | **Scorch** | **40**, then 10% per turn (25) | **0** | The only status move in the game that also deals damage — and it is free. See the note below. |
 | 5 | **Wildfire** | 10% (25) to all, per turn | 30 | Field. |
 | 6 | **Burnout** | 175 | 25 | Paid for mostly with every attack you make afterward. |
 | 7 | **Immolation** | 150 | 20 | 150 for 20 mana and 40% of your health — 200, at baseline HP. The best damage-per-mana rate in the game if you can afford the blood. |
 | 8 | **Meltdown** | 250 | 25 | Paid for with a turn. The turn is the cheaper currency, so this one also costs mana. |
-| 9 | **Pyroclasm** | **300** | **100** | The largest number in the game, for the whole bar and your life. |
+| 9 | **Supernova** | **300** | **100** | The largest number in the game, for the whole bar and your life. |
 
 **Free: Cinder, Scorch.** Fire drops to two free moves — Immolation now costs
 20, so the third slot goes with it. Fighting and Dark are the only types left
 with a free tool.
 
-Pyroclasm at 300 against a 1.3-Power attacker and a double weakness is 780 damage
+Supernova at 300 against a 1.3-Power attacker and a double weakness is 780 damage
 into a 250-point health bar. It does not merely defeat the target — it defeats
 almost anything, at any health, with no counterplay but Unicorn's Miracle. That
 is the correct feel for a move that kills the user, and the 100-mana price is
@@ -216,16 +216,16 @@ what keeps it from happening on turn one.
 
 **Scorch is now the best free move in the game.** Forty damage on the turn you
 cast it plus fifty every turn afterward, for nothing, is more total output than
-Malediction — which costs the user a quarter of its own health — and more than
+Curse — which costs the user a quarter of its own health — and more than
 Parasite, which heals but does not hit. Nothing else in the game deals damage and
 applies a status in the same action. It is a strong argument for Fire being the
 premier offensive type and it is also the number I would watch first.
 
-**Meltdown at 250 now competes directly with Pyre.** Spread over the turn
-it costs you, it averages 125 a turn against Pyre's 120, and it costs 25
+**Meltdown at 250 now competes directly with Inferno.** Spread over the turn
+it costs you, it averages 125 a turn against Inferno's 120, and it costs 25
 rather than 30. It is strictly the better move whenever you can afford to stand
 still — which in a game built on switching is less often than it sounds, but not
-rare. Worth watching; if Pyre stops being played, Meltdown is why.
+rare. Worth watching; if Inferno stops being played, Meltdown is why.
 
 ## 💧 WATER
 
@@ -233,17 +233,17 @@ rare. Worth watching; if Pyre stops being played, Meltdown is why.
 |---|---|---|---|---|
 | 1 | **Surge** | 70 | **0** | The fallback. |
 | 2 | **Tsunami** | **90** | **40** | Middling. Water's mana belongs to Drown. |
-| 3 | **Crosscurrent** | **50** | **50** | Half a mana bar for less damage than the free standard attack. Flagged above. |
-| 4 | **Strangle** | — | **0** | The free status, and the purest expression of what Water is for. |
+| 3 | **Waterjet** | **50** | **50** | Half a mana bar for less damage than the free standard attack. Flagged above. |
+| 4 | **Whirlpool** | — | **0** | The free status, and the purest expression of what Water is for. |
 | 5 | **Maelstrom** | — | 30 | Field. |
 | 6 | **Wellspring** | heals 40% (100) | **50** | Healing is Light's job. Water pays a premium to borrow it. |
 | 7 | **Submerge** | **90** | **60** | 45 a turn across the two it takes, well under the free Surge. You are buying the untargetable turn, not the damage. |
 | 8 | **Riptide** | **60** to the incoming character | **40** | Forced switching plus real damage to whoever arrives. |
 | 9 | **Drown** | the target dies | **100** | It cannot be cleared, cannot be outplayed, and kills. |
 
-**Free: Surge, Strangle.**
+**Free: Surge, Whirlpool.**
 
-Strangle is free and Drown costs the ceiling, which is the split that keeps the lock
+Whirlpool is free and Drown costs the ceiling, which is the split that keeps the lock
 honest — the trap happens immediately, the kill takes a full bar. Kelpie's
 Undertow makes the trap free permanently, so Drown's price is the only brake on
 that character, and a Kelpie built under the breakpoint cannot use it at all.
@@ -254,13 +254,13 @@ under 30. On a 100-mana bar a Water character affords roughly two paid actions
 per cycle and no more.
 
 That is coherent rather than broken, and it may be the best expression of the
-type yet. Water's two free moves are Surge and Strangle: hit for 70, and stop
+type yet. Water's two free moves are Surge and Whirlpool: hit for 70, and stop
 them leaving. A Water character that can afford nothing else still does the two
 things Water exists to do, and every point it saves is going toward Drown. The
 expensive kit forces the type to play its own game — trap, chip, bank, kill —
 instead of trading attacks.
 
-The exception is still **Crosscurrent at 50 for 50**, which does twenty less
+The exception is still **Waterjet at 50 for 50**, which does twenty less
 damage than the free Surge for half a bar. Everything else in Water buys
 something Surge cannot. That one does not.
 
@@ -269,13 +269,13 @@ something Surge cannot. That one does not.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Bramble** | **55** | **0** | The fallback. |
-| 2 | **Sunspear** | **90** | **20** | Cheap and weak. Grass's damage is Parasite, not this. |
+| 2 | **Thornspear** | **90** | **20** | Cheap and weak. Grass's damage is Parasite, not this. |
 | 3 | **Burr** | **40** | **15** | Cheap, and it needs to be — it barely does anything. |
 | 4 | **Parasite** | 20% per turn (50), healed to the user | **0** | The free status, and Grass's real damage output. |
 | 5 | **Overgrowth** | heals 10% (25) to all, per turn | 30 | Field. |
 | 6 | **Germinate** | **120** | **40** | Uncounterable, and you still act on the turn it lands — 120 stacked on top of a normal turn. Grass's hardest hit by a clear margin. |
-| 7 | **Graft** | — | **30** | The handoff is the point of the type, but escaping a trap while keeping every boost is worth a real price. |
-| 8 | **Sap** | — | **60** | Trapping is Water's job. High cost, as called for. |
+| 7 | **Transplant** | — | **30** | The handoff is the point of the type, but escaping a trap while keeping every boost is worth a real price. |
+| 8 | **Entangle** | — | **60** | Trapping is Water's job. High cost, as called for. |
 | 9 | **Bloom** | — | **100** | Power doubled, mana refilled to full. |
 
 **Free: Bramble, Parasite.**
@@ -291,7 +291,7 @@ line to cut first if Grass turns out oppressive.
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
 | 1 | **Arc** | 75 | **0** | The fallback. |
-| 2 | **Fulminate** | **110** | **30** | Electric flipped from expensive-and-strongest to cheap-and-middling. |
+| 2 | **Thunderstrike** | **110** | **30** | Electric flipped from expensive-and-strongest to cheap-and-middling. |
 | 3 | **Jolt** | **50** | **5** | Cheaper than the 10 mana you regenerate each turn, so it is free in perpetuity. Flagged above. |
 | 4 | **Amplify** | — | **0** | The free status. A move that generates mana could not cost mana anyway. |
 | 5 | **Storm Front** | — | 30 | Field. |
@@ -337,7 +337,7 @@ the mana economy.
 **Overload is now a pure conversion: it consumes everything you have and hits
 for exactly that number.** This is the best version of the move and it makes the
 whole type cohere, but the break-even is worth stating plainly. Fired off a flat
-100-mana bar it deals 100 damage — less than a Fulminate, which costs 30. Cast
+100-mana bar it deals 100 damage — less than a Thunderstrike, which costs 30. Cast
 naked, it is a bad move.
 
 It only justifies itself on top of Electric's own doubling. Amplify is free and
@@ -366,20 +366,20 @@ is doing something no other build in the game can do.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Draft** | **60** | **0** | The weakest standard attack in the game. |
+| 1 | **Gust** | **60** | **0** | The weakest standard attack in the game. |
 | 2 | **Galeforce** | **90** | **25** | The weakest powerful attack in the game, and cheap to match. Air's budget goes to priority. |
 | 3 | **Wingbeat** | **50** | **15** | The best priority attack in the game and the cheapest. A rate of 3.33 — better than most types get on their powerful attack. |
 | 4 | **Jet Stream** | — | **0** | The free status. See the note below. |
 | 5 | **Slipstream** | — | 30 | Field. |
-| 6 | **Skimstrike** | **60** | **5** | 12.00 damage per mana — the best rate in the game. Air's mobility is the cheapest thing on the board. |
-| 7 | **Skyfall** | **120** | **25** | Air's hardest single hit, and it costs a turn as well — 60 a turn across the two. |
+| 6 | **Flyby** | **60** | **5** | 12.00 damage per mana — the best rate in the game. Air's mobility is the cheapest thing on the board. |
+| 7 | **Skydive** | **120** | **25** | Air's hardest single hit, and it costs a turn as well — 60 a turn across the two. |
 | 8 | **Cyclone** | **60** | **60** | Bought entirely for the phaze. It hits the character going *out*, so it finishes a weakened one where Riptide hits the fresh arrival. |
 | 9 | **Tempest** | **100** | **100** | Modest damage that erases the entire board state on both sides. Air's signature is a reset button, not a nuke. |
 
-**Free: Draft, Jet Stream.**
+**Free: Gust, Jet Stream.**
 
-**Skyfall at 120 now exceeds Tempest at 100**, worth naming since Tempest was set
-as Air's most powerful attack. Per action it still holds — Skyfall takes two turns
+**Skydive at 120 now exceeds Tempest at 100**, worth naming since Tempest was set
+as Air's most powerful attack. Per action it still holds — Skydive takes two turns
 for its 120, so it averages 60 a turn where Tempest delivers 100 in one. On the
 raw number, though, Air's biggest hit is no longer its signature.
 
@@ -399,23 +399,23 @@ The cheapest type on the list, and it should be. Fighting pays by guessing wrong
 | 1 | **Jab** | 75 | **0** | The fallback. |
 | 2 | **Haymaker** | **120** | **40** | 3.00 — mid-field now, down from a 6.00 that led the game by half again. |
 | 3 | **Snapkick** | **40** | 20 | Unchanged at 20. |
-| 4 | **Resolve** | — | **0** | The free status. **Reduced to +50% Power** — see the note below. |
-| 5 | **Proving Ground** | — | 30 | Field. |
-| 6 | **Riposte** | twice the damage taken | **20** | No longer free. Still does nothing at all if they do not attack. |
+| 4 | **Adrenaline** | — | **0** | The free status. **Reduced to +50% Power** — see the note below. |
+| 5 | **Level Ground** | — | 30 | Field. |
+| 6 | **Counter** | twice the damage taken | **20** | No longer free. Still does nothing at all if they do not attack. |
 | 7 | **Wind-Up** | **250** | 25 | 250 for 25 mana — a rate of 10.00. Fails outright if anything touches you first. |
 | 8 | **Flurry** | **60** | **40** | Damage and a Speed increase, priced as setup rather than as an attack. |
-| 9 | **Frenzy** | **150 per turn, three turns** | **100** | 450 total, but you cannot switch and everyone can see it coming. |
+| 9 | **Rampage** | **150 per turn, three turns** | **100** | 450 total, but you cannot switch and everyone can see it coming. |
 
-**Free: Jab, Resolve.**
+**Free: Jab, Adrenaline.**
 
 Haymaker at 40 brings Fighting from first in value to joint sixth, which is where
 it should have been. The type is no longer the cheapest way to deal damage in the
 game. Two things about it still stand out, though, and neither was touched by
 that change.
 
-**Jab plus Resolve is 110 free damage a turn, forever.** Resolve costs nothing,
+**Jab plus Adrenaline is 110 free damage a turn, forever.** Adrenaline costs nothing,
 lasts until the character switches out, and adds 50% Power — so a Fighting
-character opens with Resolve and then hits for 110 with a free move, every turn,
+character opens with Adrenaline and then hits for 110 with a free move, every turn,
 without ever spending a point. That is more than most types get from their paid
 powerful attack. It is arguably correct for the type that "pays by guessing
 wrong," and it is certainly the engine that makes Fighting feel like Fighting.
@@ -435,13 +435,13 @@ stat irrelevant on the turn it connects. Alternatively leave 250 and treat it as
 the game's designated all-or-nothing button — but that is a decision worth
 making rather than inheriting from an HP rebase.
 
-**Resolve had to come down from doubling Power to +50%.** Doubling Power for
+**Adrenaline had to come down from doubling Power to +50%.** Doubling Power for
 free would make Fighting's slot-four status move strictly better than Bloom,
 the Grass signature, which does the same thing for a full hundred mana and a
 turn. Nothing in slot four should beat a slot nine. At +50% it is still the best
 free setup move in the game and every Fighting character will run it.
 
-Riposte is worth watching now that damage has an absolute scale. Reflecting
+Counter is worth watching now that damage has an absolute scale. Reflecting
 twice the damage taken means eating a 120-damage powerful attack and returning
 240 — nearly half a health bar, for free, from a move that also happens to be
 the correct read. It is fine because whiffing it costs a whole turn, but it is
@@ -456,7 +456,7 @@ stopping it.
 |---|---|---|---|---|
 | 1 | **Mindspike** | **60** | **0** | Deliberately poor. Psychic wants you to pay. |
 | 2 | **Mindshatter** | **120** | 40 | Psychic's paid attacks are strong; its free one is the weakest of any offensive type. |
-| 3 | **Premonition** | **60** | 25 | Tied with Umbra for the hardest-hitting priority attack in the game. |
+| 3 | **Premonition** | **60** | 25 | Tied with Blindside for the hardest-hitting priority attack in the game. |
 | 4 | **Force Swap** | — | **0** | The free status. No damage, no board effect on its own — pure repositioning. |
 | 5 | **Inversion** | — | **35** | The only field above 30. Reversing turn order rewrites the game's most fundamental rule. |
 | 6 | **Prophecy** | 125 | 30 | Uncounterable, so it pays over a normal powerful attack. |
@@ -474,17 +474,17 @@ type was written around, and it should be affordable.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Ripshade** | 75 | **0** | The fallback. |
+| 1 | **Shadowstrike** | 75 | **0** | The fallback. |
 | 2 | **Nightfall** | **150** | **50** | The hardest-hitting ordinary attack in the game, at the highest ordinary price. |
-| 3 | **Umbra** | **60** | **40** | Tied with Premonition for the hardest-hitting priority attack, and it pays for it. |
-| 4 | **Malediction** | **20% per turn (50)** | **0** | The free status. Costs the user 50 as well. |
+| 3 | **Blindside** | **60** | **40** | Tied with Premonition for the hardest-hitting priority attack, and it pays for it. |
+| 4 | **Curse** | **20% per turn (50)** | **0** | The free status. Costs the user 50 as well. |
 | 5 | **Snare** | 20% (50) on switch-in | 30 | Field. |
 | 6 | **Damnation** | — | **60** | Half your health, sixty mana, and you can never leave. See the note below on what the mana doubling is now worth. |
 | 7 | **Death Pact** | mutual | **20** | Dark's only cheap move. You choose when. |
 | 8 | **Last Rites** | — | **40** | Forty mana *and* your life, to halve their Power and Mana for the rest of the battle. |
 | 9 | **Death Touch** | the target is gone | **100** | The hardest gate in the game. |
 
-**Free: Ripshade, Malediction.** Last Rites now costs 40, which means **no type
+**Free: Shadowstrike, Curse.** Last Rites now costs 40, which means **no type
 in the game has a third free move any more.** Every type has exactly two, in the
 same two slots: the standard attack and the status move. That is a cleaner rule
 than the one it replaces — the guarantee is uniform, and every tool in every type
@@ -500,11 +500,11 @@ now doing nothing for most of the roster.
 
 **Dark is the second-most expensive type after Water.** Its paid moves run 50,
 40, 30, 60, 20, 40, and 100 — only Death Pact is cheap. What carries it is that
-its two free moves are the best free pair in the game: Ripshade hits for 75, the
-joint-hardest free attack, and Malediction ticks 75 a turn on top. A Dark
+its two free moves are the best free pair in the game: Shadowstrike hits for 75, the
+joint-hardest free attack, and Curse ticks 75 a turn on top. A Dark
 character with no mana at all still deals 150 a turn.
 
-**Malediction is 20% a turn, or 50 damage, and the user pays 50 of its own health
+**Curse is 20% a turn, or 50 damage, and the user pays 50 of its own health
 to set it.** Five turns kills anything outright. That is a lot for a free move,
 but the self-damage is a real trade — you are spending a fifth of your own life
 to start a clock, and any switch clears it.
@@ -521,17 +521,17 @@ character.
 
 | # | Move | Damage | Mana | Why |
 |---|---|---|---|---|
-| 1 | **Lumenlash** | **50** | **0** | The weakest attack in the game. |
+| 1 | **Sunbeam** | **50** | **0** | The weakest attack in the game. |
 | 2 | **Solar Flare** | **90** | **20** | Tied for the weakest powerful attack and the cheapest. The mana is meant for Renewal. |
-| 3 | **Glimmer** | **20** | **5** | A token. Twenty damage is 4% of a health bar — this buys the turn order, not a hit. |
+| 3 | **Flash** | **20** | **5** | A token. Twenty damage is 4% of a health bar — this buys the turn order, not a hit. |
 | 4 | **Mend** | **heals 20% (50)** | **0** | The free status. Halved from 50% — see the note below. |
 | 5 | **Sanctuary** | heals 20% (50) on switch-in | 30 | Field. |
-| 6 | **Gift** | heals to full in two turns | **10** | A 250-point heal for ten mana. See the warning below. |
-| 7 | **Lifedraw** | 75, healed back in full | **20** | 150 points of swing for twenty mana. |
+| 6 | **Blessing** | heals to full in two turns | **10** | A 250-point heal for ten mana. See the warning below. |
+| 7 | **Lifesteal** | 75, healed back in full | **20** | 150 points of swing for twenty mana. |
 | 8 | **Renewal** | your whole living team to full | **60** | Up to 1,250 points of healing for sixty mana. |
 | 9 | **Resurrection** | a dead teammate returns | **100** | The only effect in the game that undoes a death. |
 
-**Free: Lumenlash, Mend.**
+**Free: Sunbeam, Mend.**
 
 **Light is now the cheapest type in the game and has by far the strongest
 sustain, and the two together are a problem.**
@@ -542,12 +542,12 @@ is over 370. And here is what Light gets for it, per turn:
 | Move | Healing | Mana |
 |---|---|---|
 | **Mend** | 50 | **0** |
-| **Gift** | 250, two turns later | **10** |
-| **Lifedraw** | 75, plus 75 damage | 20 |
+| **Blessing** | 250, two turns later | **10** |
+| **Lifesteal** | 75, plus 75 damage | 20 |
 | **Renewal** | up to 1,250 across the team | 60 |
 | **Resurrection** | a dead character returns | 100 |
 
-**Gift at 10 mana is still the specific break, though the rebase softened it.**
+**Blessing at 10 mana is still the specific break, though the rebase softened it.**
 A full 250-point heal for ten mana is twenty-five healed per point, against
 Nightfall's three damage per point. It is the best rate in the game by roughly an
 order of magnitude, and a Light character can cast it every third turn forever
@@ -557,13 +557,13 @@ What the rebase to 250 HP fixed: **free Mend no longer stalls out an attacker.**
 At 50 a turn against a 90-to-150 powerful attack it absorbs a third, not most of
 one. Light can no longer sit there healing and simply not lose.
 
-What it did not fix: **Gift on a three-turn loop still out-heals almost anything.**
+What it did not fix: **Blessing on a three-turn loop still out-heals almost anything.**
 Averaged across the cycle it is 83 a turn on top of Mend's 50, for a little over
 three mana a turn. Against a 120-damage attacker that is a stalemate the Light
 character wins on mana, since it is also the second-cheapest type in the game at
-245 for its whole kit and can still afford Solar Flare and Lifedraw alongside.
+245 for its whole kit and can still afford Solar Flare and Lifesteal alongside.
 
-**Recommend Gift at 30.** It stays cheap, it stays the type's comeback button,
+**Recommend Blessing at 30.** It stays cheap, it stays the type's comeback button,
 and it stops being castable on a loop. Provoke and Gugalanna remain the only hard
 answers to Light either way, and one neutral move plus one character is thin
 coverage for the strongest sustain engine in the game.
@@ -579,12 +579,12 @@ above that changes the type from strong to unanswerable.
 | # | Move | Effect | Mana |
 |---|---|---|---|
 | 1 | **Guard** | Blocks everything this turn | **60** |
-| 2 | **Focus** | Restores 50 mana | **0** |
-| 3 | **Run** | Speed increases | **20** |
+| 2 | **Meditate** | Restores 50 mana | **0** |
+| 3 | **Sprint** | Speed increases | **20** |
 | 4 | **Provoke** | Damaging moves only, three turns | 30 |
 | 5 | **Echo** | Repeats their last move, three turns | 30 |
 | 6 | **Sleep** | Full health, two turns helpless | 40 |
-| 7 | **Clear Sight** | Self-only cleanup | **20** |
+| 7 | **Cleanse** | Self-only cleanup | **20** |
 
 **Guard at 60 makes its doubling clause dead, and it should be removed.** The
 rule was that the price doubles with each consecutive use — at a base of 20 that
@@ -594,10 +594,10 @@ longer does anything except sit in the rules text confusing people. **Recommend
 cutting the clause and leaving Guard as a flat 60** — a once-per-mana-cycle
 button, which is what the number already makes it.
 
-**Focus is now the only free move outside the type pools**, and that matters
-more than it did. Run costing 20 and Clear Sight costing 20 means a character
+**Meditate is now the only free move outside the type pools**, and that matters
+more than it did. Sprint costing 20 and Cleanse costing 20 means a character
 that is completely dry has exactly one universal option: restore 50 mana. That
-is a cleaner release valve than three free neutrals were, and it makes Focus a
+is a cleaner release valve than three free neutrals were, and it makes Meditate a
 near-automatic pick on any build that spends heavily.
 
 ---
@@ -609,14 +609,14 @@ Two in every type, no exceptions.
 | Type | Slot 1 — attack | Slot 4 — status |
 |---|---|---|
 | 🔥 Fire | Cinder — 80 | Scorch — 40, then 25 a turn |
-| 💧 Water | Surge — 70 | Strangle — they cannot leave |
+| 💧 Water | Surge — 70 | Whirlpool — they cannot leave |
 | 🌿 Grass | Bramble — 55 | Parasite — 50 a turn, healed back |
 | ⚡ Electric | Arc — 75 | Amplify — your mana doubles |
-| 🌪️ Air | Draft — 60 | Jet Stream — everything gains priority |
-| 👊 Fighting | Jab — 75 | Resolve — Power +50% |
+| 🌪️ Air | Gust — 60 | Jet Stream — everything gains priority |
+| 👊 Fighting | Jab — 75 | Adrenaline — Power +50% |
 | 🔮 Psychic | Mindspike — 60 | Force Swap — they are forced out |
-| 🌑 Dark | Ripshade — 75 | Malediction — 50 a turn |
-| ✨ Light | Lumenlash — 50 | Mend — heals 50 |
+| 🌑 Dark | Shadowstrike — 75 | Curse — 50 a turn |
+| ✨ Light | Sunbeam — 50 | Mend — heals 50 |
 
 Read the status column down and you get a one-word summary of the whole game:
 Fire burns, Water traps, Grass drains, Electric charges, Air gets ahead, Fighting
@@ -624,24 +624,24 @@ builds, Psychic displaces, Dark curses, Light heals. Nine identities, all free,
 all in the same slot.
 
 **No type has a third free move any more.** Fire lost its when Immolation was
-priced at 20, Fighting lost its when Riposte went to 20, and Dark lost its when
+priced at 20, Fighting lost its when Counter went to 20, and Dark lost its when
 Last Rites went to 40. The rule is now perfectly uniform.
 
 That is the better version. Each exception was defensible on its own — Immolation
-costs 200 health, Riposte costs being wrong, Last Rites costs your life — but a
+costs 200 health, Counter costs being wrong, Last Rites costs your life — but a
 rule with no exceptions is one a player learns once and never checks again, and
 all three moves still charge steeply in their own currency on top of the mana.
 
 The free pairs are not equal in strength, and they should not be. **Dark's is the
-best: Ripshade for 75 and Malediction for 75 a turn means a Dark character with
+best: Shadowstrike for 75 and Curse for 75 a turn means a Dark character with
 no mana at all still deals 150 a turn.** Light's is the weakest at 50 damage and
 a 125 heal. Fire's Scorch is the only free move in the game that deals damage and
 applies a status in one action.
 
 Three moves still had to change to survive being free, all of them in the
-guaranteed status slot: **Resolve** from doubling Power to +50%, **Mend** from a
-50% heal to 20%, and **Malediction** from 25% a turn to 20%. The neutral pool keeps
-Focus and Run free on top of all this, so no character is ever without options.
+guaranteed status slot: **Adrenaline** from doubling Power to +50%, **Mend** from a
+50% heal to 20%, and **Curse** from 25% a turn to 20%. The neutral pool keeps
+Meditate and Sprint free on top of all this, so no character is ever without options.
 
 ---
 
@@ -660,12 +660,12 @@ tooltip — the first digit answers the question.
 
 | Type | The ultimate | What 100 mana buys |
 |---|---|---|
-| 🔥 Fire | **Pyroclasm** | 280 damage. You faint. |
+| 🔥 Fire | **Supernova** | 280 damage. You faint. |
 | 💧 Water | **Drown** | The target dies in three turns. Nothing clears it. |
 | 🌿 Grass | **Bloom** | Power doubled, mana refilled. |
 | ⚡ Electric | **Overload** | Damage equal to your entire mana bar. |
 | 🌪️ Air | **Tempest** | 100 damage and the entire board erased. |
-| 👊 Fighting | **Frenzy** | 420 damage over three turns. You cannot leave. |
+| 👊 Fighting | **Rampage** | 420 damage over three turns. You cannot leave. |
 | 🔮 Psychic | **Mind Crush** | 175 to the target, 50 to each of the other four. |
 | 🌑 Dark | **Death Touch** | The target is gone. |
 | ✨ Light | **Resurrection** | A dead teammate comes back. |
@@ -691,15 +691,15 @@ mana on the field, both sides. Thunderbird sets it automatically on entry, which
 makes that character an ultimate-enabler for the entire board including the
 opponent's. A genuine risk before it is a genuine feature.
 
-**Baku turns the ultimates off for most of the roster.** Pressure doubles the
+**Baku turns the ultimates off for most of the roster.** Burden doubles the
 opponent's costs, putting every ninth move at 200. That is out of reach for any
 character at the normal end of the range — but not for one built to 200, which
-is where the top of the Mana stat should probably sit precisely so that Pressure
+is where the top of the Mana stat should probably sit precisely so that Burden
 has an answer. Baku is not an absolute lockout. It is a wall that only the
 highest-mana characters in the game can climb, which is a much better design than
 either extreme.
 
-**Focus is close to mandatory on an ultimate build.** Two Focuses is a full bar
+**Meditate is close to mandatory on an ultimate build.** Two Meditates is a full bar
 from empty, for nothing. Any character built to fire its ultimate twice is
 running it, which means it is competing with Guard and Provoke for the same slot
 and probably beating both.
@@ -714,7 +714,7 @@ percentage.**
 That single number sets the pace of everything above. A powerful attack every
 fourth turn is free-flowing. A field effect is a three-turn investment. An
 ultimate is a ten-turn project unless you build toward it deliberately, and
-Focus is the shortcut — worth five turns of natural regeneration in one action.
+Meditate is the shortcut — worth five turns of natural regeneration in one action.
 
 **Flat regeneration is what keeps high Mana from being pure upside, and it is a
 decision worth making on purpose.** A 150-mana character holds a bigger tank but
@@ -750,7 +750,7 @@ is possibly behind.
 
 **Fighting is tuned.** Haymaker moved from 20 to 40, dropping the type from 6.00
 damage per mana — first in the game by half again — to 3.00, joint sixth. Its kit
-now costs 275, mid-pack. What remains is the free Jab-plus-Resolve engine at 110
+now costs 275, mid-pack. What remains is the free Jab-plus-Adrenaline engine at 110
 a turn, which is the highest floor in the game, and Wind-Up at 250, which is a
 guaranteed one-shot on a correct read. Both are discussed in the Fighting section
 above; both are arguably correct for the type, and neither is a value problem any
@@ -763,18 +763,18 @@ first strike. Voltage is uncapped and kills anything in four committed turns.
 Amplify is free and doubles the bar. **Jolt at 20 is the fix**; Voltage is a
 deliberate choice and can stay.
 
-**Light is third, on Gift alone**, covered in full above. Gift at 30 fixes it.
+**Light is third, on Blessing alone**, covered in full above. Blessing at 30 fixes it.
 
 **Water may be genuinely too expensive.** At 370 for the kit, with nothing under
 30 outside its two free moves, a Water character affords about two paid actions
 per mana cycle. That reads as a coherent identity — trap, chip, bank, kill — but
-it is a bet, not a certainty, and Crosscurrent at 50 damage for 50 mana is
+it is a bet, not a certainty, and Waterjet at 50 damage for 50 mana is
 strictly worse than the free Surge at 70. **That one move is a dead slot** and
 should be 15 or 20.
 
 **Air is the most interesting result of the whole pass.** It has the weakest
 ordinary attacks in the game — 60, 90, 50 — and the cheapest movement by a wide
-margin, with Skimstrike at 60 damage for 5 mana. Its signature does less damage
+margin, with Flyby at 60 damage for 5 mana. Its signature does less damage
 than its own slot seven. None of that is an accident and all of it reads
 correctly: Air is the type that decides where the fight happens, and it pays for
 that by not being able to win one on damage. If any type has been *designed*
@@ -785,10 +785,10 @@ type and everything else calibrates against it. Grass wins through Parasite
 ticking, not attacking. Psychic has the worst free attack and the best paid ones,
 which is exactly what a type built on taxation should look like. Dark hits
 hardest, pays most, and has the best free pair in the game — a Dark character
-with zero mana still deals 125 a turn between Ripshade and Malediction.
+with zero mana still deals 125 a turn between Shadowstrike and Curse.
 
-**Three single-number changes remain:** Jolt 5 → 20, Gift 10 → 30,
-Crosscurrent 50 → 15. Nothing structural, nothing that touches a type's identity.
+**Three single-number changes remain:** Jolt 5 → 20, Blessing 10 → 30,
+Waterjet 50 → 15. Nothing structural, nothing that touches a type's identity.
 Wind-Up 250 → 200 is a fourth if you want the HP stat to keep mattering on the
 turn it lands.
 
@@ -796,11 +796,11 @@ turn it lands.
 
 ## The stacking question, which nothing has answered
 
-Eight moves modify a stat: **Resolve** (+50% Power), **Bloom** (doubles Power),
+Eight moves modify a stat: **Adrenaline** (+50% Power), **Bloom** (doubles Power),
 **Damnation** (doubles Power, Speed and Mana), **Amplify** (doubles Mana),
 **Storm Front** (doubles everyone's Mana), **Slipstream** (doubles your team's
-Speed), **Run** (Speed up), and **Flurry** (Speed up). Several Abilities do the
-same — Slow Burn, Bloodlust, Berserk, Honey-Gorge, Resolve's cousins.
+Speed), **Sprint** (Speed up), and **Flurry** (Speed up). Several Abilities do the
+same — Slow Burn, Bloodlust, Berserk, Honey-Gorge, Adrenaline's cousins.
 
 Nothing in the rules says what happens when two of them apply at once, and one
 combination is already broken by it. **Bloom costs 100 mana and refills the
@@ -809,9 +809,9 @@ it. If the Power doubling compounds, that character reaches 400 Power in four
 free turns.
 
 **Recommend a hard cap: no stat may exceed double its base value, counting every
-source together.** Resolve twice is +100%, not +125%. Bloom on top of Resolve is
+source together.** Adrenaline twice is +100%, not +125%. Bloom on top of Adrenaline is
 still ×2. Damnation into Amplify is still ×2 Mana. Slow Burn on a Fafnir that
-already used Resolve is ×2 Power, not ×3.
+already used Adrenaline is ×2 Power, not ×3.
 
 That one sentence closes the Bloom loop, settles seven other interactions, and
 keeps the ceiling on damage where the type chart can still matter — a ×2 Power
@@ -822,7 +822,7 @@ Nightfall is 600 into a 250-hit-point bar.
 
 ## What still needs deciding
 
-1. **Gift at 10 mana, and the turn limit behind it.** Five hundred points of
+1. **Blessing at 10 mana, and the turn limit behind it.** Five hundred points of
    healing for ten mana lets a Light character stall indefinitely on free Mend
    plus a full heal every third turn, while still affording attacks. With no turn
    limit and only Provoke and Gugalanna as answers, this is the single most
@@ -836,11 +836,11 @@ Nightfall is 600 into a 250-hit-point bar.
    interface has to show that clearly.
 4. **What is the actual Mana range?** The design assumes roughly 70 at the low
    end and 150 at the high end, in multiples of ten, with 200 reserved for a
-   character built specifically to play through Baku's Pressure. That spread
+   character built specifically to play through Baku's Burden. That spread
    needs fixing before any character's stat line is written, because the
    breakpoint at 100 only reads cleanly if the range straddles it with room on
    both sides.
-5. **Is Pyre at 30 the intended reversal?** It moves Fire from seventh in
+5. **Is Inferno at 30 the intended reversal?** It moves Fire from seventh in
    value to first, tied with Light. 35 restores the old curve if the reversal was
    not deliberate.
 6. **Does mana regenerate on the bench, and does it persist through a switch?**
@@ -851,15 +851,15 @@ Nightfall is 600 into a 250-hit-point bar.
    the largest recurring number in the game, though the rebase to 250 HP brought
    it back in line with the attacks it competes against.
 8. **Is Jet Stream too good for free?** Permanent plus-one priority beats
-   Slipstream, which costs 30 and expires. Proving Ground is its only hard answer,
+   Slipstream, which costs 30 and expires. Level Ground is its only hard answer,
    and Jet Stream is now the only slot-four status that is unambiguously
    stronger than its type's slot-five field.
 9. **Does Overload need a multiplier?** At a flat one-to-one conversion it is
-   weaker than a Fulminate unless you have doubled your mana first. That is
+   weaker than a Thunderstrike unless you have doubled your mana first. That is
    probably the point, but it makes an entire type's signature dependent on a
    setup turn.
 10. **Where does the top of the Mana range sit?** If any character reaches 200,
-   that character can fire its signature through Baku's Pressure, which is the
-   only counterplay Pressure has. If nothing reaches 200, Pressure is an absolute
+   that character can fire its signature through Baku's Burden, which is the
+   only counterplay Burden has. If nothing reaches 200, Burden is an absolute
    lockout on nine moves. Both are defensible; the choice decides how oppressive
    Baku is, and it should be made deliberately rather than fallen into.

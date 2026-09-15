@@ -29,7 +29,7 @@ it only has to survive one turn per kill, and a two-for-one on a 310-total
 character is a trade you take every time.
 
 ### Baku 🔮 · 130/70/25/190
-**Pressure got far stronger when mana stopped regenerating.** It used to tax a
+**Burden got far stronger when mana stopped regenerating.** It used to tax a
 pool that refilled ten a turn. Now it halves the total number of paid actions the
 opponent gets for as long as Baku stands there, and the only way to recover is to
 switch — which is exactly what Baku wants, because the opponent leaves and their
@@ -63,16 +63,16 @@ own kind of pressure.
 ## A — strong, with a real condition attached
 
 **Matsya** 💧/✨ · 100/30/85/200 — the biggest pool in the game, and under the new
-economy that is the whole point. Renewal, Gift, Resurrection, and 100 refunded on
+economy that is the whole point. Renewal, Blessing, Resurrection, and 100 refunded on
 every switch. A team with Matsya does not lose characters permanently. Thirty
 Power means it never threatens anything, which is why it is A and not S.
 
-**Sphinx** 🔮/🌑 · 100/120/60/150 — Enigma stops repeats, which under hidden
+**Sphinx** 🔮/🌑 · 100/120/60/150 — Riddle stops repeats, which under hidden
 movesets forces the opponent to reveal their whole hand. Pair it with 120 Power
 and Mind Crush, and Sphinx is the only lock character that also kills you.
 
 **Otso** 🌿/👊 · 120/150/70/100 — Honey-Gorge to 300 Power, Haymaker for 360, and
-100 mana buys Bloom or Frenzy. Held back only by 70 Speed and by telegraphing the
+100 mana buys Bloom or Rampage. Held back only by 70 Speed and by telegraphing the
 charge turn to the entire board.
 
 **Hydra** 💧/🌿 · 160/130/40/50 — 400 hit points, 130 Power, and switching out now
@@ -83,12 +83,12 @@ mana is enough because it barely needs paid moves.
 off Matsya, Unicorn, Leshy and World Turtle entirely. A hard counter to a quarter
 of the roster that also hits like a truck.
 
-**World Turtle** 🌿/✨ · 200/20/5/160 — 500 hit points and Unaware. Nearly
+**World Turtle** 🌿/✨ · 200/20/5/160 — 500 hit points and Indifference. Nearly
 unkillable, the best Inversion partner ever designed, and completely incapable of
 winning on its own. **Its tier depends entirely on whether a turn limit exists.**
 
 **Fafnir** 🔥 · 150/90/75/120 — 375 hit points bought specifically to survive the
-three turns Slow Burn needs, then 180 Power and a 540-damage Pyroclasm. The
+three turns Slow Burn needs, then 180 Power and a 540-damage Supernova. The
 opponent's answer is simply to switch away for three turns, which is why it sits
 here rather than higher.
 
@@ -140,8 +140,8 @@ literally anything.**
 **Phoenix** 🔥/🌪️ · 40/90/125/50 — two lives of 100 hit points each and 50 mana.
 Two short lives is still two short lives.
 
-**Bakeneko** 🔥/🔮 · 80/50/120/120 — Metronome is fun and **50 Power means even a
-perfect roll hits softly.** A Pyroclasm from Bakeneko deals 150.
+**Bakeneko** 🔥/🔮 · 80/50/120/120 — Wild Card is fun and **50 Power means even a
+perfect roll hits softly.** A Supernova from Bakeneko deals 150.
 
 ---
 

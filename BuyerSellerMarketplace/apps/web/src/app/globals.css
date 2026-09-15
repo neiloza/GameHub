@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+/* --------------------------------------------------------------------------
+   Design tokens.
+
+   Deliberately brand-neutral: this is a starter, and the one thing every
+   project replaces first is the palette. The *names* are the load-bearing
+   part — they appear throughout the components — so re-branding is editing the
+   six values below and nothing else.
+
+     ink          deepest navy   headings, hero ground
+     brand-dark   slate navy     secondary surfaces, body emphasis
+     brand        blue           primary action
+     surface      off-white      page ground, tints
+     accent       teal           success and "interested" states
+     accent-soft  light aqua     accents on a dark ground
+
+   One rule worth keeping when you swap these: white text on `brand` has to
+   clear 4.5:1 for WCAG AA at normal size. `brand` carries white button labels
+   on nearly every primary action in the product, so a brand blue that measures
+   4.1:1 fails contrast almost everywhere at once. The value below is 4.96:1.
+   Check yours before shipping it, and if it falls short, either darken it here
+   or give the buttons dark text.
+   -------------------------------------------------------------------------- */
+@theme {
+  --color-ink: #0b1d35;
+  --color-brand-dark: #133d5c;
+  --color-brand: #0a76b0;
+  --color-surface: #f5f8fa;
+  --color-accent: #00b3b8;
+  --color-accent-soft: #7edae6;
+
+  /* Loaded by next/font in the root layout, which self-hosts it and exposes it
+     as --font-display on <html>. Wiring it here means every `font-sans`
+     utility — and the body default below — picks it up. */
+  --font-sans: var(--font-display), ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+html {
+  /* A jump-link into the middle of a page should not land the heading under
+     the sticky header. */
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-surface);
+  color: #0f172a;
+}
+
+/* Every interactive element gets a visible focus ring, and it is the same ring
+   everywhere. `:focus-visible` rather than `:focus` so a mouse click does not
+   leave a ring behind, but a keyboard tab always does. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Honour the OS setting. Anything that moves does so because it helps somebody
+   follow a change; for a reader who has asked for less of that, it does not. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* The PWA, installed to a home screen, runs edge to edge on a notched phone.
+   Without this the bottom of the page sits under the home indicator. */
+@supports (padding: max(0px)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

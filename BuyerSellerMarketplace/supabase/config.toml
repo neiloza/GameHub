@@ -1,0 +1,71 @@
+project_id = "buyer-seller-marketplace"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+
+# The local mail catcher — recovery and confirmation mail lands here.
+[local_smtp]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = [
+  "http://localhost:3000/auth/callback",
+  # Password recovery lands on /auth/callback and is forwarded from there, but
+  # the reset page is listed too: Supabase matches the *final* redirect target,
+  # and an unlisted one is silently dropped back to site_url — which looks
+  # exactly like a broken recovery email.
+  "http://localhost:3000/auth/reset-password",
+]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+# Off locally so a dev signup lands straight in the app. Turn this on in
+# production, where an unverified address is an account somebody else owns.
+enable_confirmations = false
+
+# OAuth providers. Enable in the dashboard and set the secrets there; the
+# client only shows the buttons when NEXT_PUBLIC_ENABLE_SOCIAL_AUTH=true, so a
+# provider that is off never renders a button that errors.
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
+
+[auth.external.apple]
+enabled = false
+client_id = "env(SUPABASE_AUTH_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_APPLE_SECRET)"
+
+[realtime]
+enabled = true
+
+[edge_runtime]
+enabled = true

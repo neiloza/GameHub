@@ -49,7 +49,7 @@ The widest spread in the game — a 375-hit-point dragon, a 50-hit-point serpent
 | **Fafnir** | 🔥 Fire | **150** *(375)* | 90 | 75 | 120 | 435 | **Slow Burn** — after three turns, Power doubles |
 | **Phoenix** | 🔥/🌪️ | **40** *(100)* | 90 | 125 | **50** | 305 | **Rebirth** — first time it faints, returns at half HP |
 | **Xiuhcoatl** | 🔥/⚡ | **30** *(75)* | 80 | **165** | 90 | 365 | **Cometfall** — 50 damage on every switch-in |
-| **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 120 | 120 | 370 | **Metronome** — a random move from anywhere in the game |
+| **Bakeneko** | 🔥/🔮 | 80 *(200)* | **50** | 120 | 120 | 370 | **Trickster** — it alone can take Wild Card |
 | **Simargl** | 🔥/✨ | 110 *(275)* | 80 | 100 | 80 | 370 | **Hearthfire** — every damaging attack it lands heals it |
 
 ## 💧 WATER
@@ -59,7 +59,7 @@ Every Water character is slow — not one reaches 80 Speed. Control does not nee
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Kelpie** | 💧 Water | 120 *(300)* | 90 | 50 | **160** | 420 | **Undertow** — the opposing character cannot switch out |
-| **Hydra** | 💧/🌿 | **160** *(400)* | **130** | **40** | **50** | 380 | **Regenerator** — restores half its HP on switching out |
+| **Hydra** | 💧/🌿 | **160** *(400)* | **130** | **40** | **50** | 380 | **Regrow** — restores half its HP on switching out |
 | **Loch Ness** | 💧/🌑 | **150** *(375)* | 90 | 90 | 100 | 430 | **From the Deep** — untargetable the turn it enters |
 | **Matsya** | 💧/✨ | 100 *(250)* | **30** | 85 | **200** | 415 | **Forewarning** — reveals the opponent's moves and Ability |
 
@@ -70,7 +70,7 @@ Two walls and a wrecking ball, and they are finally distinct.
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Leshy** | 🌿 Grass | 120 *(300)* | 80 | **15** | 100 | 315 | **Photosynthesis** — restores 10% HP and 10% mana each turn |
-| **World Turtle** | 🌿/✨ | **200** *(500)* | **20** | **5** | **160** | 385 | **Unaware** — ignores the opponent's stat changes |
+| **World Turtle** | 🌿/✨ | **200** *(500)* | **20** | **5** | **160** | 385 | **Indifference** — ignores the opponent's stat changes |
 | **Otso** | 🌿/👊 | 120 *(300)* | **150** | 70 | 100 | 440 | **Honey-Gorge** — if it does not attack, Power doubles next turn |
 
 ## ⚡ ELECTRIC
@@ -89,7 +89,7 @@ One buys the board, one buys the hit.
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Garuda** | 🌪️ Air | 80 *(200)* | 100 | **155** | 120 | 455 | **First Flight** — its first attack after entering goes first |
-| **Roc** | 🌪️/👊 | 110 *(275)* | **150** | 110 | **50** | 420 | **Intimidate** — the opponent's Power drops on entry |
+| **Roc** | 🌪️/👊 | 110 *(275)* | **150** | 110 | **50** | 420 | **Overshadow** — the opponent's Power drops on entry |
 
 ## 👊 FIGHTING
 
@@ -98,7 +98,7 @@ A hundred and twenty points of HP apart and ninety of Speed.
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
 | **Sun Wukong** | 👊 Fighting | 90 *(225)* | 110 | **145** | 90 | 435 | **Bloodlust** — Power +50% for every character it defeats |
-| **Airavata** | 👊/⚡ | **170** *(425)* | 90 | **30** | 80 | 370 | **First Answer** — each move doubles the first time it is used |
+| **Airavata** | 👊/⚡ | **170** *(425)* | 90 | **30** | 80 | 370 | **Novelty** — each move doubles the first time it is used |
 
 ## 🔮 PSYCHIC
 
@@ -106,9 +106,9 @@ The type that pays for everything, and now has one member that can also hit back
 
 | Character | Types | HP | Power | Speed | Mana | Total | Ability |
 |---|---|---|---|---|---|---|---|
-| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **25** | **190** | 415 | **Pressure** — the opponent's moves cost double mana |
-| **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | **135** | 70 | 385 | **Illusion** — enters disguised; breaks on damage |
-| **Sphinx** | 🔮/🌑 | 100 *(250)* | 120 | 60 | **150** | 430 | **Enigma** — the opponent cannot use the same move twice |
+| **Baku** | 🔮 Psychic | 130 *(325)* | 70 | **25** | **190** | 415 | **Burden** — the opponent's moves cost double mana |
+| **Kitsune** | 🔮/✨ | **50** *(125)* | **130** | **135** | 70 | 385 | **False Face** — enters disguised; breaks on damage |
+| **Sphinx** | 🔮/🌑 | 100 *(250)* | 120 | 60 | **150** | 430 | **Riddle** — the opponent cannot use the same move twice |
 
 ## 🌑 DARK
 
@@ -150,7 +150,7 @@ whether "this character cannot afford anything" was a shape worth keeping. It wa
 Roc's whole identity two passes ago.
 
 **Two characters can choose between signature moves.** Bakeneko at 120 Mana
-reaches Pyroclasm *or* Mind Crush; **Otso at 100 now reaches Bloom *or* Frenzy.**
+reaches Supernova *or* Mind Crush; **Otso at 100 now reaches Bloom *or* Rampage.**
 Nothing else on the roster gets that choice, and it is a genuinely distinctive
 thing for a dual type to have.
 
@@ -171,10 +171,10 @@ At 50 Mana it can at least reach its cheap tools. Dropping Power from 170 to 150
 also means **Otso and Roc now share the highest Power in the game**, which reads
 correctly — a bear that has eaten and a bird that carries elephants.
 
-### Fixed — Bakeneko is priced for what Metronome actually does
+### Fixed — Bakeneko is priced for what Wild Card actually does
 
 Fifty Power is the second-lowest in the game, and it is the right number for a
-character that casts other people's moves. Metronome rolling Pyroclasm on a
+character that casts other people's moves. Wild Card rolling Supernova on a
 110-Power body would deal 330; on a 50-Power body it deals 150. **The cat should
 not be the best user of every move in the game — it should be the most
 unpredictable one**, and low Power is what separates those two things.
@@ -182,13 +182,13 @@ unpredictable one**, and low Power is what separates those two things.
 ### Broken — Kitsune stopped being a fox
 
 At 90 Speed it is slower than Simargl, Bakeneko, Fenrir, Sun Wukong and
-Thunderbird. **Illusion breaks the instant anything connects**, so a slow Kitsune
+Thunderbird. **False Face breaks the instant anything connects**, so a slow Kitsune
 gets hit on the turn it arrives and the Ability does nothing at all. Its 130 Power
 is now the third-highest in the game, on 125 hit points, at middling Speed — that
 is a glass cannon, not a trickster.
 
 **This is the one change I would push back on.** Either Kitsune goes back above
-130 Speed and keeps Illusion meaningful, or Illusion should change to something
+130 Speed and keeps False Face meaningful, or False Face should change to something
 a slow character can use. A nine-tailed fox that gets outrun by a bear is the
 wrong shape.
 
@@ -203,11 +203,11 @@ Wukong all go first — but it is no longer working against its own Ability.
 ### Watch — the highest mana in the game moved to Matsya
 
 At 200 Mana and 30 Power, **Matsya can cast anything the game has and hurt
-nobody.** Resurrection, Renewal, Gift, Sanctuary — the entire Light recovery kit,
-in one match, from a character whose Lumenlash deals fifteen damage.
+nobody.** Resurrection, Renewal, Blessing, Sanctuary — the entire Light recovery kit,
+in one match, from a character whose Sunbeam deals fifteen damage.
 
 That is the right shape for Vishnu's fish, and it puts Baku a clean ten points
-behind at 190, which is also correct: Pressure is a tax, not a spellbook. But
+behind at 190, which is also correct: Burden is a tax, not a spellbook. But
 these are the two highest pools in the game by 40 points over anything else, and
 both belong to characters that cannot fight. **The mana ceiling is now entirely
 owned by the two characters least able to use it aggressively**, which is a
@@ -235,7 +235,7 @@ off what it lands. They read as different cards now, and each has the body its
 Ability actually wants.
 
 **Kitsune is a fox again** at 130 Speed on 125 hit points, which is the shape
-Illusion needs: it has to act before anything touches it, or the disguise does
+False Face needs: it has to act before anything touches it, or the disguise does
 nothing.
 
 Fafnir and Loch Ness share a body and nothing else — a three-turn escalation

@@ -37,11 +37,11 @@ about is the unconditional one below it.**
 |---|---|---|---|
 | Otso — Wind-Up, Honey-Gorge charged | **750** | **24/24 · 100%** | 100% |
 | Fenrir — Wind-Up, Berserk active | 550 | 23/24 · 96% | 100% |
-| Fafnir — Pyroclasm, Slow Burn active | 540 | 23/24 · 96% | 100% |
-| Otso — Frenzy, Honey-Gorge charged | 450 | 22/24 · 92% | 100% |
+| Fafnir — Supernova, Slow Burn active | 540 | 23/24 · 96% | 100% |
+| Otso — Rampage, Honey-Gorge charged | 450 | 22/24 · 92% | 100% |
 | Fafnir — Meltdown, Slow Burn active | 450 | 22/24 · 92% | 100% |
 | **Otso — Haymaker, Honey-Gorge charged** | **360** | **17/24 · 71%** | 100% |
-| Roc — Haymaker with Resolve | 180 | 6/24 · 25% | 71% |
+| Roc — Haymaker with Adrenaline | 180 | 6/24 · 25% | 71% |
 
 **Otso's Haymaker at 360 is the honest ceiling** — no fail condition, no
 suicide, no lock-in. One turn of setup, then 360 damage, repeatable. It removes
@@ -68,19 +68,19 @@ character's own Power, nothing charged and no drawback.
 | 132 | Sun Wukong | Haymaker | 4/24 · 17% | 200 |
 | 132 | Fenrir | Haymaker | 4/24 · 17% | 200 |
 | 122 | Baku | Mind Crush | 2/24 | 325 |
-| 121 | Thunderbird | Fulminate | 2/24 | 125 |
+| 121 | Thunderbird | Thunderstrike | 2/24 | 125 |
 | 117 | Hydra | Tsunami | 2/24 | 450 |
 | **108** | *median* | | | **225** |
-| 108 | Phoenix · Fafnir · Airavata | Pyre / Haymaker | 1–2/24 | |
+| 108 | Phoenix · Fafnir · Airavata | Inferno / Haymaker | 1–2/24 | |
 | 100 | Garuda | Tempest | 2/24 | 200 |
-| 99 | Raiju | Fulminate | 2/24 | 175 |
-| 96 | Xiuhcoatl · Simargl | Pyre | 1–2/24 | |
+| 99 | Raiju | Thunderstrike | 2/24 | 175 |
+| 96 | Xiuhcoatl · Simargl | Inferno | 1–2/24 | |
 | 88 | Bakeneko | Mind Crush | 2/24 | 200 |
 | 81 | Kelpie | Tsunami | 2/24 | 300 |
-| 72 | Leshy | Sunspear | 1/24 | 375 |
+| 72 | Leshy | Thornspear | 1/24 | 375 |
 | 27 | Unicorn | Solar Flare | **0/24** | 200 |
 | 27 | Matsya | Tsunami | **0/24** | 225 |
-| 18 | World Turtle | Sunspear | **0/24** | 625 |
+| 18 | World Turtle | Thornspear | **0/24** | 625 |
 
 ### This is well balanced, and the median proves it
 
@@ -127,7 +127,7 @@ the game*.
 
 **Recommend Wind-Up to 150**, and the raw numbers confirm it precisely. At 150,
 Roc and Otso hit for **225 raw — one-shotting 54% of the cast instead of 83%**,
-which puts it exactly level with Pyroclasm and Meltdown, the other two
+which puts it exactly level with Supernova and Meltdown, the other two
 big-drawback moves. Charged through Honey-Gorge it becomes 450 and 92% instead of
 750 and 100%: still the biggest read in the game, still worth building around,
 but no longer a move that ignores the HP stat entirely.
@@ -140,7 +140,7 @@ sits between 18 and 210. Wind-Up is not a strong move; it is a different game.
 **The second observation is that Power multipliers are the real damage source,
 not the moves.** Every line in that table is doubled or tripled by an Ability.
 Otso's Haymaker is 120 base; the 360 comes from 150 Power doubled. **The stacking
-cap matters more than any individual move number** — without it, Otso's Resolve
+cap matters more than any individual move number** — without it, Otso's Adrenaline
 on top of Honey-Gorge would be 450 Power and Haymaker would hit for 540.
 
 **And the roster's HP floor is doing something useful.** Six characters sit at or
@@ -170,7 +170,7 @@ changed is the top: **World Turtle drops from 10.8 effective turns to kill to
 unreachable.
 
 Hydra at 400 hit points now sits second only to Airavata and World Turtle, which
-is the right place for it — Regenerator restores half its bar every time it
+is the right place for it — Regrow restores half its bar every time it
 leaves, so its body is the resource the Ability spends. Fifty more hit points is
 twenty-five more healing per switch.
 

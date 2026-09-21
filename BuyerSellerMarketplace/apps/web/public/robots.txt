@@ -1,0 +1,10 @@
+# Published listings are meant to be found; nothing behind a sign-in is.
+User-agent: *
+Disallow: /admin
+Disallow: /auth
+Disallow: /settings
+Disallow: /buyer
+Disallow: /promoter
+Disallow: /advertiser
+Disallow: /apply
+Allow: /

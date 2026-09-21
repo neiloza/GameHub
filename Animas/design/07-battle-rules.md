@@ -19,7 +19,7 @@ instead.
 
 **If both players switch, the faster character's switch resolves first.**
 *[proposed]* This only matters for entry effects — Xiuhcoatl's Cometfall,
-Thunderbird's Stormbringer, Roc's Intimidate — and someone has to go first.
+Thunderbird's Stormbringer, Roc's Overshadow — and someone has to go first.
 
 **A character that switches out restores half of its maximum mana.** Kelpie
 leaves and comes back with 80 of its 160. Roc leaves and comes back with 25 of
@@ -33,13 +33,13 @@ since every character has a unique Speed, every tie breaks cleanly.
 | Tier | What sits here |
 |---|---|
 | **+2** | A priority attack used by a character under Jet Stream |
-| **+1** | Priority attacks — Sear, Crosscurrent, Burr, Jolt, Wingbeat, Snapkick, Premonition, Umbra, Glimmer. Also **any ordinary move used under Jet Stream** |
-| **0** | Everything else. Also **Riposte and Wind-Up used under Jet Stream** |
-| **−1** | **Riposte and Wind-Up** — they resolve after every ordinary attack |
+| **+1** | Priority attacks — Sear, Waterjet, Burr, Jolt, Wingbeat, Snapkick, Premonition, Blindside, Flash. Also **any ordinary move used under Jet Stream** |
+| **0** | Everything else. Also **Counter and Wind-Up used under Jet Stream** |
+| **−1** | **Counter and Wind-Up** — they resolve after every ordinary attack |
 
 **Jet Stream raises everything by one tier.** It is Air's free status move: for as
 long as that character stays in, every move it uses gains +1 priority. A normal
-attack becomes +1. A priority attack becomes +2. **And Riposte and Wind-Up become
+attack becomes +1. A priority attack becomes +2. **And Counter and Wind-Up become
 0 — ordinary speed.**
 
 That last line is the interesting one. Wind-Up deals 250 and fails outright if
@@ -49,7 +49,7 @@ being hit.
 
 **Roc is the character this was built for.** Air/Fighting, 110 Speed, 150 Power.
 Jet Stream one turn, Wind-Up the next, for **375 damage** — the hardest raw hit
-in the game, and now genuinely landable. Riposte works the same way: at 0
+in the game, and now genuinely landable. Counter works the same way: at 0
 priority it can reflect an attack from a slower character instead of always
 going last.
 
@@ -71,13 +71,13 @@ only entry effects care.
 
 ### 4 — End of turn, in this order
 
-1. **Healing.** Overgrowth, Photosynthesis, Gift, and any other recovery.
-2. **Damage.** Scorch's burn, Parasite, Wildfire, Malediction, Snare.
+1. **Healing.** Overgrowth, Photosynthesis, Blessing, and any other recovery.
+2. **Damage.** Scorch's burn, Parasite, Wildfire, Curse, Snare.
 3. **Delayed attacks land.** Germinate and Prophecy. *[proposed]*
 4. **Drown's counter ticks**, and the target faints if it reaches zero.
 5. **Field durations tick.** Anything at five turns expires.
 6. **Fainted characters are replaced**, and entry effects fire — Cometfall,
-   Stormbringer, Intimidate, From the Deep, Forewarning, Illusion, and Snare or
+   Stormbringer, Overshadow, From the Deep, Forewarning, False Face, and Snare or
    Sanctuary if either is on the board.
 
 **Healing before damage is deliberate and it changes outcomes.** A character on
@@ -97,7 +97,7 @@ gains a point of mana on its own.
 | Source | Amount |
 |---|---|
 | **Switching out** | Half of the character's maximum |
-| **Focus** *(neutral, free)* | 50 flat |
+| **Meditate** *(neutral, free)* | 50 flat |
 | **Amplify** *(Electric, free)* · **Storm Front** *(field)* | Doubles the current pool |
 | **Battery** *(Raiju)* · **Photosynthesis** *(Leshy)* · **Bloom** *(Grass signature)* | 25% a turn · 10% a turn · refills entirely |
 
@@ -111,7 +111,7 @@ standing still, and Leshy at 10 a turn is the only other one that gains any at
 all. Everyone else is spending down a bar they can only refill by giving up
 position.
 
-**Focus is now close to mandatory on any expensive build.** Fifty mana for free,
+**Meditate is now close to mandatory on any expensive build.** Fifty mana for free,
 at any time, is the only way most characters reach a hundred-cost signature
 twice in a match.
 
@@ -150,9 +150,9 @@ one Ability. By the midgame you have seen three or four, and some of their moves
 The endgame is played with near-complete information, the opening with almost
 none. That curve is worth having.
 
-**Moves being hidden makes Sphinx's Enigma sharper than it looks.** It stops the
+**Moves being hidden makes Sphinx's Riddle sharper than it looks.** It stops the
 opponent repeating a move — which forces them to show you a second move, then a
-third. Enigma is not just a lock; it is an interrogation.
+third. Riddle is not just a lock; it is an interrogation.
 
 ### Two Abilities need a ruling now
 
@@ -164,11 +164,11 @@ needs to be bigger, the natural expansion is revealing the opponent's *whole
 team*, which is the other hidden layer and fits the omniscience of a Vishnu
 avatar exactly.
 
-**Kitsune's Illusion has a real problem.** It enters disguised as your last team
-member — but if Abilities are visible, the opponent reads "Illusion" the moment
+**Kitsune's False Face has a real problem.** It enters disguised as your last team
+member — but if Abilities are visible, the opponent reads "False Face" the moment
 Kitsune arrives and the disguise never begins. **The disguise has to cover the
 Ability display as well**, showing whatever the impersonated character's Ability
-is. That is the only version that works, and it makes Illusion the one exception
+is. That is the only version that works, and it makes False Face the one exception
 to the visibility rule — appropriate, since deception is the entire point of the
 character.
 

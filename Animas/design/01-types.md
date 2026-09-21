@@ -111,11 +111,11 @@ The chart is only half the matchup system. Underneath it, kits invalidate other
 kits in ways no chart shows:
 
 - **Grass beats Water twice over.** The chart now says so outright, and the kits
-  agree — Parasite keeps draining while Grass is Strangled and out of mana, and
+  agree — Parasite keeps draining while Grass is Whirlpooled and out of mana, and
   Water's whole win condition assumes that denying you actions matters. This is
   the single most lopsided matchup in the game.
 - **Fighting still beats Air mechanically, even now that Air beats it on the
-  chart.** Proving Ground turns off priority, which
+  chart.** Level Ground turns off priority, which
   deletes Jet Stream and most of Air's tempo — even though Air resists Fighting on
   the chart. Chart and kit pull opposite directions, which makes that matchup
   close and skill-dependent rather than decided at team preview.
@@ -140,7 +140,7 @@ each turn.
 
 **Air — Slipstream.** Your team's Speed is doubled.
 
-**Fighting — Proving Ground.** Priority is disabled. Everything resolves by Speed
+**Fighting — Level Ground.** Priority is disabled. Everything resolves by Speed
 alone.
 
 **Psychic — Inversion.** Turn order is reversed. The slowest acts first.

@@ -33,10 +33,31 @@ GameHub/
 ├── js/games.js       # Game registry: the single source of truth for the menu
 ├── js/hub.js         # Renders the featured section + game grid from the registry
 ├── app-blueprint/    # How every app in the estate is built (see above)
-└── games/            # Each game lives in its own folder
-    └── <slug>/
-        └── index.html
+├── games/            # Each game lives in its own folder
+│   └── <slug>/
+│       └── index.html
+└── BuyerSellerMarketplace/   # Not a game — see below
 ```
+
+## BuyerSellerMarketplace
+
+`BuyerSellerMarketplace/` is not a game. It is a reusable two-sided marketplace
+starter, shaped like a shop — a public catalogue with search and filters,
+buyer-initiated enquiries, and the buyer / seller / advertiser / promoter / admin
+role structure, with Google authentication, password recovery, role applications,
+an admin console, membership billing, notifications and a PWA shell. It maps onto
+anything where one side lists and the other buys: Amazon, Etsy, Redbubble, eBay,
+classifieds.
+
+**It was extracted from the Aquarium project** (`neiloza/Aquarium`) at the end of
+that engagement and genericised: the reusable parts were kept and renamed, and
+everything specific to Aquarium — founder–investor matching, the funding and
+grant tooling, the resource library, the AI assistants — was deliberately left
+behind. It is kept here so the work is not lost with the project it came out of.
+
+It has its own toolchain (pnpm workspace, Next.js, Supabase) and is entirely
+self-contained, so it does not affect the static hub below. See
+[`BuyerSellerMarketplace/README.md`](BuyerSellerMarketplace/README.md).
 
 ## Adding a game
 

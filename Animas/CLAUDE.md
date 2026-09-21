@@ -2,7 +2,120 @@
 
 ## Status
 
-Design only. No code. The docs in `design/` are the source of truth.
+Design, plus a playable first build. **The docs in `design/` are still the
+source of truth** — the app transcribes them, not the other way round.
+
+**The game is built and playable**: [neiloza/Animas](https://github.com/neiloza/Animas).
+An installable, offline-capable, zero-dependency web app carrying all nine
+types, all 88 moves, all 25 characters with their Abilities, the full 5v5
+format, an opponent, a team builder and a codex. Its test suite re-derives the
+tables in `design/` from its own data, so a transcription drift fails loudly and
+names the character.
+
+Two things that build wants from this repo, both written up in full in that
+repo's `CLAUDE.md`:
+
+- **Thirteen rulings the docs deliberately leave open** — Enigma's scale,
+  Forewarning's scale, how Metronome fires, what Struggle costs, and so on. The
+  code has picked an answer for each, and the longer those run unchallenged the
+  more they read as the design.
+- **Six places the docs contradict themselves or the data.** Three are
+  document-versus-document (Mind Crush's splash, Snare and Sanctuary's
+  percentage, Cometfall's form) and are resolved in favour of `04-costs.md`.
+  Three are claims the numbers do not support: Gugalanna is **not** the only
+  quarter-resistance (there are five, and three of them are to Fighting); a
+  standard attack into a quadruple weakness is **not** always a one-shot (four
+  of the nine fall short of 250); and `05-stats.md` and `06-damage-audit.md`
+  both carry stale prose beside their current tables. The tables are right; the
+  paragraphs around them are one or more passes out of date.
+
+## Decisions taken with the designer on 2026-09-08
+
+The playable build implements all of these. The chart, the move list and the
+roster tables in `design/` have been updated to match; **the prose around them
+has not**, and is out of date wherever it argues for a number that has since
+moved. Each item says which document still needs its paragraphs revisited.
+
+**The type chart was replaced wholesale.** The new table is in `01-types.md`.
+Water is strong against Air rather than Fighting and resists Fire and Air; Grass
+is strong against Water rather than Air; Air is strong against Fighting rather
+than Water and resists Grass rather than Water; Fire resists Dark rather than
+Light. Dark and Light are now the only mutual pair, and Air over Fighting is the
+hardest counter on the board — double going out, half coming back. Every
+paragraph in `01-types.md`'s "second layer" and every matchup sentence in
+`03-characters.md` (Gugalanna's write-up in particular) describes the old chart.
+The roster's quarter-resistances are now Phoenix and Simargl to Grass, Sphinx and
+Gugalanna to Fighting.
+
+**Two cells of that chart are unresolved, and it needs one word to settle.** The
+table given in conversation on 2026-09-08 and the committed chart in
+`01-types.md` differ on the two exception resists — the conversation has Dark
+resisting Fighting and Light resisting Grass; the document has Dark resisting
+Electric and Light resisting Fire, with a written argument for why the other
+arrangement was backwards. Every other cell agrees. **The app currently plays
+the conversation's version.** Under the document's version, no character
+quarter-resists Fighting at all, and Simargl loses its quarter-resistance to
+Grass.
+
+**`07-battle-rules.md` and `08-tier-list.md` arrived on this branch during the
+same day and the app does not implement them yet.** The battle rules change the
+engine in five places — no mana regeneration with a half-refund on switching
+out, a different end-of-turn order, Abilities visible and the bench hidden,
+Forewarning revealing moves only, Counter and Wind-Up at minus one priority —
+and the tier list is written entirely against those mana rules. The app's
+`CLAUDE.md` lists each delta against what is implemented.
+
+**Twenty-six moves and seven Abilities were renamed** so that a name says what
+the thing does. The full table:
+
+| Was | Now | | Was | Now |
+|---|---|---|---|---|
+| Pyre | Inferno | | Riposte | Counter |
+| Pyroclasm | Supernova | | Frenzy | Rampage |
+| Crosscurrent | Waterjet | | Ripshade | Shadowstrike |
+| Strangle | Whirlpool | | Umbra | Blindside |
+| Sunspear | Thornspear | | Malediction | Curse |
+| Graft | Transplant | | Lumenlash | Sunbeam |
+| Sap | Entangle | | Glimmer | Flash |
+| Fulminate | Thunderstrike | | Gift | Blessing |
+| Draft | Gust | | Lifedraw | Lifesteal |
+| Skimstrike | Flyby | | Focus | Meditate |
+| Skyfall | Skydive | | Run | Sprint |
+| Resolve | Adrenaline | | Clear Sight | Cleanse |
+| Proving Ground | Level Ground | | Metronome | Wild Card |
+
+Abilities: Pressure is **Burden**, Regenerator is **Regrow**, Unaware is
+**Indifference**, First Answer is **Novelty**, Intimidate is **Overshadow**,
+Illusion is **False Face**, Enigma is **Riddle**. Every one of those is either a
+verbatim Pokémon ability name or a word that does not say what the Ability does.
+
+**Adrenaline doubles Power** rather than adding half. `04-costs.md` argues at
+length that a free slot-four doubling is strictly better than Bloom, Grass's
+hundred-mana signature; that consequence is now live and the paragraphs making
+the argument are stale.
+
+**Bloodlust doubles Sun Wukong's Power for every character he defeats, and the
+stacking cap does not apply to it.** Two kills is ×4, three is ×8. It is the one
+exemption from the cap, because under it the Ability would read "doubles once,
+ever". World Turtle's Indifference still ignores it entirely.
+
+**Curse ticks 10%** of the target's max HP per turn; the 20% self-sacrifice to
+set it is unchanged.
+
+**Snare and Sanctuary are 15%.** That is off the multiple-of-five grid at 250
+hit points — 37.5, which the app rounds to 40 — so the printed percentage and
+the dealt number no longer agree exactly. `04-costs.md`'s percentage rule
+paragraph is stale.
+
+**Cometfall is 20% of the target's max HP**, confirmed — the `05-stats.md`
+table's "flat 50" is the same number at baseline and the percentage is the
+general form.
+
+**Wild Card is a move, not an Ability.** Bakeneko's Ability is now Trickster,
+whose whole text is that it alone can take Wild Card as one of its four. Wild
+Card costs no mana — the slot is the price — and cannot roll itself.
+
+## Locked and first-pass, as before
 
 Locked: the nine types, the type chart, the nine field effects, all 88 moves,
 the neutral pool, the system rules for persistent state, and the roster of 25

@@ -1,0 +1,5 @@
+<!-- The same mark as the PNGs, for anywhere that can take a vector. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Marketplace">
+  <rect width="512" height="512" fill="#0b1d35"/>
+  <circle cx="256" cy="256" r="164" fill="none" stroke="#7edae6" stroke-width="74"/>
+</svg>

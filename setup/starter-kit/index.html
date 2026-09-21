@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="./css/tokens.css">
   <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/account.css">
 
   <!-- Theme applied before first paint, so a themed app never flashes the
        default palette. Delete this block if the app has one theme. -->
@@ -58,6 +59,7 @@
       <span class="brand-name">__APP_NAME__</span>
     </div>
     <div class="topbar-actions">
+      <button class="btn btn-ghost" id="account-btn" aria-label="Your account">Account</button>
       <button class="btn btn-ghost install-btn hidden" id="install-btn"
               aria-label="Add __APP_NAME__ to your home screen">
         <span class="install-btn-icon" aria-hidden="true">⬇</span>
@@ -122,6 +124,21 @@
                 aria-label="Close">✕</button>
       </div>
       <div class="sheet-body" id="install-body"></div>
+    </div>
+  </div>
+
+
+  <!-- Sign-in. account-ui.js builds everything inside .sheet-body; this is
+       just the shell. Delete this block AND the account wiring in app.js if
+       the app will have no accounts. -->
+  <div class="overlay" id="account-sheet" hidden>
+    <div class="overlay-backdrop" data-sheet-close></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="account-title">
+      <div class="sheet-head">
+        <h2 class="sheet-title" id="account-title">Account</h2>
+        <button class="icon-btn" data-sheet-close aria-label="Close">✕</button>
+      </div>
+      <div class="sheet-body" id="account-body"></div>
     </div>
   </div>
 

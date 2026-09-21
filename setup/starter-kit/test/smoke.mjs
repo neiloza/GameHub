@@ -93,9 +93,46 @@ const ctx = await browser.newContext({
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1",
 });
 
+/*
+ * The accounts service is stubbed, and the default stub REFUSES every call.
+ *
+ * That is deliberate and is the point: these apps are offline-first, so the
+ * single most valuable thing this suite can assert about accounts is that the
+ * app boots, deals and stays fully usable when the service is unreachable. A
+ * sign-in system that can stop the app starting has defeated the reason the
+ * app was built offline-first in the first place.
+ *
+ * It also keeps the suite hermetic — no test ever touches the real internet.
+ *
+ * NOTE WHAT THIS DOES NOT PROVE. The stub is written from the same
+ * understanding as js/account.js, so it cannot tell you the real service
+ * agrees. Only `node setup/accounts/verify.mjs` against a deployment can.
+ * See setup/LESSONS.md P5 — that exact mistake once hid a cause through
+ * twelve fix attempts.
+ */
+let accountsReachable = false;
+await ctx.route("**/api.thewizardofoza.com/**", async (route) => {
+  if (!accountsReachable) return route.abort("failed");
+  const url = route.request().url();
+  if (url.includes("/v1/me")) {
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ user: null, entitlements: {} }),
+    });
+  }
+  return route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+});
+
 const problems = [];
 const page = await ctx.newPage();
-page.on("console", (m) => { if (m.type() === "error") problems.push(`console: ${m.text()}`); });
+// A refused request to the stubbed accounts origin is the EXPECTED state for
+// most of this run, and the browser logs it whether or not the app catches it.
+// Everything else still counts.
+const expectedNoise = (t) => /api\.thewizardofoza\.com|ERR_TUNNEL|ERR_FAILED|ERR_NAME_NOT_RESOLVED|Failed to load resource/i.test(t);
+page.on("console", (m) => {
+  if (m.type() === "error" && !expectedNoise(m.text())) problems.push(`console: ${m.text()}`);
+});
 page.on("pageerror", (e) => problems.push(`pageerror: ${e.message}`));
 page.on("response", (r) => { if (r.status() >= 400) problems.push(`${r.status()}: ${r.url()}`); });
 
@@ -238,6 +275,34 @@ check("survives an unrecognised shape", state.survivesGarbageShape);
 check("export round-trips", state.exportImports);
 check("rejects another app's export", state.rejectsForeignExport);
 check("persistence request resolves, never throws", state.persistenceResolves);
+
+console.log("\naccounts");
+
+/*
+ * The whole point of the stub above. If the app cannot survive its accounts
+ * service being down, it is not offline-first however many other boxes it
+ * ticks.
+ */
+check("boots and stays usable with the accounts service unreachable",
+  (await page.locator(".view.active").count()) === 1 &&
+  (await page.locator(".tab").count()) > 0);
+
+check("the account sheet still opens when the service is down",
+  await (async () => {
+    const btn = page.locator("#account-btn");
+    if (!(await btn.count())) return true;          // app deleted accounts: fine
+    await btn.click();
+    await page.waitForTimeout(120);
+    const visible = await page.locator("#account-sheet:not([hidden])").count();
+    const hasGoogle = await page.locator("#account-body .account-google").count();
+    await page.keyboard.press("Escape");
+    return visible === 1 && hasGoogle === 1;
+  })());
+
+check("signed out by default, so nothing is unlocked for free",
+  await page.evaluate(() => {
+    try { return !localStorage.getItem("woz:entitlements:v1"); } catch { return true; }
+  }));
 
 /* ------------------------------------------------------------------------
  * Add app-specific cases below.

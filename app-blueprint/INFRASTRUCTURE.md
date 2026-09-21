@@ -6,7 +6,9 @@ anything else — it is a decision, not a description.*
 
 Every app now ships:
 
-- **Sign in with Google** and **Sign in with Apple**.
+- **Sign in with Google**, **Sign in with Apple**, and **email + password with
+  a working "forgot my password"** — see
+  [Identity — email and password](#identity--email-and-password).
 - **A free version that is genuinely complete**, and a **one-time $5 unlock**.
 - Whatever it needs behind that to stay up: an API, a database, a host.
 
@@ -23,6 +25,8 @@ what changed and what must not.
 - [What goes on the server, and what stays on the device](#what-goes-on-the-server-and-what-stays-on-the-device)
 - [Identity — Google](#identity--google)
 - [Identity — Apple](#identity--apple)
+- [Identity — email and password](#identity--email-and-password)
+- [Recovering an account](#recovering-an-account)
 - [Sessions and linking two providers to one human](#sessions-and-linking-two-providers-to-one-human)
 - [Payments — Stripe](#payments--stripe)
 - [Entitlement — how the app knows, including offline](#entitlement--how-the-app-knows-including-offline)
@@ -284,6 +288,101 @@ https://appleid.apple.com` and `aud == <your Services ID>`.
   already open.
 
 ---
+
+## Identity — email and password
+
+**Added 2026-09-21.** The first draft of this document was social-only, which
+meant there was no password and therefore nothing to forget. That is a real
+gap, not a simplification: it shuts out anyone without a Google or Apple
+account, anyone who does not want their app usage attached to either, and
+anyone whose provider account is a work one they will lose.
+
+So: **email and password is a third sign-in method, and password recovery
+ships with it.** They are one feature — a password you cannot reset is a
+support ticket you cannot answer, and for a $5 app with no support desk it is
+a customer who paid and is now locked out.
+
+**This decision is the main argument for the Supabase route** in
+[Hosting the service](#hosting-the-service--flyio), because everything below
+is already built there — and already built *here*, working, in
+`BuyerSellerMarketplace/`. Read that code before writing any of this.
+
+### The reset flow
+
+```
+"Forgot my password"
+   → POST the address. ALWAYS answer "if that address has an account, a
+     link is on its way" — the same words either way
+   → email carries a single-use, short-lived token (one hour)
+   → the link lands on a callback that EXCHANGES the token for a session,
+     then forwards to the page that sets the new password
+   → new password set → all other sessions invalidated → signed in
+```
+
+### The rules, each of which is a real failure
+
+- **Never confirm whether an address has an account.** *"No account with that
+  email"* is an account-enumeration oracle. The existing implementation says
+  this well: the confirmation is deliberately identical either way, and so an
+  error that *does* come back is never about the address — it is about you
+  (rate limiting, network, SMTP unconfigured), and is therefore worth showing
+  rather than swallowing.
+- **The reset link must produce a session before the password form.** Sending
+  someone straight to a "choose a new password" page means they arrive with no
+  session and nothing works. Land on the callback, exchange, *then* forward.
+- **Single use, and short.** One hour. A reset link sitting in an inbox
+  forever is a permanent key to the account, and inboxes get compromised.
+- **Setting a new password invalidates every other session.** The most common
+  reason someone resets is that they think somebody else is in the account.
+  A reset that leaves the intruder signed in has done nothing.
+- **Rate-limit by address and by IP.** Otherwise the endpoint is a free
+  mailbomb aimed at any address someone types.
+- **Do not auto-link a password account to a social account with the same
+  email.** Same rule as the providers, same reason, and worse here: it would
+  let someone create a password account on an address and inherit a Google
+  user's purchases. Link only from *inside* an authenticated session.
+- **A social-only account has no password to reset.** If someone signed up
+  with Google and then asks to reset a password, the honest answer is *"this
+  account signs in with Google"* — but saying that to an arbitrary address is
+  the enumeration leak again. Say it **after** they authenticate, or send an
+  email that tells them which provider the account uses. The email is fine;
+  the form is not.
+- **You now need an email sender**, which is a credential, a cost and a
+  deliverability problem (SPF, DKIM, a domain that is not on a blocklist).
+  Supabase's built-in sender is rate-limited and meant for development — a
+  production app needs a real SMTP provider configured behind it. Budget for
+  this; it is the part people forget until reset emails are silently going to
+  spam. *(Verify current Supabase sending limits before relying on them — that
+  detail moves.)*
+
+## Recovering an account
+
+Distinct from resetting a password, and the more likely failure in this
+estate: **someone paid, and cannot get back to the account that owns it.**
+
+The three real cases, in rough order of how often they will happen:
+
+1. **Signed in with the wrong provider.** Bought with Google, later tapped
+   Apple, sees the free version, concludes they were charged for nothing.
+   Already flagged under
+   [Sessions and linking](#sessions-and-linking-two-providers-to-one-human);
+   the mitigations are a prominent **Restore purchases**, showing *which*
+   provider is signed in, and — when a fresh sign-in finds a paid account
+   under the other provider's address — offering to link rather than saying
+   nothing.
+2. **Lost the provider account entirely.** A work Google account that was
+   closed. There is no self-service fix, and pretending otherwise is worse
+   than admitting it: this is a manual, human path. `entitlements.source =
+   manual` exists precisely so you can regrant a copy after checking the
+   Stripe receipt, without faking a charge.
+3. **Forgot the password.** Covered above.
+
+**The design rule that makes all three survivable: the Stripe receipt is the
+evidence of purchase, and it lives outside your database.** Someone who can
+produce a receipt or the card's last four digits can be found in Stripe and
+regranted. Say so in Settings, next to the account row — *"lost access? your
+emailed receipt is proof of purchase"* — because the person who needs that
+sentence is exactly the person who cannot sign in to read anything else.
 
 ## Sessions and linking two providers to one human
 
@@ -562,6 +661,55 @@ records and a bad afternoon.
 
 ## Hosting the service — Fly.io
 
+### First: decide whether to build this at all
+
+**Revised 2026-09-21, and this supersedes the Fly-first assumption below.**
+
+`BuyerSellerMarketplace/` in this repo already contains a **working**
+implementation of most of this document — Google sign-in, email and password,
+password recovery, Postgres with row-level-security migrations, Stripe
+checkout, a Stripe webhook, a billing portal, membership gating and a PWA
+shell — built on **Supabase**. It was extracted from the Aquarium project and
+kept deliberately. Nobody noticed it was the answer to this document until
+after the document was written.
+
+That changes the recommendation:
+
+| | Supabase (extract from what exists) | Fly + hand-rolled (as drafted below) |
+|---|---|---|
+| Email + password, reset emails | **Built in** | Build it, plus an SMTP provider |
+| Google / Apple sign-in | **Built in** | Verify tokens yourself |
+| Postgres, RLS, migrations | **Built in** | Provision and own it |
+| Sessions, refresh | **Built in** | Build it |
+| Stripe | Edge functions, **already written here** | Build it |
+| Control over the exact shape | Less | Total |
+| Lock-in | Real, but it is Postgres underneath | None |
+
+**The password requirement is what tips it.** Hand-rolling email-and-password
+with a correct reset flow, an enumeration-safe form, rate limiting and a
+deliverable sender is several days and a permanent maintenance surface, and it
+is the part of auth most likely to be got subtly wrong. Supabase has already
+done it, and there is a reviewed implementation of it *in this repository* to
+copy — one whose comments show the enumeration trade-off was actually thought
+about.
+
+**So: before building anything, read `BuyerSellerMarketplace/`** —
+`apps/web/src/app/auth/`, `apps/web/src/lib/supabase/`,
+`supabase/functions/billing-*`, and `supabase/migrations/`. Then decide.
+Extracting the accounts-and-billing slice out of it is very likely cheaper
+than the plan in the rest of this section, and it has the enormous advantage
+of being **code that has run** rather than a design that has not.
+
+Everything else in this document still applies either way — the entitlement
+caching rules, the free/paid line, the CSP and CORS work, the traps. Only
+*who runs the server* changes.
+
+*What does not change: a hosted auth provider still does not verify anything
+about your CSP, your service worker, or your offline behaviour. Those remain
+yours, and they are where [`LESSONS.md`](./LESSONS.md) says the bugs are.*
+
+### If you do build it yourself
+
 One Fly app, `<something>-api`, serving `api.thewizardofoza.com`.
 
 - **`fly secrets set` for every credential.** Secrets are injected as
@@ -694,6 +842,7 @@ Each row is something only a human with a login can create. They are on the
 | Stripe **webhook signing secret** | Stripe → Webhooks → endpoint | `fly secrets` | Per endpoint. Test and live differ |
 | Stripe **Price id**, one per app | Stripe → Products | Server config or `products` table | Never client-side |
 | **Database URL** | Postgres provider | `fly secrets` | Rotate if it is ever pasted anywhere |
+| **SMTP / email API key** | Resend, Postmark, SES… | `fly secrets` or Supabase SMTP settings | **Required for password reset.** Needs SPF + DKIM on the sending domain or resets go to spam |
 | **Session signing secret** | `openssl rand -base64 32` | `fly secrets` | Rotating it signs everyone out — acceptable, but know it |
 | Fly.io **deploy token** | Fly dashboard | CI secret, if deploying from CI | Scope to the one app |
 
@@ -762,6 +911,17 @@ written out in full above; this is the list to re-read before you ship.
 14. **Loading the Google/Apple/Stripe scripts in `<head>`.** Every free user
     who never signs in now makes third-party requests, which is the thing
     Rule 7 exists to prevent.
+15. **A password-reset form that says "no account with that email".** An
+    account-enumeration oracle. Answer identically either way.
+16. **A reset link that goes straight to the password form.** It arrives with
+    no session and nothing works. Exchange the token first, then forward.
+17. **A reset that does not invalidate other sessions.** The usual reason
+    someone resets is that they think somebody else is in the account.
+18. **Reset emails with no SPF/DKIM on the sending domain.** They go to spam
+    silently, and the user experiences it as "the reset is broken" — which
+    you cannot reproduce, because yours arrive.
+19. **Rebuilding auth from scratch** when a working, reviewed implementation
+    is sitting in `BuyerSellerMarketplace/` in this repo.
 
 ---
 
@@ -785,6 +945,13 @@ Nothing here is blocked on the apps. Everything is blocked on step 0.
 - [ ] **Decide the VAT/sales-tax position** on digital goods, and whether to
       turn on Stripe Tax. *Agent cannot: this is a decision with legal
       consequences.*
+- [ ] **Create the email sender and verify a reset email actually arrives.**
+      Resend / Postmark / SES, with SPF and DKIM on the sending domain. *Agent
+      cannot: account creation, DNS records, and an inbox to look in.*
+      Trap: a reset email that lands in spam is indistinguishable from one
+      that was never sent, and yours will arrive because you are not a
+      stranger to your own domain. Test to a Gmail and an iCloud address you
+      have never mailed before.
 - [ ] **Decide the free/paid line for each app**, per
       [Drawing the free/paid line](#drawing-the-freepaid-line). *Agent cannot:
       it is a taste and product judgement.*
@@ -792,29 +959,44 @@ Nothing here is blocked on the apps. Everything is blocked on step 0.
       backup actually works. *Agent cannot: account creation; and the restore
       is a judgement about whether the result is right.*
 
-**1. The service, smallest first.** `/healthz`, Postgres, the schema above.
-Deploy to Fly. Nothing else.
+**1. Read `BuyerSellerMarketplace/` and decide build-vs-extract**, per
+[Hosting the service](#hosting-the-service--flyio). This is now the first
+engineering task and it is a day at most. Extracting a working
+accounts-and-billing slice is very likely cheaper than the rest of this list,
+and the password-reset requirement makes that gap wider, not narrower.
 
-**2. Google sign-in end to end** — token verification, user upsert, session
-cookie, `/v1/me`. One app wired to it. Get the CORS and cookie behaviour right
-here, once, while there is only one moving part.
+**2. The service, smallest first.** `/healthz`, Postgres, the schema above.
+Nothing else.
 
-**3. Stripe** — `/v1/checkout`, the webhook, the entitlement write, refund
+**3. Sign-in end to end, one method at a time** — Google first: token
+verification, user upsert, session cookie, `/v1/me`. One app wired to it. Get
+the CORS and cookie behaviour right here, once, while there is only one moving
+part. Then **email + password with the full reset flow**, which needs the
+email sender working and deliverable before it can be called done. Apple
+**last**, on a working system, so its five traps are the only unknowns in the
+room.
+
+**4. Stripe** — `/v1/checkout`, the webhook, the entitlement write, refund
 revocation. Develop against `stripe listen`. Do not touch live keys until the
 test flow has worked end to end including a refund.
 
-**4. The client half, in the kit** — `js/account.js` (sign-in, `/v1/me`, the
-cached entitlement with the asymmetry above) and the Settings UI. Put it in
+**5. The client half, in the kit** — `js/account.js` (sign-in, `/v1/me`, the
+cached entitlement with the asymmetry above) and the Settings UI, including
+**Restore purchases** and the recovery wording from
+[Recovering an account](#recovering-an-account). Put it in
 [`starter-kit/`](./starter-kit/) so app #7 gets it free, which is the same
 reasoning that produced `js/install.js`.
 
-**5. Apple sign-in.** Last, on a working system, so the five traps above are
-the only unknowns in the room.
+**6. Retrofit the existing apps** one at a time, easiest first — and **one
+session per app**. Each is a different codebase with its own load-bearing
+conventions (Forest's `var`/function style is required by its Android WebView
+wrapper; copying kit code in verbatim breaks it), so a single pass across
+several apps is shallow on all of them. None of this starts before step 5
+exists: wiring an app to an API that is not written yet means guessing its
+shape N times.
 
-**6. Retrofit the existing apps** one at a time, easiest first.
-
-**7. Extend the smoke test.** Three assertions, and they must be able to fail
-(Rule 12): the app boots and is fully usable with the API origin blocked; a
-cached paid entitlement survives the API being unreachable; and the free tier
-can still export. Block the origin in the test and watch each one go red
-before you trust it.
+**7. Extend the smoke test.** Assertions that must be able to fail (Rule 12):
+the app boots and is fully usable with the API origin blocked; a cached paid
+entitlement survives the API being unreachable; the free tier can still
+export; and a reset link that has already been used does not work twice.
+Block the origin in the test and watch each one go red before you trust it.

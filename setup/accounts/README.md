@@ -1,7 +1,10 @@
 # accounts — one sign-in for every app
 
-**Status: written, not yet run.** Nothing here has spoken to a deployed
-service, a real Google project or a real Stripe account. See
+**Status: runs, but has never met Google, Stripe or DNS.** The service has
+been exercised end to end against a real Postgres — signup, sign-in, reset,
+single-use links, session invalidation, entitlements, sign-out — and that
+found three real bugs, now fixed. What remains unproven is everything needing
+a credential or a browser. See
 [Before you trust any of this](#before-you-trust-any-of-this).
 
 One account at `thewizardofoza.com` covering every app on the domain. Google
@@ -9,7 +12,11 @@ sign-in and email + password with recovery. A one-time $5 unlock per app.
 Apple sign-in is deliberately out of scope for now.
 
 **Start at [`SETUP.md`](./SETUP.md)** — every step, in order, with the traps
-marked.
+marked. Its **step 0 rehearses the whole thing locally** in five minutes with
+no accounts and no credentials; do that before touching a dashboard.
+
+Then [`ROLLOUT.md`](./ROLLOUT.md) — putting sign-in on the apex and on every
+app, and the browser checks that prove the single sign-on actually happened.
 
 ## How the single sign-on works
 
@@ -55,8 +62,10 @@ Three properties worth understanding before changing anything:
 | `service/migrations/` | The schema |
 | `service/test/` | Tests for the security boundary — **no network needed** |
 | `service/fly.toml`, `Dockerfile` | Deployment. No secrets; those are `fly secrets` |
+| [`ROLLOUT.md`](./ROLLOUT.md) | Putting sign-in on the apex and every app |
 | [`verify.mjs`](./verify.mjs) | Checks a **deployed** service hop by hop |
 | `../starter-kit/js/account.js` | The client the apps use |
+| `../starter-kit/js/account-ui.js` | The sign-in sheet every app shares |
 
 The service is the **one place in this estate with runtime dependencies** —
 `pg`, `stripe`, `google-auth-library`. The apps stay static with none. Every
@@ -97,8 +106,14 @@ you, so keep the list short.
 
 ## Before you trust any of this
 
-The service was written in a sandbox with **no network route out** — CDN and
-API access both answer 403 on CONNECT. So:
+The service has now been **run** — Postgres installed locally, migration
+applied, every flow driven end to end. That found three bugs that no unit test
+could have: a migration that would not apply at all, a signup that threw 500
+on every request, and a cookie shape that silently breaks local development.
+All three are fixed and covered.
+
+But fly.io, Docker Hub and Stripe are unreachable from the sandbox (403 on
+CONNECT), so Google sign-in, Stripe and DNS have still never run. So:
 
 - **`service/test/` proves the security boundary only.** Origin allow-list,
   redirect guard, password hashing, cookie shape. All of it is pure logic with

@@ -14,9 +14,15 @@ create extension if not exists pgcrypto;   -- gen_random_uuid()
 -- users
 -- ---------------------------------------------------------------------------
 
+-- email is plain `text`, with case-insensitivity enforced by the unique index
+-- below rather than by the citext type. citext would be tidier, but it is an
+-- extension, and some managed Postgres restrict which extensions you may
+-- create — so this keeps the schema portable across every option in SETUP.md
+-- step 1. Every query compares lower(email), and the index below is what makes
+-- that fast and what stops two rows differing only in case.
 create table if not exists users (
   id                  uuid primary key default gen_random_uuid(),
-  email               citext unique,
+  email               text,
   email_verified_at   timestamptz,
   display_name        text,
   -- scrypt output, as "scrypt$N$r$p$salt$hash". NULL for an account that only
@@ -28,17 +34,11 @@ create table if not exists users (
   deleted_at          timestamptz
 );
 
--- citext needs the extension; fall back to a lower() index if it is absent.
-do $$
-begin
-  create extension if not exists citext;
-exception when others then
-  -- Managed Postgres that forbids citext: keep email as text and enforce
-  -- case-insensitive uniqueness with an index instead.
-  null;
-end $$;
-
-create unique index if not exists users_email_lower_idx on users (lower(email::text))
+-- This index is load-bearing, not an optimisation: it is what stops
+-- "Me@example.com" and "me@example.com" becoming two accounts, which would
+-- present as "I signed up and it says my address is taken, but I cannot sign
+-- in". Partial on deleted_at so a deleted account's address can be reused.
+create unique index if not exists users_email_lower_idx on users (lower(email))
   where email is not null and deleted_at is null;
 
 -- ---------------------------------------------------------------------------

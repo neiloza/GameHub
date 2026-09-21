@@ -94,30 +94,31 @@ export function hashToken(token) {
 export const SESSION_COOKIE = "woz_session";
 export const SESSION_DAYS = 60;
 
-export function sessionCookie(token, { domain, secure = true }) {
-  const parts = [
-    `${SESSION_COOKIE}=${token}`,
-    `Domain=${domain}`,
-    "Path=/",
-    "HttpOnly",
-    "SameSite=Lax",
-    `Max-Age=${SESSION_DAYS * 24 * 60 * 60}`,
-  ];
+/*
+ * An ABSENT domain is meaningful, not a mistake: it produces a host-only
+ * cookie, which is the only kind that works on localhost. A browser refuses a
+ * cookie whose Domain does not match the host it came from, so leaving
+ * COOKIE_DOMAIN set to ".thewizardofoza.com" during local development means
+ * sign-in appears to succeed and the session instantly vanishes — with nothing
+ * in any console to say the cookie was dropped.
+ *
+ * So: set COOKIE_DOMAIN in production (that is the SSO mechanism) and leave it
+ * EMPTY locally.
+ */
+function cookieParts(value, { domain, secure, maxAge }) {
+  const parts = [`${SESSION_COOKIE}=${value}`];
+  if (domain) parts.push(`Domain=${domain}`);
+  parts.push("Path=/", "HttpOnly", "SameSite=Lax", `Max-Age=${maxAge}`);
   if (secure) parts.push("Secure");
   return parts.join("; ");
 }
 
+export function sessionCookie(token, { domain, secure = true }) {
+  return cookieParts(token, { domain, secure, maxAge: SESSION_DAYS * 24 * 60 * 60 });
+}
+
 export function clearSessionCookie({ domain, secure = true }) {
-  const parts = [
-    `${SESSION_COOKIE}=`,
-    `Domain=${domain}`,
-    "Path=/",
-    "HttpOnly",
-    "SameSite=Lax",
-    "Max-Age=0",
-  ];
-  if (secure) parts.push("Secure");
-  return parts.join("; ");
+  return cookieParts("", { domain, secure, maxAge: 0 });
 }
 
 export function readCookie(header, name) {

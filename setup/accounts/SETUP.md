@@ -30,6 +30,44 @@ in one app cannot steal the session for the others. That property is the main
 reason this runs on our own API rather than calling a hosted auth service from
 the browser.
 
+## Step 0 — rehearse the whole thing locally first
+
+**Do this before touching a single dashboard.** It needs no accounts, no
+credentials and no DNS, it takes about five minutes, and it exercises signup,
+sign-in, password reset, session invalidation and entitlements against a real
+Postgres. Everything except Google, Stripe and DNS.
+
+```bash
+# a local Postgres
+sudo apt-get install -y postgresql && sudo pg_ctlcluster 16 main start
+sudo -u postgres psql -c "alter user postgres password 'dev'" -c 'create database woz'
+
+cd setup/accounts/service
+npm install
+
+export DATABASE_URL='postgres://postgres:dev@127.0.0.1:5432/woz'
+export PGSSL=disable PORT=8099 ALLOW_LOCALHOST=1
+export API_URL='http://localhost:8099' SITE_URL='http://localhost:8000'
+export ALLOWED_ORIGIN_SUFFIX='.thewizardofoza.com'
+export COOKIE_DOMAIN=''          # ← EMPTY locally. See the trap below.
+
+npm run migrate
+npm start &
+
+node ../verify.mjs --api http://127.0.0.1:8099 --origin http://localhost:8000
+```
+
+**Trap, and it is the one that wastes an afternoon:** leave `COOKIE_DOMAIN`
+**empty** for local development. A browser refuses a cookie whose `Domain`
+does not match the host that sent it, so pointing it at
+`.thewizardofoza.com` while serving from `localhost` means **sign-in appears
+to succeed and the session instantly vanishes**, with nothing in any console
+saying the cookie was dropped. `verify.mjs` checks for this specific
+misconfiguration and names it.
+
+Reset emails print to the console while `RESEND_API_KEY` is unset, so the
+whole recovery flow is testable before any email provider exists.
+
 ## Contents
 
 1. [Postgres](#1-postgres)

@@ -295,7 +295,7 @@ const routes = {
       return send(res, 429, { error: "Too many attempts. Try again later." }, cors);
     }
 
-    const existing = await one(`select id from users where lower(email::text) = lower($1)`, [email]);
+    const existing = await one(`select id from users where lower(email) = lower($1)`, [email]);
     if (existing) {
       // Do NOT say "that address is taken" — same enumeration oracle as the
       // reset form. Tell them to sign in or reset instead, which is true and
@@ -312,8 +312,12 @@ const routes = {
         [email, hash]
       );
       const u = created.rows[0];
+      // The casts are load-bearing: $1 fills both `subject` (text) and
+      // `user_id` (uuid), and without them Postgres cannot infer one type for
+      // the parameter and refuses the statement with "text versus uuid".
       await client.query(
-        `insert into identities (provider, subject, user_id, email) values ('password', $1, $1, $2)`,
+        `insert into identities (provider, subject, user_id, email)
+         values ('password', $1::text, $1::uuid, $2)`,
         [u.id, email]
       );
       return u;
@@ -339,7 +343,7 @@ const routes = {
     }
 
     const user = await one(
-      `select * from users where lower(email::text) = lower($1) and deleted_at is null`, [email]
+      `select * from users where lower(email) = lower($1) and deleted_at is null`, [email]
     );
     // verifyPassword burns comparable time when there is no user and when the
     // account is Google-only, so all three failures look alike from outside.
@@ -377,7 +381,7 @@ const routes = {
     }
 
     const user = await one(
-      `select * from users where lower(email::text) = lower($1) and deleted_at is null`, [email]
+      `select * from users where lower(email) = lower($1) and deleted_at is null`, [email]
     );
 
     if (user) {

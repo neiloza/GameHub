@@ -192,3 +192,26 @@ test("readCookie finds the session among others and tolerates junk", () => {
   // A cookie whose name merely ends with ours must not match.
   assert.equal(readCookie(`not_${SESSION_COOKIE}=nope`, SESSION_COOKIE), null);
 });
+
+/* --- the local-development case -------------------------------------------
+ * Found by running the service for real: a browser refuses a cookie whose
+ * Domain does not match the host it came from, so a COOKIE_DOMAIN left set to
+ * the production domain during local development means sign-in appears to
+ * succeed and the session instantly vanishes, with nothing in any console to
+ * say the cookie was dropped.
+ */
+
+test("an absent domain yields a host-only cookie, which is what localhost needs", () => {
+  const cookie = sessionCookie("abc", { domain: "", secure: false });
+  assert.doesNotMatch(cookie, /Domain=/);
+  // Everything else must survive: it is still a session cookie.
+  assert.match(cookie, /HttpOnly/);
+  assert.match(cookie, /SameSite=Lax/);
+  assert.match(cookie, /^woz_session=abc/);
+});
+
+test("clearing a host-only cookie also omits Domain", () => {
+  // A mismatched Domain on the clear means the cookie is never removed, and
+  // the user cannot sign out.
+  assert.doesNotMatch(clearSessionCookie({ domain: "", secure: false }), /Domain=/);
+});

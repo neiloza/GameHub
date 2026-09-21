@@ -170,12 +170,41 @@ if (email && password) {
     if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
     const session = setCookie.find((c) => c.startsWith("woz_session="));
     if (!session) throw new Error("no woz_session cookie in the response");
+
+    // HttpOnly is non-negotiable everywhere. It is the reason an XSS in one
+    // app cannot steal the session for every app on the domain.
     if (!/HttpOnly/i.test(session)) throw new Error("the session cookie is NOT HttpOnly");
-    if (!/Domain=\./i.test(session)) {
-      throw new Error("the cookie has no parent Domain — SSO across apps will NOT work");
+
+    /*
+     * The parent Domain is what makes SSO work — but ONLY in production. On
+     * localhost a host-only cookie is correct and a Domain would be refused
+     * by the browser outright, so demanding one here would fail a correctly
+     * configured development setup. Check it where it means something.
+     */
+    const local = /^https?:\/\/(localhost|127\.0\.0\.1)/.test(api);
+    const domain = session.match(/Domain=([^;]+)/i)?.[1];
+    if (local) {
+      if (domain) {
+        throw new Error(
+          `COOKIE_DOMAIN is set to ${domain} on a localhost service — a browser ` +
+          "will refuse that cookie, so sign-in will appear to work and instantly " +
+          "forget you. Leave COOKIE_DOMAIN empty for local development."
+        );
+      }
+    } else {
+      if (!domain || !domain.startsWith(".")) {
+        throw new Error(
+          "the cookie has no parent Domain — SSO across apps will NOT work. " +
+          "Set COOKIE_DOMAIN to .yourdomain.com"
+        );
+      }
+      if (!/Secure/i.test(session)) {
+        throw new Error("the session cookie is not Secure on a non-local service");
+      }
     }
+
     cookie = session.split(";")[0];
-    return session.match(/Domain=([^;]+)/i)?.[0] ?? "";
+    return local ? "host-only, correct for localhost" : `Domain=${domain}`;
   });
 
   if (cookie) {

@@ -22,7 +22,7 @@ stack, not philosophy.
 > patterns* is unchanged and the free version stays complete.
 > [`INFRASTRUCTURE.md`](./INFRASTRUCTURE.md) is the whole design.
 
-## The rest of this blueprint
+## The rest of `setup/`
 
 | File | What it is for |
 |---|---|

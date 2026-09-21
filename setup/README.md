@@ -1,8 +1,10 @@
-# The app blueprint
+# setup — how every app here gets built
 
-**How every app in this estate gets built.** GameHub is the central
-repository, so this is the copy of record — the version in `testchild` is
-where it came from, not where it lives.
+**GameHub is the central repository, so this folder is the copy of record**,
+and the one other projects point at. The version in `testchild` is where it
+came from, not where it lives.
+
+Refer to it from another repo as `neiloza/GameHub` → `setup/`.
 
 If you are about to start an app, or to change one, read
 [Start here](#start-here) and nothing else until you need it.
@@ -26,7 +28,7 @@ still live work.
 **Starting a new app:**
 
 ```bash
-app-blueprint/starter-kit/scripts/new-app.sh ../myapp "My App" myapp "#RRGGBB" "MyApp"
+setup/starter-kit/scripts/new-app.sh ../myapp "My App" myapp "#RRGGBB" "MyApp"
 cd ../myapp && npm install && npm test
 ```
 
@@ -78,10 +80,15 @@ talks to and no app contains.
   *not* cover: thirteen attempts at one bug, and everything learned on the way
   through.
 - **`INFRASTRUCTURE.md`** is new, written 2026-09-21, and is the one part of
-  this blueprint that is a **plan rather than a description**. Nothing in it
-  has been built yet. Treat its specifics as carefully-reasoned and
-  **unverified against the real services** — which is precisely the failure
-  mode `LESSONS.md` P5 is about, and why it says so in its own text.
+  this folder that is a **plan rather than a description**. Treat its
+  specifics as carefully-reasoned and **unverified against the real
+  services** — which is precisely the failure mode `LESSONS.md` P5 is about,
+  and why it says so in its own text.
+  **One exception, and it is a big one:** `BuyerSellerMarketplace/` in this
+  repo already implements much of it on Supabase — Google sign-in, email and
+  password, password recovery, Postgres with RLS, Stripe checkout, webhook
+  and portal. Read that before building anything; the document's first step
+  is now deciding whether to extract from it rather than rebuild.
 
 ## Keeping it honest
 

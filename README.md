@@ -1,9 +1,9 @@
 # 🎮 GameHub
 
-The central repository: a hub website for all my games, plus the **blueprint
-every app in the estate is built from**.
+The central repository: a hub website for all my games, plus **`setup/` — how
+every app in the estate is built**, referred to from every other project.
 
-## 📐 Building an app? Start at [`app-blueprint/`](./app-blueprint/)
+## 📐 Building an app? Start at [`setup/`](./setup/)
 
 That folder is the copy of record for how these apps get built — the house
 rules, the accounts-and-payments design, the bugs already paid for, and a
@@ -11,14 +11,14 @@ working starter kit you can scaffold from in one command.
 
 | | |
 |---|---|
-| [`app-blueprint/README.md`](./app-blueprint/README.md) | Start here |
-| [`app-blueprint/APP_DESIGN_RULES.md`](./app-blueprint/APP_DESIGN_RULES.md) | What every app does, and why |
-| [`app-blueprint/INFRASTRUCTURE.md`](./app-blueprint/INFRASTRUCTURE.md) | Google/Apple sign-in, Stripe, the API, the database, every credential |
-| [`app-blueprint/LESSONS.md`](./app-blueprint/LESSONS.md) | **Bugs already found and paid for, indexed by symptom.** Read before debugging |
-| [`app-blueprint/starter-kit/`](./app-blueprint/starter-kit/) | A working PWA that already obeys the rules |
+| [`setup/README.md`](./setup/README.md) | Start here |
+| [`setup/APP_DESIGN_RULES.md`](./setup/APP_DESIGN_RULES.md) | What every app does, and why |
+| [`setup/INFRASTRUCTURE.md`](./setup/INFRASTRUCTURE.md) | Google/Apple sign-in, Stripe, the API, the database, every credential |
+| [`setup/LESSONS.md`](./setup/LESSONS.md) | **Bugs already found and paid for, indexed by symptom.** Read before debugging |
+| [`setup/starter-kit/`](./setup/starter-kit/) | A working PWA that already obeys the rules |
 
 ```bash
-app-blueprint/starter-kit/scripts/new-app.sh ../myapp "My App" myapp "#RRGGBB" "MyApp"
+setup/starter-kit/scripts/new-app.sh ../myapp "My App" myapp "#RRGGBB" "MyApp"
 ```
 
 ## The hub
@@ -32,7 +32,7 @@ GameHub/
 ├── css/style.css     # All styling
 ├── js/games.js       # Game registry: the single source of truth for the menu
 ├── js/hub.js         # Renders the featured section + game grid from the registry
-├── app-blueprint/    # How every app in the estate is built (see above)
+├── setup/            # How every app in the estate is built (see above)
 ├── games/            # Each game lives in its own folder
 │   └── <slug>/
 │       └── index.html

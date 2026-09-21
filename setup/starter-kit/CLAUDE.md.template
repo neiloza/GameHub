@@ -15,7 +15,7 @@ lost:
    lands a launch later.
 2. **Read [`docs/BUGLOG.md`](./docs/BUGLOG.md).** The thing you are about to
    try may already be in there marked *RULED OUT* or *MADE IT WORSE*.
-3. **Look your symptom up in `app-blueprint/LESSONS.md` in the GameHub
+3. **Look your symptom up in `setup/LESSONS.md` in the GameHub
    repo** — bugs already found and paid for, indexed by symptom rather than by
    cause, because in nearly every one of them the symptom and the cause were
    in different parts of the app.
@@ -273,7 +273,7 @@ box that is not true is worse than an open one.
 
 ### Accounts and money — delete this block if the app has neither
 
-<!-- See app-blueprint/INFRASTRUCTURE.md in the GameHub repo. Fill in the
+<!-- See setup/INFRASTRUCTURE.md in the GameHub repo. Fill in the
      free/paid line for THIS app; it is the decision a future session will
      otherwise re-derive differently and sensibly. -->
 

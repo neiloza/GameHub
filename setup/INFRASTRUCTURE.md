@@ -1,6 +1,6 @@
 # Accounts, payments and the services behind them
 
-*Written 2026-09-21. This is the newest part of the blueprint and the one that
+*Written 2026-09-21. This is the newest part of `setup/` and the one that
 changes the shape of the house rules, so read the first section before
 anything else — it is a decision, not a description.*
 

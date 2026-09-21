@@ -1,0 +1,46 @@
+# Fly configuration for the accounts service.
+#
+# THIS FILE IS COMMITTED, SO IT CONTAINS NO SECRETS. Everything sensitive goes
+# in `fly secrets set`, which injects environment variables at runtime and puts
+# nothing in the image. See SETUP.md.
+
+app = "woz-accounts"
+primary_region = "iad"          # change to the region nearest you
+
+[build]
+  # No builder line: Fly uses the Dockerfile beside this file.
+
+[env]
+  PORT = "8080"
+  SITE_URL = "https://thewizardofoza.com"
+  API_URL = "https://api.thewizardofoza.com"
+  COOKIE_DOMAIN = ".thewizardofoza.com"
+  ALLOWED_ORIGIN_SUFFIX = ".thewizardofoza.com"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "suspend"
+
+  # DO NOT SET THIS TO 0.
+  #
+  # Scale-to-zero saves a few dollars a month and costs a cold start on the
+  # first request. For the Stripe webhook that is fine — Stripe retries. For
+  # somebody tapping "Sign in" it is a two-to-three second stall on the most
+  # abandonment-prone screen in the app, and it will read as "the app is
+  # broken" rather than as "the server was asleep".
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/healthz"
+    # /healthz queries the database rather than just returning 200. A service
+    # that reports healthy while Postgres is unreachable reports healthy
+    # through the entire outage.
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

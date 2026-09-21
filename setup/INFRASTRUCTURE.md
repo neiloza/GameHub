@@ -4,6 +4,23 @@
 changes the shape of the house rules, so read the first section before
 anything else — it is a decision, not a description.*
 
+> **⚠️ This document is now the RATIONALE. The implementation is in
+> [`accounts/`](./accounts/), and where the two disagree, the code wins.**
+>
+> Decisions taken since this was written, all reflected in `accounts/`:
+>
+> - **Fly.io + Postgres**, not Supabase — the game servers are going on Fly
+>   anyway, and running two backends to avoid one is the worse trade.
+> - **Apple sign-in is deferred.** Google and email + password only for now,
+>   so the whole "Identity — Apple" section below is future work, not a
+>   current requirement.
+> - **The session cookie is HttpOnly**, which the hosted-auth route could not
+>   offer, and the Google **server-side** flow means no third-party script runs
+>   in any app. Both are improvements on what is described below.
+>
+> Start at [`accounts/SETUP.md`](./accounts/SETUP.md) to build it. Read on for
+> *why* each piece is the way it is.
+
 Every app now ships:
 
 - **Sign in with Google**, **Sign in with Apple**, and **email + password with

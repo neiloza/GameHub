@@ -9,12 +9,13 @@ Refer to it from another repo as `neiloza/GameHub` → `setup/`.
 If you are about to start an app, or to change one, read
 [Start here](#start-here) and nothing else until you need it.
 
-## The four documents
+## The documents
 
 | File | What it answers | When to read it |
 |---|---|---|
 | **[`APP_DESIGN_RULES.md`](./APP_DESIGN_RULES.md)** | What every app does, and why | Before app #1, and when tempted to break a rule |
-| **[`INFRASTRUCTURE.md`](./INFRASTRUCTURE.md)** | Accounts, payments, the API, the database, every credential | Before wiring sign-in or money into anything |
+| **[`accounts/`](./accounts/)** | The built account system: one sign-in for every app, Google + password, Stripe | Wiring sign-in or money into an app |
+| **[`INFRASTRUCTURE.md`](./INFRASTRUCTURE.md)** | *Why* accounts and payments are shaped the way they are | Before changing any of those decisions |
 | **[`LESSONS.md`](./LESSONS.md)** | Bugs already found and paid for, indexed **by symptom** | **Before debugging anything.** Look up what you are seeing |
 | **[`starter-kit/`](./starter-kit/)** | A working PWA that already obeys the rules | `scripts/new-app.sh` and you are past the plumbing |
 
@@ -41,9 +42,10 @@ Then work in this order — it is the order that stops you redoing things:
 5. `CLAUDE.md` — the file map and the invariants, **while you still remember
    them**. Its *Waiting on a human* section ships pre-filled with what a fresh
    app is genuinely blocked on.
-6. Accounts and the $5 unlock only once the app is worth buying. See
-   [`INFRASTRUCTURE.md`](./INFRASTRUCTURE.md); the client half belongs in the
-   kit, not in your app.
+6. Accounts and the $5 unlock, once the app is worth buying. The client is
+   already in the kit as `js/account.js` — wire it up per
+   [`accounts/SETUP.md`](./accounts/SETUP.md) step 8, and do not write a
+   second copy in your app.
 
 **Something is broken:** go to [`LESSONS.md`](./LESSONS.md) and look up the
 **symptom** in the table at the top, not what you think the cause is. That
@@ -79,16 +81,19 @@ talks to and no app contains.
   and the first built on the kit. It is the record of what the rules did
   *not* cover: thirteen attempts at one bug, and everything learned on the way
   through.
-- **`INFRASTRUCTURE.md`** is new, written 2026-09-21, and is the one part of
-  this folder that is a **plan rather than a description**. Treat its
-  specifics as carefully-reasoned and **unverified against the real
-  services** — which is precisely the failure mode `LESSONS.md` P5 is about,
-  and why it says so in its own text.
-  **One exception, and it is a big one:** `BuyerSellerMarketplace/` in this
-  repo already implements much of it on Supabase — Google sign-in, email and
-  password, password recovery, Postgres with RLS, Stripe checkout, webhook
-  and portal. Read that before building anything; the document's first step
-  is now deciding whether to extract from it rather than rebuild.
+- **`accounts/`** was built on 2026-09-21: one sign-in covering every app on
+  the domain, on Fly.io and Postgres, with Google and email + password.
+  Several of its decisions — the enumeration-safe reset, the raw-body Stripe
+  webhook, the insert-first idempotency claim — are lifted from
+  `BuyerSellerMarketplace/` in this repo, which solves the same problems on
+  Supabase and is still worth reading as a working reference.
+  **It has not been run yet.** Its tests cover the security boundary and
+  nothing else; `accounts/verify.mjs` against a real deployment is what
+  settles the rest, and only a browser settles the SSO itself.
+- **`INFRASTRUCTURE.md`** is the **rationale** behind those decisions, not the
+  implementation. Where it and `accounts/` disagree, the code wins and the
+  document is what needs fixing. Its Apple section is future work — Apple
+  sign-in is deliberately deferred.
 
 ## Keeping it honest
 

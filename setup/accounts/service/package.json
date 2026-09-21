@@ -1,0 +1,20 @@
+{
+  "name": "woz-accounts",
+  "private": true,
+  "type": "module",
+  "//": "The ONE place in this estate with runtime dependencies. The apps stay static with none. Every package added here is one more thing to patch on a service that holds who paid you — keep the list short.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "migrate": "node scripts/migrate.mjs",
+    "test": "node --test test/*.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.13.1",
+    "stripe": "^17.5.0",
+    "google-auth-library": "^9.15.0"
+  }
+}

@@ -18,6 +18,10 @@ no accounts and no credentials; do that before touching a dashboard.
 Then [`ROLLOUT.md`](./ROLLOUT.md) — putting sign-in on the apex and on every
 app, and the browser checks that prove the single sign-on actually happened.
 
+[`SYNC.md`](./SYNC.md) — cloud save: every app's data in one Postgres table,
+how a new app joins with zero server changes, and how two offline devices
+merge without losing anybody's work.
+
 ## How the single sign-on works
 
 ```
@@ -63,6 +67,9 @@ Three properties worth understanding before changing anything:
 | `service/test/` | Tests for the security boundary — **no network needed** |
 | `service/fly.toml`, `Dockerfile` | Deployment. No secrets; those are `fly secrets` |
 | [`ROLLOUT.md`](./ROLLOUT.md) | Putting sign-in on the apex and every app |
+| [`SYNC.md`](./SYNC.md) | Cloud save: the one table, conflicts, per-app adapters |
+| `service/src/data.js` | The sync endpoints. Moves opaque documents, refuses stale writes |
+| `../starter-kit/js/sync.js` | The client, and the merge rule |
 | [`verify.mjs`](./verify.mjs) | Checks a **deployed** service hop by hop |
 | `../starter-kit/js/account.js` | The client the apps use |
 | `../starter-kit/js/account-ui.js` | The sign-in sheet every app shares |
@@ -100,9 +107,15 @@ you, so keep the list short.
   one downgrades a paying customer on a train.
 - **The server names the price.** The browser sends an app slug and nothing
   else.
-- **No app content is stored server-side.** Saved places, trips, decks and
-  scores stay on the device (house rule 5). Signing in is not a backup, and
-  Settings has to say so.
+- **App data IS stored server-side, as of 2026-09-22** — but the device stays
+  the source of truth and the server is a mirror. Signed-out users are
+  unaffected, and deleting `sync.js` must leave a working app. One generic
+  JSONB table holds every app's data, so a new app joins with zero server
+  changes. See [`SYNC.md`](./SYNC.md).
+- **Never last-write-wins.** Every write declares the revision it was based
+  on; a stale write is refused so the client can merge. The default merge
+  unions id-keyed maps, which works only because house rule 5 already shapes
+  the data that way.
 
 ## Before you trust any of this
 

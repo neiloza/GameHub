@@ -25,6 +25,7 @@ import {
   readCookie, isAllowedOrigin, safeReturnTo,
 } from "./auth.js";
 import { sendPasswordReset } from "./mail.js";
+import { pull, push, usage, validAppSlug } from "./data.js";
 
 const PORT = Number(process.env.PORT ?? 8080);
 const SITE_URL = process.env.SITE_URL ?? "https://thewizardofoza.com";
@@ -80,7 +81,8 @@ function corsHeaders(req) {
   };
 }
 
-async function readBody(req, limit = 64 * 1024) {
+async function readBody(req, limit) {
+  limit = limit ?? 64 * 1024;
   const chunks = [];
   let size = 0;
   for await (const chunk of req) {
@@ -94,8 +96,8 @@ async function readBody(req, limit = 64 * 1024) {
   return Buffer.concat(chunks);
 }
 
-async function readJson(req) {
-  const raw = await readBody(req);
+async function readJson(req, limit) {
+  const raw = await readBody(req, limit);
   if (!raw.length) return {};
   try {
     return JSON.parse(raw.toString("utf8"));
@@ -472,6 +474,42 @@ const routes = {
       ...cors,
       "Set-Cookie": clearSessionCookie({ domain: COOKIE_DOMAIN, secure: !ALLOW_LOCALHOST }),
     });
+  },
+
+  /* --- cloud save ------------------------------------------------------------
+   *
+   * The server moves opaque documents and refuses stale writes. It never
+   * parses, migrates or merges an app's data — merging belongs in the app,
+   * where the shape is known. See src/data.js and SYNC.md.
+   *
+   * These are the only routes whose path carries the app slug, because the
+   * slug is data here rather than configuration.
+   */
+  "GET /v1/data": async (req, res, cors, url) => {
+    const user = await currentUser(req);
+    if (!user) return send(res, 401, { error: "Sign in first." }, cors);
+    const app = url.searchParams.get("app");
+    if (!validAppSlug(app)) return send(res, 400, { error: "unknown app" }, cors);
+    send(res, 200, await pull(user.id, app, url.searchParams.get("since")), cors);
+  },
+
+  "POST /v1/data": async (req, res, cors, url) => {
+    const user = await currentUser(req);
+    if (!user) return send(res, 401, { error: "Sign in first." }, cors);
+    const app = url.searchParams.get("app");
+    if (!validAppSlug(app)) return send(res, 400, { error: "unknown app" }, cors);
+    // 8MB rather than the 64KB default: a single document may be up to 1MB
+    // and a push carries several. data.js enforces the real per-document and
+    // per-account limits; this is only the ceiling on what will be read into
+    // memory at all.
+    const body = await readJson(req, 8 * 1024 * 1024);
+    send(res, 200, await push(user.id, app, body.documents, body.writer), cors);
+  },
+
+  "GET /v1/data/usage": async (req, res, cors) => {
+    const user = await currentUser(req);
+    if (!user) return send(res, 401, { error: "Sign in first." }, cors);
+    send(res, 200, await usage(user.id), cors);
   },
 
   /* --- billing -------------------------------------------------------------- */

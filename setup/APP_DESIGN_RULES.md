@@ -177,14 +177,41 @@ corrupt data must never be able to crash the app.
   a new device. `persist()` is a floor; a downloadable backup is the safety
   net, and the floor is not a reason to skip the net.
 
-**Accounts do not change this, 2026-09-21.** The shared backend holds an
-account row, which providers it is linked to, and who bought what. It holds
-**no app content** — no saved places, no trips, no decks, no sessions. Signing
-in is not a backup, and the Settings UI has to say so in plain words next to
-the account row, because every user will assume the opposite. Export remains
-the only thing that actually protects the data, which is why Rule 7 forbids
-ever putting it behind the paywall. Cross-device sync is a separate decision,
-deliberately deferred; see [`INFRASTRUCTURE.md`](./INFRASTRUCTURE.md).
+**Amended 2026-09-22 — cloud save.** The previous amendment said the server
+holds no app content. That is no longer true: a signed-in account's data for
+every app is mirrored into Postgres, so it survives a lost phone and appears
+on a second device. The full design is in
+[`accounts/SYNC.md`](./accounts/SYNC.md).
+
+**The rule survives, with one word changed. The device is still the source of
+truth; the server is a MIRROR of it.** That distinction is the whole rule, not
+a technicality:
+
+- **Most people never sign in.** Their data must work exactly as well as a
+  signed-in user's, forever, with no account and no server.
+- **A service outage costs nobody anything but sync.** An app that will not
+  deal a deck on a plane because an API is unreachable has thrown away the
+  reason it was built offline-first.
+- **The test of whether this is still honoured:** deleting `js/sync.js` must
+  leave a working app. If it does not, the mirror has quietly become the
+  original.
+
+Three things that follow, all of which are easy to get wrong:
+
+- **Never last-write-wins.** Two devices editing offline is Tuesday, not an
+  edge case. Every write declares the revision it was based on, and a stale
+  write is refused so the client can merge. The default merge is a **union**
+  of id-keyed maps — which works only because this rule already says *store
+  decisions, never content*, so the data is shaped to merge safely.
+- **Export is still the safety net**, and still never behind the paywall.
+  Sync protects against a lost phone; it does not protect against a mistake
+  that syncs.
+- **The privacy posture changed and must be stated.** The server now holds
+  what people did, not just who they are. Account deletion deletes something
+  real. There is still no analytics and no third-party anything — storing what
+  somebody asked you to store is not surveillance, and the line is that this
+  data exists to be given back to them and for nothing else. Say so in
+  Settings.
 
 ### 6. Works offline, updates itself
 

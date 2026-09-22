@@ -36,6 +36,7 @@ var SHELL = [
   "./js/install.js",
   "./js/account.js",
   "./js/account-ui.js",
+  "./js/sync.js",
   "./manifest.webmanifest",
   "./icons/favicon.svg",
   "./icons/apple-touch-icon.png",

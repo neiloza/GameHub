@@ -152,6 +152,23 @@ function style for Android WebView compatibility. `sync.js` is a module using
 modern syntax, so either the adapter bridges it or Forest gets a transpiled
 copy. Decide before starting, not halfway.
 
+## Sign-out must clear the sync state
+
+`sync.reset()` runs on sign-out, and on signing in as a different account. It
+is not tidiness — it is a bug fix, and the bug is nasty:
+
+**`seq` comes from one global sequence shared by every user.** If a device
+keeps the first person's cursor after they sign out, the second person pulls
+`since=<a number higher than any row of their own>` and receives **nothing**.
+Their data appears to be gone, on a shared phone, with no error anywhere.
+
+The stored revisions are the same story in a different field: they describe
+another account's documents, so every push conflicts against rows that are not
+theirs.
+
+Local app data is deliberately untouched by this. Signing out is not a request
+to delete the trips on the phone.
+
 ## Limits
 
 | | |
@@ -204,7 +221,8 @@ to the user, rather than the whole estate paying for it.
 
 **Proven by unit test:** the merge rule, including the cases that would lose
 data — two offline devices both keeping their saves, a missing side never
-being read as "delete everything", inputs never mutated.
+being read as "delete everything", inputs never mutated. Plus the shared-device
+cursor bug above, which is why `reset()` exists.
 
 **NOT proven:**
 

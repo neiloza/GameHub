@@ -11,8 +11,12 @@ import { initInstall } from "./install.js";
 import { loadState, saveState, requestPersistence } from "./store.js";
 import { createAccount } from "./account.js";
 import { initAccountUI } from "./account-ui.js";
+import { createSync } from "./sync.js";
 
 const state = loadState();
+
+// Declared at module scope because persist() calls it and boot() assigns it.
+let sync = null;
 
 /* ----------------------------------------------------------------------------
  * Accounts. One sign-in covers every app on the domain — see
@@ -30,6 +34,8 @@ export const account = createAccount({
 
 function persist() {
   saveState(state);
+  // Debounced, cheap, and a no-op when signed out. Safe to call on every write.
+  sync?.touch();
 }
 
 function boot() {
@@ -43,7 +49,36 @@ function boot() {
     onInstalled: () => toast(`__APP_NAME__ is on your home screen.`),
   });
 
-  const accountUI = initAccountUI(account, { appName: "__APP_NAME__" });
+  /* --------------------------------------------------------------------------
+   * Cloud save. The DEVICE stays the source of truth; this mirrors it to the
+   * account so data survives a lost phone and appears on a second device.
+   *
+   * Deleting this block must leave a working app — that is the test of whether
+   * the mirror has quietly become the original. See setup/accounts/SYNC.md.
+   *
+   * Name one document per logical bundle, not one per record. The default
+   * merge UNIONS id-keyed maps, which is why house rule 5 says to store
+   * decisions (id -> timestamp) rather than content: two devices that were
+   * both offline then keep each other's work instead of one silently winning.
+   * ------------------------------------------------------------------------ */
+  sync = createSync(account, {
+    apiUrl: "https://api.thewizardofoza.com",
+    appSlug: "__APP_SLUG__",
+    documents: {
+      // Replace with this app's real bundles. `settings` is here because every
+      // app has some, and `preferLocal` because a phone and a laptop legitimately
+      // want different preferences — unlike saved items, which should union.
+      settings: {
+        read:  () => state.settings,
+        write: (value) => { state.settings = value; saveState(state); },
+        preferLocal: true,
+      },
+    },
+    onChange: () => { /* remote data arrived — redraw whatever shows it */ },
+  });
+  sync.start();
+
+  const accountUI = initAccountUI(account, { appName: "__APP_NAME__", sync });
   document.getElementById("account-btn")?.addEventListener("click", () => accountUI.open());
 
   /*

@@ -266,7 +266,33 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
     pushTimer = setTimeout(() => { sync().catch(() => {}); }, PUSH_DEBOUNCE_MS);
   }
 
-  return {
+  const api = {
+    /**
+     * Forget everything this device knows about the server's state.
+     *
+     * MUST be called on sign-out, and it is not tidiness — it is a bug fix.
+     * `seq` comes from one global sequence shared by all users, so a second
+     * person signing in on the same device would pull `since=<the first
+     * person's cursor>` and, because their own rows have LOWER sequence
+     * numbers, receive NOTHING. Their data would appear to be gone, on a
+     * shared phone, with no error anywhere.
+     *
+     * The stored revisions are the same story in a different field: they
+     * describe another account's documents, so every push would conflict
+     * against rows that are not theirs.
+     *
+     * Local app data is deliberately untouched. Signing out is not a request
+     * to delete the trips on the phone.
+     */
+    reset() {
+      revs = {};
+      clearTimeout(pushTimer);
+      try {
+        localStorage.removeItem(CURSOR_KEY(appSlug));
+        localStorage.removeItem(REV_KEY(appSlug));
+      } catch { /* private mode */ }
+    },
+
     /** Call after every local write. Cheap, debounced, safe when signed out. */
     touch() {
       if (account.signedIn()) schedulePush();
@@ -288,11 +314,20 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
     start() {
       if (account.signedIn()) sync().catch(() => {});
 
+      let wasSignedIn = account.signedIn();
       account.onChange(() => {
-        // Signing IN is the interesting moment: this device has local data and
-        // the account may have more. A full sync merges both rather than
-        // letting either win.
-        if (account.signedIn()) sync({ full: true }).catch(() => {});
+        const now = account.signedIn();
+        if (now && !wasSignedIn) {
+          // Signing IN is the interesting moment: this device has local data
+          // and the account may have more. Start from a clean slate so no
+          // cursor or revision from a previous account survives, then FULL
+          // sync so both sides merge rather than either winning.
+          api.reset();
+          sync({ full: true }).catch(() => {});
+        } else if (!now && wasSignedIn) {
+          api.reset();
+        }
+        wasSignedIn = now;
       });
 
       document.addEventListener("visibilitychange", () => {
@@ -319,7 +354,7 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
       lines.push(`documents: ${keys.join(", ") || "none"}`);
       if (lastError) lines.push(`last error: ${lastError.message}`);
       if (account.signedIn()) {
-        const u = await this.usage();
+        const u = await api.usage();
         lines.push(u
           ? `server holds ${Math.round(u.bytes / 1024)}KB of ${Math.round(u.limit / 1024 / 1024)}MB`
           : "usage: FAILED to read");
@@ -327,4 +362,6 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
       return lines.join("\n");
     },
   };
+
+  return api;
 }

@@ -42,7 +42,8 @@ const RESET_SENT =
   "expires in an hour. Check your spam folder.";
 
 export function initAccountUI(account, { sheetId = "account-sheet", bodyId = "account-body",
-                                         titleId = "account-title", appName = "this app" } = {}) {
+                                         titleId = "account-title", appName = "this app",
+                                         sync = null } = {}) {
   const body = document.getElementById(bodyId);
   const title = document.getElementById(titleId);
   if (!body) return { open() {}, close() {} };
@@ -125,6 +126,33 @@ export function initAccountUI(account, { sheetId = "account-sheet", bodyId = "ac
         }));
       }
 
+      if (sync) {
+        // Filled in asynchronously: a Settings sheet must open instantly, and
+        // this is the least important thing on it.
+        sync.usage().then((u) => {
+          const line = document.getElementById("account-usage");
+          if (!line || !u) return;
+          line.textContent =
+            `Cloud save: ${Math.max(1, Math.round(u.bytes / 1024))}KB of ` +
+            `${Math.round(u.limit / 1024 / 1024)}MB used.`;
+        });
+
+        body.append(el("button", {
+          className: "btn btn-block",
+          textContent: "Sync now",
+          // The "my other phone is missing things" button. Pulls everything
+          // and re-merges rather than trusting the stored cursor, because a
+          // cursor that is wrong is invisible and this is the way out.
+          onclick: async () => {
+            setBusy(true);
+            const result = await sync.full();
+            setBusy(false);
+            toast(result?.error ? "Could not reach the server." : "Synced.");
+            render();
+          },
+        }));
+      }
+
       body.append(
         el("button", {
           className: "btn btn-block",
@@ -139,13 +167,19 @@ export function initAccountUI(account, { sheetId = "account-sheet", bodyId = "ac
             toast(account.isPaid() ? "Restored." : "Nothing to restore on this account.");
           },
         }),
-        // The sentence every user will otherwise assume the opposite of.
+        // What signing in actually does, in the words a user needs. This
+        // sentence was the opposite before cloud save existed; if the app has
+        // no sync wired up it says the old, still-true thing instead.
         el("p", {
           className: "account-note",
-          textContent:
-            "Signing in carries your purchase between devices. It does not back " +
-            "up your data — use Download backup in Settings for that.",
+          textContent: sync
+            ? "Your data is saved to this account, so it survives a lost phone " +
+              "and appears on your other devices. Download backup in Settings " +
+              "is still the copy only you hold."
+            : "Signing in carries your purchase between devices. It does not " +
+              "back up your data — use Download backup in Settings for that.",
         }),
+        el("p", { className: "account-note", id: "account-usage" }),
         el("button", {
           className: "btn btn-ghost btn-block",
           textContent: "Sign out",

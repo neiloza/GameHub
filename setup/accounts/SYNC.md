@@ -176,6 +176,33 @@ The account sheet says this to a signed-in free user, and says the reassuring
 half too — the obvious fear on seeing "cloud save" behind a paywall is that
 your data is at risk until you pay, and it is not.
 
+## A sync must not trigger another sync
+
+Found by running two clients against the real service, and it was real: **20
+pushes across 20 idle syncs with nothing changed.**
+
+Merging writes through the app's `persist()`, which calls `touch()`, which
+schedules a push. So:
+
+```
+A pulls → merges → writes → pushes
+B pulls that → merges → writes → pushes
+A pulls that → …
+```
+
+Two devices left open sync each other **forever** — continuous traffic,
+battery drain and an inflating sequence, while nothing has changed.
+
+`sync.js` fingerprints the serialised value and skips **both** ends: an
+unchanged merge does not write, and an unchanged document is not pushed.
+`JSON.stringify` is key-order sensitive, so it can report a false *change* —
+one redundant push, harmless. It can never report a false *unchanged*, which
+is the direction that would lose data.
+
+`service/test/pingpong.test.mjs` drives two real clients against an
+in-process stub and fails if idle syncs write anything. Confirmed to go red
+when the check is removed.
+
 ## Sign-out must clear the sync state
 
 `sync.reset()` runs on sign-out, and on signing in as a different account. It

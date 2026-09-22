@@ -29,6 +29,26 @@
  * is for.
  */
 
+/*
+ * A cheap content fingerprint, used to answer "has this actually changed?".
+ *
+ * IT EXISTS TO STOP A PING-PONG LOOP, not to save bytes. Without it:
+ *   device A pulls -> merges -> writes -> persist() -> touch() -> pushes
+ *   device B pulls that -> merges -> writes -> pushes
+ *   device A pulls that -> ...
+ * Two devices left open would sync each other forever, burning battery and
+ * inflating the sequence, while nothing whatsoever had changed. Comparing the
+ * serialised value breaks the cycle at both ends: an unchanged merge does not
+ * write, and an unchanged document does not push.
+ *
+ * JSON.stringify is key-order sensitive, so this can report a false CHANGE —
+ * which costs one redundant push and is harmless. It can never report a false
+ * "unchanged", which is the direction that would lose data.
+ */
+function fingerprint(value) {
+  try { return JSON.stringify(value ?? null); } catch { return null; }
+}
+
 const CURSOR_KEY = (app) => `woz:sync:${app}:cursor`;
 const REV_KEY = (app) => `woz:sync:${app}:revs`;
 const WRITER_KEY = "woz:sync:writer";
@@ -128,6 +148,11 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
   const base = apiUrl.replace(/\/$/, "");
   const keys = Object.keys(documents ?? {});
   let revs = readJson(REV_KEY(appSlug), {});
+  // What we last sent for each key, so an unchanged document is not re-sent.
+  // Session-only on purpose: after a relaunch, one redundant push per document
+  // is a fine price for not persisting a claim about the server that might be
+  // wrong.
+  const lastSent = new Map();
   let pushTimer = null;
   let running = false;
   let pendingWhileRunning = false;
@@ -211,9 +236,15 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
           const local = spec.read();
           const merge = spec.merge ?? mergeDocument;
           const merged = merge(local, doc.value, { preferLocal: spec.preferLocal });
-          spec.write(merged);
           revs[doc.key] = doc.rev;
-          changed = true;
+
+          // Only write if the merge actually produced something different.
+          // Writing an identical value would call persist(), which calls
+          // touch(), which schedules a push — see fingerprint() above.
+          if (fingerprint(merged) !== fingerprint(local)) {
+            spec.write(merged);
+            changed = true;
+          }
         }
         cursor = got.cursor ?? cursor;
         if (!got.more) break;
@@ -222,16 +253,28 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
       saveRevs();
 
       // ---- push -------------------------------------------------------
-      const outgoing = keys.map((key) => ({
-        key,
-        value: documents[key].read(),
-        base_rev: revs[key] ?? 0,
-      }));
+      const outgoing = [];
+      for (const key of keys) {
+        const value = documents[key].read();
+        const print = fingerprint(value);
+        // Unchanged since the last accepted push? Nothing to say.
+        if (lastSent.get(key) === print) continue;
+        outgoing.push({ key, value, base_rev: revs[key] ?? 0, _print: print });
+      }
+
+      if (!outgoing.length) {
+        if (changed) onChange?.();
+        return { ok: true, changed, conflicted: false };
+      }
 
       const pushed = await call(`/v1/data?app=${encodeURIComponent(appSlug)}`, {
         method: "POST",
-        body: { documents: outgoing, writer: writerId() },
+        body: {
+          documents: outgoing.map(({ _print, ...doc }) => doc),
+          writer: writerId(),
+        },
       });
+      const prints = new Map(outgoing.map((d) => [d.key, d._print]));
 
       /*
        * A conflict is NORMAL, not an error: it means the other device won the
@@ -243,6 +286,7 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
       for (const result of pushed.results ?? []) {
         if (result.ok) {
           revs[result.key] = result.rev;
+          lastSent.set(result.key, prints.get(result.key));
           continue;
         }
         if (result.conflict) {
@@ -255,6 +299,8 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
             changed = true;
           }
           revs[result.key] = result.server.rev;
+          // The merge changed local, so whatever we last sent is stale.
+          lastSent.delete(result.key);
         }
       }
       saveRevs();
@@ -308,6 +354,7 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
      */
     reset() {
       revs = {};
+      lastSent.clear();
       clearTimeout(pushTimer);
       try {
         localStorage.removeItem(CURSOR_KEY(appSlug));

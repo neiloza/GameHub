@@ -1134,6 +1134,28 @@ hotel wifi is not a slow photo, it is no photo."*
 400ms and fails if the other waits behind it** — a neat and reusable way to
 test parallelism.
 
+### 8.10 A sync must not trigger another sync
+
+**[GENERIC]**
+
+**Symptom:** constant network traffic and battery drain on two devices left
+open, with nothing changing. Nothing is broken, so nothing gets reported —
+it just quietly costs everyone.
+
+**Root cause:** merging incoming data writes it locally, the local write marks
+the app dirty, and dirty schedules a push. Device A pushes, device B pulls and
+does the same, and they sync each other forever. Measured at **20 pushes
+across 20 idle syncs**.
+
+**Fix, and it has to be at BOTH ends:** fingerprint the value; skip the write
+when the merge produced nothing new, and skip the push when the document is
+unchanged since the last accepted one. Either alone leaves half the loop.
+
+**The generic kernel:** *any* pipeline where receiving a change also produces
+one needs a no-op check, and the check must be on content rather than on
+"did something call me". Held by a test that runs two real clients and fails
+if idle rounds write anything — verified red without the fix.
+
 ### 8.9 The small print
 
 **[WONDER / generic kernel]**

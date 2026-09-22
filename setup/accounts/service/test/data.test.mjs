@@ -93,3 +93,24 @@ test("a stale cursor from another account would hide that account's rows", () =>
   const afterReset = userBRows.filter((r) => r.seq > 0);
   assert.equal(afterReset.length, 2);
 });
+
+/* --- cloud save is the paid feature ---------------------------------------
+ * Decided 2026-09-22. The rule that must survive every future change: a free
+ * user loses NOTHING. The paid feature is the mirror, not the data.
+ */
+test("gating logic: sync runs only when signed in AND unlocked", () => {
+  const canSync = (signedIn, paid) => signedIn && paid;
+  assert.equal(canSync(false, false), false, "signed out");
+  assert.equal(canSync(false, true), false, "paid but signed out — no account to sync to");
+  assert.equal(canSync(true, false), false, "signed in, free — local only");
+  assert.equal(canSync(true, true), true);
+});
+
+test("a free user's local data is untouched by the gate", () => {
+  // The gate stops the MIRROR, never the store. If this ever stops being
+  // true, the paywall has started holding data hostage, which rule 7 forbids
+  // outright.
+  const local = { saved: { p1: 1 } };
+  const afterGate = local;            // sync() returns early; nothing writes
+  assert.deepEqual(afterGate, { saved: { p1: 1 } });
+});

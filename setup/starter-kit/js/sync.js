@@ -159,9 +159,31 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
 
   function saveRevs() { writeJson(REV_KEY(appSlug), revs); }
 
+  /*
+   * CLOUD SAVE IS PART OF THE PAID UNLOCK.
+   *
+   * Decided 2026-09-22. It is the one feature in the estate with a real,
+   * ongoing server cost, so charging for it is honest in a way that charging
+   * for a local feature would not be (APP_DESIGN_RULES rule 7).
+   *
+   * What this must NEVER mean, and the reason the gate is here rather than
+   * somewhere cleverer: a free user loses nothing. Their data lives on the
+   * device exactly as it always did, Download backup still works and is still
+   * never paywalled. The paid feature is the MIRROR, not the data.
+   *
+   * isPaid() reads a cache that is deliberately asymmetric — a "paid" answer
+   * persists, a "not paid" answer does not — so a paying customer on a plane
+   * keeps syncing when the signal returns rather than being silently
+   * downgraded mid-flight.
+   */
+  function canSync() {
+    return account.signedIn() && account.isPaid(appSlug);
+  }
+
   /** Pull, merge into local, then push whatever local still has that differs. */
   async function sync({ full = false } = {}) {
     if (!account.signedIn()) return { skipped: "signed out" };
+    if (!account.isPaid(appSlug)) return { skipped: "not unlocked" };
     if (running) { pendingWhileRunning = true; return { skipped: "already running" }; }
     running = true;
     lastError = null;
@@ -295,10 +317,13 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
 
     /** Call after every local write. Cheap, debounced, safe when signed out. */
     touch() {
-      if (account.signedIn()) schedulePush();
+      if (canSync()) schedulePush();
     },
 
     sync,
+
+    /** Is cloud save actually running for this person? The UI asks. */
+    enabled: canSync,
 
     /** Pull everything and re-merge. The "my other phone is missing things" button. */
     full() { return sync({ full: true }); },
@@ -312,11 +337,21 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
      * launch, returning to the foreground, and the network coming back.
      */
     start() {
-      if (account.signedIn()) sync().catch(() => {});
+      if (canSync()) sync().catch(() => {});
 
       let wasSignedIn = account.signedIn();
+      let couldSync = canSync();
       account.onChange(() => {
         const now = account.signedIn();
+        const canNow = canSync();
+
+        // Buying the unlock while signed in is its own moment: this device
+        // has local data that has never been mirrored, and it must go up.
+        if (canNow && !couldSync && now === wasSignedIn) {
+          sync({ full: true }).catch(() => {});
+        }
+        couldSync = canNow;
+
         if (now && !wasSignedIn) {
           // Signing IN is the interesting moment: this device has local data
           // and the account may have more. Start from a clean slate so no
@@ -334,11 +369,13 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
         if (document.visibilityState === "visible") sync().catch(() => {});
       });
       window.addEventListener("online", () => { sync().catch(() => {}); });
+      // sync() checks canSync() itself, so these listeners stay simple and a
+      // free user's triggers are no-ops rather than refused requests.
 
       // A last push on the way out. `visibilitychange` is the reliable one on
       // iOS — `beforeunload` frequently never fires on a phone.
       document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden" && account.signedIn()) {
+        if (document.visibilityState === "hidden" && canSync()) {
           sync().catch(() => {});
         }
       });
@@ -349,6 +386,7 @@ export function createSync(account, { apiUrl, appSlug, documents, onChange } = {
       const lines = [];
       lines.push(`sync app: ${appSlug}`);
       lines.push(`signed in: ${account.signedIn()}`);
+      lines.push(`unlocked (cloud save enabled): ${account.isPaid(appSlug)}`);
       lines.push(`cursor: ${readJson(CURSOR_KEY(appSlug), 0)}`);
       lines.push(`known revisions: ${JSON.stringify(revs)}`);
       lines.push(`documents: ${keys.join(", ") || "none"}`);

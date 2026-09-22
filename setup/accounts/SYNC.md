@@ -152,6 +152,30 @@ function style for Android WebView compatibility. `sync.js` is a module using
 modern syntax, so either the adapter bridges it or Forest gets a transpiled
 copy. Decide before starting, not halfway.
 
+## Cloud save is part of the $5 unlock
+
+Decided 2026-09-22. It is the one feature in the estate with a real, ongoing
+server cost, so charging for it is honest in a way that charging for a local
+feature would not be — [rule 7](../APP_DESIGN_RULES.md) makes exactly that
+distinction.
+
+**What it must never mean:** a free user loses nothing. Their data lives on
+the device exactly as it always did, and **Download backup is still never
+paywalled**. The paid feature is the *mirror*, not the data. If that ever
+stops being true, the paywall has started holding data hostage, which rule 7
+forbids outright.
+
+Mechanically: `sync()` returns early unless `signedIn() && isPaid(appSlug)`.
+Buying while signed in is its own trigger — that device has local data that
+has never been mirrored, so it gets a full sync immediately. And because
+`isPaid()` reads a cache that persists a *paid* answer but not an *unpaid*
+one, a paying customer on a plane keeps syncing when the signal returns
+rather than being silently downgraded mid-flight.
+
+The account sheet says this to a signed-in free user, and says the reassuring
+half too — the obvious fear on seeing "cloud save" behind a paywall is that
+your data is at risk until you pay, and it is not.
+
 ## Sign-out must clear the sync state
 
 `sync.reset()` runs on sign-out, and on signing in as a different account. It

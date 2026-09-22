@@ -118,7 +118,7 @@ export function initAccountUI(account, { sheetId = "account-sheet", bodyId = "ac
       if (!paid) {
         body.append(el("button", {
           className: "btn btn-primary btn-block",
-          textContent: "Unlock everything — $5, once",
+          textContent: sync ? "Unlock — $5, once" : "Unlock everything — $5, once",
           onclick: async () => {
             setBusy(true);
             try { await account.startCheckout(); } catch (e) { setBusy(false); fail(e); }
@@ -126,7 +126,24 @@ export function initAccountUI(account, { sheetId = "account-sheet", bodyId = "ac
         }));
       }
 
-      if (sync) {
+      if (sync && !sync.enabled()) {
+        /*
+         * A free user, signed in. Tell them what the unlock adds AND that
+         * they are not currently losing anything — because the obvious fear,
+         * on seeing "cloud save" behind a paywall, is that their data is at
+         * risk until they pay. It is not: it is on the device, and export is
+         * never paywalled (APP_DESIGN_RULES rule 7).
+         */
+        body.append(el("p", {
+          className: "account-note",
+          textContent:
+            "Cloud save is part of the unlock: your data would sync to this " +
+            "account and appear on your other devices. Until then it is safe " +
+            "on this device, and Download backup in Settings always works.",
+        }));
+      }
+
+      if (sync && sync.enabled()) {
         // Filled in asynchronously: a Settings sheet must open instantly, and
         // this is the least important thing on it.
         sync.usage().then((u) => {
@@ -172,12 +189,13 @@ export function initAccountUI(account, { sheetId = "account-sheet", bodyId = "ac
         // no sync wired up it says the old, still-true thing instead.
         el("p", {
           className: "account-note",
-          textContent: sync
+          textContent: sync?.enabled()
             ? "Your data is saved to this account, so it survives a lost phone " +
               "and appears on your other devices. Download backup in Settings " +
               "is still the copy only you hold."
-            : "Signing in carries your purchase between devices. It does not " +
-              "back up your data — use Download backup in Settings for that.",
+            : "Signing in carries your purchase between devices. Your data " +
+              "stays on this device — use Download backup in Settings for a " +
+              "copy you hold.",
         }),
         el("p", { className: "account-note", id: "account-usage" }),
         el("button", {

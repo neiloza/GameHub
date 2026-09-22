@@ -203,9 +203,14 @@ Three things that follow, all of which are easy to get wrong:
   write is refused so the client can merge. The default merge is a **union**
   of id-keyed maps — which works only because this rule already says *store
   decisions, never content*, so the data is shaped to merge safely.
+- **Cloud save is what the $5 buys** (decided 2026-09-22) — the one feature
+  with a real ongoing server cost, which is the distinction this rule already
+  draws between honest and dishonest things to charge for. A free user loses
+  nothing: their data is on the device exactly as before.
 - **Export is still the safety net**, and still never behind the paywall.
   Sync protects against a lost phone; it does not protect against a mistake
-  that syncs.
+  that syncs. A paywall between somebody and their own data is the one line
+  that never moves.
 - **The privacy posture changed and must be stated.** The server now holds
   what people did, not just who they are. Account deletion deletes something
   real. There is still no analytics and no third-party anything — storing what
